@@ -1,0 +1,27 @@
+~ August 8, 2015
+- repacked original hitsplats
+- repacked 474 magic tab
+- fixed sound effects and regional music both work perfectly
+- fixed an issue with name when logging in
+- added a depthbuffer (fog)
+
+~ August 9, 2015
+- Added the ability to toggle names above entities heads
+- Added the ability to display health above entities heads
+- Created a Configuration class with all the client's configuration options
+- Did a lot of refactoring. Refactored all classes, refactored almost all methods in Client.java
+
+~ August 10, 2014
+- Created a new class PacketID I'm using to easily identify packets
+- Refactored EntityDef readvalues
+- More realistic fog
+- can toggle orbs ::orbs
+
+~ August 12, 2015
+- Drew the music sprite on login screen
+- Fully repackaged client, along with more refactoring classes
+- Administrators can now toggle ids for items, objects, and npcs (::ids)
+- Added RSA and UUID protection
+
+~ August 13, 2015
+- Music and world switch buttons on login screen both work
