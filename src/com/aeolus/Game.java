@@ -12530,7 +12530,7 @@ public class Game extends GameShell {
 		worldController.clearObj5Cache();
 		if (Configuration.enableFog) {
 			double fogDistance = Math.sqrt(Math.pow(zCameraPos, 2));
-			int fogStartDistance = 1430;
+			int fogStartDistance = 1330;
 			int fogEndDistance = 2100;
 			depthBuffer.setFogDistance((float) fogDistance);
 			depthBuffer.renderFog(false, fogStartDistance, fogEndDistance, 3);
