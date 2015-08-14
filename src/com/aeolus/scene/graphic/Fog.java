@@ -1,7 +1,7 @@
 package com.aeolus.scene.graphic;
 import com.aeolus.media.DrawingArea;
 
-public class DepthBuffer {    
+public class Fog {    
     /**
      * Grabs distance from player.
      */

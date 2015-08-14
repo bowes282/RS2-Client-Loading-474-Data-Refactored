@@ -50,7 +50,7 @@ import com.aeolus.scene.SceneGraph;
 import com.aeolus.scene.SceneObject;
 import com.aeolus.scene.SceneProjectile;
 import com.aeolus.scene.SceneSpotAnim;
-import com.aeolus.scene.graphic.DepthBuffer;
+import com.aeolus.scene.graphic.Fog;
 import com.aeolus.scene.graphic.Texture;
 import com.aeolus.scene.tile.Floor;
 import com.aeolus.scene.tile.GroundDecoration;
@@ -71,7 +71,7 @@ public class Game extends GameShell {
 		FIXED, RESIZABLE, FULLSCREEN;
 	}
 
-	private DepthBuffer depthBuffer = new DepthBuffer();
+	private Fog depthBuffer = new Fog();
 
 	private int[][] xp_added = new int[10][3];
 	private Sprite[] skill_sprites = new Sprite[SkillConstants.skillsCount];
