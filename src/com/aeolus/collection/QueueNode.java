@@ -4,7 +4,7 @@ package com.aeolus.collection;
 // Decompiler options: packimports(3) 
 
 
-public class NodeSub extends Node {
+public class QueueNode extends Node {
 
     public final void unlinkSub()
     {
@@ -19,11 +19,11 @@ public class NodeSub extends Node {
         }
     }
 
-    public NodeSub()
+    public QueueNode()
     {
     }
 
-    public NodeSub prevNodeSub;
-    NodeSub nextNodeSub;
+    public QueueNode prevNodeSub;
+    QueueNode nextNodeSub;
     public static int anInt1305;
 }
