@@ -2,6 +2,7 @@ package com.aeolus.scene.graphic;
 import com.aeolus.cache.media.Background;
 import com.aeolus.media.DrawingArea;
 import com.aeolus.net.CacheArchive;
+import com.aeolus.scene.SceneGraph;
 
 public final class Texture extends DrawingArea {
 
@@ -1423,13 +1424,13 @@ public final class Texture extends DrawingArea {
 		Nx -= Px;
 		Nz -= Pz;
 		Ny -= Py;
-		int Oa = Nx * Pz - Nz * Px << 14;
+		int Oa = Nx * Pz - Nz * Px << (SceneGraph.viewDistance == 9 ? 14 : 15);
 		int Ha = Nz * Py - Ny * Pz << 8;
 		int Va = Ny * Px - Nx * Py << 5;
-		int Ob = Mx * Pz - Mz * Px << 14;
+		int Ob = Mx * Pz - Mz * Px << (SceneGraph.viewDistance == 9 ? 14 : 15);
 		int Hb = Mz * Py - My * Pz << 8;
 		int Vb = My * Px - Mx * Py << 5;
-		int Oc = Mz * Nx - Mx * Nz << 14;
+		int Oc = Mz * Nx - Mx * Nz << (SceneGraph.viewDistance == 9 ? 14 : 15);
 		int Hc = My * Nz - Mz * Ny << 8;
 		int Vc = Mx * Ny - My * Nx << 5;
 		int a_to_b = 0;

@@ -2175,6 +2175,7 @@ public class Model extends Renderable {
 				j5 = i5 * l3 + j5 * i4 >> 16;
 			i5 = j6;
 			anIntArray1667[k4] = j5 - j4;
+			vertexPerspectiveZAbs[k4] = 0;
 			anIntArray1665[k4] = l1 + (l4 << 9) / j5;
 			anIntArray1666[k4] = i2 + (i5 << 9) / j5;
 			if (anInt1642 > 0) {
@@ -2274,6 +2275,7 @@ public class Model extends Renderable {
 		i8 = l7 * j + i8 * k >> 16;
 		l7 = k8;
 		anIntArray1667[j7] = i8 - k2;
+		vertexPerspectiveZAbs[j7] = i8;
 		if (i8 >= 50) {
 			anIntArray1665[j7] = l5 + (k7 << SceneGraph.viewDistance) / i8;
 			anIntArray1666[j7] = j6 + (l7 << SceneGraph.viewDistance) / i8;

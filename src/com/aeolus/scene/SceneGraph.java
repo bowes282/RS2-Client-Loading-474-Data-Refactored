@@ -1560,8 +1560,8 @@ public final class SceneGraph {
 				TileOverlay.anIntArray691[l1] = k2;
 				TileOverlay.anIntArray692[l1] = i3;
 			}
-			TileOverlay.anIntArray688[l1] = Texture.textureInt1 + (i2 << 9) / i3;
-			TileOverlay.anIntArray689[l1] = Texture.textureInt2 + (k2 << 9) / i3;
+			TileOverlay.anIntArray688[l1] = Texture.textureInt1 + (i2 << viewDistance) / i3;
+			TileOverlay.anIntArray689[l1] = Texture.textureInt2 + (k2 << viewDistance) / i3;
 			TileOverlay.depthPoint[l1] = i3;
 		}
 
