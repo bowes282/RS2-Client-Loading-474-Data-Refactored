@@ -1,32 +1,32 @@
 package com.aeolus.collection;
 import com.aeolus.util.signlink.Signlink;
 
-public final class MRUNodes {
+public final class Cache {
 
-	public MRUNodes(int i) {
-		emptyNodeSub = new NodeSub();
+	public Cache(int i) {
+		emptyNodeSub = new QueueNode();
 		nodeSubList = new NodeSubList();
 		initialCount = i;
 		spaceLeft = i;
 		nodeCache = new NodeCache();
 	}
 
-	public NodeSub insertFromCache(long l) {
-		NodeSub nodeSub = (NodeSub) nodeCache.findNodeByID(l);
+	public QueueNode insertFromCache(long l) {
+		QueueNode nodeSub = (QueueNode) nodeCache.findNodeByID(l);
 		if (nodeSub != null) {
 			nodeSubList.insertHead(nodeSub);
 		}
 		return nodeSub;
 	}
 
-	public void removeFromCache(NodeSub nodeSub, long l) {
+	public void removeFromCache(QueueNode nodeSub, long l) {
 		try {
 			if (spaceLeft == 0) {
-				NodeSub nodeSub_1 = nodeSubList.popTail();
+				QueueNode nodeSub_1 = nodeSubList.popTail();
 				nodeSub_1.unlink();
 				nodeSub_1.unlinkSub();
 				if (nodeSub_1 == emptyNodeSub) {
-					NodeSub nodeSub_2 = nodeSubList.popTail();
+					QueueNode nodeSub_2 = nodeSubList.popTail();
 					nodeSub_2.unlink();
 					nodeSub_2.unlinkSub();
 				}
@@ -44,7 +44,7 @@ public final class MRUNodes {
 
 	public void unlinkAll() {
 		do {
-			NodeSub nodeSub = nodeSubList.popTail();
+			QueueNode nodeSub = nodeSubList.popTail();
 			if (nodeSub != null) {
 				nodeSub.unlink();
 				nodeSub.unlinkSub();
@@ -55,7 +55,7 @@ public final class MRUNodes {
 		} while (true);
 	}
 
-	private final NodeSub emptyNodeSub;
+	private final QueueNode emptyNodeSub;
 	private final int initialCount;
 	private int spaceLeft;
 	private final NodeCache nodeCache;
