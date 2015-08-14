@@ -3,9 +3,9 @@ package com.aeolus.collection;
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3) 
 
-public final class NodeList {
+public final class Deque {
 
-    public NodeList()
+    public Deque()
     {
         head = new Node();
         head.prev = head;
