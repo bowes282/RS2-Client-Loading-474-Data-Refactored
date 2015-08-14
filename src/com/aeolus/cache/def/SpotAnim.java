@@ -1,5 +1,5 @@
 package com.aeolus.cache.def;
-import com.aeolus.collection.MRUNodes;
+import com.aeolus.collection.Cache;
 import com.aeolus.media.Animation;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
@@ -89,6 +89,6 @@ public final class SpotAnim {
 	public int anInt412;
 	public int anInt413;
 	public int anInt414;
-	public static MRUNodes aMRUNodes_415 = new MRUNodes(30);
+	public static Cache aMRUNodes_415 = new Cache(30);
 
 }

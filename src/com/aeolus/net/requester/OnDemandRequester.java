@@ -4,7 +4,7 @@ import java.net.Socket;
 import java.util.zip.GZIPInputStream;
 
 import com.aeolus.Game;
-import com.aeolus.collection.NodeList;
+import com.aeolus.collection.Deque;
 import com.aeolus.collection.NodeSubList;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
@@ -505,23 +505,23 @@ public final class OnDemandRequester extends Requester implements Runnable {
 	}
 
 	public OnDemandRequester() {
-		requested = new NodeList();
+		requested = new Deque();
 		statusString = "";
 		ioBuffer = new byte[500];
 		fileStatus = new byte[4][];
-		aClass19_1344 = new NodeList();
+		aClass19_1344 = new Deque();
 		running = true;
 		waiting = false;
-		aClass19_1358 = new NodeList();
+		aClass19_1358 = new Deque();
 		gzipInputBuffer = new byte[0x71868];
 		nodeSubList = new NodeSubList();
 		versions = new int[4][];
-		aClass19_1368 = new NodeList();
-		aClass19_1370 = new NodeList();
+		aClass19_1368 = new Deque();
+		aClass19_1370 = new Deque();
 	}
 
 	private int totalFiles;
-	private final NodeList requested;
+	private final Deque requested;
 	private int anInt1332;
 	public String statusString;
 	private int writeLoopCycle;
@@ -531,7 +531,7 @@ public final class OnDemandRequester extends Requester implements Runnable {
 	public int onDemandCycle;
 	private final byte[][] fileStatus;
 	private Game clientInstance;
-	private final NodeList aClass19_1344;
+	private final Deque aClass19_1344;
 	private int completedSize;
 	private int expectedSize;
 	private int[] anIntArray1348;
@@ -542,7 +542,7 @@ public final class OnDemandRequester extends Requester implements Runnable {
 	private OutputStream outputStream;
 	private int[] mapIndices4;
 	private boolean waiting;
-	private final NodeList aClass19_1358;
+	private final Deque aClass19_1358;
 	private final byte[] gzipInputBuffer;
 	private int[] anIntArray1360;
 	private final NodeSubList nodeSubList;
@@ -551,9 +551,9 @@ public final class OnDemandRequester extends Requester implements Runnable {
 	private final int[][] versions;
 	private int uncompletedCount;
 	private int completedCount;
-	private final NodeList aClass19_1368;
+	private final Deque aClass19_1368;
 	private OnDemandNode current;
-	private final NodeList aClass19_1370;
+	private final Deque aClass19_1370;
 	private int[] mapIndices1;
 	private byte[] modelIndices;
 	private int loopCycle;

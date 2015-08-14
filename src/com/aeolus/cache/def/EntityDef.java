@@ -2,7 +2,7 @@ package com.aeolus.cache.def;
 import com.aeolus.Game;
 import com.aeolus.cache.config.VarBit;
 import com.aeolus.cache.media.SequenceFrame;
-import com.aeolus.collection.MRUNodes;
+import com.aeolus.collection.Cache;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
@@ -356,6 +356,6 @@ public final class EntityDef {
 	public int shadowModifier;
 	public boolean aBoolean93;
 	public int[] npcModels;
-	public static MRUNodes mruNodes = new MRUNodes(30);
+	public static Cache mruNodes = new Cache(30);
 
 }

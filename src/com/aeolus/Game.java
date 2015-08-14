@@ -22,7 +22,7 @@ import com.aeolus.cache.media.RSInterface;
 import com.aeolus.cache.media.SequenceFrame;
 import com.aeolus.cache.media.Sprite;
 import com.aeolus.collection.Node;
-import com.aeolus.collection.NodeList;
+import com.aeolus.collection.Deque;
 import com.aeolus.media.Animation;
 import com.aeolus.media.DrawingArea;
 import com.aeolus.media.ImageProducer;
@@ -1227,7 +1227,7 @@ public class Game extends GameShell {
 	}
 
 	private void spawnGroundItem(int i, int j) {
-		NodeList class19 = groundArray[plane][i][j];
+		Deque class19 = groundArray[plane][i][j];
 		if (class19 == null) {
 			worldController.method295(plane, i, j);
 			return;
@@ -5179,7 +5179,7 @@ public class Game extends GameShell {
 				buildAtPlayerMenu(i1, l1, player, j1);
 			}
 			if (k1 == 3) {
-				NodeList class19 = groundArray[plane][i1][j1];
+				Deque class19 = groundArray[plane][i1][j1];
 				if (class19 != null) {
 					for (Item item = (Item) class19.getFirst(); item != null; item = (Item) class19.getNext()) {
 						ItemDef itemDef = ItemDef.forID(item.ID);
@@ -7224,7 +7224,7 @@ public class Game extends GameShell {
 							groundArray[l2][i3][k3] = null;
 					}
 				}
-				aClass19_1179 = new NodeList();
+				aClass19_1179 = new Deque();
 				fullscreenInterfaceID = -1;
 				anInt900 = 0;
 				friendsCount = 0;
@@ -10151,7 +10151,7 @@ public class Game extends GameShell {
 		}
 		for (int k5 = 0; k5 < 104; k5++) {
 			for (int l5 = 0; l5 < 104; l5++) {
-				NodeList class19 = groundArray[plane][k5][l5];
+				Deque class19 = groundArray[plane][k5][l5];
 				if (class19 != null) {
 					int l = (k5 * 4 + 2) - myPlayer.x / 32;
 					int j3 = (l5 * 4 + 2) - myPlayer.y / 32;
@@ -10720,7 +10720,7 @@ public class Game extends GameShell {
 			int k11 = stream.readUnsignedWord();
 			int l13 = stream.readUnsignedWord();
 			if (j3 >= 0 && i6 >= 0 && j3 < 104 && i6 < 104) {
-				NodeList class19_1 = groundArray[plane][j3][i6];
+				Deque class19_1 = groundArray[plane][j3][i6];
 				if (class19_1 != null) {
 					for (Item class30_sub2_sub4_sub2_3 = (Item) class19_1
 							.reverseGetFirst(); class30_sub2_sub4_sub2_3 != null; class30_sub2_sub4_sub2_3 = (Item) class19_1
@@ -10764,7 +10764,7 @@ public class Game extends GameShell {
 				class30_sub2_sub4_sub2_2.ID = i1;
 				class30_sub2_sub4_sub2_2.anInt1559 = j14;
 				if (groundArray[plane][k6][j9] == null)
-					groundArray[plane][k6][j9] = new NodeList();
+					groundArray[plane][k6][j9] = new Deque();
 				groundArray[plane][k6][j9].insertHead(class30_sub2_sub4_sub2_2);
 				spawnGroundItem(k6, j9);
 			}
@@ -10776,7 +10776,7 @@ public class Game extends GameShell {
 			int l6 = anInt1269 + (j1 & 7);
 			int k9 = stream.readUnsignedWord();
 			if (i4 >= 0 && l6 >= 0 && i4 < 104 && l6 < 104) {
-				NodeList class19 = groundArray[plane][i4][l6];
+				Deque class19 = groundArray[plane][i4][l6];
 				if (class19 != null) {
 					for (Item item = (Item) class19.reverseGetFirst(); item != null; item = (Item) class19
 							.reverseGetNext()) {
@@ -10944,7 +10944,7 @@ public class Game extends GameShell {
 				class30_sub2_sub4_sub2_1.ID = k2;
 				class30_sub2_sub4_sub2_1.anInt1559 = j5;
 				if (groundArray[plane][l10][i13] == null)
-					groundArray[plane][l10][i13] = new NodeList();
+					groundArray[plane][l10][i13] = new Deque();
 				groundArray[plane][l10][i13].insertHead(class30_sub2_sub4_sub2_1);
 				spawnGroundItem(l10, i13);
 			}
@@ -12838,7 +12838,7 @@ public class Game extends GameShell {
 		server = Configuration.server_address;
 		anIntArrayArray825 = new int[104][104];
 		friendsNodeIDs = new int[200];
-		groundArray = new NodeList[4][104][104];
+		groundArray = new Deque[4][104][104];
 		aBoolean831 = false;
 		aStream_834 = new Buffer(new byte[5000]);
 		npcArray = new Npc[16384];
@@ -12899,7 +12899,7 @@ public class Game extends GameShell {
 		anIntArray990 = new int[5];
 		aBoolean994 = false;
 		amountOrNameInput = "";
-		aClass19_1013 = new NodeList();
+		aClass19_1013 = new Deque();
 		aBoolean1017 = false;
 		anInt1018 = -1;
 		anIntArray1030 = new int[5];
@@ -12912,7 +12912,7 @@ public class Game extends GameShell {
 		anIntArray1052 = new int[152];
 		anIntArray1229 = new int[152];
 		anInt1054 = -1;
-		aClass19_1056 = new NodeList();
+		aClass19_1056 = new Deque();
 		anIntArray1057 = new int[33];
 		aClass9_1059 = new RSInterface();
 		mapScenes = new Background[100];
@@ -12951,7 +12951,7 @@ public class Game extends GameShell {
 		myPassword = "test";
 		genericLoadingError = false;
 		reportAbuseInterfaceID = -1;
-		aClass19_1179 = new NodeList();
+		aClass19_1179 = new Deque();
 		anInt1184 = 128;
 		invOverlayInterfaceID = -1;
 		stream = Buffer.create();
@@ -12996,7 +12996,7 @@ public class Game extends GameShell {
 	private long aLong824;
 	private int[][] anIntArrayArray825;
 	private int[] friendsNodeIDs;
-	private NodeList[][][] groundArray;
+	private Deque[][][] groundArray;
 	private int[] anIntArray828;
 	private int[] anIntArray829;
 	private volatile boolean aBoolean831;
@@ -13146,7 +13146,7 @@ public class Game extends GameShell {
 	private int anInt1009;
 	private int anInt1010;
 	private int anInt1011;
-	private NodeList aClass19_1013;
+	private Deque aClass19_1013;
 	private int anInt1014;
 	private int anInt1015;
 	private int anInt1016;
@@ -13182,7 +13182,7 @@ public class Game extends GameShell {
 	private CacheArchive titleStreamLoader;
 	private int anInt1054;
 	private int anInt1055;
-	private NodeList aClass19_1056;
+	private Deque aClass19_1056;
 	private final int[] anIntArray1057;
 	public final RSInterface aClass9_1059;
 	private Background[] mapScenes;
@@ -13292,7 +13292,7 @@ public class Game extends GameShell {
 	private boolean genericLoadingError;
 	private final int[] anIntArray1177 = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 };
 	private int reportAbuseInterfaceID;
-	private NodeList aClass19_1179;
+	private Deque aClass19_1179;
 	private static int[] anIntArray1180;
 	private static int[] anIntArray1181;
 	private static int[] anIntArray1182;

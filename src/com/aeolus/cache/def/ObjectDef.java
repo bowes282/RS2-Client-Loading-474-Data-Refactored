@@ -2,7 +2,7 @@ package com.aeolus.cache.def;
 import com.aeolus.Game;
 import com.aeolus.cache.config.VarBit;
 import com.aeolus.cache.media.SequenceFrame;
-import com.aeolus.collection.MRUNodes;
+import com.aeolus.collection.Cache;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
@@ -489,12 +489,12 @@ public final class ObjectDef {
 	public byte description[];
 	public boolean hasActions;
 	public boolean aBoolean779;
-	public static MRUNodes mruNodes2 = new MRUNodes(30);
+	public static Cache mruNodes2 = new Cache(30);
 	public int anInt781;
 	public static ObjectDef[] cache;
 	public int anInt783;
 	public int[] modifiedModelColors;
-	public static MRUNodes mruNodes1 = new MRUNodes(500);
+	public static Cache mruNodes1 = new Cache(500);
 	public String actions[];
 
 }

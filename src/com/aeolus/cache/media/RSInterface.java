@@ -2,7 +2,7 @@ package com.aeolus.cache.media;
 import com.aeolus.Game;
 import com.aeolus.cache.def.EntityDef;
 import com.aeolus.cache.def.ItemDef;
-import com.aeolus.collection.MRUNodes;
+import com.aeolus.collection.Cache;
 import com.aeolus.media.font.TextClass;
 import com.aeolus.media.font.TextDrawingArea;
 import com.aeolus.media.renderable.Model;
@@ -21,7 +21,7 @@ public final class RSInterface {
 	}
 
 	public static void unpack(CacheArchive streamLoader, TextDrawingArea textDrawingAreas[], CacheArchive streamLoader_1) {
-		aMRUNodes_238 = new MRUNodes(50000);
+		aMRUNodes_238 = new Cache(50000);
 		Buffer stream = new Buffer(streamLoader.getDataForName("data"));
 		int i = -1;
 		stream.readUnsignedWord();
@@ -2211,7 +2211,7 @@ public final class RSInterface {
 	public boolean aBoolean235;
 	public int parentID;
 	public int spellUsableOn;
-	private static MRUNodes aMRUNodes_238;
+	private static Cache aMRUNodes_238;
 	public int anInt239;
 	public int children[];
 	public int childX[];
@@ -2236,7 +2236,7 @@ public final class RSInterface {
 	public int scrollMax;
 	public int type;
 	public int anInt263;
-	private static final MRUNodes aMRUNodes_264 = new MRUNodes(30);
+	private static final Cache aMRUNodes_264 = new Cache(30);
 	public int anInt265;
 	public boolean isMouseoverTriggered;
 	public int height;

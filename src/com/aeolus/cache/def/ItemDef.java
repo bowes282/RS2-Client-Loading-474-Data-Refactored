@@ -1,6 +1,6 @@
 package com.aeolus.cache.def;
 import com.aeolus.cache.media.Sprite;
-import com.aeolus.collection.MRUNodes;
+import com.aeolus.collection.Cache;
 import com.aeolus.media.DrawingArea;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
@@ -513,8 +513,8 @@ public final class ItemDef {
 	public int value;// anInt155
 	public int[] modifiedModelColors;// newModelColor
 	public int id;// anInt157
-	public static MRUNodes mruNodes1 = new MRUNodes(100);
-	public static MRUNodes mruNodes2 = new MRUNodes(50);
+	public static Cache mruNodes1 = new Cache(100);
+	public static Cache mruNodes2 = new Cache(50);
 	public int[] originalModelColors;
 	public boolean membersObject;// aBoolean161
 	private int anInt162;

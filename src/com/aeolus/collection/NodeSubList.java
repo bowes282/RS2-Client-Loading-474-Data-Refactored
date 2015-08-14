@@ -7,12 +7,12 @@ public final class NodeSubList {
 
     public NodeSubList()
     {
-        head = new NodeSub();
+        head = new QueueNode();
         head.prevNodeSub = head;
         head.nextNodeSub = head;
     }
 
-    public void insertHead(NodeSub nodeSub)
+    public void insertHead(QueueNode nodeSub)
     {
         if(nodeSub.nextNodeSub != null)
             nodeSub.unlinkSub();
@@ -22,9 +22,9 @@ public final class NodeSubList {
         nodeSub.prevNodeSub.nextNodeSub = nodeSub;
     }
 
-    public NodeSub popTail()
+    public QueueNode popTail()
     {
-        NodeSub nodeSub = head.prevNodeSub;
+        QueueNode nodeSub = head.prevNodeSub;
         if(nodeSub == head)
         {
             return null;
@@ -35,9 +35,9 @@ public final class NodeSubList {
         }
     }
 
-    public NodeSub reverseGetFirst()
+    public QueueNode reverseGetFirst()
     {
-        NodeSub nodeSub = head.prevNodeSub;
+        QueueNode nodeSub = head.prevNodeSub;
         if(nodeSub == head)
         {
             current = null;
@@ -49,9 +49,9 @@ public final class NodeSubList {
         }
     }
 
-    public NodeSub reverseGetNext()
+    public QueueNode reverseGetNext()
     {
-        NodeSub nodeSub = current;
+        QueueNode nodeSub = current;
         if(nodeSub == head)
         {
             current = null;
@@ -66,12 +66,12 @@ public final class NodeSubList {
     public int getNodeCount()
     {
         int i = 0;
-        for(NodeSub nodeSub = head.prevNodeSub; nodeSub != head; nodeSub = nodeSub.prevNodeSub)
+        for(QueueNode nodeSub = head.prevNodeSub; nodeSub != head; nodeSub = nodeSub.prevNodeSub)
             i++;
 
         return i;
     }
 
-    private final NodeSub head;
-    private NodeSub current;
+    private final QueueNode head;
+    private QueueNode current;
 }

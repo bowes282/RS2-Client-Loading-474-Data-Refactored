@@ -1,7 +1,7 @@
 package com.aeolus.media;
-import com.aeolus.collection.NodeSub;
+import com.aeolus.collection.QueueNode;
 
-public class DrawingArea extends NodeSub {
+public class DrawingArea extends QueueNode {
 
 	public static int pixels[];
 	public static int width;

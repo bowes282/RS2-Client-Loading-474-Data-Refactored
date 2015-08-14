@@ -1,8 +1,8 @@
 package com.aeolus.media.renderable;
-import com.aeolus.collection.NodeSub;
+import com.aeolus.collection.QueueNode;
 import com.aeolus.media.Vertex;
 
-public class Renderable extends NodeSub {
+public class Renderable extends QueueNode {
 	
 	public int modelHeight;
 	public Vertex aClass33Array1425[];

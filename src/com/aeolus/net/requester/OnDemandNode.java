@@ -1,7 +1,7 @@
 package com.aeolus.net.requester;
-import com.aeolus.collection.NodeSub;
+import com.aeolus.collection.QueueNode;
 
-public final class OnDemandNode extends NodeSub {
+public final class OnDemandNode extends QueueNode {
 
     public OnDemandNode()
     {
