@@ -12638,7 +12638,7 @@ public class Game extends GameShell {
 	private void loadAllOrbs(int xOffset) {
 		if (Configuration.enableOrbs) {
 		drawSpecialOrb();
-		int[] spriteID = { isPoisoned && hpHover ? 8 : 7, prayHover ? 8 : 7, runHover ? 8 : 7,
+		int[] spriteID = { !isPoisoned && hpHover ? 8 : 7, prayHover ? 8 : 7, runHover ? 8 : 7,
 				sumActive && sumHover ? 8 : 7 },
 				coloredOrbSprite = { 0, clickedQuickPrayers ? 2 : 1, runClicked ? 4 : 3, sumActive ? 6 : 5 },
 				orbSprite = { 9, 10, (runClicked ? 12 : 11), 13 };
