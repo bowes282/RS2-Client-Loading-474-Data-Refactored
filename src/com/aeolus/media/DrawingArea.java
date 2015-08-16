@@ -103,7 +103,7 @@ public class DrawingArea extends QueueNode {
 		anInt1387 = bottomY / 2;
 	}
 
-	public static void setAllPixelsToZero()	{
+	public static void clear()	{
 		int i = width * height;
 		for(int j = 0; j < i; j++) {
 			pixels[j] = 0;
