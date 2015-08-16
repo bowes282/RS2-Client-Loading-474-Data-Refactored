@@ -593,7 +593,7 @@ public class Game extends GameShell {
 		int[] modes = { publicChatMode, privateChatMode, clanChatMode,
 				tradeMode };
 		for (int i = 0; i < modeNamesX.length; i++) {
-			smallText.method389(true, modeNamesX[i], 0xffffff, modeNames[i],
+			smallText.drawTextWithPotentialShadow(true, modeNamesX[i], 0xffffff, modeNames[i],
 					modeNamesY[i] + yOffset);
 		}
 		for (int i = 0; i < modeX.length; i++) {
@@ -1447,7 +1447,7 @@ public class Game extends GameShell {
 		DrawingArea.fillPixels(xPos, width, height, 0, yPos);
 		yPos += 14;
 		for (int i = 0; i < results.length; i++) {
-			smallText.method389(false, xPos + 3, 0, results[i], yPos);
+			smallText.drawTextWithPotentialShadow(false, xPos + 3, 0, results[i], yPos);
 			yPos += 16;
 		}
 	}
@@ -1457,7 +1457,7 @@ public class Game extends GameShell {
 		if (class9 == null)
 			class9 = RSInterface.interfaceCache[21356];
 		if (class9.type != 0 || class9.children == null
-				|| class9.isMouseoverTriggered)
+				|| class9.hoverOnly)
 			return;
 		if (k < i || i1 < l || k > i + class9.width || i1 > l + class9.height)
 			return;
@@ -1465,135 +1465,135 @@ public class Game extends GameShell {
 		for (int l1 = 0; l1 < k1; l1++) {
 			int i2 = class9.childX[l1] + i;
 			int j2 = (class9.childY[l1] + l) - j1;
-			RSInterface class9_1 = RSInterface.interfaceCache[class9.children[l1]];
-			i2 += class9_1.anInt263;
-			j2 += class9_1.anInt265;
-			if ((class9_1.hoverType >= 0 || class9_1.anInt216 != 0) && k >= i2
-					&& i1 >= j2 && k < i2 + class9_1.width
-					&& i1 < j2 + class9_1.height)
-				if (class9_1.hoverType >= 0)
-					anInt886 = class9_1.hoverType;
+			RSInterface childInterface = RSInterface.interfaceCache[class9.children[l1]];
+			i2 += childInterface.x;
+			j2 += childInterface.anInt265;
+			if ((childInterface.hoverType >= 0 || childInterface.colourDefaultHover != 0) && k >= i2
+					&& i1 >= j2 && k < i2 + childInterface.width
+					&& i1 < j2 + childInterface.height)
+				if (childInterface.hoverType >= 0)
+					anInt886 = childInterface.hoverType;
 				else
-					anInt886 = class9_1.id;
-			if (class9_1.type == 8 && k >= i2 && i1 >= j2
-					&& k < i2 + class9_1.width && i1 < j2 + class9_1.height) {
-				anInt1315 = class9_1.id;
+					anInt886 = childInterface.id;
+			if (childInterface.type == 8 && k >= i2 && i1 >= j2
+					&& k < i2 + childInterface.width && i1 < j2 + childInterface.height) {
+				anInt1315 = childInterface.id;
 			}
-			if (class9_1.type == 0) {
-				buildInterfaceMenu(i2, class9_1, k, j2, i1,
-						class9_1.scrollPosition);
-				if (class9_1.scrollMax > class9_1.height)
-					method65(i2 + class9_1.width, class9_1.height, k, i1,
-							class9_1, j2, true, class9_1.scrollMax);
+			if (childInterface.type == 0) {
+				buildInterfaceMenu(i2, childInterface, k, j2, i1,
+						childInterface.scrollPosition);
+				if (childInterface.scrollMax > childInterface.height)
+					method65(i2 + childInterface.width, childInterface.height, k, i1,
+							childInterface, j2, true, childInterface.scrollMax);
 			} else {
-				if (class9_1.atActionType == 1 && k >= i2 && i1 >= j2
-						&& k < i2 + class9_1.width && i1 < j2 + class9_1.height) {
+				if (childInterface.atActionType == 1 && k >= i2 && i1 >= j2
+						&& k < i2 + childInterface.width && i1 < j2 + childInterface.height) {
 					boolean flag = false;
-					if (class9_1.contentType != 0)
-						flag = buildFriendsListMenu(class9_1);
+					if (childInterface.contentType != 0)
+						flag = buildFriendsListMenu(childInterface);
 					if (!flag) {
-						menuActionName[menuActionRow] = class9_1.tooltip;
+						menuActionName[menuActionRow] = childInterface.tooltip;
 						menuActionID[menuActionRow] = 315;
-						menuActionCmd3[menuActionRow] = class9_1.id;
+						menuActionCmd3[menuActionRow] = childInterface.id;
 						menuActionRow++;
 					}
 				}
-				if (class9_1.atActionType == 2 && spellSelected == 0 && k >= i2
-						&& i1 >= j2 && k < i2 + class9_1.width
-						&& i1 < j2 + class9_1.height) {
-					String s = class9_1.selectedActionName;
+				if (childInterface.atActionType == 2 && spellSelected == 0 && k >= i2
+						&& i1 >= j2 && k < i2 + childInterface.width
+						&& i1 < j2 + childInterface.height) {
+					String s = childInterface.selectedActionName;
 					if (s.indexOf(" ") != -1)
 						s = s.substring(0, s.indexOf(" "));
-					if (class9_1.spellName.endsWith("Rush")
-							|| class9_1.spellName.endsWith("Burst")
-							|| class9_1.spellName.endsWith("Blitz")
-							|| class9_1.spellName.endsWith("Barrage")
-							|| class9_1.spellName.endsWith("strike")
-							|| class9_1.spellName.endsWith("bolt")
-							|| class9_1.spellName.equals("Crumble undead")
-							|| class9_1.spellName.endsWith("blast")
-							|| class9_1.spellName.endsWith("wave")
-							|| class9_1.spellName.equals("Claws of Guthix")
-							|| class9_1.spellName.equals("Flames of Zamorak")
-							|| class9_1.spellName.equals("Magic Dart")) {
+					if (childInterface.spellName.endsWith("Rush")
+							|| childInterface.spellName.endsWith("Burst")
+							|| childInterface.spellName.endsWith("Blitz")
+							|| childInterface.spellName.endsWith("Barrage")
+							|| childInterface.spellName.endsWith("strike")
+							|| childInterface.spellName.endsWith("bolt")
+							|| childInterface.spellName.equals("Crumble undead")
+							|| childInterface.spellName.endsWith("blast")
+							|| childInterface.spellName.endsWith("wave")
+							|| childInterface.spellName.equals("Claws of Guthix")
+							|| childInterface.spellName.equals("Flames of Zamorak")
+							|| childInterface.spellName.equals("Magic Dart")) {
 						menuActionName[menuActionRow] = "Autocast @gre@"
-								+ class9_1.spellName;
+								+ childInterface.spellName;
 						menuActionID[menuActionRow] = 104;
-						menuActionCmd3[menuActionRow] = class9_1.id;
+						menuActionCmd3[menuActionRow] = childInterface.id;
 						menuActionRow++;
 					}
 					menuActionName[menuActionRow] = s + " @gre@"
-							+ class9_1.spellName;
+							+ childInterface.spellName;
 					menuActionID[menuActionRow] = 626;
-					menuActionCmd3[menuActionRow] = class9_1.id;
+					menuActionCmd3[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
-				if (class9_1.atActionType == 3 && k >= i2 && i1 >= j2
-						&& k < i2 + class9_1.width && i1 < j2 + class9_1.height) {
+				if (childInterface.atActionType == 3 && k >= i2 && i1 >= j2
+						&& k < i2 + childInterface.width && i1 < j2 + childInterface.height) {
 					menuActionName[menuActionRow] = "Close";
 					menuActionID[menuActionRow] = 200;
-					menuActionCmd3[menuActionRow] = class9_1.id;
+					menuActionCmd3[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
-				if (class9_1.atActionType == 4 && k >= i2 && i1 >= j2
-						&& k < i2 + class9_1.width && i1 < j2 + class9_1.height) {
+				if (childInterface.atActionType == 4 && k >= i2 && i1 >= j2
+						&& k < i2 + childInterface.width && i1 < j2 + childInterface.height) {
 					// System.out.println("2"+class9_1.tooltip + ", " +
 					// class9_1.interfaceID);
 					// menuActionName[menuActionRow] = class9_1.tooltip + ", " +
 					// class9_1.id;
-					menuActionName[menuActionRow] = class9_1.tooltip;
+					menuActionName[menuActionRow] = childInterface.tooltip;
 					menuActionID[menuActionRow] = 169;
-					menuActionCmd3[menuActionRow] = class9_1.id;
+					menuActionCmd3[menuActionRow] = childInterface.id;
 					menuActionRow++;
-					if (class9_1.hoverText != null) {
+					if (childInterface.hoverText != null) {
 						// drawHoverBox(k, l, class9_1.hoverText);
 						// System.out.println("DRAWING INTERFACE: " +
 						// class9_1.hoverText);
 					}
 				}
-				if (class9_1.atActionType == 5 && k >= i2 && i1 >= j2
-						&& k < i2 + class9_1.width && i1 < j2 + class9_1.height) {
+				if (childInterface.atActionType == 5 && k >= i2 && i1 >= j2
+						&& k < i2 + childInterface.width && i1 < j2 + childInterface.height) {
 					// System.out.println("3"+class9_1.tooltip + ", " +
 					// class9_1.interfaceID);
 					// menuActionName[menuActionRow] = class9_1.tooltip + ", " +
 					// class9_1.id;
-					menuActionName[menuActionRow] = class9_1.tooltip;
+					menuActionName[menuActionRow] = childInterface.tooltip;
 					menuActionID[menuActionRow] = 646;
-					menuActionCmd3[menuActionRow] = class9_1.id;
+					menuActionCmd3[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
-				if (class9_1.atActionType == 6 && !aBoolean1149 && k >= i2
-						&& i1 >= j2 && k < i2 + class9_1.width
-						&& i1 < j2 + class9_1.height) {
+				if (childInterface.atActionType == 6 && !continuedDialogue && k >= i2
+						&& i1 >= j2 && k < i2 + childInterface.width
+						&& i1 < j2 + childInterface.height) {
 					// System.out.println("4"+class9_1.tooltip + ", " +
 					// class9_1.interfaceID);
 					// menuActionName[menuActionRow] = class9_1.tooltip + ", " +
 					// class9_1.id;
-					menuActionName[menuActionRow] = class9_1.tooltip;
+					menuActionName[menuActionRow] = childInterface.tooltip;
 					menuActionID[menuActionRow] = 679;
-					menuActionCmd3[menuActionRow] = class9_1.id;
+					menuActionCmd3[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
-				if (class9_1.type == 2) {
+				if (childInterface.type == 2) {
 					int k2 = 0;
-					for (int l2 = 0; l2 < class9_1.height; l2++) {
-						for (int i3 = 0; i3 < class9_1.width; i3++) {
-							int j3 = i2 + i3 * (32 + class9_1.invSpritePadX);
-							int k3 = j2 + l2 * (32 + class9_1.invSpritePadY);
+					for (int l2 = 0; l2 < childInterface.height; l2++) {
+						for (int i3 = 0; i3 < childInterface.width; i3++) {
+							int j3 = i2 + i3 * (32 + childInterface.inventorySpritePaddingColumn);
+							int k3 = j2 + l2 * (32 + childInterface.inventorySpritePaddingRow);
 							if (k2 < 20) {
-								j3 += class9_1.spritesX[k2];
-								k3 += class9_1.spritesY[k2];
+								j3 += childInterface.spritesX[k2];
+								k3 += childInterface.spritesY[k2];
 							}
 							if (k >= j3 && i1 >= k3 && k < j3 + 32
 									&& i1 < k3 + 32) {
 								mouseInvInterfaceIndex = k2;
-								lastActiveInvInterface = class9_1.id;
-								if (class9_1.inv[k2] > 0) {
+								lastActiveInvInterface = childInterface.id;
+								if (childInterface.inventoryItemId[k2] > 0) {
 									ItemDef itemDef = ItemDef
-											.forID(class9_1.inv[k2] - 1);
+											.forID(childInterface.inventoryItemId[k2] - 1);
 									if (itemSelected == 1
-											&& class9_1.isInventoryInterface) {
-										if (class9_1.id != anInt1284
+											&& childInterface.isInventoryInterface) {
+										if (childInterface.id != anInt1284
 												|| k2 != anInt1283) {
 											menuActionName[menuActionRow] = "Use "
 													+ selectedItemName
@@ -1602,22 +1602,22 @@ public class Game extends GameShell {
 											menuActionID[menuActionRow] = 870;
 											menuActionCmd1[menuActionRow] = itemDef.id;
 											menuActionCmd2[menuActionRow] = k2;
-											menuActionCmd3[menuActionRow] = class9_1.id;
+											menuActionCmd3[menuActionRow] = childInterface.id;
 											menuActionRow++;
 										}
 									} else if (spellSelected == 1
-											&& class9_1.isInventoryInterface) {
+											&& childInterface.isInventoryInterface) {
 										if ((spellUsableOn & 0x10) == 16) {
 											menuActionName[menuActionRow] = spellTooltip
 													+ " @lre@" + itemDef.name;
 											menuActionID[menuActionRow] = 543;
 											menuActionCmd1[menuActionRow] = itemDef.id;
 											menuActionCmd2[menuActionRow] = k2;
-											menuActionCmd3[menuActionRow] = class9_1.id;
+											menuActionCmd3[menuActionRow] = childInterface.id;
 											menuActionRow++;
 										}
 									} else {
-										if (class9_1.isInventoryInterface) {
+										if (childInterface.isInventoryInterface) {
 											for (int l3 = 4; l3 >= 3; l3--)
 												if (itemDef.itemActions != null
 														&& itemDef.itemActions[l3] != null) {
@@ -1630,7 +1630,7 @@ public class Game extends GameShell {
 														menuActionID[menuActionRow] = 847;
 													menuActionCmd1[menuActionRow] = itemDef.id;
 													menuActionCmd2[menuActionRow] = k2;
-													menuActionCmd3[menuActionRow] = class9_1.id;
+													menuActionCmd3[menuActionRow] = childInterface.id;
 													menuActionRow++;
 												} else if (l3 == 4) {
 													menuActionName[menuActionRow] = "Drop @lre@"
@@ -1638,20 +1638,20 @@ public class Game extends GameShell {
 													menuActionID[menuActionRow] = 847;
 													menuActionCmd1[menuActionRow] = itemDef.id;
 													menuActionCmd2[menuActionRow] = k2;
-													menuActionCmd3[menuActionRow] = class9_1.id;
+													menuActionCmd3[menuActionRow] = childInterface.id;
 													menuActionRow++;
 												}
 										}
-										if (class9_1.usableItemInterface) {
+										if (childInterface.usableItemInterface) {
 											menuActionName[menuActionRow] = "Use @lre@"
 													+ itemDef.name;
 											menuActionID[menuActionRow] = 447;
 											menuActionCmd1[menuActionRow] = itemDef.id;
 											menuActionCmd2[menuActionRow] = k2;
-											menuActionCmd3[menuActionRow] = class9_1.id;
+											menuActionCmd3[menuActionRow] = childInterface.id;
 											menuActionRow++;
 										}
-										if (class9_1.isInventoryInterface
+										if (childInterface.isInventoryInterface
 												&& itemDef.itemActions != null) {
 											for (int i4 = 2; i4 >= 0; i4--)
 												if (itemDef.itemActions[i4] != null) {
@@ -1666,15 +1666,15 @@ public class Game extends GameShell {
 														menuActionID[menuActionRow] = 539;
 													menuActionCmd1[menuActionRow] = itemDef.id;
 													menuActionCmd2[menuActionRow] = k2;
-													menuActionCmd3[menuActionRow] = class9_1.id;
+													menuActionCmd3[menuActionRow] = childInterface.id;
 													menuActionRow++;
 												}
 
 										}
-										if (class9_1.actions != null) {
+										if (childInterface.actions != null) {
 											for (int j4 = 4; j4 >= 0; j4--)
-												if (class9_1.actions[j4] != null) {
-													menuActionName[menuActionRow] = class9_1.actions[j4]
+												if (childInterface.actions[j4] != null) {
+													menuActionName[menuActionRow] = childInterface.actions[j4]
 															+ " @lre@"
 															+ itemDef.name;
 													if (j4 == 0)
@@ -1689,7 +1689,7 @@ public class Game extends GameShell {
 														menuActionID[menuActionRow] = 53;
 													menuActionCmd1[menuActionRow] = itemDef.id;
 													menuActionCmd2[menuActionRow] = k2;
-													menuActionCmd3[menuActionRow] = class9_1.id;
+													menuActionCmd3[menuActionRow] = childInterface.id;
 													menuActionRow++;
 												}
 
@@ -1699,7 +1699,7 @@ public class Game extends GameShell {
 											menuActionName[menuActionRow] = "Examine @lre@"
 													+ itemDef.name
 													+ " @gre@(@whi@"
-													+ (class9_1.inv[k2] - 1)
+													+ (childInterface.inventoryItemId[k2] - 1)
 													+ "@gre@)";
 										} else {
 											menuActionName[menuActionRow] = "Examine @lre@"
@@ -1708,7 +1708,7 @@ public class Game extends GameShell {
 										menuActionID[menuActionRow] = 1125;
 										menuActionCmd1[menuActionRow] = itemDef.id;
 										menuActionCmd2[menuActionRow] = k2;
-										menuActionCmd3[menuActionRow] = class9_1.id;
+										menuActionCmd3[menuActionRow] = childInterface.id;
 										menuActionRow++;
 									}
 								}
@@ -2930,7 +2930,7 @@ public class Game extends GameShell {
 						menuWidth - 6);
 				textColor = 0xffff00;
 			}
-			boldText.method389(true, xPos + 3, textColor, menuActionName[i],
+			boldText.drawTextWithPotentialShadow(true, xPos + 3, textColor, menuActionName[i],
 					textY);
 		}
 	}
@@ -3961,32 +3961,32 @@ public class Game extends GameShell {
 					processRightClick();
 					if (lastActiveInvInterface == anInt1084
 							&& mouseInvInterfaceIndex != anInt1085) {
-						RSInterface class9 = RSInterface.interfaceCache[anInt1084];
+						RSInterface childInterface = RSInterface.interfaceCache[anInt1084];
 						int j1 = 0;
-						if (anInt913 == 1 && class9.contentType == 206)
+						if (anInt913 == 1 && childInterface.contentType == 206)
 							j1 = 1;
-						if (class9.inv[mouseInvInterfaceIndex] <= 0)
+						if (childInterface.inventoryItemId[mouseInvInterfaceIndex] <= 0)
 							j1 = 0;
-						if (class9.aBoolean235) {
+						if (childInterface.aBoolean235) {
 							int l2 = anInt1085;
 							int l3 = mouseInvInterfaceIndex;
-							class9.inv[l3] = class9.inv[l2];
-							class9.invStackSizes[l3] = class9.invStackSizes[l2];
-							class9.inv[l2] = -1;
-							class9.invStackSizes[l2] = 0;
+							childInterface.inventoryItemId[l3] = childInterface.inventoryItemId[l2];
+							childInterface.invStackSizes[l3] = childInterface.invStackSizes[l2];
+							childInterface.inventoryItemId[l2] = -1;
+							childInterface.invStackSizes[l2] = 0;
 						} else if (j1 == 1) {
 							int i3 = anInt1085;
 							for (int i4 = mouseInvInterfaceIndex; i3 != i4;)
 								if (i3 > i4) {
-									class9.swapInventoryItems(i3, i3 - 1);
+									childInterface.swapInventoryItems(i3, i3 - 1);
 									i3--;
 								} else if (i3 < i4) {
-									class9.swapInventoryItems(i3, i3 + 1);
+									childInterface.swapInventoryItems(i3, i3 + 1);
 									i3++;
 								}
 
 						} else {
-							class9.swapInventoryItems(anInt1085,
+							childInterface.swapInventoryItems(anInt1085,
 									mouseInvInterfaceIndex);
 						}
 						stream.createFrame(214);
@@ -4694,10 +4694,10 @@ public class Game extends GameShell {
 			stream.method432(k + baseY);
 			stream.writeWord(j + baseX);
 		}
-		if (l == 679 && !aBoolean1149) {
+		if (l == 679 && !continuedDialogue) {
 			stream.createFrame(40);
 			stream.writeWord(k);
-			aBoolean1149 = true;
+			continuedDialogue = true;
 		}
 		if (l == 431) {
 			stream.createFrame(129);
@@ -4841,7 +4841,7 @@ public class Game extends GameShell {
 			if (s8.indexOf(" ") != -1)
 				s8 = s8.substring(s8.indexOf(" ") + 1);
 			spellTooltip = s4 + " " + class9_1.spellName + " " + s8;
-			// class9_1.sprite1.drawSprite(class9_1.anInt263, class9_1.anInt265,
+			// class9_1.sprite1.drawSprite(class9_1.x, class9_1.anInt265,
 			// 0xffffff);
 			// class9_1.sprite1.drawSprite(200,200);
 			// System.out.println("Sprite: " + class9_1.sprite1.toString());
@@ -7942,7 +7942,7 @@ public class Game extends GameShell {
 				openInterfaceID = -1;
 				invOverlayInterfaceID = -1;
 				anInt1018 = -1;
-				aBoolean1149 = false;
+				continuedDialogue = false;
 				tabID = 3;
 				inputDialogState = 0;
 				menuOpen = false;
@@ -9551,29 +9551,29 @@ public class Game extends GameShell {
 		DrawingArea.method335(0, yPos, 174, 68, 220, xPos);
 	}
 
-	private void drawInterface(int j, int k, RSInterface class9, int l) {
-		if (class9 == null)
-			class9 = RSInterface.interfaceCache[21356];
-		if (class9.type != 0 || class9.children == null)
+	private void drawInterface(int j, int x, RSInterface rsInterface, int y) {
+		if (rsInterface == null)
+			rsInterface = RSInterface.interfaceCache[21356];
+		if (rsInterface.type != 0 || rsInterface.children == null)
 			return;
-		if (class9.isMouseoverTriggered && anInt1026 != class9.id
-				&& anInt1048 != class9.id && anInt1039 != class9.id)
+		if (rsInterface.hoverOnly && anInt1026 != rsInterface.id
+				&& anInt1048 != rsInterface.id && anInt1039 != rsInterface.id)
 			return;
-		int i1 = DrawingArea.topX;
-		int j1 = DrawingArea.topY;
-		int k1 = DrawingArea.bottomX;
-		int l1 = DrawingArea.bottomY;
-		DrawingArea.setDrawingArea(l + class9.height, k, k + class9.width, l);
-		int i2 = class9.children.length;
-		int alpha = class9.transparency;
-		for (int j2 = 0; j2 < i2; j2++) {
-			int k2 = class9.childX[j2] + k;
-			int l2 = (class9.childY[j2] + l) - j;
-			RSInterface class9_1 = RSInterface.interfaceCache[class9.children[j2]];
-			k2 += class9_1.anInt263;
-			l2 += class9_1.anInt265;
-			if (class9_1.contentType > 0)
-				drawFriendsListOrWelcomeScreen(class9_1);
+		int clipLeft = DrawingArea.topX;
+		int clipTop = DrawingArea.topY;
+		int clipRight = DrawingArea.bottomX;
+		int clipBottom = DrawingArea.bottomY;
+		DrawingArea.setDrawingArea(y + rsInterface.height, x, x + rsInterface.width, y);
+		int childCount = rsInterface.children.length;
+		int alpha = rsInterface.transparency;
+		for (int childId = 0; childId < childCount; childId++) {
+			int _x = rsInterface.childX[childId] + x;
+			int _y = (rsInterface.childY[childId] + y) - j;
+			RSInterface childInterface = RSInterface.interfaceCache[rsInterface.children[childId]];
+			_x += childInterface.x;
+			_y += childInterface.anInt265;
+			if (childInterface.contentType > 0)
+				drawFriendsListOrWelcomeScreen(childInterface);
 			// here
 			int[] IDs = { 1196, 1199, 1206, 1215, 1224, 1231, 1240, 1249, 1258,
 					1267, 1274, 1283, 1573, 1290, 1299, 1308, 1315, 1324, 1333,
@@ -9587,11 +9587,11 @@ public class Game extends GameShell {
 					13054, 12920, 12882, 13062, 12952, 13000, 13070, 12912,
 					12872, 13080, 12976, 13024, 13088, 12930, 12892, 13096 };
 			for (int m5 = 0; m5 < IDs.length; m5++) {
-				if (class9_1.id == IDs[m5] + 1) {
+				if (childInterface.id == IDs[m5] + 1) {
 					if (m5 > 61)
-						drawBlackBox(k2 + 1, l2);
+						drawBlackBox(_x + 1, _y);
 					else
-						drawBlackBox(k2, l2 + 1);
+						drawBlackBox(_x, _y + 1);
 				}
 			}
 			int[] runeChildren = { 1202, 1203, 1209, 1210, 1211, 1218, 1219,
@@ -9612,392 +9612,392 @@ public class Game extends GameShell {
 					12430, 12431, 12439, 12440, 12441, 12449, 12450, 12451,
 					12459, 12460, 15881, 15882, 15885, 18474, 18475, 18478 };
 			for (int r = 0; r < runeChildren.length; r++)
-				if (class9_1.id == runeChildren[r])
-					class9_1.modelZoom = 775;
-			if (class9_1.type == 0) {
-				if (class9_1.scrollPosition > class9_1.scrollMax
-						- class9_1.height)
-					class9_1.scrollPosition = class9_1.scrollMax
-							- class9_1.height;
-				if (class9_1.scrollPosition < 0)
-					class9_1.scrollPosition = 0;
-				drawInterface(class9_1.scrollPosition, k2, class9_1, l2);
-				if (class9_1.scrollMax > class9_1.height)
-					drawScrollbar(class9_1.height, class9_1.scrollPosition, l2,
-							k2 + class9_1.width, class9_1.scrollMax, false);
-			} else if (class9_1.type != 1)
-				if (class9_1.type == 2) {
-					int i3 = 0;
-					for (int l3 = 0; l3 < class9_1.height; l3++) {
-						for (int l4 = 0; l4 < class9_1.width; l4++) {
-							int k5 = k2 + l4 * (32 + class9_1.invSpritePadX);
-							int j6 = l2 + l3 * (32 + class9_1.invSpritePadY);
-							if (i3 < 20) {
-								k5 += class9_1.spritesX[i3];
-								j6 += class9_1.spritesY[i3];
+				if (childInterface.id == runeChildren[r])
+					childInterface.modelZoom = 775;
+			if (childInterface.type == 0) {
+				if (childInterface.scrollPosition > childInterface.scrollMax
+						- childInterface.height)
+					childInterface.scrollPosition = childInterface.scrollMax
+							- childInterface.height;
+				if (childInterface.scrollPosition < 0)
+					childInterface.scrollPosition = 0;
+				drawInterface(childInterface.scrollPosition, _x, childInterface, _y);
+				if (childInterface.scrollMax > childInterface.height)
+					drawScrollbar(childInterface.height, childInterface.scrollPosition, _y,
+							_x + childInterface.width, childInterface.scrollMax, false);
+			} else if (childInterface.type != 1)
+				if (childInterface.type == 2) {
+					int item = 0;
+					for (int row = 0; row < childInterface.height; row++) {
+						for (int column = 0; column < childInterface.width; column++) {
+							int tileX = _x + column * (32 + childInterface.inventorySpritePaddingColumn);
+							int tileY = _y + row * (32 + childInterface.inventorySpritePaddingRow);
+							if (item < 20) {
+								tileX += childInterface.spritesX[item];
+								tileY += childInterface.spritesY[item];
 							}
-							if (class9_1.inv[i3] > 0) {
-								int k6 = 0;
-								int j7 = 0;
-								int j9 = class9_1.inv[i3] - 1;
-								if (k5 > DrawingArea.topX - 32
-										&& k5 < DrawingArea.bottomX
-										&& j6 > DrawingArea.topY - 32
-										&& j6 < DrawingArea.bottomY
+							if (childInterface.inventoryItemId[item] > 0) {
+								int differenceX = 0;
+								int differenceY = 0;
+								int itemId = childInterface.inventoryItemId[item] - 1;
+								if (tileX > DrawingArea.topX - 32
+										&& tileX < DrawingArea.bottomX
+										&& tileY > DrawingArea.topY - 32
+										&& tileY < DrawingArea.bottomY
 										|| activeInterfaceType != 0
-										&& anInt1085 == i3) {
+										&& anInt1085 == item) {
 									int l9 = 0;
-									if (itemSelected == 1 && anInt1283 == i3
-											&& anInt1284 == class9_1.id)
+									if (itemSelected == 1 && anInt1283 == item
+											&& anInt1284 == childInterface.id)
 										l9 = 0xffffff;
 									Sprite class30_sub2_sub1_sub1_2 = ItemDef
-											.getSprite(j9,
-													class9_1.invStackSizes[i3],
+											.getSprite(itemId,
+													childInterface.invStackSizes[item],
 													l9);
 									if (class30_sub2_sub1_sub1_2 != null) {
 										if (activeInterfaceType != 0
-												&& anInt1085 == i3
-												&& anInt1084 == class9_1.id) {
-											k6 = super.mouseX - anInt1087;
-											j7 = super.mouseY - anInt1088;
-											if (k6 < 5 && k6 > -5)
-												k6 = 0;
-											if (j7 < 5 && j7 > -5)
-												j7 = 0;
+												&& anInt1085 == item
+												&& anInt1084 == childInterface.id) {
+											differenceX = super.mouseX - anInt1087;
+											differenceY = super.mouseY - anInt1088;
+											if (differenceX < 5 && differenceX > -5)
+												differenceX = 0;
+											if (differenceY < 5 && differenceY > -5)
+												differenceY = 0;
 											if (anInt989 < 10) {
-												k6 = 0;
-												j7 = 0;
+												differenceX = 0;
+												differenceY = 0;
 											}
 											class30_sub2_sub1_sub1_2
-													.drawSprite1(k5 + k6, j6
-															+ j7);
-											if (j6 + j7 < DrawingArea.topY
-													&& class9.scrollPosition > 0) {
+													.drawSprite1(tileX + differenceX, tileY
+															+ differenceY);
+											if (tileY + differenceY < DrawingArea.topY
+													&& rsInterface.scrollPosition > 0) {
 												int i10 = (anInt945 * (DrawingArea.topY
-														- j6 - j7)) / 3;
+														- tileY - differenceY)) / 3;
 												if (i10 > anInt945 * 10)
 													i10 = anInt945 * 10;
-												if (i10 > class9.scrollPosition)
-													i10 = class9.scrollPosition;
-												class9.scrollPosition -= i10;
+												if (i10 > rsInterface.scrollPosition)
+													i10 = rsInterface.scrollPosition;
+												rsInterface.scrollPosition -= i10;
 												anInt1088 += i10;
 											}
-											if (j6 + j7 + 32 > DrawingArea.bottomY
-													&& class9.scrollPosition < class9.scrollMax
-															- class9.height) {
-												int j10 = (anInt945 * ((j6 + j7 + 32) - DrawingArea.bottomY)) / 3;
+											if (tileY + differenceY + 32 > DrawingArea.bottomY
+													&& rsInterface.scrollPosition < rsInterface.scrollMax
+															- rsInterface.height) {
+												int j10 = (anInt945 * ((tileY + differenceY + 32) - DrawingArea.bottomY)) / 3;
 												if (j10 > anInt945 * 10)
 													j10 = anInt945 * 10;
-												if (j10 > class9.scrollMax
-														- class9.height
-														- class9.scrollPosition)
-													j10 = class9.scrollMax
-															- class9.height
-															- class9.scrollPosition;
-												class9.scrollPosition += j10;
+												if (j10 > rsInterface.scrollMax
+														- rsInterface.height
+														- rsInterface.scrollPosition)
+													j10 = rsInterface.scrollMax
+															- rsInterface.height
+															- rsInterface.scrollPosition;
+												rsInterface.scrollPosition += j10;
 												anInt1088 -= j10;
 											}
 										} else if (atInventoryInterfaceType != 0
-												&& atInventoryIndex == i3
-												&& atInventoryInterface == class9_1.id)
+												&& atInventoryIndex == item
+												&& atInventoryInterface == childInterface.id)
 											class30_sub2_sub1_sub1_2
-													.drawSprite1(k5, j6);
+													.drawSprite1(tileX, tileY);
 										else
 											class30_sub2_sub1_sub1_2
-													.drawSprite(k5, j6);
+													.drawSprite(tileX, tileY);
 										if (class30_sub2_sub1_sub1_2.anInt1444 == 33
-												|| class9_1.invStackSizes[i3] != 1) {
-											int k10 = class9_1.invStackSizes[i3];
+												|| childInterface.invStackSizes[item] != 1) {
+											int k10 = childInterface.invStackSizes[item];
 
 											smallText.method385(0,
-													intToKOrMil(k10), j6 + 10
-															+ j7, k5 + 1 + k6);
+													intToKOrMil(k10), tileY + 10
+															+ differenceY, tileX + 1 + differenceX);
 											if (k10 >= 1)
 												smallText.method385(0xFFFF00,
-														intToKOrMil(k10), j6
-																+ 9 + j7, k5
-																+ k6);
+														intToKOrMil(k10), tileY
+																+ 9 + differenceY, tileX
+																+ differenceX);
 											if (k10 >= 100000)
 												smallText.method385(0xFFFFFF,
-														intToKOrMil(k10), j6
-																+ 9 + j7, k5
-																+ k6);
+														intToKOrMil(k10), tileY
+																+ 9 + differenceY, tileX
+																+ differenceX);
 											if (k10 >= 10000000)
 												smallText.method385(0x00FF80,
-														intToKOrMil(k10), j6
-																+ 9 + j7, k5
-																+ k6);
+														intToKOrMil(k10), tileY
+																+ 9 + differenceY, tileX
+																+ differenceX);
 										}
 									}
 								}
-							} else if (class9_1.sprites != null && i3 < 20) {
-								Sprite class30_sub2_sub1_sub1_1 = class9_1.sprites[i3];
+							} else if (childInterface.sprites != null && item < 20) {
+								Sprite class30_sub2_sub1_sub1_1 = childInterface.sprites[item];
 								if (class30_sub2_sub1_sub1_1 != null)
-									class30_sub2_sub1_sub1_1.drawSprite(k5, j6);
+									class30_sub2_sub1_sub1_1.drawSprite(tileX, tileY);
 							}
-							i3++;
+							item++;
 						}
 					}
-				} else if (class9_1.type == 3) {
-					boolean flag = false;
-					if (anInt1039 == class9_1.id || anInt1048 == class9_1.id
-							|| anInt1026 == class9_1.id)
-						flag = true;
-					int j3;
-					if (interfaceIsSelected(class9_1)) {
-						j3 = class9_1.anInt219;
-						if (flag && class9_1.anInt239 != 0)
-							j3 = class9_1.anInt239;
+				} else if (childInterface.type == 3) {
+					boolean hover = false;
+					if (anInt1039 == childInterface.id || anInt1048 == childInterface.id
+							|| anInt1026 == childInterface.id)
+						hover = true;
+					int colour;
+					if (interfaceIsSelected(childInterface)) {
+						colour = childInterface.anInt219;
+						if (hover && childInterface.anInt239 != 0)
+							colour = childInterface.anInt239;
 					} else {
-						j3 = class9_1.textColor;
-						if (flag && class9_1.anInt216 != 0)
-							j3 = class9_1.anInt216;
+						colour = childInterface.textColor;
+						if (hover && childInterface.colourDefaultHover != 0)
+							colour = childInterface.colourDefaultHover;
 					}
-					if (class9_1.opacity == 0) {
-						if (class9_1.aBoolean227)
-							DrawingArea.drawPixels(class9_1.height, l2, k2, j3,
-									class9_1.width);
+					if (childInterface.opacity == 0) {
+						if (childInterface.filled)
+							DrawingArea.drawPixels(childInterface.height, _y, _x, colour,
+									childInterface.width);
 						else
-							DrawingArea.fillPixels(k2, class9_1.width,
-									class9_1.height, j3, l2);
-					} else if (class9_1.aBoolean227)
-						DrawingArea.method335(j3, l2, class9_1.width,
-								class9_1.height,
-								256 - (class9_1.opacity & 0xff), k2);
+							DrawingArea.fillPixels(_x, childInterface.width,
+									childInterface.height, colour, _y);
+					} else if (childInterface.filled)
+						DrawingArea.method335(colour, _y, childInterface.width,
+								childInterface.height,
+								256 - (childInterface.opacity & 0xff), _x);
 					else
-						DrawingArea.method338(l2, class9_1.height,
-								256 - (class9_1.opacity & 0xff), j3,
-								class9_1.width, k2);
-				} else if (class9_1.type == 4) {
-					TextDrawingArea textDrawingArea = class9_1.textDrawingAreas;
-					String s = class9_1.message;
+						DrawingArea.method338(_y, childInterface.height,
+								256 - (childInterface.opacity & 0xff), colour,
+								childInterface.width, _x);
+				} else if (childInterface.type == 4) {
+					TextDrawingArea textDrawingArea = childInterface.textDrawingAreas;
+					String text = childInterface.message;
 					boolean flag1 = false;
-					if (anInt1039 == class9_1.id || anInt1048 == class9_1.id
-							|| anInt1026 == class9_1.id)
+					if (anInt1039 == childInterface.id || anInt1048 == childInterface.id
+							|| anInt1026 == childInterface.id)
 						flag1 = true;
-					int i4;
-					if (interfaceIsSelected(class9_1)) {
-						i4 = class9_1.anInt219;
-						if (flag1 && class9_1.anInt239 != 0)
-							i4 = class9_1.anInt239;
-						if (class9_1.aString228.length() > 0)
-							s = class9_1.aString228;
+					int colour;
+					if (interfaceIsSelected(childInterface)) {
+						colour = childInterface.anInt219;
+						if (flag1 && childInterface.anInt239 != 0)
+							colour = childInterface.anInt239;
+						if (childInterface.aString228.length() > 0)
+							text = childInterface.aString228;
 					} else {
-						i4 = class9_1.textColor;
-						if (flag1 && class9_1.anInt216 != 0)
-							i4 = class9_1.anInt216;
+						colour = childInterface.textColor;
+						if (flag1 && childInterface.colourDefaultHover != 0)
+							colour = childInterface.colourDefaultHover;
 					}
-					if (class9_1.atActionType == 6 && aBoolean1149) {
-						s = "Please wait...";
-						i4 = class9_1.textColor;
+					if (childInterface.atActionType == 6 && continuedDialogue) {
+						text = "Please wait...";
+						colour = childInterface.textColor;
 					}
 					if (DrawingArea.width == 516) {
-						if (i4 == 0xffff00)
-							i4 = 255;
-						if (i4 == 49152)
-							i4 = 0xffffff;
+						if (colour == 0xffff00)
+							colour = 255;
+						if (colour == 49152)
+							colour = 0xffffff;
 					}
 					if (frameMode != ScreenMode.FIXED) {
-						if ((backDialogID != -1 || dialogID != -1 || class9_1.message
+						if ((backDialogID != -1 || dialogID != -1 || childInterface.message
 								.contains("Click here to continue"))
-								&& (class9.id == backDialogID || class9.id == dialogID)) {
-							if (i4 == 0xffff00) {
-								i4 = 255;
+								&& (rsInterface.id == backDialogID || rsInterface.id == dialogID)) {
+							if (colour == 0xffff00) {
+								colour = 255;
 							}
-							if (i4 == 49152) {
-								i4 = 0xffffff;
+							if (colour == 49152) {
+								colour = 0xffffff;
 							}
 						}
 					}
-					if ((class9_1.parentID == 1151)
-							|| (class9_1.parentID == 12855)) {
-						switch (i4) {
+					if ((childInterface.parentID == 1151)
+							|| (childInterface.parentID == 12855)) {
+						switch (colour) {
 						case 16773120:
-							i4 = 0xFE981F;
+							colour = 0xFE981F;
 							break;
 						case 7040819:
-							i4 = 0xAF6A1A;
+							colour = 0xAF6A1A;
 							break;
 						}
 					}
-					for (int l6 = l2 + textDrawingArea.anInt1497; s.length() > 0; l6 += textDrawingArea.anInt1497) {
-						if (s.indexOf("%") != -1) {
+					for (int l6 = _y + textDrawingArea.anInt1497; text.length() > 0; l6 += textDrawingArea.anInt1497) {
+						if (text.indexOf("%") != -1) {
 							do {
-								int k7 = s.indexOf("%1");
+								int k7 = text.indexOf("%1");
 								if (k7 == -1)
 									break;
-								if (class9_1.id < 4000 || class9_1.id > 5000
-										&& class9_1.id != 13921
-										&& class9_1.id != 13922
-										&& class9_1.id != 12171
-										&& class9_1.id != 12172)
-									s = s.substring(0, k7)
-											+ methodR(extractInterfaceValues(
-													class9_1, 0))
-											+ s.substring(k7 + 2);
+								if (childInterface.id < 4000 || childInterface.id > 5000
+										&& childInterface.id != 13921
+										&& childInterface.id != 13922
+										&& childInterface.id != 12171
+										&& childInterface.id != 12172)
+									text = text.substring(0, k7)
+											+ methodR(parseInterfaceOpcode(
+													childInterface, 0))
+											+ text.substring(k7 + 2);
 								else
-									s = s.substring(0, k7)
-											+ interfaceIntToString(extractInterfaceValues(
-													class9_1, 0))
-											+ s.substring(k7 + 2);
+									text = text.substring(0, k7)
+											+ interfaceIntToString(parseInterfaceOpcode(
+													childInterface, 0))
+											+ text.substring(k7 + 2);
 							} while (true);
 							do {
-								int l7 = s.indexOf("%2");
+								int l7 = text.indexOf("%2");
 								if (l7 == -1)
 									break;
-								s = s.substring(0, l7)
-										+ interfaceIntToString(extractInterfaceValues(
-												class9_1, 1))
-										+ s.substring(l7 + 2);
+								text = text.substring(0, l7)
+										+ interfaceIntToString(parseInterfaceOpcode(
+												childInterface, 1))
+										+ text.substring(l7 + 2);
 							} while (true);
 							do {
-								int i8 = s.indexOf("%3");
+								int i8 = text.indexOf("%3");
 								if (i8 == -1)
 									break;
-								s = s.substring(0, i8)
-										+ interfaceIntToString(extractInterfaceValues(
-												class9_1, 2))
-										+ s.substring(i8 + 2);
+								text = text.substring(0, i8)
+										+ interfaceIntToString(parseInterfaceOpcode(
+												childInterface, 2))
+										+ text.substring(i8 + 2);
 							} while (true);
 							do {
-								int j8 = s.indexOf("%4");
+								int j8 = text.indexOf("%4");
 								if (j8 == -1)
 									break;
-								s = s.substring(0, j8)
-										+ interfaceIntToString(extractInterfaceValues(
-												class9_1, 3))
-										+ s.substring(j8 + 2);
+								text = text.substring(0, j8)
+										+ interfaceIntToString(parseInterfaceOpcode(
+												childInterface, 3))
+										+ text.substring(j8 + 2);
 							} while (true);
 							do {
-								int k8 = s.indexOf("%5");
+								int k8 = text.indexOf("%5");
 								if (k8 == -1)
 									break;
-								s = s.substring(0, k8)
-										+ interfaceIntToString(extractInterfaceValues(
-												class9_1, 4))
-										+ s.substring(k8 + 2);
+								text = text.substring(0, k8)
+										+ interfaceIntToString(parseInterfaceOpcode(
+												childInterface, 4))
+										+ text.substring(k8 + 2);
 							} while (true);
 						}
-						int l8 = s.indexOf("\\n");
+						int l8 = text.indexOf("\\n");
 						String s1;
 						if (l8 != -1) {
-							s1 = s.substring(0, l8);
-							s = s.substring(l8 + 2);
+							s1 = text.substring(0, l8);
+							text = text.substring(l8 + 2);
 						} else {
-							s1 = s;
-							s = "";
+							s1 = text;
+							text = "";
 						}
-						if (class9_1.centerText)
-							textDrawingArea.method382(i4, k2 + class9_1.width
-									/ 2, s1, l6, class9_1.textShadow);
+						if (childInterface.centerText)
+							textDrawingArea.method382(colour, _x + childInterface.width
+									/ 2, s1, l6, childInterface.textShadow);
 						else
-							textDrawingArea.method389(class9_1.textShadow, k2,
-									i4, s1, l6);
+							textDrawingArea.drawTextWithPotentialShadow(childInterface.textShadow, _x,
+									colour, s1, l6);
 					}
-				} else if (class9_1.type == 5) {
+				} else if (childInterface.type == 5) {
 					Sprite sprite;
-					if (interfaceIsSelected(class9_1))
-						sprite = class9_1.enabledSprite;
+					if (interfaceIsSelected(childInterface))
+						sprite = childInterface.enabledSprite;
 					else
-						sprite = class9_1.disabledSprite;
-					if (spellSelected == 1 && class9_1.id == spellID
+						sprite = childInterface.disabledSprite;
+					if (spellSelected == 1 && childInterface.id == spellID
 							&& spellID != 0 && sprite != null) {
-						sprite.drawSprite(k2, l2, 0xffffff);
+						sprite.drawSprite(_x, _y, 0xffffff);
 					} else {
 						if (sprite != null)
-							if (class9_1.drawsTransparent) {
-								sprite.drawTransparentSprite(k2, l2, alpha);
+							if (childInterface.drawsTransparent) {
+								sprite.drawTransparentSprite(_x, _y, alpha);
 							} else {
-								sprite.drawSprite(k2, l2);
+								sprite.drawSprite(_x, _y);
 							}
 					}
-					if (autocast && class9_1.id == autoCastId)
-						cacheSprite[43].drawSprite(k2 - 3, l2 - 3);
+					if (autocast && childInterface.id == autoCastId)
+						cacheSprite[43].drawSprite(_x - 3, _y - 3);
 					if (sprite != null)
-						if (class9_1.drawsTransparent) {
-							sprite.drawSprite1(k2, l2);
+						if (childInterface.drawsTransparent) {
+							sprite.drawSprite1(_x, _y);
 						} else {
-							sprite.drawSprite(k2, l2);
+							sprite.drawSprite(_x, _y);
 						}
-				} else if (class9_1.type == 6) {
-					int k3 = Texture.textureInt1;
-					int j4 = Texture.textureInt2;
-					Texture.textureInt1 = k2 + class9_1.width / 2;
-					Texture.textureInt2 = l2 + class9_1.height / 2;
-					int i5 = Texture.anIntArray1470[class9_1.modelRotation1]
-							* class9_1.modelZoom >> 16;
-					int l5 = Texture.anIntArray1471[class9_1.modelRotation1]
-							* class9_1.modelZoom >> 16;
-					boolean flag2 = interfaceIsSelected(class9_1);
-					int i7;
-					if (flag2)
-						i7 = class9_1.anInt258;
+				} else if (childInterface.type == 6) {
+					int centreX = Texture.textureInt1;
+					int centreY = Texture.textureInt2;
+					Texture.textureInt1 = _x + childInterface.width / 2;
+					Texture.textureInt2 = _y + childInterface.height / 2;
+					int sine = Texture.anIntArray1470[childInterface.modelRotation1]
+							* childInterface.modelZoom >> 16;
+					int cosine = Texture.anIntArray1471[childInterface.modelRotation1]
+							* childInterface.modelZoom >> 16;
+					boolean selected = interfaceIsSelected(childInterface);
+					int anim;
+					if (selected)
+						anim = childInterface.anInt258;
 					else
-						i7 = class9_1.anInt257;
+						anim = childInterface.anInt257;
 					Model model;
-					if (i7 == -1) {
-						model = class9_1.method209(-1, -1, flag2);
+					if (anim == -1) {
+						model = childInterface.method209(-1, -1, selected);
 					} else {
-						Animation animation = Animation.anims[i7];
-						model = class9_1.method209(
-								animation.anIntArray354[class9_1.anInt246],
-								animation.anIntArray353[class9_1.anInt246],
-								flag2);
+						Animation animation = Animation.anims[anim];
+						model = childInterface.method209(
+								animation.anIntArray354[childInterface.anInt246],
+								animation.anIntArray353[childInterface.anInt246],
+								selected);
 					}
 					if (model != null)
-						model.method482(class9_1.modelRotation2, 0,
-								class9_1.modelRotation1, 0, i5, l5);
-					Texture.textureInt1 = k3;
-					Texture.textureInt2 = j4;
-				} else if (class9_1.type == 7) {
-					TextDrawingArea textDrawingArea_1 = class9_1.textDrawingAreas;
-					int k4 = 0;
-					for (int j5 = 0; j5 < class9_1.height; j5++) {
-						for (int i6 = 0; i6 < class9_1.width; i6++) {
-							if (class9_1.inv[k4] > 0) {
-								ItemDef itemDef = ItemDef
-										.forID(class9_1.inv[k4] - 1);
-								String s2 = itemDef.name;
-								if (itemDef.stackable
-										|| class9_1.invStackSizes[k4] != 1)
-									s2 = s2
+						model.method482(childInterface.modelRotation2, 0,
+								childInterface.modelRotation1, 0, sine, cosine);
+					Texture.textureInt1 = centreX;
+					Texture.textureInt2 = centreY;
+				} else if (childInterface.type == 7) {
+					TextDrawingArea font = childInterface.textDrawingAreas;
+					int slot = 0;
+					for (int row = 0; row < childInterface.height; row++) {
+						for (int column = 0; column < childInterface.width; column++) {
+							if (childInterface.inventoryItemId[slot] > 0) {
+								ItemDef item = ItemDef
+										.forID(childInterface.inventoryItemId[slot] - 1);
+								String name = item.name;
+								if (item.stackable
+										|| childInterface.invStackSizes[slot] != 1)
+									name = name
 											+ " x"
-											+ intToKOrMilLongName(class9_1.invStackSizes[k4]);
-								int i9 = k2 + i6
-										* (115 + class9_1.invSpritePadX);
-								int k9 = l2 + j5
-										* (12 + class9_1.invSpritePadY);
-								if (class9_1.centerText)
-									textDrawingArea_1.method382(
-											class9_1.textColor, i9
-													+ class9_1.width / 2, s2,
-											k9, class9_1.textShadow);
+											+ intToKOrMilLongName(childInterface.invStackSizes[slot]);
+								int __x = _x + column
+										* (115 + childInterface.inventorySpritePaddingColumn);
+								int __y = _y + row
+										* (12 + childInterface.inventorySpritePaddingRow);
+								if (childInterface.centerText)
+									font.method382(
+											childInterface.textColor, __x
+													+ childInterface.width / 2, name,
+											__y, childInterface.textShadow);
 								else
-									textDrawingArea_1.method389(
-											class9_1.textShadow, i9,
-											class9_1.textColor, s2, k9);
+									font.drawTextWithPotentialShadow(
+											childInterface.textShadow, __x,
+											childInterface.textColor, name, __y);
 							}
-							k4++;
+							slot++;
 						}
 					}
-				} else if (class9_1.type == 9) {
-					drawHoverBox(k2, l2, class9_1.popupString);
-				} else if (class9_1.type == 8
-						&& (anInt1500 == class9_1.id
-								|| anInt1044 == class9_1.id || anInt1129 == class9_1.id)
+				} else if (childInterface.type == 9) {
+					drawHoverBox(_x, _y, childInterface.popupString);
+				} else if (childInterface.type == 8
+						&& (anInt1500 == childInterface.id
+								|| anInt1044 == childInterface.id || anInt1129 == childInterface.id)
 						&& anInt1501 == 0 && !menuOpen) {
 					int boxWidth = 0;
 					int boxHeight = 0;
-					TextDrawingArea textDrawingArea_2 = regularText;
-					for (String s1 = class9_1.message; s1.length() > 0;) {
+					TextDrawingArea font = regularText;
+					for (String s1 = childInterface.message; s1.length() > 0;) {
 						if (s1.indexOf("%") != -1) {
 							do {
 								int k7 = s1.indexOf("%1");
 								if (k7 == -1)
 									break;
 								s1 = s1.substring(0, k7)
-										+ interfaceIntToString(extractInterfaceValues(
-												class9_1, 0))
+										+ interfaceIntToString(parseInterfaceOpcode(
+												childInterface, 0))
 										+ s1.substring(k7 + 2);
 							} while (true);
 							do {
@@ -10005,8 +10005,8 @@ public class Game extends GameShell {
 								if (l7 == -1)
 									break;
 								s1 = s1.substring(0, l7)
-										+ interfaceIntToString(extractInterfaceValues(
-												class9_1, 1))
+										+ interfaceIntToString(parseInterfaceOpcode(
+												childInterface, 1))
 										+ s1.substring(l7 + 2);
 							} while (true);
 							do {
@@ -10014,8 +10014,8 @@ public class Game extends GameShell {
 								if (i8 == -1)
 									break;
 								s1 = s1.substring(0, i8)
-										+ interfaceIntToString(extractInterfaceValues(
-												class9_1, 2))
+										+ interfaceIntToString(parseInterfaceOpcode(
+												childInterface, 2))
 										+ s1.substring(i8 + 2);
 							} while (true);
 							do {
@@ -10023,8 +10023,8 @@ public class Game extends GameShell {
 								if (j8 == -1)
 									break;
 								s1 = s1.substring(0, j8)
-										+ interfaceIntToString(extractInterfaceValues(
-												class9_1, 3))
+										+ interfaceIntToString(parseInterfaceOpcode(
+												childInterface, 3))
 										+ s1.substring(j8 + 2);
 							} while (true);
 							do {
@@ -10032,8 +10032,8 @@ public class Game extends GameShell {
 								if (k8 == -1)
 									break;
 								s1 = s1.substring(0, k8)
-										+ interfaceIntToString(extractInterfaceValues(
-												class9_1, 4))
+										+ interfaceIntToString(parseInterfaceOpcode(
+												childInterface, 4))
 										+ s1.substring(k8 + 2);
 							} while (true);
 						}
@@ -10046,39 +10046,39 @@ public class Game extends GameShell {
 							s4 = s1;
 							s1 = "";
 						}
-						int j10 = textDrawingArea_2.getTextWidth(s4);
+						int j10 = font.getTextWidth(s4);
 						if (j10 > boxWidth) {
 							boxWidth = j10;
 						}
-						boxHeight += textDrawingArea_2.anInt1497 + 1;
+						boxHeight += font.anInt1497 + 1;
 					}
 					boxWidth += 6;
 					boxHeight += 7;
-					int xPos = (k2 + class9_1.width) - 5 - boxWidth;
-					int yPos = l2 + class9_1.height + 5;
-					if (xPos < k2 + 5) {
-						xPos = k2 + 5;
+					int xPos = (_x + childInterface.width) - 5 - boxWidth;
+					int yPos = _y + childInterface.height + 5;
+					if (xPos < _x + 5) {
+						xPos = _x + 5;
 					}
-					if (xPos + boxWidth > k + class9.width) {
-						xPos = (k + class9.width) - boxWidth;
+					if (xPos + boxWidth > x + rsInterface.width) {
+						xPos = (x + rsInterface.width) - boxWidth;
 					}
-					if (yPos + boxHeight > l + class9.height) {
-						yPos = (l2 - boxHeight);
+					if (yPos + boxHeight > y + rsInterface.height) {
+						yPos = (_y - boxHeight);
 					}
 					DrawingArea.drawPixels(boxHeight, yPos, xPos, 0xFFFFA0,
 							boxWidth);
 					DrawingArea.fillPixels(xPos, boxWidth, boxHeight, 0, yPos);
-					String s2 = class9_1.message;
-					for (int j11 = yPos + textDrawingArea_2.anInt1497 + 2; s2
-							.length() > 0; j11 += textDrawingArea_2.anInt1497 + 1) {// anInt1497
+					String s2 = childInterface.message;
+					for (int j11 = yPos + font.anInt1497 + 2; s2
+							.length() > 0; j11 += font.anInt1497 + 1) {// anInt1497
 						if (s2.indexOf("%") != -1) {
 							do {
 								int k7 = s2.indexOf("%1");
 								if (k7 == -1)
 									break;
 								s2 = s2.substring(0, k7)
-										+ interfaceIntToString(extractInterfaceValues(
-												class9_1, 0))
+										+ interfaceIntToString(parseInterfaceOpcode(
+												childInterface, 0))
 										+ s2.substring(k7 + 2);
 							} while (true);
 							do {
@@ -10086,8 +10086,8 @@ public class Game extends GameShell {
 								if (l7 == -1)
 									break;
 								s2 = s2.substring(0, l7)
-										+ interfaceIntToString(extractInterfaceValues(
-												class9_1, 1))
+										+ interfaceIntToString(parseInterfaceOpcode(
+												childInterface, 1))
 										+ s2.substring(l7 + 2);
 							} while (true);
 							do {
@@ -10095,8 +10095,8 @@ public class Game extends GameShell {
 								if (i8 == -1)
 									break;
 								s2 = s2.substring(0, i8)
-										+ interfaceIntToString(extractInterfaceValues(
-												class9_1, 2))
+										+ interfaceIntToString(parseInterfaceOpcode(
+												childInterface, 2))
 										+ s2.substring(i8 + 2);
 							} while (true);
 							do {
@@ -10104,8 +10104,8 @@ public class Game extends GameShell {
 								if (j8 == -1)
 									break;
 								s2 = s2.substring(0, j8)
-										+ interfaceIntToString(extractInterfaceValues(
-												class9_1, 3))
+										+ interfaceIntToString(parseInterfaceOpcode(
+												childInterface, 3))
 										+ s2.substring(j8 + 2);
 							} while (true);
 							do {
@@ -10113,8 +10113,8 @@ public class Game extends GameShell {
 								if (k8 == -1)
 									break;
 								s2 = s2.substring(0, k8)
-										+ interfaceIntToString(extractInterfaceValues(
-												class9_1, 4))
+										+ interfaceIntToString(parseInterfaceOpcode(
+												childInterface, 4))
 										+ s2.substring(k8 + 2);
 							} while (true);
 						}
@@ -10127,31 +10127,31 @@ public class Game extends GameShell {
 							s5 = s2;
 							s2 = "";
 						}
-						if (class9_1.centerText) {
-							textDrawingArea_2.method382(yPos, xPos
-									+ class9_1.width / 2, s5, j11, false);
+						if (childInterface.centerText) {
+							font.method382(yPos, xPos
+									+ childInterface.width / 2, s5, j11, false);
 						} else {
 							if (s5.contains("\\r")) {
 								String text = s5
 										.substring(0, s5.indexOf("\\r"));
 								String text2 = s5
 										.substring(s5.indexOf("\\r") + 2);
-								textDrawingArea_2.method389(false, xPos + 3, 0,
+								font.drawTextWithPotentialShadow(false, xPos + 3, 0,
 										text, j11);
 								int rightX = boxWidth + xPos
-										- textDrawingArea_2.getTextWidth(text2)
+										- font.getTextWidth(text2)
 										- 2;
-								textDrawingArea_2.method389(false, rightX, 0,
+								font.drawTextWithPotentialShadow(false, rightX, 0,
 										text2, j11);
 								System.out.println("Box: " + boxWidth + "");
 							} else
-								textDrawingArea_2.method389(false, xPos + 3, 0,
+								font.drawTextWithPotentialShadow(false, xPos + 3, 0,
 										s5, j11);
 						}
 					}
 				}
 		}
-		DrawingArea.setDrawingArea(l1, i1, k1, j1);
+		DrawingArea.setDrawingArea(clipBottom, clipLeft, clipRight, clipTop);
 	}
 
 	private void randomizeBackground(Background background) {
@@ -10930,7 +10930,7 @@ public class Game extends GameShell {
 			return super.getParameter(s);
 	}
 
-	private int extractInterfaceValues(RSInterface class9, int j) {
+	private int parseInterfaceOpcode(RSInterface class9, int j) {
 		if (class9.valueIndexArray == null
 				|| j >= class9.valueIndexArray.length)
 			return -2;
@@ -10956,8 +10956,8 @@ public class Game extends GameShell {
 					int k2 = ai[l++];
 					if (k2 >= 0 && k2 < ItemDef.totalItems
 							&& (!ItemDef.forID(k2).membersObject || isMembers)) {
-						for (int j3 = 0; j3 < class9_1.inv.length; j3++)
-							if (class9_1.inv[j3] == k2 + 1)
+						for (int j3 = 0; j3 < class9_1.inventoryItemId.length; j3++)
+							if (class9_1.inventoryItemId[j3] == k2 + 1)
 								k1 += class9_1.invStackSizes[j3];
 
 					}
@@ -10980,8 +10980,8 @@ public class Game extends GameShell {
 					RSInterface class9_2 = RSInterface.interfaceCache[ai[l++]];
 					int l2 = ai[l++] + 1;
 					if (l2 >= 0 && l2 < ItemDef.totalItems && isMembers) {
-						for (int k3 = 0; k3 < class9_2.inv.length; k3++) {
-							if (class9_2.inv[k3] != l2)
+						for (int k3 = 0; k3 < class9_2.inventoryItemId.length; k3++) {
+							if (class9_2.inventoryItemId[k3] != l2)
 								continue;
 							k1 = 0x3b9ac9ff;
 							break;
@@ -11407,7 +11407,7 @@ public class Game extends GameShell {
 		if (class9.anIntArray245 == null)
 			return false;
 		for (int i = 0; i < class9.anIntArray245.length; i++) {
-			int j = extractInterfaceValues(class9, i);
+			int j = parseInterfaceOpcode(class9, i);
 			int k = class9.anIntArray212[i];
 			if (class9.anIntArray245[i] == 2) {
 				if (j >= k)
@@ -11671,13 +11671,13 @@ public class Game extends GameShell {
 				boldText.method382(0xffff00, c / 2, loginMessage2, j - 7, true);
 				j += 30;
 			}
-			boldText.method389(true, c / 2 - 90, 0xffffff,
+			boldText.drawTextWithPotentialShadow(true, c / 2 - 90, 0xffffff,
 					"Login: "
 							+ myUsername
 							+ ((loginScreenCursorPos == 0)
 									& (loopCycle % 40 < 20) ? "@yel@|" : ""), j);
 			j += 15;
-			boldText.method389(true, c / 2 - 88, 0xffffff,
+			boldText.drawTextWithPotentialShadow(true, c / 2 - 88, 0xffffff,
 					"Password: "
 							+ TextClass.passwordAsterisks(myPassword)
 							+ ((loginScreenCursorPos == 1)
@@ -12443,7 +12443,7 @@ public class Game extends GameShell {
 			inputTaken = true;
 		}
 		openInterfaceID = -1;
-		aBoolean1149 = false;
+		continuedDialogue = false;
 	}
 
 	public void sendFrame248(int interfaceID, int sideInterfaceID) {
@@ -12458,7 +12458,7 @@ public class Game extends GameShell {
 		openInterfaceID = interfaceID;
 		invOverlayInterfaceID = sideInterfaceID;
 		tabAreaAltered = true;
-		aBoolean1149 = false;
+		continuedDialogue = false;
 	}
 
 	private boolean parsePacket() {
@@ -12605,9 +12605,9 @@ public class Game extends GameShell {
 			case PacketConstants.CLEAN_ITEMS_OF_INTERFACE:
 				int i1 = inStream.method434();
 				RSInterface class9 = RSInterface.interfaceCache[i1];
-				for (int k15 = 0; k15 < class9.inv.length; k15++) {
-					class9.inv[k15] = -1;
-					class9.inv[k15] = 0;
+				for (int k15 = 0; k15 < class9.inventoryItemId.length; k15++) {
+					class9.inventoryItemId[k15] = -1;
+					class9.inventoryItemId[k15] = 0;
 				}
 				pktType = -1;
 				return true;
@@ -12698,9 +12698,9 @@ public class Game extends GameShell {
 				int x = inStream.readSignedWord();
 				int y = inStream.method437();
 				int compId = inStream.method434();
-				RSInterface class9_5 = RSInterface.interfaceCache[compId];
-				class9_5.anInt263 = x;
-				class9_5.anInt265 = y;
+				RSInterface childInterface = RSInterface.interfaceCache[compId];
+				childInterface.x = x;
+				childInterface.anInt265 = y;
 				pktType = -1;
 				return true;
 
@@ -13155,7 +13155,7 @@ public class Game extends GameShell {
 				openInterfaceID = i5;
 				invOverlayInterfaceID = k12;
 				tabAreaAltered = true;
-				aBoolean1149 = false;
+				continuedDialogue = false;
 				pktType = -1;
 				return true;
 
@@ -13271,7 +13271,7 @@ public class Game extends GameShell {
 			case 171:
 				boolean flag1 = inStream.readUnsignedByte() == 1;
 				int j13 = inStream.readUnsignedWord();
-				RSInterface.interfaceCache[j13].isMouseoverTriggered = flag1;
+				RSInterface.interfaceCache[j13].hoverOnly = flag1;
 				pktType = -1;
 				return true;
 
@@ -13289,7 +13289,7 @@ public class Game extends GameShell {
 				invOverlayInterfaceID = j6;
 				tabAreaAltered = true;
 				openInterfaceID = -1;
-				aBoolean1149 = false;
+				continuedDialogue = false;
 				pktType = -1;
 				return true;
 
@@ -13357,11 +13357,11 @@ public class Game extends GameShell {
 					int i25 = inStream.readUnsignedByte();
 					if (i25 == 255)
 						i25 = inStream.method440();
-					class9_1.inv[j22] = inStream.method436();
+					class9_1.inventoryItemId[j22] = inStream.method436();
 					class9_1.invStackSizes[j22] = i25;
 				}
-				for (int j25 = j19; j25 < class9_1.inv.length; j25++) {
-					class9_1.inv[j25] = 0;
+				for (int j25 = j19; j25 < class9_1.inventoryItemId.length; j25++) {
+					class9_1.inventoryItemId[j25] = 0;
 					class9_1.invStackSizes[j25] = 0;
 				}
 				pktType = -1;
@@ -13455,7 +13455,7 @@ public class Game extends GameShell {
 					openInterfaceID = 15244;
 				}
 				openInterfaceID = interfaceId;
-				aBoolean1149 = false;
+				continuedDialogue = false;
 				pktType = -1;
 
 				return true;
@@ -13520,22 +13520,22 @@ public class Game extends GameShell {
 					inputTaken = true;
 				}
 				openInterfaceID = -1;
-				aBoolean1149 = false;
+				continuedDialogue = false;
 				pktType = -1;
 				return true;
 
 			case 34:
 				int i9 = inStream.readUnsignedWord();
-				RSInterface class9_2 = RSInterface.interfaceCache[i9];
+				RSInterface childInterface2 = RSInterface.interfaceCache[i9];
 				while (inStream.currentOffset < pktSize) {
 					int j20 = inStream.method422();
 					int i23 = inStream.readUnsignedWord();
 					int l25 = inStream.readUnsignedByte();
 					if (l25 == 255)
 						l25 = inStream.readDWord();
-					if (j20 >= 0 && j20 < class9_2.inv.length) {
-						class9_2.inv[j20] = i23;
-						class9_2.invStackSizes[j20] = l25;
+					if (j20 >= 0 && j20 < childInterface2.inventoryItemId.length) {
+						childInterface2.inventoryItemId[j20] = i23;
+						childInterface2.invStackSizes[j20] = l25;
 					}
 				}
 				pktType = -1;
@@ -13572,7 +13572,7 @@ public class Game extends GameShell {
 				backDialogID = j9;
 				inputTaken = true;
 				openInterfaceID = -1;
-				aBoolean1149 = false;
+				continuedDialogue = false;
 				pktType = -1;
 				return true;
 
@@ -13999,13 +13999,13 @@ public class Game extends GameShell {
 		stream.createFrame(130);
 		if (invOverlayInterfaceID != -1) {
 			invOverlayInterfaceID = -1;
-			aBoolean1149 = false;
+			continuedDialogue = false;
 			tabAreaAltered = true;
 		}
 		if (backDialogID != -1) {
 			backDialogID = -1;
 			inputTaken = true;
-			aBoolean1149 = false;
+			continuedDialogue = false;
 		}
 		openInterfaceID = -1;
 		fullscreenInterfaceID = -1;
@@ -14127,7 +14127,7 @@ public class Game extends GameShell {
 		anInt1132 = 2;
 		minimapHint = new Sprite[1000];
 		aBoolean1141 = false;
-		aBoolean1149 = false;
+		continuedDialogue = false;
 		crosses = new Sprite[8];
 		Configuration.enableMusic = true;
 		loggedIn = false;
@@ -14458,7 +14458,7 @@ public class Game extends GameShell {
 	private boolean aBoolean1141;
 	private static int anInt1142;
 	private int energy;
-	private boolean aBoolean1149;
+	private boolean continuedDialogue;
 	private Sprite[] crosses;
 	private Background[] aBackgroundArray1152s;
 	private int unreadMessages;

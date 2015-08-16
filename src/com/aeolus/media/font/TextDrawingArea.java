@@ -77,11 +77,11 @@ public final class TextDrawingArea extends DrawingArea {
 	}
 
 	public void method382(int i, int j, String s, int l, boolean flag) {
-		method389(flag, j - getTextWidth(s) / 2, i, s, l);
+		drawTextWithPotentialShadow(flag, j - getTextWidth(s) / 2, i, s, l);
 	}
 
 	public void drawChatInput(int i, int j, String s, int l, boolean flag) {
-		method389(flag, j, i, s, l);
+		drawTextWithPotentialShadow(flag, j, i, s, l);
 	}
 
 	public int getTextWidth(String s) {
@@ -159,7 +159,7 @@ public final class TextDrawingArea extends DrawingArea {
 		}
 	}
 
-	public void method389(boolean flag1, int i, int j, String s, int k) {
+	public void drawTextWithPotentialShadow(boolean flag1, int i, int j, String s, int k) {
 		aBoolean1499 = false;
 		int l = i;
 		if(s == null)

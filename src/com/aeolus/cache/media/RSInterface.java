@@ -12,9 +12,9 @@ import com.aeolus.net.CacheArchive;
 public final class RSInterface {
 
 	public void swapInventoryItems(int i, int j) {
-		int k = inv[i];
-		inv[i] = inv[j];
-		inv[j] = k;
+		int k = inventoryItemId[i];
+		inventoryItemId[i] = inventoryItemId[j];
+		inventoryItemId[j] = k;
 		k = invStackSizes[i];
 		invStackSizes[i] = invStackSizes[j];
 		invStackSizes[j] = k;
@@ -72,7 +72,7 @@ public final class RSInterface {
 			if (rsInterface.type == 0) {
 				rsInterface.drawsTransparent = false;
 				rsInterface.scrollMax = stream.readUnsignedWord();
-				rsInterface.isMouseoverTriggered = stream.readUnsignedByte() == 1;
+				rsInterface.hoverOnly = stream.readUnsignedByte() == 1;
 				int i2 = stream.readUnsignedWord();
 				rsInterface.children = new int[i2];
 				rsInterface.childX = new int[i2];
@@ -88,14 +88,14 @@ public final class RSInterface {
 				stream.readUnsignedByte();
 			}
 			if (rsInterface.type == 2) {
-				rsInterface.inv = new int[rsInterface.width * rsInterface.height];
+				rsInterface.inventoryItemId = new int[rsInterface.width * rsInterface.height];
 				rsInterface.invStackSizes = new int[rsInterface.width * rsInterface.height];
 				rsInterface.aBoolean259 = stream.readUnsignedByte() == 1;
 				rsInterface.isInventoryInterface = stream.readUnsignedByte() == 1;
 				rsInterface.usableItemInterface = stream.readUnsignedByte() == 1;
 				rsInterface.aBoolean235 = stream.readUnsignedByte() == 1;
-				rsInterface.invSpritePadX = stream.readUnsignedByte();
-				rsInterface.invSpritePadY = stream.readUnsignedByte();
+				rsInterface.inventorySpritePaddingColumn = stream.readUnsignedByte();
+				rsInterface.inventorySpritePaddingRow = stream.readUnsignedByte();
 				rsInterface.spritesX = new int[20];
 				rsInterface.spritesY = new int[20];
 				rsInterface.sprites = new Sprite[20];
@@ -121,7 +121,7 @@ public final class RSInterface {
 				}
 			}
 			if (rsInterface.type == 3)
-				rsInterface.aBoolean227 = stream.readUnsignedByte() == 1;
+				rsInterface.filled = stream.readUnsignedByte() == 1;
 			if (rsInterface.type == 4 || rsInterface.type == 1) {
 				rsInterface.centerText = stream.readUnsignedByte() == 1;
 				int k2 = stream.readUnsignedByte();
@@ -138,7 +138,7 @@ public final class RSInterface {
 				rsInterface.textColor = stream.readDWord();
 			if (rsInterface.type == 3 || rsInterface.type == 4) {
 				rsInterface.anInt219 = stream.readDWord();
-				rsInterface.anInt216 = stream.readDWord();
+				rsInterface.colourDefaultHover = stream.readDWord();
 				rsInterface.anInt239 = stream.readDWord();
 			}
 			if (rsInterface.type == 5) {
@@ -180,7 +180,7 @@ public final class RSInterface {
 				rsInterface.modelRotation2 = stream.readUnsignedWord();
 			}
 			if (rsInterface.type == 7) {
-				rsInterface.inv = new int[rsInterface.width * rsInterface.height];
+				rsInterface.inventoryItemId = new int[rsInterface.width * rsInterface.height];
 				rsInterface.invStackSizes = new int[rsInterface.width * rsInterface.height];
 				rsInterface.centerText = stream.readUnsignedByte() == 1;
 				int l2 = stream.readUnsignedByte();
@@ -188,8 +188,8 @@ public final class RSInterface {
 					rsInterface.textDrawingAreas = textDrawingAreas[l2];
 				rsInterface.textShadow = stream.readUnsignedByte() == 1;
 				rsInterface.textColor = stream.readDWord();
-				rsInterface.invSpritePadX = stream.readSignedWord();
-				rsInterface.invSpritePadY = stream.readSignedWord();
+				rsInterface.inventorySpritePaddingColumn = stream.readSignedWord();
+				rsInterface.inventorySpritePaddingRow = stream.readSignedWord();
 				rsInterface.isInventoryInterface = stream.readUnsignedByte() == 1;
 				rsInterface.actions = new String[5];
 				for (int k4 = 0; k4 < 5; k4++) {
@@ -507,7 +507,7 @@ public final class RSInterface {
 		rsinterface.aString228 = "";
 		rsinterface.textColor = color;
 		rsinterface.anInt219 = 0;
-		rsinterface.anInt216 = 0xffffff;
+		rsinterface.colourDefaultHover = 0xffffff;
 		rsinterface.anInt239 = 0;
 		rsinterface.tooltips = tooltips;
 	}
@@ -531,7 +531,7 @@ public final class RSInterface {
 		tab.aString228 = "";
 		tab.textColor = color;
 		tab.anInt219 = 0;
-		tab.anInt216 = 0;
+		tab.colourDefaultHover = 0;
 		tab.anInt239 = 0;
 	}
 	
@@ -571,7 +571,7 @@ public final class RSInterface {
 		rsinterface.aString228 = "";
 		rsinterface.textColor = color;
 		rsinterface.anInt219 = 0;
-		rsinterface.anInt216 = 0;
+		rsinterface.colourDefaultHover = 0;
 		rsinterface.anInt239 = 0;
 	}
 	
@@ -630,11 +630,11 @@ public final class RSInterface {
 		rsinterface.childX[11] = 478;
 		rsinterface.childY[11] = 17;
 		rsinterface = interfaceCache[10494];
-		rsinterface.invSpritePadX = 6;
-		rsinterface.invSpritePadY = 5;
+		rsinterface.inventorySpritePaddingColumn = 6;
+		rsinterface.inventorySpritePaddingRow = 5;
 		rsinterface = interfaceCache[10600];
-		rsinterface.invSpritePadX = 6;
-		rsinterface.invSpritePadY = 5;
+		rsinterface.inventorySpritePaddingColumn = 6;
+		rsinterface.inventorySpritePaddingRow = 5;
 	}
 	
 	public static void itemsOnDeathDATA(TextDrawingArea[] tda) {
@@ -984,7 +984,7 @@ public final class RSInterface {
 		rsinterface.aString228 = "";
 		rsinterface.textColor = color;
 		rsinterface.anInt219 = 0;
-		rsinterface.anInt216 = 0xffffff;
+		rsinterface.colourDefaultHover = 0xffffff;
 		rsinterface.anInt239 = 0;
 		rsinterface.tooltip = tooltip;
 	}
@@ -1128,7 +1128,7 @@ public final class RSInterface {
 		RSInterface rsi = addInterface(id);
 		rsi.id = id;
 		rsi.type = 0;
-		rsi.isMouseoverTriggered = true;
+		rsi.hoverOnly = true;
 		rsi.hoverType = -1;
 		addTooltipBox(id + 1, text);
 		rsi.totalChildren(1);
@@ -1917,7 +1917,7 @@ public final class RSInterface {
 		tab.aString228 = "";
 		tab.textColor = color;
 		tab.anInt219 = 0;
-		tab.anInt216 = 0;
+		tab.colourDefaultHover = 0;
 		tab.anInt239 = 0;
 	}
 
@@ -2021,7 +2021,7 @@ public final class RSInterface {
 		tab.atActionType = 0;
 		tab.width = w;
 		tab.height = h;
-		tab.isMouseoverTriggered = true;
+		tab.hoverOnly = true;
 		tab.opacity = 0;
 		tab.hoverType = -1;
 		tab.scrollMax = 0;
@@ -2191,7 +2191,7 @@ public final class RSInterface {
 	public int anIntArray212[];
 	public int contentType;// anInt214
 	public int spritesX[];
-	public int anInt216;
+	public int colourDefaultHover;
 	public int atActionType;
 	public String spellName;
 	public int anInt219;
@@ -2202,10 +2202,10 @@ public final class RSInterface {
 	public int scrollPosition;
 	public String actions[];
 	public int valueIndexArray[][];
-	public boolean aBoolean227;
+	public boolean filled;
 	public String aString228;
 	public int hoverType;
-	public int invSpritePadX;
+	public int inventorySpritePaddingColumn;
 	public int textColor;
 	public int anInt233;
 	public int mediaID;
@@ -2218,7 +2218,7 @@ public final class RSInterface {
 	public int childX[];
 	public boolean usableItemInterface;
 	public TextDrawingArea textDrawingAreas;
-	public int invSpritePadY;
+	public int inventorySpritePaddingRow;
 	public int anIntArray245[];
 	public int anInt246;
 	public int spritesY[];
@@ -2226,7 +2226,7 @@ public final class RSInterface {
 	public boolean isInventoryInterface;
 	public int id;
 	public int invStackSizes[];
-	public int inv[];
+	public int inventoryItemId[];
 	public byte opacity;
 	private int anInt255;
 	private int anInt256;
@@ -2236,10 +2236,10 @@ public final class RSInterface {
 	public Sprite enabledSprite;
 	public int scrollMax;
 	public int type;
-	public int anInt263;
+	public int x;
 	private static final Cache aMRUNodes_264 = new Cache(30);
 	public int anInt265;
-	public boolean isMouseoverTriggered;
+	public boolean hoverOnly;
 	public int height;
 	public boolean textShadow;
 	public int modelZoom;
@@ -2317,7 +2317,7 @@ public final class RSInterface {
 		RSInterface.width = 20;
 		RSInterface.height = 20;
 		RSInterface Int = addInterface(30001);
-		Int.isMouseoverTriggered = true;
+		Int.hoverOnly = true;
 		Int.hoverType = -1;
 		setChildren(1, Int);
 		addLunarSprite(30002, 0, "SPRITE");
@@ -2364,7 +2364,7 @@ public final class RSInterface {
 		rsInterface.enabledSprite = imageLoader(sid, "Lunar/LUNARON");
 		rsInterface.disabledSprite = imageLoader(sid, "Lunar/LUNAROFF");
 		RSInterface INT = addInterface(ID + 1);
-		INT.isMouseoverTriggered = true;
+		INT.hoverOnly = true;
 		INT.hoverType = -1;
 		setChildren(7, INT);
 		addLunarSprite(ID + 2, 0, "Lunar/BOX");
@@ -2428,7 +2428,7 @@ public final class RSInterface {
 		rsInterface.enabledSprite = imageLoader(sid, "Lunar/LUNARON");
 		rsInterface.disabledSprite = imageLoader(sid, "Lunar/LUNAROFF");
 		RSInterface INT = addInterface(ID + 1);
-		INT.isMouseoverTriggered = true;
+		INT.hoverOnly = true;
 		INT.hoverType = -1;
 		setChildren(9, INT);
 		addLunarSprite(ID + 2, 0, "Lunar/BOX");
@@ -2495,7 +2495,7 @@ public final class RSInterface {
 		rsInterface.enabledSprite = imageLoader(sid, "Lunar/LUNARON");
 		rsInterface.disabledSprite = imageLoader(sid, "Lunar/LUNAROFF");
 		RSInterface INT = addInterface(ID + 1);
-		INT.isMouseoverTriggered = true;
+		INT.hoverOnly = true;
 		INT.hoverType = -1;
 		setChildren(9, INT);
 		addLunarSprite(ID + 2, 1, "Lunar/BOX");
@@ -2562,7 +2562,7 @@ public final class RSInterface {
 		rsInterface.enabledSprite = imageLoader(sid, "Lunar/LUNARON");
 		rsInterface.disabledSprite = imageLoader(sid, "Lunar/LUNAROFF");
 		RSInterface INT = addInterface(ID + 1);
-		INT.isMouseoverTriggered = true;
+		INT.hoverOnly = true;
 		INT.hoverType = -1;
 		setChildren(9, INT);
 		addLunarSprite(ID + 2, 2, "Lunar/BOX");
@@ -2787,7 +2787,7 @@ public final class RSInterface {
 		hover.atActionType = 0;
 		hover.width = 550;
 		hover.height = 334;
-		hover.isMouseoverTriggered = true;
+		hover.hoverOnly = true;
 		hover.hoverType = -1;
 		addSprites(hoverId2, hoverSpriteId, hoverSpriteId2, hoverSpriteName,
 				configId, configFrame);
