@@ -1,7 +1,7 @@
 package com.aeolus.scene;
 import com.aeolus.Game;
 import com.aeolus.cache.config.VarBit;
-import com.aeolus.cache.def.ObjectDef;
+import com.aeolus.cache.def.ObjectDefinition;
 import com.aeolus.media.Animation;
 import com.aeolus.media.renderable.Renderable;
 import com.aeolus.media.renderable.Model;
@@ -23,7 +23,7 @@ public final class SceneObject extends Renderable {
 	private final int anInt1611;
 	private final int anInt1612;
 
-	private ObjectDef method457() {
+	private ObjectDefinition method457() {
 		int i = -1;
 		if (anInt1601 != -1) {
 			try {
@@ -41,7 +41,7 @@ public final class SceneObject extends Renderable {
 		if (i < 0 || i >= anIntArray1600.length || anIntArray1600[i] == -1) {
 			return null;
 		} else {
-			return ObjectDef.forID(anIntArray1600[i]);
+			return ObjectDefinition.forID(anIntArray1600[i]);
 		}
 	}
 
@@ -68,11 +68,11 @@ public final class SceneObject extends Renderable {
 				j = aAnimation_1607.anIntArray353[anInt1599];
 			}
 		}
-		ObjectDef class46;
+		ObjectDefinition class46;
 		if (anIntArray1600 != null)
 			class46 = method457();
 		else
-			class46 = ObjectDef.forID(anInt1610);
+			class46 = ObjectDefinition.forID(anInt1610);
 		if (class46 == null) {
 			return null;
 		} else {
@@ -97,7 +97,7 @@ public final class SceneObject extends Renderable {
 				anInt1608 -= (int) (Math.random() * (double) aAnimation_1607.method258(anInt1599));
 			}
 		}
-		ObjectDef class46 = ObjectDef.forID(anInt1610);
+		ObjectDefinition class46 = ObjectDefinition.forID(anInt1610);
 		anInt1601 = class46.anInt774;
 		anInt1602 = class46.anInt749;
 		anIntArray1600 = class46.childrenIDs;

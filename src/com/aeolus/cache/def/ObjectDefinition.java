@@ -8,16 +8,16 @@ import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 import com.aeolus.net.requester.OnDemandRequester;
 
-public final class ObjectDef {
+public final class ObjectDefinition {
 
-	public static ObjectDef forID(int i) {
+	public static ObjectDefinition forID(int i) {
 		if (i > streamIndices.length)
 			i = streamIndices.length - 1;
 		for (int j = 0; j < 20; j++)
 			if (cache[j].type == i)
 				return cache[j];
 		cacheIndex = (cacheIndex + 1) % 20;
-		ObjectDef class46 = cache[cacheIndex];
+		ObjectDefinition class46 = cache[cacheIndex];
 		stream.currentOffset = streamIndices[i];
 		class46.type = i;
 		class46.setDefaults();
@@ -146,9 +146,9 @@ public final class ObjectDef {
 			streamIndices[j] = i;
 			i += stream.getUnsignedLEShort();
 		}
-		cache = new ObjectDef[20];
+		cache = new ObjectDefinition[20];
 		for (int k = 0; k < 20; k++)
-			cache[k] = new ObjectDef();
+			cache[k] = new ObjectDefinition();
 	}
 
 	public boolean method577(int i) {
@@ -201,7 +201,7 @@ public final class ObjectDef {
 		return flag1;
 	}
 
-	public ObjectDef method580() {
+	public ObjectDefinition method580() {
 		int i = -1;
 		if (anInt774 != -1) {
 			VarBit varBit = VarBit.cache[anInt774];
@@ -446,7 +446,7 @@ public final class ObjectDef {
 			anInt760 = aBoolean767 ? 1 : 0;
 	}
 
-	public ObjectDef() {
+	public ObjectDefinition() {
 		type = -1;
 	}
 
@@ -491,7 +491,7 @@ public final class ObjectDef {
 	public boolean aBoolean779;
 	public static Cache mruNodes2 = new Cache(30);
 	public int anInt781;
-	public static ObjectDef[] cache;
+	public static ObjectDefinition[] cache;
 	public int anInt783;
 	public int[] modifiedModelColors;
 	public static Cache mruNodes1 = new Cache(500);

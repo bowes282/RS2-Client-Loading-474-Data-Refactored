@@ -7,7 +7,7 @@ import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 import com.aeolus.scene.graphic.Texture;
 
-public final class ItemDef {
+public final class ItemDefinition {
 
 	public static void nullLoader() {
 		mruNodes2 = null;
@@ -45,9 +45,9 @@ public final class ItemDef {
 			i += stream.getUnsignedLEShort();
 		}
 
-		cache = new ItemDef[10];
+		cache = new ItemDefinition[10];
 		for (int k = 0; k < 10; k++)
-			cache[k] = new ItemDef();
+			cache[k] = new ItemDefinition();
 	}
 
 	public Model method194(int j) {
@@ -172,13 +172,13 @@ public final class ItemDef {
 		team = 0;
 	}
 
-	public static ItemDef forID(int i) {
+	public static ItemDefinition forID(int i) {
 		for (int j = 0; j < 10; j++)
 			if (cache[j].id == i)
 				return cache[j];
 
 		cacheIndex = (cacheIndex + 1) % 10;
-		ItemDef itemDef = cache[cacheIndex];
+		ItemDefinition itemDef = cache[cacheIndex];
 		stream.currentOffset = streamIndices[i];
 		itemDef.id = i;
 		itemDef.setDefaults();
@@ -196,7 +196,7 @@ public final class ItemDef {
 	}
 
 	private void toNote() {
-		ItemDef itemDef = forID(certTemplateID);
+		ItemDefinition itemDef = forID(certTemplateID);
 		modelID = itemDef.modelID;
 		modelZoom = itemDef.modelZoom;
 		modelRotationY = itemDef.modelRotationY;
@@ -207,7 +207,7 @@ public final class ItemDef {
 		modelOffset2 = itemDef.modelOffset2;
 		modifiedModelColors = itemDef.modifiedModelColors;
 		originalModelColors = itemDef.originalModelColors;
-		ItemDef itemDef_1 = forID(certID);
+		ItemDefinition itemDef_1 = forID(certID);
 		name = itemDef_1.name;
 		membersObject = itemDef_1.membersObject;
 		value = itemDef_1.value;
@@ -231,7 +231,7 @@ public final class ItemDef {
 			if (sprite != null)
 				return sprite;
 		}
-		ItemDef itemDef = forID(i);
+		ItemDefinition itemDef = forID(i);
 		if (itemDef.stackIDs == null)
 			j = -1;
 		if (j > 1) {
@@ -505,7 +505,7 @@ public final class ItemDef {
 		} while(true);
 	}
 
-	private ItemDef() {
+	private ItemDefinition() {
 		id = -1;
 	}
 
@@ -526,7 +526,7 @@ public final class ItemDef {
 	public String groundActions[];
 	public int modelOffset1;
 	public String name;// itemName
-	private static ItemDef[] cache;
+	private static ItemDefinition[] cache;
 	private int anInt173;
 	public int modelID;// dropModel
 	public int anInt175;

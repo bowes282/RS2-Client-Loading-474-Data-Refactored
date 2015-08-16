@@ -1,7 +1,7 @@
 package com.aeolus.cache.media;
 import com.aeolus.Game;
-import com.aeolus.cache.def.EntityDef;
-import com.aeolus.cache.def.ItemDef;
+import com.aeolus.cache.def.EntityDefinition;
+import com.aeolus.cache.def.ItemDefinition;
 import com.aeolus.collection.Cache;
 import com.aeolus.media.font.TextClass;
 import com.aeolus.media.font.TextDrawingArea;
@@ -2122,11 +2122,11 @@ public final class RSInterface {
 		if (i == 1)
 			model = Model.method462(j);
 		if (i == 2)
-			model = EntityDef.forID(j).method160();
+			model = EntityDefinition.forID(j).method160();
 		if (i == 3)
 			model = Game.myPlayer.method453();
 		if (i == 4)
-			model = ItemDef.forID(j).method202(50);
+			model = ItemDefinition.forID(j).method202(50);
 		if (i == 5)
 			model = null;
 		if (model != null)

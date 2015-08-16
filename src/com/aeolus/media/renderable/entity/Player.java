@@ -1,9 +1,9 @@
 package com.aeolus.media.renderable.entity;
 import com.aeolus.Game;
-import com.aeolus.cache.def.EntityDef;
+import com.aeolus.cache.def.EntityDefinition;
 import com.aeolus.cache.def.IdentityKit;
-import com.aeolus.cache.def.ItemDef;
-import com.aeolus.cache.def.SpotAnim;
+import com.aeolus.cache.def.ItemDefinition;
+import com.aeolus.cache.def.SpotAnimation;
 import com.aeolus.cache.media.SequenceFrame;
 import com.aeolus.collection.Cache;
 import com.aeolus.media.Animation;
@@ -26,7 +26,7 @@ public final class Player extends Entity {
 		if(aBoolean1699)
 			return model;
 		if(super.anInt1520 != -1 && super.anInt1521 != -1) {
-			SpotAnim spotAnim = SpotAnim.cache[super.anInt1520];
+			SpotAnimation spotAnim = SpotAnimation.cache[super.anInt1520];
 			Model model_2 = spotAnim.getModel();
 			if(model_2 != null) {
 				Model model_3 = new Model(true, SequenceFrame.method532(super.anInt1521), false, model_2);
@@ -116,12 +116,12 @@ public final class Player extends Entity {
 			equipment[j] = (k << 8) + i1;
 			if(j == 0 && equipment[0] == 65535)
 			{
-				desc = EntityDef.forID(stream.getUnsignedLEShort());
+				desc = EntityDefinition.forID(stream.getUnsignedLEShort());
 				break;
 			}
-			if(equipment[j] >= 512 && equipment[j] - 512 < ItemDef.totalItems)
+			if(equipment[j] >= 512 && equipment[j] - 512 < ItemDefinition.totalItems)
 			{
-				int l1 = ItemDef.forID(equipment[j] - 512).team;
+				int l1 = ItemDefinition.forID(equipment[j] - 512).team;
 				if(l1 != 0)
 					team = l1;
 			}
@@ -254,7 +254,7 @@ public final class Player extends Entity {
 					k2 = j1;
 				if(k2 >= 256 && k2 < 512 && !IdentityKit.cache[k2 - 256].method537())
 					flag = true;
-				if(k2 >= 512 && !ItemDef.forID(k2 - 512).method195(anInt1702))
+				if(k2 >= 512 && !ItemDefinition.forID(k2 - 512).method195(anInt1702))
 					flag = true;
 			}
 
@@ -285,7 +285,7 @@ public final class Player extends Entity {
 				}
 				if(i3 >= 512)
 				{
-					Model model_4 = ItemDef.forID(i3 - 512).method196(anInt1702);
+					Model model_4 = ItemDefinition.forID(i3 - 512).method196(anInt1702);
 					if(model_4 != null)
 						aclass30_sub2_sub4_sub6s[j2++] = model_4;
 				}
@@ -340,7 +340,7 @@ public final class Player extends Entity {
 			int j = equipment[i];
 			if(j >= 256 && j < 512 && !IdentityKit.cache[j - 256].method539())
 				flag = true;
-			if(j >= 512 && !ItemDef.forID(j - 512).method192(anInt1702))
+			if(j >= 512 && !ItemDefinition.forID(j - 512).method192(anInt1702))
 				flag = true;
 		}
 
@@ -359,7 +359,7 @@ public final class Player extends Entity {
 			}
 			if(i1 >= 512)
 			{
-				Model model_2 = ItemDef.forID(i1 - 512).method194(anInt1702);
+				Model model_2 = ItemDefinition.forID(i1 - 512).method194(anInt1702);
 				if(model_2 != null)
 					aclass30_sub2_sub4_sub6s[k++] = model_2;
 			}
@@ -387,7 +387,7 @@ public final class Player extends Entity {
 	}
 
 	private long aLong1697;
-	public EntityDef desc;
+	public EntityDefinition desc;
 	public boolean aBoolean1699;
 	public final int[] anIntArray1700;
 	public int team;

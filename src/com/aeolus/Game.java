@@ -13,11 +13,11 @@ import com.aeolus.cache.Index;
 import com.aeolus.cache.config.Censor;
 import com.aeolus.cache.config.VarBit;
 import com.aeolus.cache.config.Varp;
-import com.aeolus.cache.def.EntityDef;
+import com.aeolus.cache.def.EntityDefinition;
 import com.aeolus.cache.def.IdentityKit;
-import com.aeolus.cache.def.ItemDef;
-import com.aeolus.cache.def.ObjectDef;
-import com.aeolus.cache.def.SpotAnim;
+import com.aeolus.cache.def.ItemDefinition;
+import com.aeolus.cache.def.ObjectDefinition;
+import com.aeolus.cache.def.SpotAnimation;
 import com.aeolus.cache.media.Background;
 import com.aeolus.cache.media.RSInterface;
 import com.aeolus.cache.media.SequenceFrame;
@@ -1238,7 +1238,7 @@ public class Game extends GameShell {
 			method63();
 		} catch (Exception exception) {
 		}
-		ObjectDef.mruNodes1.unlinkAll();
+		ObjectDefinition.mruNodes1.unlinkAll();
 		if (super.gameFrame != null) {
 			stream.createFrame(210);
 			stream.writeDWord(0x3f008edd);
@@ -1304,13 +1304,13 @@ public class Game extends GameShell {
 	}
 
 	private void unlinkMRUNodes() {
-		ObjectDef.mruNodes1.unlinkAll();
-		ObjectDef.mruNodes2.unlinkAll();
-		EntityDef.mruNodes.unlinkAll();
-		ItemDef.mruNodes2.unlinkAll();
-		ItemDef.mruNodes1.unlinkAll();
+		ObjectDefinition.mruNodes1.unlinkAll();
+		ObjectDefinition.mruNodes2.unlinkAll();
+		EntityDefinition.mruNodes.unlinkAll();
+		ItemDefinition.mruNodes2.unlinkAll();
+		ItemDefinition.mruNodes1.unlinkAll();
 		Player.mruNodes.unlinkAll();
-		SpotAnim.aMRUNodes_415.unlinkAll();
+		SpotAnimation.aMRUNodes_415.unlinkAll();
 	}
 
 	private void renderMapScene(int i) {
@@ -1351,7 +1351,7 @@ public class Game extends GameShell {
 				int i3 = worldController.method303(plane, k2, l2);
 				if (i3 != 0) {
 					i3 = i3 >> 14 & 0x7fff;
-					int j3 = ObjectDef.forID(i3).anInt746;
+					int j3 = ObjectDefinition.forID(i3).anInt746;
 					if (j3 >= 0) {
 						int k3 = k2;
 						int l3 = l2;
@@ -1377,7 +1377,7 @@ public class Game extends GameShell {
 		Object obj = null;
 		for (Item item = (Item) class19.reverseGetFirst(); item != null; item = (Item) class19
 				.reverseGetNext()) {
-			ItemDef itemDef = ItemDef.forID(item.ID);
+			ItemDefinition itemDef = ItemDefinition.forID(item.ID);
 			int l = itemDef.value;
 			if (itemDef.stackable)
 				l *= item.anInt1559 + 1;
@@ -1604,7 +1604,7 @@ public class Game extends GameShell {
 								mouseInvInterfaceIndex = k2;
 								lastActiveInvInterface = childInterface.id;
 								if (childInterface.inventoryItemId[k2] > 0) {
-									ItemDef itemDef = ItemDef
+									ItemDefinition itemDef = ItemDefinition
 											.forID(childInterface.inventoryItemId[k2] - 1);
 									if (itemSelected == 1
 											&& childInterface.isInventoryInterface) {
@@ -2102,7 +2102,7 @@ public class Game extends GameShell {
 				Texture.method372(0.69999999999999996D);
 			if (k == 4)
 				Texture.method372(0.59999999999999998D);
-			ItemDef.mruNodes1.unlinkAll();
+			ItemDefinition.mruNodes1.unlinkAll();
 			welcomeScreenRaised = true;
 		}
 
@@ -2194,7 +2194,7 @@ public class Game extends GameShell {
 				if (obj == null || !((Entity) (obj)).isVisible())
 					continue;
 				if (obj instanceof Npc) {
-					EntityDef entityDef = ((Npc) obj).desc;
+					EntityDefinition entityDef = ((Npc) obj).desc;
 					if (Configuration.namesAboveHeads) {
 						npcScreenPos(((Entity) (obj)),
 								((Entity) (obj)).height + 15);
@@ -2271,7 +2271,7 @@ public class Game extends GameShell {
 									spriteDrawY - 5, spriteDrawX);
 					}
 				} else {
-					EntityDef entityDef_1 = ((Npc) obj).desc;
+					EntityDefinition entityDef_1 = ((Npc) obj).desc;
 					if (entityDef_1.headIcon >= 0
 							&& entityDef_1.headIcon < headIcons.length) {
 						npcScreenPos(((Entity) (obj)),
@@ -3078,7 +3078,7 @@ public class Game extends GameShell {
 			if (i1 > 15)
 				i1 -= 32;
 			int j1 = stream.readBits(1);
-			npc.desc = EntityDef.forID(stream.readBits(Configuration.npcBits));
+			npc.desc = EntityDefinition.forID(stream.readBits(Configuration.npcBits));
 			int k1 = stream.readBits(1);
 			if (k1 == 1)
 				anIntArray894[anInt893++] = k;
@@ -3283,7 +3283,7 @@ public class Game extends GameShell {
 			int ai[] = minimapImage.myPixels;
 			int k4 = 24624 + l * 4 + (103 - i) * 512 * 4;
 			int i5 = k1 >> 14 & 0x7fff;
-			ObjectDef class46_2 = ObjectDef.forID(i5);
+			ObjectDefinition class46_2 = ObjectDefinition.forID(i5);
 			if (class46_2.anInt758 != -1) {
 				Background background_2 = mapScenes[class46_2.anInt758];
 				if (background_2 != null) {
@@ -3354,7 +3354,7 @@ public class Game extends GameShell {
 			int l2 = i2 >> 6 & 3;
 			int j3 = i2 & 0x1f;
 			int l3 = k1 >> 14 & 0x7fff;
-			ObjectDef class46_1 = ObjectDef.forID(l3);
+			ObjectDefinition class46_1 = ObjectDefinition.forID(l3);
 			if (class46_1.anInt758 != -1) {
 				Background background_1 = mapScenes[class46_1.anInt758];
 				if (background_1 != null) {
@@ -3385,7 +3385,7 @@ public class Game extends GameShell {
 		k1 = worldController.method303(j1, l, i);
 		if (k1 != 0) {
 			int j2 = k1 >> 14 & 0x7fff;
-			ObjectDef class46 = ObjectDef.forID(j2);
+			ObjectDefinition class46 = ObjectDefinition.forID(j2);
 			if (class46.anInt758 != -1) {
 				Background background = mapScenes[class46.anInt758];
 				if (background != null) {
@@ -3484,7 +3484,7 @@ public class Game extends GameShell {
 		Texture.lowMem = false;
 		lowMem = false;
 		ObjectManager.lowMem = false;
-		ObjectDef.lowMem = false;
+		ObjectDefinition.lowMem = false;
 	}
 
 	public static void main(String args[]) {
@@ -4214,7 +4214,7 @@ public class Game extends GameShell {
 		int k1 = j1 & 0x1f;
 		int l1 = j1 >> 6 & 3;
 		if (k1 == 10 || k1 == 11 || k1 == 22) {
-			ObjectDef class46 = ObjectDef.forID(i1);
+			ObjectDefinition class46 = ObjectDefinition.forID(i1);
 			int i2;
 			int j2;
 			if (l1 == 0 || l1 == 2) {
@@ -5164,7 +5164,7 @@ public class Game extends GameShell {
 		if (l == 1025) {
 			Npc class30_sub2_sub4_sub1_sub1_5 = npcs[i1];
 			if (class30_sub2_sub4_sub1_sub1_5 != null) {
-				EntityDef entityDef = class30_sub2_sub4_sub1_sub1_5.desc;
+				EntityDefinition entityDef = class30_sub2_sub4_sub1_sub1_5.desc;
 				if (entityDef.childrenIDs != null)
 					entityDef = entityDef.method161();
 				if (entityDef != null) {
@@ -5425,7 +5425,7 @@ public class Game extends GameShell {
 			stream.method432(k + baseY);
 		}
 		if (l == 1125) {
-			ItemDef itemDef = ItemDef.forID(i1);
+			ItemDefinition itemDef = ItemDefinition.forID(i1);
 			RSInterface class9_4 = RSInterface.interfaceCache[k];
 			String s5;
 			if (class9_4 != null && class9_4.invStackSizes[j] >= 0x186a0)
@@ -5452,13 +5452,13 @@ public class Game extends GameShell {
 			anInt1283 = j;
 			anInt1284 = k;
 			anInt1285 = i1;
-			selectedItemName = ItemDef.forID(i1).name;
+			selectedItemName = ItemDefinition.forID(i1).name;
 			spellSelected = 0;
 			return;
 		}
 		if (l == 1226) {
 			int j1 = i1 >> 14 & 0x7fff;
-			ObjectDef class46 = ObjectDef.forID(j1);
+			ObjectDefinition class46 = ObjectDefinition.forID(j1);
 			String s10;
 			if (class46.description != null)
 				s10 = new String(class46.description);
@@ -5482,7 +5482,7 @@ public class Game extends GameShell {
 			stream.method432(i1);
 		}
 		if (l == 1448) {
-			ItemDef itemDef_1 = ItemDef.forID(i1);
+			ItemDefinition itemDef_1 = ItemDefinition.forID(i1);
 			String s6;
 			if (itemDef_1.description != null)
 				s6 = new String(itemDef_1.description);
@@ -5535,7 +5535,7 @@ public class Game extends GameShell {
 				continue;
 			j = l;
 			if (k1 == 2 && worldController.method304(plane, i1, j1, l) >= 0) {
-				ObjectDef class46 = ObjectDef.forID(l1);
+				ObjectDefinition class46 = ObjectDefinition.forID(l1);
 				if (class46.childrenIDs != null)
 					class46 = class46.method580();
 				if (class46 == null)
@@ -5654,7 +5654,7 @@ public class Game extends GameShell {
 				if (class19 != null) {
 					for (Item item = (Item) class19.getFirst(); item != null; item = (Item) class19
 							.getNext()) {
-						ItemDef itemDef = ItemDef.forID(item.ID);
+						ItemDefinition itemDef = ItemDefinition.forID(item.ID);
 						if (itemSelected == 1) {
 							menuActionName[menuActionRow] = "Use "
 									+ selectedItemName + " with @lre@"
@@ -5813,15 +5813,15 @@ public class Game extends GameShell {
 		aRSImageProducer_1115 = null;
 		multiOverlay = null;
 		nullLoader();
-		ObjectDef.nullLoader();
-		EntityDef.nullLoader();
-		ItemDef.nullLoader();
+		ObjectDefinition.nullLoader();
+		EntityDefinition.nullLoader();
+		ItemDefinition.nullLoader();
 		Floor.cache = null;
 		IdentityKit.cache = null;
 		RSInterface.interfaceCache = null;
 		Animation.anims = null;
-		SpotAnim.cache = null;
-		SpotAnim.aMRUNodes_415 = null;
+		SpotAnimation.cache = null;
+		SpotAnimation.aMRUNodes_415 = null;
 		Varp.cache = null;
 		super.fullGameScreen = null;
 		Player.mruNodes = null;
@@ -8411,7 +8411,7 @@ public class Game extends GameShell {
 				npc.maxHealth = stream.method427();
 			}
 			if ((l & 2) != 0) {
-				npc.desc = EntityDef.forID(stream.method436());
+				npc.desc = EntityDefinition.forID(stream.method436());
 				npc.anInt1540 = npc.desc.boundDim;
 				npc.anInt1504 = npc.desc.degreesToTurn;
 				npc.anInt1554 = npc.desc.walkAnim;
@@ -8427,7 +8427,7 @@ public class Game extends GameShell {
 		}
 	}
 
-	private void buildAtNPCMenu(EntityDef entityDef, int i, int j, int k) {
+	private void buildAtNPCMenu(EntityDefinition entityDef, int i, int j, int k) {
 		if (menuActionRow >= 400)
 			return;
 		if (entityDef.childrenIDs != null)
@@ -8791,15 +8791,15 @@ public class Game extends GameShell {
 			Texture.method367();
 			drawLoadingText(86, "Unpacking config");
 			Animation.unpackConfig(streamLoader);
-			ObjectDef.unpackConfig(streamLoader);
+			ObjectDefinition.unpackConfig(streamLoader);
 			Floor.unpackConfig(streamLoader);
-			ItemDef.unpackConfig(streamLoader);
-			EntityDef.unpackConfig(streamLoader);
+			ItemDefinition.unpackConfig(streamLoader);
+			EntityDefinition.unpackConfig(streamLoader);
 			IdentityKit.unpackConfig(streamLoader);
-			SpotAnim.unpackConfig(streamLoader);
+			SpotAnimation.unpackConfig(streamLoader);
 			Varp.unpackConfig(streamLoader);
 			VarBit.unpackConfig(streamLoader);
-			ItemDef.isMembers = isMembers;
+			ItemDefinition.isMembers = isMembers;
 			drawLoadingText(95, "Unpacking interfaces");
 			TextDrawingArea aclass30_sub2_sub1_sub4s[] = { smallText,
 					regularText, boldText, aTextDrawingArea_1273 };
@@ -8848,8 +8848,8 @@ public class Game extends GameShell {
 			mouseDetection = new MouseDetection(this);
 			startRunnable(mouseDetection, 10);
 			SceneObject.clientInstance = this;
-			ObjectDef.clientInstance = this;
-			EntityDef.clientInstance = this;
+			ObjectDefinition.clientInstance = this;
+			EntityDefinition.clientInstance = this;
 			return;
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -9316,7 +9316,7 @@ public class Game extends GameShell {
 		if (entity.anInt1520 != -1 && loopCycle >= entity.anInt1523) {
 			if (entity.anInt1521 < 0)
 				entity.anInt1521 = 0;
-			Animation animation_1 = SpotAnim.cache[entity.anInt1520].aAnimation_407;
+			Animation animation_1 = SpotAnimation.cache[entity.anInt1520].aAnimation_407;
 			for (entity.anInt1522++; entity.anInt1521 < animation_1.anInt352
 					&& entity.anInt1522 > animation_1
 							.method258(entity.anInt1521); entity.anInt1521++)
@@ -9675,7 +9675,7 @@ public class Game extends GameShell {
 									if (itemSelected == 1 && anInt1283 == item
 											&& anInt1284 == childInterface.id)
 										l9 = 0xffffff;
-									Sprite class30_sub2_sub1_sub1_2 = ItemDef
+									Sprite class30_sub2_sub1_sub1_2 = ItemDefinition
 											.getSprite(
 													itemId,
 													childInterface.invStackSizes[item],
@@ -9999,7 +9999,7 @@ public class Game extends GameShell {
 					for (int row = 0; row < childInterface.height; row++) {
 						for (int column = 0; column < childInterface.width; column++) {
 							if (childInterface.inventoryItemId[slot] > 0) {
-								ItemDef item = ItemDef
+								ItemDefinition item = ItemDefinition
 										.forID(childInterface.inventoryItemId[slot] - 1);
 								String name = item.name;
 								if (item.stackable
@@ -10998,8 +10998,8 @@ public class Game extends GameShell {
 				if (j1 == 4) {
 					RSInterface class9_1 = RSInterface.interfaceCache[ai[l++]];
 					int k2 = ai[l++];
-					if (k2 >= 0 && k2 < ItemDef.totalItems
-							&& (!ItemDef.forID(k2).membersObject || isMembers)) {
+					if (k2 >= 0 && k2 < ItemDefinition.totalItems
+							&& (!ItemDefinition.forID(k2).membersObject || isMembers)) {
 						for (int j3 = 0; j3 < class9_1.inventoryItemId.length; j3++)
 							if (class9_1.inventoryItemId[j3] == k2 + 1)
 								k1 += class9_1.invStackSizes[j3];
@@ -11023,7 +11023,7 @@ public class Game extends GameShell {
 				if (j1 == 10) {
 					RSInterface class9_2 = RSInterface.interfaceCache[ai[l++]];
 					int l2 = ai[l++] + 1;
-					if (l2 >= 0 && l2 < ItemDef.totalItems && isMembers) {
+					if (l2 >= 0 && l2 < ItemDefinition.totalItems && isMembers) {
 						for (int k3 = 0; k3 < class9_2.inventoryItemId.length; k3++) {
 							if (class9_2.inventoryItemId[k3] != l2)
 								continue;
@@ -11198,7 +11198,7 @@ public class Game extends GameShell {
 		for (int n = 0; n < npcCount; n++) {
 			Npc npc = npcs[npcIndices[n]];
 			if (npc != null && npc.isVisible()) {
-				EntityDef entityDef = npc.desc;
+				EntityDefinition entityDef = npc.desc;
 				if (entityDef.childrenIDs != null) {
 					entityDef = entityDef.method161();
 				}
@@ -11956,7 +11956,7 @@ public class Game extends GameShell {
 			else
 				player = players[i10];
 			if (player != null) {
-				ObjectDef class46 = ObjectDef.forID(l21);
+				ObjectDefinition class46 = ObjectDefinition.forID(l21);
 				int i22 = intGroundArray[plane][k4][j7];
 				int j22 = intGroundArray[plane][k4 + 1][j7];
 				int k22 = intGroundArray[plane][k4 + 1][j7 + 1];
@@ -12277,7 +12277,7 @@ public class Game extends GameShell {
 				int l2 = i3 >> 6;
 				if (j1 == 0) {
 					worldController.method291(i1, j, i, (byte) -119);
-					ObjectDef class46 = ObjectDef.forID(j2);
+					ObjectDefinition class46 = ObjectDefinition.forID(j2);
 					if (class46.aBoolean767)
 						aClass11Array1230[j].method215(l2, k2,
 								class46.aBoolean757, i1, i);
@@ -12286,7 +12286,7 @@ public class Game extends GameShell {
 					worldController.method292(i, j, i1);
 				if (j1 == 2) {
 					worldController.method293(j, i1, i);
-					ObjectDef class46_1 = ObjectDef.forID(j2);
+					ObjectDefinition class46_1 = ObjectDefinition.forID(j2);
 					if (i1 + class46_1.anInt744 > 103
 							|| i + class46_1.anInt744 > 103
 							|| i1 + class46_1.anInt761 > 103
@@ -12299,7 +12299,7 @@ public class Game extends GameShell {
 				}
 				if (j1 == 3) {
 					worldController.method294(j, i, i1);
-					ObjectDef class46_2 = ObjectDef.forID(j2);
+					ObjectDefinition class46_2 = ObjectDefinition.forID(j2);
 					if (class46_2.aBoolean767 && class46_2.hasActions)
 						aClass11Array1230[j].method218(i, i1);
 				}
@@ -13299,7 +13299,7 @@ public class Game extends GameShell {
 					pktType = -1;
 					return true;
 				} else {
-					ItemDef itemDef = ItemDef.forID(k18);
+					ItemDefinition itemDef = ItemDefinition.forID(k18);
 					RSInterface.interfaceCache[i6].anInt233 = 4;
 					RSInterface.interfaceCache[i6].mediaID = k18;
 					RSInterface.interfaceCache[i6].modelRotation1 = itemDef.modelRotationY;

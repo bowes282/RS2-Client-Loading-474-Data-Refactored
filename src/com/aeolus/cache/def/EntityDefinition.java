@@ -7,15 +7,15 @@ import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 
-public final class EntityDef {
+public final class EntityDefinition {
 
-	public static EntityDef forID(int i) {
+	public static EntityDefinition forID(int i) {
 		for (int j = 0; j < 20; j++)
 			if (cache[j].interfaceType == (long) i)
 				return cache[j];
 
 		anInt56 = (anInt56 + 1) % 20;
-		EntityDef entityDef = cache[anInt56] = new EntityDef();
+		EntityDefinition entityDef = cache[anInt56] = new EntityDefinition();
 		stream.currentOffset = streamIndices[i];
 		entityDef.interfaceType = i;
 		entityDef.readValues(stream);
@@ -24,7 +24,7 @@ public final class EntityDef {
 
 	public Model method160() {
 		if (childrenIDs != null) {
-			EntityDef entityDef = method161();
+			EntityDefinition entityDef = method161();
 			if (entityDef == null)
 				return null;
 			else
@@ -57,7 +57,7 @@ public final class EntityDef {
 		return model;
 	}
 
-	public EntityDef method161() {
+	public EntityDefinition method161() {
 		int j = -1;
 		if (varBitID != -1) {
 			VarBit varBit = VarBit.cache[varBitID];
@@ -85,11 +85,11 @@ public final class EntityDef {
 			i += stream2.getUnsignedLEShort();
 		}
 
-		cache = new EntityDef[20];
+		cache = new EntityDefinition[20];
 		for (int k = 0; k < 20; k++)
-			cache[k] = new EntityDef();
+			cache[k] = new EntityDefinition();
 		for (int index = 0; index < totalNPCs; index++) {
-			EntityDef ed = forID(index);
+			EntityDefinition ed = forID(index);
 			if (ed == null)
 				continue;
 			if (ed.name == null)
@@ -108,7 +108,7 @@ public final class EntityDef {
 	
 	public Model method164(int j, int frame, int ai[], int nextFrame, int idk, int idk2) {
 		if (childrenIDs != null) {
-			EntityDef entityDef = method161();
+			EntityDefinition entityDef = method161();
 			if (entityDef == null)
 				return null;
 			else
@@ -163,7 +163,7 @@ public final class EntityDef {
 
 	public Model method164(int j, int k, int ai[]) {
 		if (childrenIDs != null) {
-			EntityDef entityDef = method161();
+			EntityDefinition entityDef = method161();
 			if (entityDef == null)
 				return null;
 			else
@@ -304,7 +304,7 @@ public final class EntityDef {
 		} while (true);
 	}
 
-	public EntityDef() {
+	public EntityDefinition() {
 		turn90CCWAnimIndex = -1;
 		varBitID = -1;
 		turn180AnimIndex = -1;
@@ -345,7 +345,7 @@ public final class EntityDef {
 	public int standAnim;
 	public long interfaceType;
 	public int degreesToTurn;
-	public static EntityDef[] cache;
+	public static EntityDefinition[] cache;
 	public static Game clientInstance;
 	public int turn90CWAnimIndex;
 	public boolean clickable;

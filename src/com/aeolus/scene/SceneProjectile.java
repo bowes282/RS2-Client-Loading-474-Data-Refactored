@@ -1,5 +1,5 @@
 package com.aeolus.scene;
-import com.aeolus.cache.def.SpotAnim;
+import com.aeolus.cache.def.SpotAnimation;
 import com.aeolus.cache.media.SequenceFrame;
 import com.aeolus.media.renderable.Renderable;
 import com.aeolus.media.renderable.Model;
@@ -24,7 +24,7 @@ public final class SceneProjectile extends Renderable {
 	private final int anInt1588;
 	private final int anInt1589;
 	public final int anInt1590;
-	private final SpotAnim aSpotAnim_1592;
+	private final SpotAnimation aSpotAnim_1592;
 	private int anInt1593;
 	private int anInt1594;
 	public int anInt1595;
@@ -76,7 +76,7 @@ public final class SceneProjectile extends Renderable {
 
 	public SceneProjectile(int i, int j, int l, int i1, int j1, int k1,  int l1, int i2, int j2, int k2, int l2) {
 		aBoolean1579 = false;
-		aSpotAnim_1592 = SpotAnim.cache[l2];
+		aSpotAnim_1592 = SpotAnimation.cache[l2];
 		anInt1597 = k1;
 		anInt1580 = j2;
 		anInt1581 = i2;

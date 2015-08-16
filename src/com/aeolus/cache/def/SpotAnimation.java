@@ -5,16 +5,16 @@ import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 
-public final class SpotAnim {
+public final class SpotAnimation {
 
 	public static void unpackConfig(CacheArchive streamLoader) {
 		Buffer stream = new Buffer(streamLoader.getDataForName("spotanim.dat"));
 		int length = stream.getUnsignedLEShort();
 		if (cache == null)
-			cache = new SpotAnim[length];
+			cache = new SpotAnimation[length];
 		for (int j = 0; j < length; j++) {
 			if (cache[j] == null)
-				cache[j] = new SpotAnim();
+				cache[j] = new SpotAnimation();
 			cache[j].anInt404 = j;
 			cache[j].readValues(stream);
 		}
@@ -69,7 +69,7 @@ public final class SpotAnim {
 		return model;
 	}
 
-	private SpotAnim() {
+	private SpotAnimation() {
 		anInt406 = -1;
 		anIntArray408 = new int[6];
 		anIntArray409 = new int[6];
@@ -77,7 +77,7 @@ public final class SpotAnim {
 		anInt411 = 128;
 	}
 
-	public static SpotAnim cache[];
+	public static SpotAnimation cache[];
 	private int anInt404;
 	private int anInt405;
 	private int anInt406;

@@ -1,6 +1,6 @@
 package com.aeolus.media.renderable.entity;
-import com.aeolus.cache.def.EntityDef;
-import com.aeolus.cache.def.SpotAnim;
+import com.aeolus.cache.def.EntityDefinition;
+import com.aeolus.cache.def.SpotAnimation;
 import com.aeolus.cache.media.SequenceFrame;
 import com.aeolus.media.Animation;
 import com.aeolus.media.renderable.Model;
@@ -38,7 +38,7 @@ public final class Npc extends Entity
 		super.height = model.modelHeight;
 		if(super.anInt1520 != -1 && super.anInt1521 != -1)
 		{
-			SpotAnim spotAnim = SpotAnim.cache[super.anInt1520];
+			SpotAnimation spotAnim = SpotAnimation.cache[super.anInt1520];
 			Model model_1 = spotAnim.getModel();
 			if(model_1 != null)
 			{
@@ -72,5 +72,5 @@ public final class Npc extends Entity
 	{
 	}
 
-	public EntityDef desc;
+	public EntityDefinition desc;
 }
