@@ -66,8 +66,8 @@ public final class EntityDef {
 			int i1 = varBit.anInt650;
 			int j1 = Game.anIntArray1232[i1 - l];
 			j = clientInstance.variousSettings[k] >> l & j1;
-		} else if (anInt59 != -1)
-			j = clientInstance.variousSettings[anInt59];
+		} else if (settingId != -1)
+			j = clientInstance.variousSettings[settingId];
 		if (j < 0 || j >= childrenIDs.length || childrenIDs[j] == -1)
 			return null;
 		else
@@ -77,12 +77,12 @@ public final class EntityDef {
 	public static void unpackConfig(CacheArchive streamLoader) {
 		stream = new Buffer(streamLoader.getDataForName("npc.dat"));
 		Buffer stream2 = new Buffer(streamLoader.getDataForName("npc.idx"));
-		int totalNPCs = stream2.readUnsignedWord();
+		int totalNPCs = stream2.getUnsignedLEShort();
 		streamIndices = new int[totalNPCs];
 		int i = 2;
 		for (int j = 0; j < totalNPCs; j++) {
 			streamIndices[j] = i;
-			i += stream2.readUnsignedWord();
+			i += stream2.getUnsignedLEShort();
 		}
 
 		cache = new EntityDef[20];
@@ -215,91 +215,91 @@ public final class EntityDef {
 
 	public void readValues(Buffer stream) {
 		do {
-			int i = stream.readUnsignedByte();
-			if (i == 0)
+			int attributeType = stream.readUnsignedByte();
+			if (attributeType == 0)
 				return;
-			if (i == 1) {
+			if (attributeType == 1) {
 				int j = stream.readUnsignedByte();
 				npcModels = new int[j];
 				for (int j1 = 0; j1 < j; j1++)
-					npcModels[j1] = stream.readUnsignedWord();
+					npcModels[j1] = stream.getUnsignedLEShort();
 
-			} else if (i == 2)
+			} else if (attributeType == 2)
 				name = stream.readNewString();
-			else if (i == 3)
+			else if (attributeType == 3)
 				description = stream.readBytes();
-			else if (i == 12)
+			else if (attributeType == 12)
 				boundDim = stream.readSignedByte();
-			else if (i == 13)
-				standAnim = stream.readUnsignedWord();
-			else if (i == 14)
-				walkAnim = stream.readUnsignedWord();
-			else if (i == 17) {
-				walkAnim = stream.readUnsignedWord();
-				turn180AnimIndex = stream.readUnsignedWord();
-				turn90CWAnimIndex = stream.readUnsignedWord();
-				turn90CCWAnimIndex = stream.readUnsignedWord();
-			} else if (i >= 30 && i < 40) {
+			else if (attributeType == 13)
+				standAnim = stream.getUnsignedLEShort();
+			else if (attributeType == 14)
+				walkAnim = stream.getUnsignedLEShort();
+			else if (attributeType == 17) {
+				walkAnim = stream.getUnsignedLEShort();
+				turn180AnimIndex = stream.getUnsignedLEShort();
+				turn90CWAnimIndex = stream.getUnsignedLEShort();
+				turn90CCWAnimIndex = stream.getUnsignedLEShort();
+			} else if (attributeType >= 30 && attributeType < 40) {
 				if (actions == null)
 					actions = new String[5];
-				actions[i - 30] = stream.readNewString();
-				if (actions[i - 30].equalsIgnoreCase("hidden"))
-					actions[i - 30] = null;
-			} else if (i == 40) {
+				actions[attributeType - 30] = stream.readNewString();
+				if (actions[attributeType - 30].equalsIgnoreCase("hidden"))
+					actions[attributeType - 30] = null;
+			} else if (attributeType == 40) {
 				int colours = stream.readUnsignedByte();
 				recolourOriginal = new int[colours];
 				recolourTarget = new int[colours];
 				for (int k1 = 0; k1 < colours; k1++) {
-					recolourOriginal[k1] = stream.readUnsignedWord();
-					recolourTarget[k1] = stream.readUnsignedWord();
+					recolourOriginal[k1] = stream.getUnsignedLEShort();
+					recolourTarget[k1] = stream.getUnsignedLEShort();
 				}
 
-			} else if (i == 60) {
+			} else if (attributeType == 60) {
 				int additionalModelLen = stream.readUnsignedByte();
 				aditionalModels = new int[additionalModelLen];
 				for (int l1 = 0; l1 < additionalModelLen; l1++)
-					aditionalModels[l1] = stream.readUnsignedWord();
+					aditionalModels[l1] = stream.getUnsignedLEShort();
 
-			} else if (i == 90)
-				stream.readUnsignedWord();
-			else if (i == 91)
-				stream.readUnsignedWord();
-			else if (i == 92)
-				stream.readUnsignedWord();
-			else if (i == 93)
+			} else if (attributeType == 90)
+				stream.getUnsignedLEShort();
+			else if (attributeType == 91)
+				stream.getUnsignedLEShort();
+			else if (attributeType == 92)
+				stream.getUnsignedLEShort();
+			else if (attributeType == 93)
 				drawMinimapDot = false;
-			else if (i == 95)
-				combatLevel = stream.readUnsignedWord();
-			else if (i == 97)
-				scaleXZ = stream.readUnsignedWord();
-			else if (i == 98)
-				scaleY = stream.readUnsignedWord();
-			else if (i == 99)
+			else if (attributeType == 95)
+				combatLevel = stream.getUnsignedLEShort();
+			else if (attributeType == 97)
+				scaleXZ = stream.getUnsignedLEShort();
+			else if (attributeType == 98)
+				scaleY = stream.getUnsignedLEShort();
+			else if (attributeType == 99)
 				aBoolean93 = true;
-			else if (i == 100)
+			else if (attributeType == 100)
 				lightModifier = stream.readSignedByte();
-			else if (i == 101)
+			else if (attributeType == 101)
 				shadowModifier = stream.readSignedByte() * 5;
-			else if (i == 102)
-				headIcon = stream.readUnsignedWord();
-			else if (i == 103)
-				degreesToTurn = stream.readUnsignedWord();
-			else if (i == 106) {
-				varBitID = stream.readUnsignedWord();
+			else if (attributeType == 102)
+				headIcon = stream.getUnsignedLEShort();
+			else if (attributeType == 103)
+				degreesToTurn = stream.getUnsignedLEShort();
+			else if (attributeType == 106) {
+				varBitID = stream.getUnsignedLEShort();
 				if (varBitID == 65535)
 					varBitID = -1;
-				anInt59 = stream.readUnsignedWord();
-				if (anInt59 == 65535)
-					anInt59 = -1;
-				int i1 = stream.readUnsignedByte();
-				childrenIDs = new int[i1 + 1];
-				for (int i2 = 0; i2 <= i1; i2++) {
-					childrenIDs[i2] = stream.readUnsignedWord();
+				settingId = stream.getUnsignedLEShort();
+				if (settingId == 65535)
+					settingId = -1;
+				int childCount = stream.readUnsignedByte();
+				childrenIDs = new int[childCount + 1];
+				for (int i2 = 0; i2 <= childCount; i2++) {
+					childrenIDs[i2] = stream.getUnsignedLEShort();
 					if (childrenIDs[i2] == 65535)
 						childrenIDs[i2] = -1;
 				}
 
-			} else if (i == 107)
+			} else if (attributeType == 107)
 				clickable = false;
 		} while (true);
 	}
@@ -308,7 +308,7 @@ public final class EntityDef {
 		turn90CCWAnimIndex = -1;
 		varBitID = -1;
 		turn180AnimIndex = -1;
-		anInt59 = -1;
+		settingId = -1;
 		combatLevel = -1;
 		anInt64 = 1834;
 		walkAnim = -1;
@@ -329,7 +329,7 @@ public final class EntityDef {
 	public static int anInt56;
 	public int varBitID;
 	public int turn180AnimIndex;
-	public int anInt59;
+	public int settingId;
 	public static Buffer stream;
 	public int combatLevel;
 	public final int anInt64;

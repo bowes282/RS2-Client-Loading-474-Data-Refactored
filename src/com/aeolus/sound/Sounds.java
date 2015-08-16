@@ -19,7 +19,7 @@ public final class Sounds {
 		SoundSample.method166();
 		do
 		{
-			int j = stream.readUnsignedWord();
+			int j = stream.getUnsignedLEShort();
 			if(j == 65535)
 				return;
 			aSoundsArray325s[j] = new Sounds();
@@ -52,8 +52,8 @@ public final class Sounds {
 				aClass6Array329[i].method169(stream);
 			}
 		}
-		anInt330 = stream.readUnsignedWord();
-		anInt331 = stream.readUnsignedWord();
+		anInt330 = stream.getUnsignedLEShort();
+		anInt331 = stream.getUnsignedLEShort();
 	}
 
 	private int method243()

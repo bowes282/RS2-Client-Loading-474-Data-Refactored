@@ -36,7 +36,7 @@ public final class Animation {
 
     public static void unpackConfig(CacheArchive streamLoader)  {
 		Buffer stream = new Buffer(streamLoader.getDataForName("seq.dat"));
-        int length = stream.readUnsignedWord();
+        int length = stream.getUnsignedLEShort();
         if(anims == null) {
             anims = new Animation[length + 5000];
         }
@@ -170,22 +170,22 @@ public final class Animation {
 				break;
 			}
 			if (i == 1) {
-				anInt352 = stream.readUnsignedWord();
+				anInt352 = stream.getUnsignedLEShort();
 				anIntArray353 = new int[anInt352];
 				anIntArray354 = new int[anInt352];
 				anIntArray355 = new int[anInt352];
 				for (int j = 0; j < anInt352; j++) {
-					anIntArray355[j] = stream.readUnsignedWord();
+					anIntArray355[j] = stream.getUnsignedLEShort();
 					anIntArray354[j] = -1;
 				}
 				for (int j = 0; j < anInt352; j++) {
-					anIntArray353[j] = stream.readUnsignedWord();
+					anIntArray353[j] = stream.getUnsignedLEShort();
 				}
 				for (int i1 = 0; i1 < anInt352; i1++) {
-					anIntArray353[i1] = (stream.readUnsignedWord() << 16) + anIntArray353[i1];
+					anIntArray353[i1] = (stream.getUnsignedLEShort() << 16) + anIntArray353[i1];
 				}
 			} else if (i == 2) {
-				anInt356 = stream.readUnsignedWord();
+				anInt356 = stream.getUnsignedLEShort();
 			} else if (i == 3) {
 				int k = stream.readUnsignedByte();
 				anIntArray357 = new int[k + 1];
@@ -198,9 +198,9 @@ public final class Animation {
 			} else if (i == 5) {
 				anInt359 = stream.readUnsignedByte();
 			} else if (i == 6) {
-				anInt360 = stream.readUnsignedWord();
+				anInt360 = stream.getUnsignedLEShort();
 			} else if (i == 7) {
-				anInt361 = stream.readUnsignedWord();
+				anInt361 = stream.getUnsignedLEShort();
 			} else if (i == 8) {
 				anInt362 = stream.readUnsignedByte();
 			} else if (i == 9) {

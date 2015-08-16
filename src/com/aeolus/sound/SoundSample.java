@@ -260,8 +260,8 @@ final class SoundSample
 
 		anInt109 = stream.method422();
 		anInt110 = stream.method422();
-		anInt113 = stream.readUnsignedWord();
-		anInt114 = stream.readUnsignedWord();
+		anInt113 = stream.getUnsignedLEShort();
+		anInt114 = stream.getUnsignedLEShort();
 		aClass39_111 = new SoundFilter();
 		aClass29_112 = new SoundEnvelope();
 		aClass39_111.method545(stream, aClass29_112);
