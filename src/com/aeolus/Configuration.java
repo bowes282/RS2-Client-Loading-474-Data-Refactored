@@ -86,7 +86,7 @@ public class Configuration {
 	/**
 	 * Enables the use of run energy
 	 */
-	public static boolean runEnergy = false;
+	public static boolean runEnergy = true;
 	
 	/**
 	 * Displays health above entities heads

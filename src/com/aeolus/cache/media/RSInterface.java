@@ -26,6 +26,7 @@ public final class RSInterface {
 		int i = -1;
 		stream.readUnsignedWord();
 		interfaceCache = new RSInterface[31000];
+		
 		while (stream.currentOffset < stream.buffer.length) {
 			int k = stream.readUnsignedWord();
 			if (k == 65535) {
@@ -131,7 +132,7 @@ public final class RSInterface {
 			if (rsInterface.type == 4) {
 				rsInterface.message = stream.readString().replaceAll("RuneScape", "Project Aeolus");
 				rsInterface.aString228 = stream.readString();
-				//System.out.println(k + " - " + rsInterface.message + " : " + rsInterface.aString228);
+				//System.out.println("Id: " + rsInterface.id + " - " + rsInterface.message + " : " + rsInterface.aString228 + "\r\n");
 			}
 			if (rsInterface.type == 1 || rsInterface.type == 3 || rsInterface.type == 4)
 				rsInterface.textColor = stream.readDWord();

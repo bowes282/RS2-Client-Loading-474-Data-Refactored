@@ -94,6 +94,8 @@ public final class EntityDef {
 				continue;
 			if (ed.name == null)
 				continue;
+			//System.out.println("NpcId: " + index + " Name: " + ed.name + " Combat: " + ed.combatLevel + " HP: " + 0);
+			
 		}
 	}
 
@@ -298,7 +300,7 @@ public final class EntityDef {
 				}
 
 			} else if (i == 107)
-				aBoolean84 = false;
+				clickable = false;
 		} while (true);
 	}
 
@@ -316,7 +318,7 @@ public final class EntityDef {
 		interfaceType = -1L;
 		degreesToTurn = 32;
 		turn90CWAnimIndex = -1;
-		aBoolean84 = true;
+		clickable = true;
 		scaleY = 128;
 		drawMinimapDot = true;
 		scaleXZ = 128;
@@ -346,7 +348,7 @@ public final class EntityDef {
 	public static EntityDef[] cache;
 	public static Game clientInstance;
 	public int turn90CWAnimIndex;
-	public boolean aBoolean84;
+	public boolean clickable;
 	public int lightModifier;
 	public int scaleY;
 	public boolean drawMinimapDot;

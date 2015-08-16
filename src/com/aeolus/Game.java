@@ -1355,9 +1355,9 @@ public class Game extends GameShell {
 					if (j3 >= 0) {
 						int k3 = k2;
 						int l3 = l2;
-						aClass30_Sub2_Sub1_Sub1Array1140[anInt1071] = mapFunctions[j3];
-						anIntArray1072[anInt1071] = k3;
-						anIntArray1073[anInt1071] = l3;
+						minimapHint[anInt1071] = mapFunctions[j3];
+						minimapHintX[anInt1071] = k3;
+						minimapHintY[anInt1071] = l3;
 						anInt1071++;
 					}
 				}
@@ -1411,7 +1411,7 @@ public class Game extends GameShell {
 
 	private void showNPCs(boolean flag) {
 		for (int j = 0; j < npcCount; j++) {
-			Npc npc = npcArray[npcIndices[j]];
+			Npc npc = npcs[npcIndices[j]];
 			int k = 0x20000000 + (npcIndices[j] << 14);
 			if (npc == null || !npc.isVisible() || npc.desc.aBoolean93 != flag)
 				continue;
@@ -1425,7 +1425,7 @@ public class Game extends GameShell {
 					continue;
 				anIntArrayArray929[l][i1] = anInt1265;
 			}
-			if (!npc.desc.aBoolean84)
+			if (!npc.desc.clickable)
 				k += 0x80000000;
 			worldController
 					.method285(plane, npc.anInt1552,
@@ -1872,9 +1872,9 @@ public class Game extends GameShell {
 		npcUpdateMask(stream);
 		for (int k = 0; k < anInt839; k++) {
 			int l = anIntArray840[k];
-			if (npcArray[l].anInt1537 != loopCycle) {
-				npcArray[l].desc = null;
-				npcArray[l] = null;
+			if (npcs[l].anInt1537 != loopCycle) {
+				npcs[l].desc = null;
+				npcs[l] = null;
 			}
 		}
 
@@ -1885,7 +1885,7 @@ public class Game extends GameShell {
 			throw new RuntimeException("eek");
 		}
 		for (int i1 = 0; i1 < npcCount; i1++)
-			if (npcArray[npcIndices[i1]] == null) {
+			if (npcs[npcIndices[i1]] == null) {
 				Signlink.reporterror(myUsername
 						+ " null entry in npc list - pos:" + i1 + " size:"
 						+ npcCount);
@@ -2173,9 +2173,9 @@ public class Game extends GameShell {
 				if (j == -1)
 					obj = myPlayer;
 				else if (j < playerCount)
-					obj = playerArray[playerIndices[j]];
+					obj = players[playerIndices[j]];
 				else
-					obj = npcArray[npcIndices[j - playerCount]];
+					obj = npcs[npcIndices[j - playerCount]];
 				if (obj == null || !((Entity) (obj)).isVisible())
 					continue;
 				if (obj instanceof Npc) {
@@ -2212,8 +2212,8 @@ public class Game extends GameShell {
 							}
 						}
 					}
-					if (j >= 0 && anInt855 == 10
-							&& anInt933 == playerIndices[j]) {
+					if (j >= 0 && hintIconType == 10
+							&& hintIconPlayerId == playerIndices[j]) {
 						npcScreenPos(((Entity) (obj)),
 								((Entity) (obj)).height + 15);
 						if (spriteDrawX > -1)
@@ -2265,8 +2265,8 @@ public class Game extends GameShell {
 							headIcons[entityDef_1.headIcon].drawSprite(
 									spriteDrawX - 12, spriteDrawY - 30);
 					}
-					if (anInt855 == 1
-							&& anInt1222 == npcIndices[j - playerCount]
+					if (hintIconType == 1
+							&& hintIconNpcId == npcIndices[j - playerCount]
 							&& loopCycle % 20 < 10) {
 						npcScreenPos(((Entity) (obj)),
 								((Entity) (obj)).height + 15);
@@ -2810,7 +2810,7 @@ public class Game extends GameShell {
 				j = myPlayerIndex;
 			else
 				j = playerIndices[i];
-			Player player = playerArray[j];
+			Player player = players[j];
 			if (player != null && player.textCycle > 0) {
 				player.textCycle--;
 				if (player.textCycle == 0)
@@ -2819,7 +2819,7 @@ public class Game extends GameShell {
 		}
 		for (int k = 0; k < npcCount; k++) {
 			int l = npcIndices[k];
-			Npc npc = npcArray[l];
+			Npc npc = npcs[l];
 			if (npc != null && npc.textCycle > 0) {
 				npc.textCycle--;
 				if (npc.textCycle == 0)
@@ -3051,9 +3051,9 @@ public class Game extends GameShell {
 			int k = stream.readBits(14);
 			if (k == 16383)
 				break;
-			if (npcArray[k] == null)
-				npcArray[k] = new Npc();
-			Npc npc = npcArray[k];
+			if (npcs[k] == null)
+				npcs[k] = new Npc();
+			Npc npc = npcs[k];
 			npcIndices[npcCount++] = k;
 			npc.anInt1537 = loopCycle;
 			int l = stream.readBits(5);
@@ -3091,8 +3091,8 @@ public class Game extends GameShell {
 	}
 
 	private void showOtherPlayers(boolean flag) {
-		if (myPlayer.x >> 7 == destX && myPlayer.y >> 7 == destY)
-			destX = 0;
+		if (myPlayer.x >> 7 == destinationX && myPlayer.y >> 7 == destY)
+			destinationX = 0;
 		int j = playerCount;
 		if (flag)
 			j = 1;
@@ -3103,7 +3103,7 @@ public class Game extends GameShell {
 				player = myPlayer;
 				i1 = myPlayerIndex << 14;
 			} else {
-				player = playerArray[playerIndices[l]];
+				player = players[playerIndices[l]];
 				i1 = playerIndices[l] << 14;
 			}
 			if (player == null || !player.isVisible())
@@ -3248,7 +3248,7 @@ public class Game extends GameShell {
 	private void refreshUpdateMasks(Buffer stream) {
 		for (int j = 0; j < anInt893; j++) {
 			int k = anIntArray894[j];
-			Player player = playerArray[k];
+			Player player = players[k];
 			int l = stream.readUnsignedByte();
 			if ((l & 0x40) != 0)
 				l += stream.readUnsignedByte() << 8;
@@ -3558,7 +3558,7 @@ public class Game extends GameShell {
 				class30_sub2_sub4_sub4.unlink();
 			else if (loopCycle >= class30_sub2_sub4_sub4.anInt1571) {
 				if (class30_sub2_sub4_sub4.anInt1590 > 0) {
-					Npc npc = npcArray[class30_sub2_sub4_sub4.anInt1590 - 1];
+					Npc npc = npcs[class30_sub2_sub4_sub4.anInt1590 - 1];
 					if (npc != null && npc.x >= 0 && npc.x < 13312
 							&& npc.y >= 0 && npc.y < 13312)
 						class30_sub2_sub4_sub4.method455(
@@ -3575,7 +3575,7 @@ public class Game extends GameShell {
 					if (j == unknownInt10)
 						player = myPlayer;
 					else
-						player = playerArray[j];
+						player = players[j];
 					if (player != null && player.x >= 0 && player.x < 13312
 							&& player.y >= 0 && player.y < 13312)
 						class30_sub2_sub4_sub4.method455(
@@ -3781,10 +3781,10 @@ public class Game extends GameShell {
 	}
 
 	private void drawHeadIcon() {
-		if (anInt855 != 2)
+		if (hintIconType != 2)
 			return;
-		calcEntityScreenPos((anInt934 - baseX << 7) + anInt937, anInt936 * 2,
-				(anInt935 - baseY << 7) + anInt938);
+		calcEntityScreenPos((hintIconX - baseX << 7) + anInt937, anInt936 * 2,
+				(hintIconY - baseY << 7) + anInt938);
 		if (spriteDrawX > -1 && loopCycle % 20 < 10)
 			headIconsHint[0].drawSprite(spriteDrawX - 12, spriteDrawY - 28);
 	}
@@ -3907,7 +3907,7 @@ public class Game extends GameShell {
 			aBoolean1017 = false;
 			stream.createFrame(86);
 			stream.writeWord(anInt1184);
-			stream.method432(minimapInt1);
+			stream.method432(cameraHorizontal);
 		}
 		if (super.awtFocus && !aBoolean954) {
 			aBoolean954 = true;
@@ -4088,7 +4088,7 @@ public class Game extends GameShell {
 			return;
 		super.fullGameScreen = null;
 		aRSImageProducer_1166 = null;
-		aRSImageProducer_1164 = null;
+		minimapImageProducer = null;
 		aRSImageProducer_1163 = null;
 		aRSImageProducer_1165 = null;
 		aRSImageProducer_1125 = null;
@@ -4441,8 +4441,8 @@ public class Game extends GameShell {
 				"Please wait - attempting to reestablish.", 34, 116);
 		aRSImageProducer_1165.drawGraphics(frameMode == ScreenMode.FIXED ? 4
 				: 0, super.graphics, frameMode == ScreenMode.FIXED ? 4 : 0);
-		anInt1021 = 0;
-		destX = 0;
+		minimapState = 0;
+		destinationX = 0;
 		RSSocket rsSocket = socketStream;
 		loggedIn = false;
 		loginFailures = 0;
@@ -4459,9 +4459,9 @@ public class Game extends GameShell {
 		anInt1278 = 0;
 		anInt1131 = 0;
 		anInt896 = 0;
-		minimapInt1 = 0;
-		minimapInt2 = 0;
-		minimapInt3 = 0;
+		cameraHorizontal = 0;
+		minimapRotation = 0;
+		minimapZoom = 0;
 	}
 
 	private void doAction(int i) {
@@ -4534,7 +4534,7 @@ public class Game extends GameShell {
 			}
 		}
 		if (l == 582) {
-			Npc npc = npcArray[i1];
+			Npc npc = npcs[i1];
 			if (npc != null) {
 				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0, npc.smallY[0],
 						myPlayer.smallX[0], false, npc.smallX[0]);
@@ -4627,7 +4627,7 @@ public class Game extends GameShell {
 			}
 		}
 		if (l == 561) {
-			Player player = playerArray[i1];
+			Player player = players[i1];
 			if (player != null) {
 				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0,
 						player.smallY[0], myPlayer.smallX[0], false,
@@ -4646,7 +4646,7 @@ public class Game extends GameShell {
 			}
 		}
 		if (l == 20) {
-			Npc class30_sub2_sub4_sub1_sub1_1 = npcArray[i1];
+			Npc class30_sub2_sub4_sub1_sub1_1 = npcs[i1];
 			if (class30_sub2_sub4_sub1_sub1_1 != null) {
 				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub1_1.smallY[0],
@@ -4661,7 +4661,7 @@ public class Game extends GameShell {
 			}
 		}
 		if (l == 779) {
-			Player class30_sub2_sub4_sub1_sub2_1 = playerArray[i1];
+			Player class30_sub2_sub4_sub1_sub2_1 = players[i1];
 			if (class30_sub2_sub4_sub1_sub2_1 != null) {
 				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub2_1.smallY[0],
@@ -4765,7 +4765,7 @@ public class Game extends GameShell {
 						.longForName(s1)));
 				boolean flag9 = false;
 				for (int j3 = 0; j3 < playerCount; j3++) {
-					Player class30_sub2_sub4_sub1_sub2_7 = playerArray[playerIndices[j3]];
+					Player class30_sub2_sub4_sub1_sub2_7 = players[playerIndices[j3]];
 					if (class30_sub2_sub4_sub1_sub2_7 == null
 							|| class30_sub2_sub4_sub1_sub2_7.name == null
 							|| !class30_sub2_sub4_sub1_sub2_7.name
@@ -4866,7 +4866,7 @@ public class Game extends GameShell {
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 27) {
-			Player class30_sub2_sub4_sub1_sub2_2 = playerArray[i1];
+			Player class30_sub2_sub4_sub1_sub2_2 = players[i1];
 			if (class30_sub2_sub4_sub1_sub2_2 != null) {
 				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub2_2.smallY[0],
@@ -5085,7 +5085,7 @@ public class Game extends GameShell {
 			}
 		}
 		if (l == 225) {
-			Npc class30_sub2_sub4_sub1_sub1_2 = npcArray[i1];
+			Npc class30_sub2_sub4_sub1_sub1_2 = npcs[i1];
 			if (class30_sub2_sub4_sub1_sub1_2 != null) {
 				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub1_2.smallY[0],
@@ -5106,7 +5106,7 @@ public class Game extends GameShell {
 			}
 		}
 		if (l == 965) {
-			Npc class30_sub2_sub4_sub1_sub1_3 = npcArray[i1];
+			Npc class30_sub2_sub4_sub1_sub1_3 = npcs[i1];
 			if (class30_sub2_sub4_sub1_sub1_3 != null) {
 				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub1_3.smallY[0],
@@ -5127,7 +5127,7 @@ public class Game extends GameShell {
 			}
 		}
 		if (l == 413) {
-			Npc class30_sub2_sub4_sub1_sub1_4 = npcArray[i1];
+			Npc class30_sub2_sub4_sub1_sub1_4 = npcs[i1];
 			if (class30_sub2_sub4_sub1_sub1_4 != null) {
 				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub1_4.smallY[0],
@@ -5145,7 +5145,7 @@ public class Game extends GameShell {
 		if (l == 200)
 			clearTopInterfaces();
 		if (l == 1025) {
-			Npc class30_sub2_sub4_sub1_sub1_5 = npcArray[i1];
+			Npc class30_sub2_sub4_sub1_sub1_5 = npcs[i1];
 			if (class30_sub2_sub4_sub1_sub1_5 != null) {
 				EntityDef entityDef = class30_sub2_sub4_sub1_sub1_5.desc;
 				if (entityDef.childrenIDs != null)
@@ -5168,7 +5168,7 @@ public class Game extends GameShell {
 			stream.method432(j + baseX);
 		}
 		if (l == 412) {
-			Npc class30_sub2_sub4_sub1_sub1_6 = npcArray[i1];
+			Npc class30_sub2_sub4_sub1_sub1_6 = npcs[i1];
 			if (class30_sub2_sub4_sub1_sub1_6 != null) {
 				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub1_6.smallY[0],
@@ -5183,7 +5183,7 @@ public class Game extends GameShell {
 			}
 		}
 		if (l == 365) {
-			Player class30_sub2_sub4_sub1_sub2_3 = playerArray[i1];
+			Player class30_sub2_sub4_sub1_sub2_3 = players[i1];
 			if (class30_sub2_sub4_sub1_sub2_3 != null) {
 				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub2_3.smallY[0],
@@ -5199,7 +5199,7 @@ public class Game extends GameShell {
 			}
 		}
 		if (l == 729) {
-			Player class30_sub2_sub4_sub1_sub2_4 = playerArray[i1];
+			Player class30_sub2_sub4_sub1_sub2_4 = players[i1];
 			if (class30_sub2_sub4_sub1_sub2_4 != null) {
 				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub2_4.smallY[0],
@@ -5214,7 +5214,7 @@ public class Game extends GameShell {
 			}
 		}
 		if (l == 577) {
-			Player class30_sub2_sub4_sub1_sub2_5 = playerArray[i1];
+			Player class30_sub2_sub4_sub1_sub2_5 = players[i1];
 			if (class30_sub2_sub4_sub1_sub2_5 != null) {
 				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub2_5.smallY[0],
@@ -5309,7 +5309,7 @@ public class Game extends GameShell {
 				}
 		}
 		if (l == 491) {
-			Player class30_sub2_sub4_sub1_sub2_6 = playerArray[i1];
+			Player class30_sub2_sub4_sub1_sub2_6 = players[i1];
 			if (class30_sub2_sub4_sub1_sub2_6 != null) {
 				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub2_6.smallY[0],
@@ -5365,7 +5365,7 @@ public class Game extends GameShell {
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 478) {
-			Npc class30_sub2_sub4_sub1_sub1_7 = npcArray[i1];
+			Npc class30_sub2_sub4_sub1_sub1_7 = npcs[i1];
 			if (class30_sub2_sub4_sub1_sub1_7 != null) {
 				doWalkTo(2, 0, 1, 0, myPlayer.smallY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub1_7.smallY[0],
@@ -5582,12 +5582,12 @@ public class Game extends GameShell {
 				}
 			}
 			if (k1 == 1) {
-				Npc npc = npcArray[l1];
+				Npc npc = npcs[l1];
 				try {
 					if (npc.desc.boundDim == 1 && (npc.x & 0x7f) == 64
 							&& (npc.y & 0x7f) == 64) {
 						for (int j2 = 0; j2 < npcCount; j2++) {
-							Npc npc2 = npcArray[npcIndices[j2]];
+							Npc npc2 = npcs[npcIndices[j2]];
 							if (npc2 != null && npc2 != npc
 									&& npc2.desc.boundDim == 1
 									&& npc2.x == npc.x && npc2.y == npc.y)
@@ -5595,7 +5595,7 @@ public class Game extends GameShell {
 										i1);
 						}
 						for (int l2 = 0; l2 < playerCount; l2++) {
-							Player player = playerArray[playerIndices[l2]];
+							Player player = players[playerIndices[l2]];
 							if (player != null && player.x == npc.x
 									&& player.y == npc.y)
 								buildAtPlayerMenu(i1, playerIndices[l2],
@@ -5607,10 +5607,10 @@ public class Game extends GameShell {
 				}
 			}
 			if (k1 == 0) {
-				Player player = playerArray[l1];
+				Player player = players[l1];
 				if ((player.x & 0x7f) == 64 && (player.y & 0x7f) == 64) {
 					for (int k2 = 0; k2 < npcCount; k2++) {
-						Npc class30_sub2_sub4_sub1_sub1_2 = npcArray[npcIndices[k2]];
+						Npc class30_sub2_sub4_sub1_sub1_2 = npcs[npcIndices[k2]];
 						if (class30_sub2_sub4_sub1_sub1_2 != null
 								&& class30_sub2_sub4_sub1_sub1_2.desc.boundDim == 1
 								&& class30_sub2_sub4_sub1_sub1_2.x == player.x
@@ -5620,7 +5620,7 @@ public class Game extends GameShell {
 					}
 
 					for (int i3 = 0; i3 < playerCount; i3++) {
-						Player class30_sub2_sub4_sub1_sub2_2 = playerArray[playerIndices[i3]];
+						Player class30_sub2_sub4_sub1_sub2_2 = players[playerIndices[i3]];
 						if (class30_sub2_sub4_sub1_sub2_2 != null
 								&& class30_sub2_sub4_sub1_sub2_2 != player
 								&& class30_sub2_sub4_sub1_sub2_2.x == player.x
@@ -5737,7 +5737,7 @@ public class Game extends GameShell {
 		aRSImageProducer_1163 = null;
 		leftFrame = null;
 		topFrame = null;
-		aRSImageProducer_1164 = null;
+		minimapImageProducer = null;
 		aRSImageProducer_1165 = null;
 		aRSImageProducer_1166 = null;
 		aRSImageProducer_1125 = null;
@@ -5759,12 +5759,12 @@ public class Game extends GameShell {
 		mapScenes = null;
 		mapFunctions = null;
 		anIntArrayArray929 = null;
-		playerArray = null;
+		players = null;
 		playerIndices = null;
 		anIntArray894 = null;
 		aStreamArray895s = null;
 		anIntArray840 = null;
-		npcArray = null;
+		npcs = null;
 		npcIndices = null;
 		groundArray = null;
 		aClass19_1179 = null;
@@ -5776,9 +5776,9 @@ public class Game extends GameShell {
 		menuActionCmd1 = null;
 		menuActionName = null;
 		variousSettings = null;
-		anIntArray1072 = null;
-		anIntArray1073 = null;
-		aClass30_Sub2_Sub1_Sub1Array1140 = null;
+		minimapHintX = null;
+		minimapHintY = null;
+		minimapHint = null;
 		minimapImage = null;
 		friendsList = null;
 		friendsListAsLongs = null;
@@ -7569,7 +7569,7 @@ public class Game extends GameShell {
 		aRSImageProducer_1114 = null;
 		aRSImageProducer_1115 = null;
 		aRSImageProducer_1166 = new ImageProducer(519, 165);// chatback
-		aRSImageProducer_1164 = new ImageProducer(249, 168);// mapback
+		minimapImageProducer = new ImageProducer(249, 168);// mapback
 		DrawingArea.setAllPixelsToZero();
 		cacheSprite[19].drawSprite(0, 0);
 		aRSImageProducer_1163 = new ImageProducer(249, 335);// inventory
@@ -7582,11 +7582,11 @@ public class Game extends GameShell {
 	private void refreshMinimap(Sprite sprite, int j, int k) {
 		int l = k * k + j * j;
 		if (l > 4225 && l < 0x15f90) {
-			int i1 = minimapInt1 + minimapInt2 & 0x7ff;
-			int j1 = Model.modelIntArray1[i1];
-			int k1 = Model.modelIntArray2[i1];
-			j1 = (j1 * 256) / (minimapInt3 + 256);
-			k1 = (k1 * 256) / (minimapInt3 + 256);
+			int i1 = cameraHorizontal + minimapRotation & 0x7ff;
+			int j1 = Model.SINE[i1];
+			int k1 = Model.COSINE[i1];
+			j1 = (j1 * 256) / (minimapZoom + 256);
+			k1 = (k1 * 256) / (minimapZoom + 256);
 		} else {
 			markMinimap(sprite, k, j);
 		}
@@ -7901,7 +7901,7 @@ public class Game extends GameShell {
 				anInt1009 = 0;
 				time = 0;
 				anInt1011 = 0;
-				anInt855 = 0;
+				hintIconType = 0;
 				menuActionRow = 0;
 				menuOpen = false;
 				super.idleTime = 0;
@@ -7912,19 +7912,19 @@ public class Game extends GameShell {
 				loadingStage = 0;
 				anInt1062 = 0;
 				setNorth();
-				anInt1021 = 0;
+				minimapState = 0;
 				anInt985 = -1;
-				destX = 0;
+				destinationX = 0;
 				destY = 0;
 				playerCount = 0;
 				npcCount = 0;
 				for (int i2 = 0; i2 < maxPlayers; i2++) {
-					playerArray[i2] = null;
+					players[i2] = null;
 					aStreamArray895s[i2] = null;
 				}
 				for (int k2 = 0; k2 < 16384; k2++)
-					npcArray[k2] = null;
-				myPlayer = playerArray[myPlayerIndex] = new Player();
+					npcs[k2] = null;
+				myPlayer = players[myPlayerIndex] = new Player();
 				aClass19_1013.removeAll();
 				aClass19_1056.removeAll();
 				for (int l2 = 0; l2 < 4; l2++) {
@@ -8311,7 +8311,7 @@ public class Game extends GameShell {
 				stream.writeWordBigEndian(k4 + k4 + 3);
 			}
 			stream.method433(k6 + baseX);
-			destX = bigX[0];
+			destinationX = bigX[0];
 			destY = bigY[0];
 			for (int j7 = 1; j7 < k4; j7++) {
 				i4--;
@@ -8328,7 +8328,7 @@ public class Game extends GameShell {
 	private void npcUpdateMask(Buffer stream) {
 		for (int j = 0; j < anInt893; j++) {
 			int k = anIntArray894[j];
-			Npc npc = npcArray[k];
+			Npc npc = npcs[k];
 			int l = stream.readUnsignedByte();
 			if ((l & 0x10) != 0) {
 				int i1 = stream.method434();
@@ -8417,7 +8417,7 @@ public class Game extends GameShell {
 			entityDef = entityDef.method161();
 		if (entityDef == null)
 			return;
-		if (!entityDef.aBoolean84)
+		if (!entityDef.clickable)
 			return;
 		String s = entityDef.name;
 		if (entityDef.combatLevel != 0)
@@ -8823,8 +8823,8 @@ public class Game extends GameShell {
 					l7 = j8;
 					break;
 				}
-				anIntArray1052[l6 - 1] = j7 - 24;
-				anIntArray1229[l6 - 1] = l7 - j7;
+				minimapLeft[l6 - 1] = j7 - 24;
+				minimapLineWidth[l6 - 1] = l7 - j7;
 			}
 			setBounds();
 			Censor.loadConfig(streamLoader_4);
@@ -8846,13 +8846,13 @@ public class Game extends GameShell {
 			int j = stream.readBits(11);
 			if (j == 2047)
 				break;
-			if (playerArray[j] == null) {
-				playerArray[j] = new Player();
+			if (players[j] == null) {
+				players[j] = new Player();
 				if (aStreamArray895s[j] != null)
-					playerArray[j].updatePlayer(aStreamArray895s[j]);
+					players[j].updatePlayer(aStreamArray895s[j]);
 			}
 			playerIndices[playerCount++] = j;
-			Player player = playerArray[j];
+			Player player = players[j];
 			player.anInt1537 = loopCycle;
 			int k = stream.readBits(1);
 			if (k == 1)
@@ -8895,7 +8895,7 @@ public class Game extends GameShell {
 	}
 
 	private void processMainScreenClick() {
-		if (anInt1021 != 0)
+		if (minimapState != 0)
 			return;
 		if (super.clickMode3 == 1) {
 			int i = super.saveClickX - 25 - 547;
@@ -8907,11 +8907,11 @@ public class Game extends GameShell {
 			if (inCircle(0, 0, i, j, 76) && mouseMapPosition() && !runHover) {
 				i -= 73;
 				j -= 75;
-				int k = minimapInt1 + minimapInt2 & 0x7ff;
+				int k = cameraHorizontal + minimapRotation & 0x7ff;
 				int i1 = Texture.anIntArray1470[k];
 				int j1 = Texture.anIntArray1471[k];
-				i1 = i1 * (minimapInt3 + 256) >> 8;
-				j1 = j1 * (minimapInt3 + 256) >> 8;
+				i1 = i1 * (minimapZoom + 256) >> 8;
+				j1 = j1 * (minimapZoom + 256) >> 8;
 				int k1 = j * i1 + i * j1 >> 11;
 				int l1 = j * j1 - i * i1 >> 11;
 				int i2 = myPlayer.x + k1 >> 7;
@@ -8921,10 +8921,10 @@ public class Game extends GameShell {
 				if (flag1) {
 					stream.writeWordBigEndian(i);
 					stream.writeWordBigEndian(j);
-					stream.writeWord(minimapInt1);
+					stream.writeWord(cameraHorizontal);
 					stream.writeWordBigEndian(57);
-					stream.writeWordBigEndian(minimapInt2);
-					stream.writeWordBigEndian(minimapInt3);
+					stream.writeWordBigEndian(minimapRotation);
+					stream.writeWordBigEndian(minimapZoom);
 					stream.writeWordBigEndian(89);
 					stream.writeWord(myPlayer.x);
 					stream.writeWord(myPlayer.y);
@@ -9038,7 +9038,7 @@ public class Game extends GameShell {
 	private void forceNPCUpdateBlock() {
 		for (int j = 0; j < npcCount; j++) {
 			int k = npcIndices[j];
-			Npc npc = npcArray[k];
+			Npc npc = npcs[k];
 			if (npc != null)
 				entityUpdateBlock(npc);
 		}
@@ -9224,7 +9224,7 @@ public class Game extends GameShell {
 		if (entity.anInt1504 == 0)
 			return;
 		if (entity.interactingEntity != -1 && entity.interactingEntity < 32768) {
-			Npc npc = npcArray[entity.interactingEntity];
+			Npc npc = npcs[entity.interactingEntity];
 			if (npc != null) {
 				int i1 = entity.x - npc.x;
 				int k1 = entity.y - npc.y;
@@ -9236,7 +9236,7 @@ public class Game extends GameShell {
 			int j = entity.interactingEntity - 32768;
 			if (j == unknownInt10)
 				j = myPlayerIndex;
-			Player player = playerArray[j];
+			Player player = players[j];
 			if (player != null) {
 				int l1 = entity.x - player.x;
 				int i2 = entity.y - player.y;
@@ -9418,7 +9418,7 @@ public class Game extends GameShell {
 							frameMode == ScreenMode.FIXED ? 4 : 0,
 							super.graphics, frameMode == ScreenMode.FIXED ? 4
 									: 0);
-					aRSImageProducer_1164.drawGraphics(0, super.graphics, 516);
+					minimapImageProducer.drawGraphics(0, super.graphics, 516);
 				}
 			}
 		}
@@ -9470,7 +9470,7 @@ public class Game extends GameShell {
 		if (loadingStage == 2) {
 			if (frameMode == ScreenMode.FIXED) {
 				drawMinimap();
-				aRSImageProducer_1164.drawGraphics(0, super.graphics, 516);
+				minimapImageProducer.drawGraphics(0, super.graphics, 516);
 			}
 		}
 		if (anInt1054 != -1)
@@ -10353,7 +10353,7 @@ public class Game extends GameShell {
 				anInt1187 += (-12 - anInt1187) / 2;
 			else
 				anInt1187 /= 2;
-			minimapInt1 = minimapInt1 + anInt1186 / 2 & 0x7ff;
+			cameraHorizontal = cameraHorizontal + anInt1186 / 2 & 0x7ff;
 			anInt1184 += anInt1187 / 2;
 			if (anInt1184 < 128)
 				anInt1184 = 128;
@@ -10616,7 +10616,7 @@ public class Game extends GameShell {
 				j = myPlayerIndex;
 			else
 				j = playerIndices[i];
-			Player player = playerArray[j];
+			Player player = players[j];
 			if (player != null)
 				entityUpdateBlock(player);
 		}
@@ -11057,31 +11057,31 @@ public class Game extends GameShell {
 		if (sprite == null) {
 			return;
 		}
-		int k = minimapInt1 + minimapInt2 & 0x7ff;
+		int angle = cameraHorizontal + minimapRotation & 0x7ff;
 		int l = x * x + y * y;
 		if (l > 6400) {
 			return;
 		}
-		int i1 = Model.modelIntArray1[k];
-		int j1 = Model.modelIntArray2[k];
-		i1 = (i1 * 256) / (minimapInt3 + 256);
-		j1 = (j1 * 256) / (minimapInt3 + 256);
-		int k1 = y * i1 + x * j1 >> 16;
-		int l1 = y * j1 - x * i1 >> 16;
+		int sineAngle = Model.SINE[angle];
+		int j1 = Model.COSINE[angle];
+		sineAngle = (sineAngle * 256) / (minimapZoom + 256);
+		j1 = (j1 * 256) / (minimapZoom + 256);
+		int spriteOffsetX = y * sineAngle + x * j1 >> 16;
+		int spriteOffsetY = y * j1 - x * sineAngle >> 16;
 		if (frameMode == ScreenMode.FIXED) {
-			sprite.drawSprite(((94 + k1) - sprite.anInt1444 / 2) + 4 + 30, 83
-					- l1 - sprite.anInt1445 / 2 - 4 + 5);
+			sprite.drawSprite(((94 + spriteOffsetX) - sprite.anInt1444 / 2) + 4 + 30, 83
+					- spriteOffsetY - sprite.anInt1445 / 2 - 4 + 5);
 		} else {
-			sprite.drawSprite(((77 + k1) - sprite.anInt1444 / 2) + 4
-					+ (frameWidth - 167), 85 - l1 - sprite.anInt1445 / 2 - 4);
+			sprite.drawSprite(((77 + spriteOffsetX) - sprite.anInt1444 / 2) + 4
+					+ (frameWidth - 167), 85 - spriteOffsetY - sprite.anInt1445 / 2 - 4);
 		}
 	}
 
 	private void drawMinimap() {
 		if (frameMode == ScreenMode.FIXED) {
-			aRSImageProducer_1164.initDrawingArea();
+			minimapImageProducer.initDrawingArea();
 		}
-		if (anInt1021 == 2) {
+		if (minimapState == 2) {
 			if (frameMode == ScreenMode.FIXED) {
 				cacheSprite[19].drawSprite(0, 0);
 			} else {
@@ -11115,7 +11115,7 @@ public class Game extends GameShell {
 				}
 			}
 			loadAllOrbs(frameMode == ScreenMode.FIXED ? 0 : frameWidth - 217);
-			compass.method352(33, minimapInt1, anIntArray1057, 256,
+			compass.rotate(33, cameraHorizontal, anIntArray1057, 256,
 					anIntArray968, (frameMode == ScreenMode.FIXED ? 25 : 24),
 					4, (frameMode == ScreenMode.FIXED ? 29 : frameWidth - 176),
 					33, 25);
@@ -11123,121 +11123,121 @@ public class Game extends GameShell {
 				drawMenu(frameMode == ScreenMode.FIXED ? 516 : 0, 0);
 			}
 			if (frameMode == ScreenMode.FIXED) {
-				aRSImageProducer_1164.initDrawingArea();
+				minimapImageProducer.initDrawingArea();
 			}
 			return;
 		}
-		int i = minimapInt1 + minimapInt2 & 0x7ff;
-		int j = 48 + myPlayer.x / 32;
-		int l2 = 464 - myPlayer.y / 32;
+		int angle = cameraHorizontal + minimapRotation & 0x7ff;
+		int centreX = 48 + myPlayer.x / 32;
+		int centreY = 464 - myPlayer.y / 32;
 		minimapImage
-				.method352(151, i, anIntArray1229, 256 + minimapInt3,
-						anIntArray1052, l2, (frameMode == ScreenMode.FIXED ? 9
+				.rotate(151, angle, minimapLineWidth, 256 + minimapZoom,
+						minimapLeft, centreY, (frameMode == ScreenMode.FIXED ? 9
 								: 7), (frameMode == ScreenMode.FIXED ? 54
-								: frameWidth - 158), 146, j);
-		for (int j5 = 0; j5 < anInt1071; j5++) {
-			int k = (anIntArray1072[j5] * 4 + 2) - myPlayer.x / 32;
-			int i3 = (anIntArray1073[j5] * 4 + 2) - myPlayer.y / 32;
-			markMinimap(aClass30_Sub2_Sub1_Sub1Array1140[j5], k, i3);
+								: frameWidth - 158), 146, centreX);
+		for (int icon = 0; icon < anInt1071; icon++) {
+			int mapX = (minimapHintX[icon] * 4 + 2) - myPlayer.x / 32;
+			int mapY = (minimapHintY[icon] * 4 + 2) - myPlayer.y / 32;
+			markMinimap(minimapHint[icon], mapX, mapY);
 		}
-		for (int k5 = 0; k5 < 104; k5++) {
-			for (int l5 = 0; l5 < 104; l5++) {
-				Deque class19 = groundArray[plane][k5][l5];
+		for (int x = 0; x < 104; x++) {
+			for (int y = 0; y < 104; y++) {
+				Deque class19 = groundArray[plane][x][y];
 				if (class19 != null) {
-					int l = (k5 * 4 + 2) - myPlayer.x / 32;
-					int j3 = (l5 * 4 + 2) - myPlayer.y / 32;
-					markMinimap(mapDotItem, l, j3);
+					int mapX = (x * 4 + 2) - myPlayer.x / 32;
+					int mapY = (y * 4 + 2) - myPlayer.y / 32;
+					markMinimap(mapDotItem, mapX, mapY);
 				}
 			}
 		}
-		for (int i6 = 0; i6 < npcCount; i6++) {
-			Npc npc = npcArray[npcIndices[i6]];
+		for (int n = 0; n < npcCount; n++) {
+			Npc npc = npcs[npcIndices[n]];
 			if (npc != null && npc.isVisible()) {
 				EntityDef entityDef = npc.desc;
 				if (entityDef.childrenIDs != null) {
 					entityDef = entityDef.method161();
 				}
 				if (entityDef != null && entityDef.drawMinimapDot
-						&& entityDef.aBoolean84) {
-					int i1 = npc.x / 32 - myPlayer.x / 32;
-					int k3 = npc.y / 32 - myPlayer.y / 32;
-					markMinimap(mapDotNPC, i1, k3);
+						&& entityDef.clickable) {
+					int mapX = npc.x / 32 - myPlayer.x / 32;
+					int mapY = npc.y / 32 - myPlayer.y / 32;
+					markMinimap(mapDotNPC, mapX, mapY);
 				}
 			}
 		}
-		for (int j6 = 0; j6 < playerCount; j6++) {
-			Player player = playerArray[playerIndices[j6]];
+		for (int p = 0; p < playerCount; p++) {
+			Player player = players[playerIndices[p]];
 			if (player != null && player.isVisible()) {
-				int j1 = player.x / 32 - myPlayer.x / 32;
-				int l3 = player.y / 32 - myPlayer.y / 32;
-				boolean flag1 = false;
-				boolean flag3 = false;
-				for (int j3 = 0; j3 < clanList.length; j3++) {
-					if (clanList[j3] == null) {
+				int mapX = player.x / 32 - myPlayer.x / 32;
+				int mapY = player.y / 32 - myPlayer.y / 32;
+				boolean friend = false;
+				boolean clanMember = false;
+				for (int clan = 0; clan < clanList.length; clan++) {
+					if (clanList[clan] == null) {
 						continue;
 					}
-					if (!clanList[j3].equalsIgnoreCase(player.name)) {
+					if (!clanList[clan].equalsIgnoreCase(player.name)) {
 						continue;
 					}
-					flag3 = true;
+					clanMember = true;
 					break;
 				}
-				long l6 = TextClass.longForName(player.name);
-				for (int k6 = 0; k6 < friendsCount; k6++) {
-					if (l6 != friendsListAsLongs[k6] || friendsNodeIDs[k6] == 0) {
+				long nameHash = TextClass.longForName(player.name);
+				for (int f = 0; f < friendsCount; f++) {
+					if (nameHash != friendsListAsLongs[f] || friendsNodeIDs[f] == 0) {
 						continue;
 					}
-					flag1 = true;
+					friend = true;
 					break;
 				}
-				boolean flag2 = false;
+				boolean team = false;
 				if (myPlayer.team != 0 && player.team != 0
 						&& myPlayer.team == player.team) {
-					flag2 = true;
+					team = true;
 				}
-				if (flag1) {
-					markMinimap(mapDotFriend, j1, l3);
-				} else if (flag3) {
-					markMinimap(mapDotClan, j1, l3);
-				} else if (flag2) {
-					markMinimap(mapDotTeam, j1, l3);
+				if (friend) {
+					markMinimap(mapDotFriend, mapX, mapY);
+				} else if (clanMember) {
+					markMinimap(mapDotClan, mapX, mapY);
+				} else if (team) {
+					markMinimap(mapDotTeam, mapX, mapY);
 				} else {
-					markMinimap(mapDotPlayer, j1, l3);
+					markMinimap(mapDotPlayer, mapX, mapY);
 				}
 			}
 		}
-		if (anInt855 != 0 && loopCycle % 20 < 10) {
-			if (anInt855 == 1 && anInt1222 >= 0 && anInt1222 < npcArray.length) {
-				Npc class30_sub2_sub4_sub1_sub1_1 = npcArray[anInt1222];
-				if (class30_sub2_sub4_sub1_sub1_1 != null) {
-					int k1 = class30_sub2_sub4_sub1_sub1_1.x / 32 - myPlayer.x
+		if (hintIconType != 0 && loopCycle % 20 < 10) {
+			if (hintIconType == 1 && hintIconNpcId >= 0 && hintIconNpcId < npcs.length) {
+				Npc npc = npcs[hintIconNpcId];
+				if (npc != null) {
+					int mapX = npc.x / 32 - myPlayer.x
 							/ 32;
-					int i4 = class30_sub2_sub4_sub1_sub1_1.y / 32 - myPlayer.y
+					int mapY = npc.y / 32 - myPlayer.y
 							/ 32;
-					refreshMinimap(mapMarker, i4, k1);
+					refreshMinimap(mapMarker, mapY, mapX);
 				}
 			}
-			if (anInt855 == 2) {
-				int l1 = ((anInt934 - baseX) * 4 + 2) - myPlayer.x / 32;
-				int j4 = ((anInt935 - baseY) * 4 + 2) - myPlayer.y / 32;
-				refreshMinimap(mapMarker, j4, l1);
+			if (hintIconType == 2) {
+				int mapX = ((hintIconX - baseX) * 4 + 2) - myPlayer.x / 32;
+				int mapY = ((hintIconY - baseY) * 4 + 2) - myPlayer.y / 32;
+				refreshMinimap(mapMarker, mapY, mapX);
 			}
-			if (anInt855 == 10 && anInt933 >= 0
-					&& anInt933 < playerArray.length) {
-				Player class30_sub2_sub4_sub1_sub2_1 = playerArray[anInt933];
-				if (class30_sub2_sub4_sub1_sub2_1 != null) {
-					int i2 = class30_sub2_sub4_sub1_sub2_1.x / 32 - myPlayer.x
+			if (hintIconType == 10 && hintIconPlayerId >= 0
+					&& hintIconPlayerId < players.length) {
+				Player player = players[hintIconPlayerId];
+				if (player != null) {
+					int mapX = player.x / 32 - myPlayer.x
 							/ 32;
-					int k4 = class30_sub2_sub4_sub1_sub2_1.y / 32 - myPlayer.y
+					int mapY = player.y / 32 - myPlayer.y
 							/ 32;
-					refreshMinimap(mapMarker, k4, i2);
+					refreshMinimap(mapMarker, mapY, mapX);
 				}
 			}
 		}
-		if (destX != 0) {
-			int j2 = (destX * 4 + 2) - myPlayer.x / 32;
-			int l4 = (destY * 4 + 2) - myPlayer.y / 32;
-			markMinimap(mapFlag, j2, l4);
+		if (destinationX != 0) {
+			int mapX = (destinationX * 4 + 2) - myPlayer.x / 32;
+			int mapY = (destY * 4 + 2) - myPlayer.y / 32;
+			markMinimap(mapFlag, mapX, mapY);
 		}
 		DrawingArea.drawPixels(3, (frameMode == ScreenMode.FIXED ? 83 : 80),
 				(frameMode == ScreenMode.FIXED ? 127 : frameWidth - 88),
@@ -11247,7 +11247,7 @@ public class Game extends GameShell {
 		} else {
 			cacheSprite[44].drawSprite(frameWidth - 181, 0);
 		}
-		compass.method352(33, minimapInt1, anIntArray1057, 256, anIntArray968,
+		compass.rotate(33, cameraHorizontal, anIntArray1057, 256, anIntArray968,
 				(frameMode == ScreenMode.FIXED ? 25 : 24), 4,
 				(frameMode == ScreenMode.FIXED ? 29 : frameWidth - 176), 33, 25);
 		if (frameMode == ScreenMode.FIXED ? super.mouseX >= 519
@@ -11295,10 +11295,10 @@ public class Game extends GameShell {
 		i -= xCameraPos;
 		i1 -= zCameraPos;
 		l -= yCameraPos;
-		int j1 = Model.modelIntArray1[yCameraCurve];
-		int k1 = Model.modelIntArray2[yCameraCurve];
-		int l1 = Model.modelIntArray1[xCameraCurve];
-		int i2 = Model.modelIntArray2[xCameraCurve];
+		int j1 = Model.SINE[yCameraCurve];
+		int k1 = Model.COSINE[yCameraCurve];
+		int l1 = Model.SINE[xCameraCurve];
+		int i2 = Model.COSINE[xCameraCurve];
 		int j2 = l * l1 + i * i2 >> 16;
 		l = l * i2 - i * l1 >> 16;
 		i = j2;
@@ -11549,7 +11549,7 @@ public class Game extends GameShell {
 		playerCount = 0;
 		for (int l = 0; l < j; l++) {
 			int i1 = playerIndices[l];
-			Player player = playerArray[i1];
+			Player player = players[i1];
 			int j1 = stream.readBits(1);
 			if (j1 == 0) {
 				playerIndices[playerCount++] = i1;
@@ -11911,7 +11911,7 @@ public class Game extends GameShell {
 			if (i10 == unknownInt10)
 				player = myPlayer;
 			else
-				player = playerArray[i10];
+				player = players[i10];
 			if (player != null) {
 				ObjectDef class46 = ObjectDef.forID(l21);
 				int i22 = intGroundArray[plane][k4][j7];
@@ -12057,7 +12057,7 @@ public class Game extends GameShell {
 		npcCount = 0;
 		for (int i1 = 0; i1 < k; i1++) {
 			int j1 = npcIndices[i1];
-			Npc npc = npcArray[j1];
+			Npc npc = npcs[j1];
 			int k1 = stream.readBits(1);
 			if (k1 == 0) {
 				npcIndices[npcCount++] = j1;
@@ -12280,8 +12280,8 @@ public class Game extends GameShell {
 		refreshUpdateMasks(stream);
 		for (int k = 0; k < anInt839; k++) {
 			int l = anIntArray840[k];
-			if (playerArray[l].anInt1537 != loopCycle)
-				playerArray[l] = null;
+			if (players[l].anInt1537 != loopCycle)
+				players[l] = null;
 		}
 
 		if (stream.currentOffset != i) {
@@ -12290,7 +12290,7 @@ public class Game extends GameShell {
 			throw new RuntimeException("eek");
 		}
 		for (int i1 = 0; i1 < playerCount; i1++)
-			if (playerArray[playerIndices[i1]] == null) {
+			if (players[playerIndices[i1]] == null) {
 				Signlink.reporterror(myUsername
 						+ " null entry in pl list - pos:" + i1 + " size:"
 						+ playerCount);
@@ -12306,15 +12306,15 @@ public class Game extends GameShell {
 		int k2 = 0;
 		int l2 = j;
 		if (l1 != 0) {
-			int i3 = Model.modelIntArray1[l1];
-			int k3 = Model.modelIntArray2[l1];
+			int i3 = Model.SINE[l1];
+			int k3 = Model.COSINE[l1];
 			int i4 = k2 * k3 - l2 * i3 >> 16;
 			l2 = k2 * i3 + l2 * k3 >> 16;
 			k2 = i4;
 		}
 		if (i2 != 0) {
-			int j3 = Model.modelIntArray1[i2];
-			int l3 = Model.modelIntArray2[i2];
+			int j3 = Model.SINE[i2];
+			int l3 = Model.COSINE[i2];
 			int j4 = l2 * j3 + j2 * l3 >> 16;
 			l2 = l2 * l3 - j2 * j3 >> 16;
 			j2 = j4;
@@ -12835,7 +12835,7 @@ public class Game extends GameShell {
 				anInt1036 = baseX;
 				anInt1037 = baseY;
 				for (int j24 = 0; j24 < 16384; j24++) {
-					Npc npc = npcArray[j24];
+					Npc npc = npcs[j24];
 					if (npc != null) {
 						for (int j29 = 0; j29 < 10; j29++) {
 							npc.smallX[j29] -= i17;
@@ -12846,7 +12846,7 @@ public class Game extends GameShell {
 					}
 				}
 				for (int i27 = 0; i27 < maxPlayers; i27++) {
-					Player player = playerArray[i27];
+					Player player = players[i27];
 					if (player != null) {
 						for (int i31 = 0; i31 < 10; i31++) {
 							player.smallX[i31] -= i17;
@@ -12895,8 +12895,8 @@ public class Game extends GameShell {
 							|| class30_sub1_1.anInt1298 >= 104)
 						class30_sub1_1.unlink();
 				}
-				if (destX != 0) {
-					destX -= i17;
+				if (destinationX != 0) {
+					destinationX -= i17;
 					destY -= j21;
 				}
 				aBoolean1160 = false;
@@ -12912,7 +12912,7 @@ public class Game extends GameShell {
 				return true;
 
 			case 99:
-				anInt1021 = inStream.readUnsignedByte();
+				minimapState = inStream.readUnsignedByte();
 				pktType = -1;
 				return true;
 
@@ -12980,7 +12980,7 @@ public class Game extends GameShell {
 				return true;
 
 			case 78:
-				destX = 0;
+				destinationX = 0;
 				pktType = -1;
 				return true;
 
@@ -13043,12 +13043,12 @@ public class Game extends GameShell {
 				return true;
 
 			case 1:
-				for (int k4 = 0; k4 < playerArray.length; k4++)
-					if (playerArray[k4] != null)
-						playerArray[k4].anim = -1;
-				for (int j12 = 0; j12 < npcArray.length; j12++)
-					if (npcArray[j12] != null)
-						npcArray[j12].anim = -1;
+				for (int k4 = 0; k4 < players.length; k4++)
+					if (players[k4] != null)
+						players[k4].anim = -1;
+				for (int j12 = 0; j12 < npcs.length; j12++)
+					if (npcs[j12] != null)
+						npcs[j12].anim = -1;
 				pktType = -1;
 				return true;
 
@@ -13107,37 +13107,37 @@ public class Game extends GameShell {
 				return true;
 
 			case 254:
-				anInt855 = inStream.readUnsignedByte();
-				if (anInt855 == 1)
-					anInt1222 = inStream.readUnsignedWord();
-				if (anInt855 >= 2 && anInt855 <= 6) {
-					if (anInt855 == 2) {
+				hintIconType = inStream.readUnsignedByte();
+				if (hintIconType == 1)
+					hintIconNpcId = inStream.readUnsignedWord();
+				if (hintIconType >= 2 && hintIconType <= 6) {
+					if (hintIconType == 2) {
 						anInt937 = 64;
 						anInt938 = 64;
 					}
-					if (anInt855 == 3) {
+					if (hintIconType == 3) {
 						anInt937 = 0;
 						anInt938 = 64;
 					}
-					if (anInt855 == 4) {
+					if (hintIconType == 4) {
 						anInt937 = 128;
 						anInt938 = 64;
 					}
-					if (anInt855 == 5) {
+					if (hintIconType == 5) {
 						anInt937 = 64;
 						anInt938 = 0;
 					}
-					if (anInt855 == 6) {
+					if (hintIconType == 6) {
 						anInt937 = 64;
 						anInt938 = 128;
 					}
-					anInt855 = 2;
-					anInt934 = inStream.readUnsignedWord();
-					anInt935 = inStream.readUnsignedWord();
+					hintIconType = 2;
+					hintIconX = inStream.readUnsignedWord();
+					hintIconY = inStream.readUnsignedWord();
 					anInt936 = inStream.readUnsignedByte();
 				}
-				if (anInt855 == 10)
-					anInt933 = inStream.readUnsignedWord();
+				if (hintIconType == 10)
+					hintIconPlayerId = inStream.readUnsignedWord();
 				pktType = -1;
 				return true;
 
@@ -13609,7 +13609,7 @@ public class Game extends GameShell {
 				i = anInt984 / 256;
 			if (aBooleanArray876[4] && anIntArray1203[4] + 128 > i)
 				i = anIntArray1203[4] + 128;
-			int k = minimapInt1 + anInt896 & 0x7ff;
+			int k = cameraHorizontal + anInt896 & 0x7ff;
 			setCameraPos(cameraZoom
 					+ i
 					* ((SceneGraph.viewDistance == 9)
@@ -14029,7 +14029,7 @@ public class Game extends GameShell {
 		groundArray = new Deque[4][104][104];
 		aBoolean831 = false;
 		aStream_834 = new Buffer(new byte[5000]);
-		npcArray = new Npc[16384];
+		npcs = new Npc[16384];
 		npcIndices = new int[16384];
 		anIntArray840 = new int[1000];
 		aStream_847 = Buffer.create();
@@ -14046,7 +14046,7 @@ public class Game extends GameShell {
 		inputString = "";
 		maxPlayers = 2048;
 		myPlayerIndex = 2047;
-		playerArray = new Player[maxPlayers];
+		players = new Player[maxPlayers];
 		playerIndices = new int[maxPlayers];
 		anIntArray894 = new int[maxPlayers];
 		aStreamArray895s = new Buffer[maxPlayers];
@@ -14097,8 +14097,8 @@ public class Game extends GameShell {
 		maxStats = new int[SkillConstants.skillsCount];
 		anIntArray1045 = new int[2000];
 		aBoolean1047 = true;
-		anIntArray1052 = new int[152];
-		anIntArray1229 = new int[152];
+		minimapLeft = new int[152];
+		minimapLineWidth = new int[152];
 		anInt1054 = -1;
 		aClass19_1056 = new Deque();
 		anIntArray1057 = new int[33];
@@ -14106,8 +14106,8 @@ public class Game extends GameShell {
 		mapScenes = new Background[100];
 		barFillColor = 0x4d4233;
 		anIntArray1065 = new int[7];
-		anIntArray1072 = new int[1000];
-		anIntArray1073 = new int[1000];
+		minimapHintX = new int[1000];
+		minimapHintY = new int[1000];
 		aBoolean1080 = false;
 		friendsList = new String[200];
 		inStream = Buffer.create();
@@ -14125,7 +14125,7 @@ public class Game extends GameShell {
 		atPlayerArray = new boolean[5];
 		anIntArrayArrayArray1129 = new int[4][13][13];
 		anInt1132 = 2;
-		aClass30_Sub2_Sub1_Sub1Array1140 = new Sprite[1000];
+		minimapHint = new Sprite[1000];
 		aBoolean1141 = false;
 		aBoolean1149 = false;
 		crosses = new Sprite[8];
@@ -14191,7 +14191,7 @@ public class Game extends GameShell {
 	private Socket aSocket832;
 	private int loginScreenState;
 	private Buffer aStream_834;
-	private Npc[] npcArray;
+	private Npc[] npcs;
 	private int npcCount;
 	private int[] npcIndices;
 	private int anInt839;
@@ -14210,7 +14210,7 @@ public class Game extends GameShell {
 	private int[] anIntArray852;
 	private int[] anIntArray853;
 	private static int anInt854;
-	private int anInt855;
+	private int hintIconType;
 	static int openInterfaceID;
 	private int xCameraPos;
 	private int zCameraPos;
@@ -14234,7 +14234,7 @@ public class Game extends GameShell {
 	private String inputString;
 	private final int maxPlayers;
 	private final int myPlayerIndex;
-	private Player[] playerArray;
+	private Player[] players;
 	private int playerCount;
 	private int[] playerIndices;
 	private int anInt893;
@@ -14260,9 +14260,9 @@ public class Game extends GameShell {
 	private int[][] anIntArrayArray929;
 	private Sprite aClass30_Sub2_Sub1_Sub1_931;
 	private Sprite aClass30_Sub2_Sub1_Sub1_932;
-	private int anInt933;
-	private int anInt934;
-	private int anInt935;
+	private int hintIconPlayerId;
+	private int hintIconX;
+	private int hintIconY;
 	private int anInt936;
 	private int anInt937;
 	private int anInt938;
@@ -14346,7 +14346,7 @@ public class Game extends GameShell {
 	private boolean aBoolean1017;
 	private int anInt1018;
 	private static final int[] anIntArray1019;
-	private int anInt1021;
+	private int minimapState;
 	private int anInt1022;
 	private int loadingStage;
 	private Sprite scrollBar1;
@@ -14371,7 +14371,7 @@ public class Game extends GameShell {
 	private int anInt1048;
 	private String aString1049;
 	private static int anInt1051;
-	private final int[] anIntArray1052;
+	private final int[] minimapLeft;
 	private CacheArchive titleStreamLoader;
 	private int anInt1054;
 	private int anInt1055;
@@ -14389,8 +14389,8 @@ public class Game extends GameShell {
 	private int anInt1069;
 	private int anInt1070;
 	private int anInt1071;
-	private int[] anIntArray1072;
-	private int[] anIntArray1073;
+	private int[] minimapHintX;
+	private int[] minimapHintY;
 	private Sprite mapDotItem;
 	private Sprite mapDotNPC;
 	private Sprite mapDotPlayer;
@@ -14454,7 +14454,7 @@ public class Game extends GameShell {
 	private int anInt1137;
 	private int spellUsableOn;
 	private String spellTooltip;
-	private Sprite[] aClass30_Sub2_Sub1_Sub1Array1140;
+	private Sprite[] minimapHint;
 	private boolean aBoolean1141;
 	private static int anInt1142;
 	private int energy;
@@ -14471,13 +14471,13 @@ public class Game extends GameShell {
 	public static int loopCycle;
 	private static final String validUserPassChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"\243$%^&*()-_=+[{]};:'@#~,<.>/?\\| ";
 	private static ImageProducer aRSImageProducer_1163;
-	private ImageProducer aRSImageProducer_1164;
+	private ImageProducer minimapImageProducer;
 	private static ImageProducer aRSImageProducer_1165;
 	private static ImageProducer aRSImageProducer_1166;
 	private int daysSinceRecovChange;
 	private RSSocket socketStream;
 	private int anInt1169;
-	private int minimapInt3;
+	private int minimapZoom;
 	public int anInt1171;
 	private String myUsername;
 	private String myPassword;
@@ -14492,7 +14492,7 @@ public class Game extends GameShell {
 	private static int[] anIntArray1182;
 	private byte[][] aByteArrayArray1183;
 	private int anInt1184;
-	private int minimapInt1;
+	private int cameraHorizontal;
 	private int anInt1186;
 	private int anInt1187;
 	private static int anInt1188;
@@ -14512,7 +14512,7 @@ public class Game extends GameShell {
 			25486 };
 	private static boolean flagged;
 	private final int[] anIntArray1207;
-	private int minimapInt2;
+	private int minimapRotation;
 	public int anInt1210;
 	static int anInt1211;
 	private String promptInput;
@@ -14523,13 +14523,13 @@ public class Game extends GameShell {
 	private final Sprite[] modIcons;
 	private long aLong1220;
 	static int tabID;
-	private int anInt1222;
+	private int hintIconNpcId;
 	public static boolean inputTaken;
 	private int inputDialogState;
 	private static int anInt1226;
 	private int nextSong;
 	private boolean songChanging;
-	private final int[] anIntArray1229;
+	private final int[] minimapLineWidth;
 	private CollisionMap[] aClass11Array1230;
 	public static int anIntArray1232[];
 	private int[] anIntArray1234;
@@ -14557,7 +14557,7 @@ public class Game extends GameShell {
 	private boolean messagePromptRaised;
 	private byte[][][] byteGroundArray;
 	private int prevSong;
-	private int destX;
+	private int destinationX;
 	private int destY;
 	private Sprite minimapImage;
 	private int anInt1264;
@@ -14600,7 +14600,7 @@ public class Game extends GameShell {
 			return;
 		}
 		aRSImageProducer_1166 = null;
-		aRSImageProducer_1164 = null;
+		minimapImageProducer = null;
 		aRSImageProducer_1163 = null;
 		aRSImageProducer_1165 = null;
 		aRSImageProducer_1125 = null;

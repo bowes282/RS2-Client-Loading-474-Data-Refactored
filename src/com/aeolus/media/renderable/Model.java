@@ -27,8 +27,8 @@ public class Model extends Renderable {
 		anIntArray1675 = null;
 		anIntArray1676 = null;
 		anIntArray1677 = null;
-		modelIntArray1 = null;
-		modelIntArray2 = null;
+		SINE = null;
+		COSINE = null;
 		modelIntArray3 = null;
 		modelIntArray4 = null;
 	}
@@ -1836,22 +1836,22 @@ public class Model extends Renderable {
 						int l6 = (k & 0xff) * 8;
 						int i7 = (l & 0xff) * 8;
 						if (i7 != 0) {
-							int j7 = modelIntArray1[i7];
-							int i8 = modelIntArray2[i7];
+							int j7 = SINE[i7];
+							int i8 = COSINE[i7];
 							int l8 = anIntArray1628[k5] * j7 + anIntArray1627[k5] * i8 >> 16;
 							anIntArray1628[k5] = anIntArray1628[k5] * i8 - anIntArray1627[k5] * j7 >> 16;
 							anIntArray1627[k5] = l8;
 						}
 						if (k6 != 0) {
-							int k7 = modelIntArray1[k6];
-							int j8 = modelIntArray2[k6];
+							int k7 = SINE[k6];
+							int j8 = COSINE[k6];
 							int i9 = anIntArray1628[k5] * j8 - anIntArray1629[k5] * k7 >> 16;
 							anIntArray1629[k5] = anIntArray1628[k5] * k7 + anIntArray1629[k5] * j8 >> 16;
 							anIntArray1628[k5] = i9;
 						}
 						if (l6 != 0) {
-							int l7 = modelIntArray1[l6];
-							int k8 = modelIntArray2[l6];
+							int l7 = SINE[l6];
+							int k8 = COSINE[l6];
 							int j9 = anIntArray1629[k5] * l7 + anIntArray1627[k5] * k8 >> 16;
 							anIntArray1629[k5] = anIntArray1629[k5] * k8 - anIntArray1627[k5] * l7 >> 16;
 							anIntArray1627[k5] = j9;
@@ -1913,8 +1913,8 @@ public class Model extends Renderable {
 	}
 
 	public void method474(int i) {
-		int k = modelIntArray1[i];
-		int l = modelIntArray2[i];
+		int k = SINE[i];
+		int l = COSINE[i];
 		for (int i1 = 0; i1 < anInt1626; i1++) {
 			int j1 = anIntArray1628[i1] * l - anIntArray1629[i1] * k >> 16;
 			anIntArray1629[i1] = anIntArray1628[i1] * k + anIntArray1629[i1] * l >> 16;
@@ -2140,14 +2140,14 @@ public class Model extends Renderable {
 		int i = 0;
 		int l1 = Texture.textureInt1;
 		int i2 = Texture.textureInt2;
-		int j2 = modelIntArray1[i];
-		int k2 = modelIntArray2[i];
-		int l2 = modelIntArray1[j];
-		int i3 = modelIntArray2[j];
-		int j3 = modelIntArray1[k];
-		int k3 = modelIntArray2[k];
-		int l3 = modelIntArray1[l];
-		int i4 = modelIntArray2[l];
+		int j2 = SINE[i];
+		int k2 = COSINE[i];
+		int l2 = SINE[j];
+		int i3 = COSINE[j];
+		int j3 = SINE[k];
+		int k3 = COSINE[k];
+		int l3 = SINE[l];
+		int i4 = COSINE[l];
 		int j4 = j1 * l3 + k1 * i4 >> 16;
 			for (int k4 = 0; k4 < anInt1626; k4++) {
 				int l4 = anIntArray1627[k4];
@@ -2253,8 +2253,8 @@ public class Model extends Renderable {
 				int l6 = 0;
 				int i7 = 0;
 				if (i != 0) {
-					l6 = modelIntArray1[i];
-					i7 = modelIntArray2[i];
+					l6 = SINE[i];
+					i7 = COSINE[i];
 				}
 				for (int j7 = 0; j7 < anInt1626; j7++) {
 					int k7 = anIntArray1627[j7];
@@ -2844,14 +2844,14 @@ public class Model extends Renderable {
 	public static int anInt1686;
 	public static int anInt1687;
 	public static int anIntArray1688[] = new int[1000];
-	public static int modelIntArray1[];
-	public static int modelIntArray2[];
+	public static int SINE[];
+	public static int COSINE[];
 	static int modelIntArray3[];
 	static int modelIntArray4[];
 
 	static {
-		modelIntArray1 = Texture.anIntArray1470;
-		modelIntArray2 = Texture.anIntArray1471;
+		SINE = Texture.anIntArray1470;
+		COSINE = Texture.anIntArray1471;
 		modelIntArray3 = Texture.anIntArray1482;
 		modelIntArray4 = Texture.anIntArray1469;
 	}

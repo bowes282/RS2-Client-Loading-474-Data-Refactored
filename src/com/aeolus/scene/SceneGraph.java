@@ -771,10 +771,10 @@ public final class SceneGraph {
 		boolean aflag[][][][] = new boolean[9][32][53][53];
 		for (int i1 = 128; i1 <= 384; i1 += 32) {
 			for (int j1 = 0; j1 < 2048; j1 += 64) {
-				anInt458 = Model.modelIntArray1[i1];
-				anInt459 = Model.modelIntArray2[i1];
-				anInt460 = Model.modelIntArray1[j1];
-				anInt461 = Model.modelIntArray2[j1];
+				anInt458 = Model.SINE[i1];
+				anInt459 = Model.COSINE[i1];
+				anInt460 = Model.SINE[j1];
+				anInt461 = Model.COSINE[j1];
 				int l1 = (i1 - 128) / 32;
 				int j2 = j1 / 64;
 				for (int l2 = -26; l2 <= 26; l2++) {
@@ -862,10 +862,10 @@ public final class SceneGraph {
 		else if (j >= anInt439 * 128)
 			j = anInt439 * 128 - 1;
 		anInt448++;
-		anInt458 = Model.modelIntArray1[j1];
-		anInt459 = Model.modelIntArray2[j1];
-		anInt460 = Model.modelIntArray1[k];
-		anInt461 = Model.modelIntArray2[k];
+		anInt458 = Model.SINE[j1];
+		anInt459 = Model.COSINE[j1];
+		anInt460 = Model.SINE[k];
+		anInt461 = Model.COSINE[k];
 		aBooleanArrayArray492 = aBooleanArrayArrayArrayArray491[(j1 - 128) / 32][k / 64];
 		anInt455 = i;
 		anInt456 = l;
