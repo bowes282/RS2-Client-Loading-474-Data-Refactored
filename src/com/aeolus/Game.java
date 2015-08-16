@@ -12507,6 +12507,14 @@ public class Game extends GameShell {
 				aBoolean1080 = false;
 				pktType = -1;
 				return true;
+				
+				
+			case 124:
+				int skillID = inStream.readUnsignedWord();
+				int gainedXP = inStream.readUnsignedWord();
+				addToXPCounter(skillID, gainedXP);
+				pktType = -1;
+				return true;
 
 			case PacketConstants.OPEN_WELCOME_SCREEN:
 				daysSinceRecovChange = inStream.method427();
@@ -13864,8 +13872,8 @@ public class Game extends GameShell {
 	private void drawCounterOnScreen() {
 		RSFont xp_font = newBoldFont;
 		int font_height = 24;
-		int x = 510;
-		int y = -100;
+		int x = frameMode == ScreenMode.FIXED ? 500 : frameWidth - 200;
+		int y = frameMode == ScreenMode.FIXED ? 25 : 50;
 		digits = xpCounter == 0 ? 1 : 1 + (int) Math.floor(Math
 				.log10(xpCounter));
 		int lengthToRemove = Integer.toString(xpCounter).length();
@@ -13893,12 +13901,12 @@ public class Game extends GameShell {
 						sprite = skill_sprites[i2];
 						icons_x_off += sprite.myWidth + 3;
 						sprite.drawSprite(x - a + 12 - xp_font.getTextWidth(s)
-								- icons_x_off, y + 150 + (140 - xp_added[i][2])
+								- icons_x_off, y + (140 - xp_added[i][2])
 								- (font_height / 2) - (sprite.myHeight / 2),
 								transparency);
 					}
 					xp_font.drawBasicString(s,
-							x - a + 12 - xp_font.getTextWidth(s), y + 150
+							x - a + 12 - xp_font.getTextWidth(s), y
 									+ (140 - xp_added[i][2]), 0xffffff, -1);
 				}
 

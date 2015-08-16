@@ -62,7 +62,11 @@ public class Configuration {
 	 */
 	public static boolean showIds = false;	
 	
-	public static boolean xp_merge = false;
+	/**
+	 * Used to merge all the OS Buddy XP Drops so the counter doesn't get too big if you are
+	 * training a lot of different skills
+	 */
+	public static boolean xp_merge = true;
 	
 	/**
 	 * Enables fog effects
