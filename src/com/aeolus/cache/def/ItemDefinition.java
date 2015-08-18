@@ -404,104 +404,104 @@ public final class ItemDefinition {
 		return model;
 	}
 
-	public void readValues(Buffer stream) {
+	public void readValues(Buffer buffer) {
 		do {
-			int i = stream.readUnsignedByte();
+			int i = buffer.readUnsignedByte();
 			if(i == 0)
 				return;
 			if(i == 1)
-				modelID = stream.getUnsignedLEShort();
+				modelID = buffer.getUnsignedLEShort();
 			else if(i == 2)
-				name = stream.readString();
+				name = buffer.readString();
 			else if(i == 3)
-				description = stream.readBytes();
+				description = buffer.readBytes();
 			else if(i == 4)
-				modelZoom = stream.getUnsignedLEShort();
+				modelZoom = buffer.getUnsignedLEShort();
 			else if (i == 5)
-				modelRotationY = stream.getUnsignedLEShort();
+				modelRotationY = buffer.getUnsignedLEShort();
 			else if (i == 6)
-				modelRotationX = stream.getUnsignedLEShort();
+				modelRotationX = buffer.getUnsignedLEShort();
 			else if(i == 7) {
-				modelOffset1 = stream.getUnsignedLEShort();
+				modelOffset1 = buffer.getUnsignedLEShort();
 				if(modelOffset1 > 32767)
 					modelOffset1 -= 0x10000;
 			} else if(i == 8) {
-				modelOffset2 = stream.getUnsignedLEShort();
+				modelOffset2 = buffer.getUnsignedLEShort();
 				if(modelOffset2 > 32767)
 					modelOffset2 -= 0x10000;
 			} else if(i == 10)
-				stream.getUnsignedLEShort();
+				buffer.getUnsignedLEShort();
 			else if(i == 11)
 				stackable = true;
 			else if(i == 12)
-				value = stream.readDWord();
+				value = buffer.readDWord();
 			else if(i == 16)
 				membersObject = true;
 			else if (i == 23) {
-				anInt165 = stream.getUnsignedLEShort();
-				aByte205 = stream.readSignedByte();
+				anInt165 = buffer.getUnsignedLEShort();
+				aByte205 = buffer.readSignedByte();
 			} else if (i == 24)
-				anInt188 = stream.getUnsignedLEShort();
+				anInt188 = buffer.getUnsignedLEShort();
 			else if (i == 25) {
-				anInt200 = stream.getUnsignedLEShort();
-				aByte154 = stream.readSignedByte();
+				anInt200 = buffer.getUnsignedLEShort();
+				aByte154 = buffer.readSignedByte();
 			} else if (i == 26)
-				anInt164 = stream.getUnsignedLEShort();
+				anInt164 = buffer.getUnsignedLEShort();
 			else if(i >= 30 && i < 35) {
 				if(groundActions == null)
 					groundActions = new String[5];
-				groundActions[i - 30] = stream.readString();
+				groundActions[i - 30] = buffer.readString();
 				if(groundActions[i - 30].equalsIgnoreCase("hidden"))
 					groundActions[i - 30] = null;
 			} else if(i >= 35 && i < 40) {
 				if(itemActions == null)
 					itemActions = new String[5];
-				itemActions[i - 35] = stream.readString();
+				itemActions[i - 35] = buffer.readString();
 			} else if(i == 40) {
-				int j = stream.readUnsignedByte();
-				originalModelColors = new int[j];
-				modifiedModelColors = new int[j];
-				for(int k = 0; k < j; k++) {
-					originalModelColors[k] = stream.getUnsignedLEShort();
-					modifiedModelColors[k] = stream.getUnsignedLEShort();
-				}
+					int j = buffer.readUnsignedByte();
+					modifiedModelColors= new int[j];
+					originalModelColors = new int[j];
+					for(int k = 0; k < j; k++) {
+						modifiedModelColors[k] = buffer.getUnsignedLEShort();
+						originalModelColors [k] = buffer.getUnsignedLEShort();
+					}
 			} else if(i == 78)
-				anInt185 = stream.getUnsignedLEShort();
+				anInt185 = buffer.getUnsignedLEShort();
 			else if(i == 79)
-				anInt162 = stream.getUnsignedLEShort();
+				anInt162 = buffer.getUnsignedLEShort();
 			else if(i == 90)
-				anInt175 = stream.getUnsignedLEShort();
+				anInt175 = buffer.getUnsignedLEShort();
 			else if(i == 91)
-				anInt197 = stream.getUnsignedLEShort();
+				anInt197 = buffer.getUnsignedLEShort();
 			else if(i == 92)
-				anInt166 = stream.getUnsignedLEShort();
+				anInt166 = buffer.getUnsignedLEShort();
 			else if(i == 93)
-				anInt173 = stream.getUnsignedLEShort();
+				anInt173 = buffer.getUnsignedLEShort();
 			else if(i == 95)
-				anInt204 = stream.getUnsignedLEShort();
+				anInt204 = buffer.getUnsignedLEShort();
 			else if(i == 97)
-				certID = stream.getUnsignedLEShort();
+				certID = buffer.getUnsignedLEShort();
 			else if(i == 98)
-				certTemplateID = stream.getUnsignedLEShort();
+				certTemplateID = buffer.getUnsignedLEShort();
 			else if(i >= 100 && i < 110) {
 				if(stackIDs == null) {
 					stackIDs = new int[10];
 					stackAmounts = new int[10];
 				}
-				stackIDs[i - 100] = stream.getUnsignedLEShort();
-				stackAmounts[i - 100] = stream.getUnsignedLEShort();
+				stackIDs[i - 100] = buffer.getUnsignedLEShort();
+				stackAmounts[i - 100] = buffer.getUnsignedLEShort();
 			} else if(i == 110)
-				anInt167 = stream.getUnsignedLEShort();
+				anInt167 = buffer.getUnsignedLEShort();
 			else if(i == 111)
-				anInt192 = stream.getUnsignedLEShort();
+				anInt192 = buffer.getUnsignedLEShort();
 			else if(i == 112)
-				anInt191 = stream.getUnsignedLEShort();
+				anInt191 = buffer.getUnsignedLEShort();
 			else if(i == 113)
-				anInt196 = stream.readSignedByte();
+				anInt196 = buffer.readSignedByte();
 			else if(i == 114)
-				anInt184 = stream.readSignedByte() * 5;
+				anInt184 = buffer.readSignedByte() * 5;
 			else if(i == 115)
-				team = stream.readUnsignedByte();
+				team = buffer.readUnsignedByte();
 		} while(true);
 	}
 
