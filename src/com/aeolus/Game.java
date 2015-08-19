@@ -3038,6 +3038,7 @@ public class Game extends GameShell {
 		worldController.initToNull();
 		for (int i = 0; i < 4; i++)
 			aClass11Array1230[i].method210();
+		Arrays.fill(chatMessages, null);
 		System.gc();
 		stopMidi();
 		currentSong = -1;
