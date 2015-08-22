@@ -2126,7 +2126,7 @@ public final class RSInterface {
 		if (i == 3)
 			model = Game.myPlayer.method453();
 		if (i == 4)
-			model = ItemDefinition.forID(j).method202(50);
+			model = ItemDefinition.forID(j).getUnshadedModel(50);
 		if (i == 5)
 			model = null;
 		if (model != null)
@@ -2175,7 +2175,7 @@ public final class RSInterface {
 			model_1.method470(k);
 		if (j != -1)
 			model_1.method470(j);
-		model_1.method479(64, 768, -50, -10, -50, true);
+		model_1.light(64, 768, -50, -10, -50, true);
 		return model_1;
 	}
 

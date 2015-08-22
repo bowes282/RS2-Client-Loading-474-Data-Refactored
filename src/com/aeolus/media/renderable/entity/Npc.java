@@ -44,14 +44,14 @@ public final class Npc extends Entity
 			{
 				int j = spotAnim.animationSequence.anIntArray353[super.anInt1521];
 				Model model_2 = new Model(true, SequenceFrame.method532(j), false, model_1);
-				model_2.method475(0, -super.anInt1524, 0);
+				model_2.translate(0, -super.anInt1524, 0);
 				model_2.method469();
 				model_2.method470(j);
 				model_2.anIntArrayArray1658 = null;
 				model_2.anIntArrayArray1657 = null;
 				if(spotAnim.resizeXY != 128 || spotAnim.resizeZ != 128)
-					model_2.method478(spotAnim.resizeXY, spotAnim.resizeXY, spotAnim.resizeZ);
-				model_2.method479(64 + spotAnim.modelBrightness, 850 + spotAnim.modelShadow, -30, -50, -30, true);
+					model_2.scale(spotAnim.resizeXY, spotAnim.resizeXY, spotAnim.resizeZ);
+				model_2.light(64 + spotAnim.modelBrightness, 850 + spotAnim.modelShadow, -30, -50, -30, true);
 				Model aModel[] = {
 						model, model_2
 				};
@@ -59,7 +59,7 @@ public final class Npc extends Entity
 			}
 		}
 		if(desc.boundDim == 1)
-			model.aBoolean1659 = true;
+			model.fits_on_single_square = true;
 		return model;
 	}
 

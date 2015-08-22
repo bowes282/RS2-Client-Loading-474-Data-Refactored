@@ -41,7 +41,7 @@ public final class SceneSpotAnim extends Renderable {
 			model_1.anIntArrayArray1657 = null;
 		}
 		if(aSpotAnim_1568.resizeXY != 128 || aSpotAnim_1568.resizeZ != 128) {
-			model_1.method478(aSpotAnim_1568.resizeXY, aSpotAnim_1568.resizeXY, aSpotAnim_1568.resizeZ);
+			model_1.scale(aSpotAnim_1568.resizeXY, aSpotAnim_1568.resizeXY, aSpotAnim_1568.resizeZ);
 		}
 		if(aSpotAnim_1568.rotation != 0) {
 			if(aSpotAnim_1568.rotation == 90) {
@@ -57,7 +57,7 @@ public final class SceneSpotAnim extends Renderable {
 				model_1.method473();
 			}
 		}
-		model_1.method479(64 + aSpotAnim_1568.modelBrightness, 850 + aSpotAnim_1568.modelShadow, -30, -50, -30, true);
+		model_1.light(64 + aSpotAnim_1568.modelBrightness, 850 + aSpotAnim_1568.modelShadow, -30, -50, -30, true);
 		return model_1;
 	}
 

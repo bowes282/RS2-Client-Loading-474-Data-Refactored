@@ -34,7 +34,7 @@ public final class EntityDefinition {
 			return null;
 		boolean flag1 = false;
 		for (int i = 0; i < aditionalModels.length; i++)
-			if (!Model.method463(aditionalModels[i]))
+			if (!Model.isCached(aditionalModels[i]))
 				flag1 = true;
 
 		if (flag1)
@@ -118,7 +118,7 @@ public final class EntityDefinition {
 		if (model == null) {
 			boolean flag = false;
 			for (int i1 = 0; i1 < npcModels.length; i1++)
-				if (!Model.method463(npcModels[i1]))
+				if (!Model.isCached(npcModels[i1]))
 					flag = true;
 
 			if (flag)
@@ -139,8 +139,8 @@ public final class EntityDefinition {
 
 			}
 			model.method469();
-			model.method478(132, 132, 132);
-			model.method479(84 + lightModifier, 1000 + shadowModifier, -90, -580, -90, true);
+			model.scale(132, 132, 132);
+			model.light(84 + lightModifier, 1000 + shadowModifier, -90, -580, -90, true);
 			mruNodes.removeFromCache(model, interfaceType);
 		}
 		Model model_1 = Model.aModel_1621;
@@ -152,12 +152,12 @@ public final class EntityDefinition {
 		else if (frame != -1)
 			model_1.method470(frame);
 		if (scaleXZ != 128 || scaleY != 128)
-			model_1.method478(scaleXZ, scaleXZ, scaleY);
+			model_1.scale(scaleXZ, scaleXZ, scaleY);
 		model_1.method466();
 		model_1.anIntArrayArray1658 = null;
 		model_1.anIntArrayArray1657 = null;
 		if (boundDim == 1)
-			model_1.aBoolean1659 = true;
+			model_1.fits_on_single_square = true;
 		return model_1;
 	}
 
@@ -173,7 +173,7 @@ public final class EntityDefinition {
 		if (model == null) {
 			boolean flag = false;
 			for (int i1 = 0; i1 < npcModels.length; i1++)
-				if (!Model.method463(npcModels[i1]))
+				if (!Model.isCached(npcModels[i1]))
 					flag = true;
 
 			if (flag)
@@ -194,7 +194,7 @@ public final class EntityDefinition {
 
 			}
 			model.method469();
-			model.method479(64 + lightModifier, 850 + shadowModifier, -30, -50, -30, true);
+			model.light(64 + lightModifier, 850 + shadowModifier, -30, -50, -30, true);
 			mruNodes.removeFromCache(model, interfaceType);
 		}
 		Model model_1 = Model.aModel_1621;
@@ -204,12 +204,12 @@ public final class EntityDefinition {
 		else if (k != -1)
 			model_1.method470(k);
 		if (scaleXZ != 128 || scaleY != 128)
-			model_1.method478(scaleXZ, scaleXZ, scaleY);
+			model_1.scale(scaleXZ, scaleXZ, scaleY);
 		model_1.method466();
 		model_1.anIntArrayArray1658 = null;
 		model_1.anIntArrayArray1657 = null;
 		if (boundDim == 1)
-			model_1.aBoolean1659 = true;
+			model_1.fits_on_single_square = true;
 		return model_1;
 	}
 

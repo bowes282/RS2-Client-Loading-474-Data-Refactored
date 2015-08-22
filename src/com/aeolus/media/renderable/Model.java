@@ -780,7 +780,7 @@ public class Model extends Renderable {
 	private void readOldModel(int i) {
 		int j = -870;
 		aBoolean1618 = true;
-		aBoolean1659 = false;
+		fits_on_single_square = false;
 		anInt1620++;
 		ModelHeader class21 = aClass21Array1661[i];
 		anInt1626 = class21.anInt369;
@@ -1010,7 +1010,7 @@ public class Model extends Renderable {
 		}
 	}
 
-	public static boolean method463(int i) {
+	public static boolean isCached(int i) {
 		if (aClass21Array1661 == null)
 			return false;
 
@@ -1025,14 +1025,14 @@ public class Model extends Renderable {
 
 	private Model(boolean flag) {
 		aBoolean1618 = true;
-		aBoolean1659 = false;
+		fits_on_single_square = false;
 		if (!flag)
 			aBoolean1618 = !aBoolean1618;
 	}
 
 	public Model(int i, Model amodel[]) {
 		aBoolean1618 = true;
-		aBoolean1659 = false;
+		fits_on_single_square = false;
 		anInt1620++;
 		boolean flag = false;
 		boolean flag1 = false;
@@ -1140,7 +1140,7 @@ public class Model extends Renderable {
 	public Model(Model amodel[]) {
 		int i = 2;
 		aBoolean1618 = true;
-		aBoolean1659 = false;
+		fits_on_single_square = false;
 		anInt1620++;
 		boolean flag1 = false;
 		boolean flag2 = false;
@@ -1253,7 +1253,7 @@ public class Model extends Renderable {
 
 	public Model(boolean flag, boolean flag1, boolean flag2, Model model) {
 		aBoolean1618 = true;
-		aBoolean1659 = false;
+		fits_on_single_square = false;
 		anInt1620++;
 		anInt1626 = model.anInt1626;
 		anInt1630 = model.anInt1630;
@@ -1310,7 +1310,7 @@ public class Model extends Renderable {
 
 	public Model(boolean flag, boolean flag1, Model model) {
 		aBoolean1618 = true;
-		aBoolean1659 = false;
+		fits_on_single_square = false;
 		anInt1620++;
 		anInt1626 = model.anInt1626;
 		anInt1630 = model.anInt1630;
@@ -1922,7 +1922,7 @@ public class Model extends Renderable {
 		}
 	}
 
-	public void method475(int i, int j, int l) {
+	public void translate(int i, int j, int l) {
 		for (int i1 = 0; i1 < anInt1626; i1++) {
 			anIntArray1627[i1] += i;
 			anIntArray1628[i1] += j;
@@ -1946,7 +1946,7 @@ public class Model extends Renderable {
 		}
 	}
 
-	public void method478(int i, int j, int l) {
+	public void scale(int i, int j, int l) {
 		for (int i1 = 0; i1 < anInt1626; i1++) {
 			anIntArray1627[i1] = (anIntArray1627[i1] * i) / 128;
 			anIntArray1628[i1] = (anIntArray1628[i1] * l) / 128;
@@ -1955,7 +1955,7 @@ public class Model extends Renderable {
 
 	}
 
-	public final void method479(int i, int j, int k, int l, int i1, boolean flag) {
+	public final void light(int i, int j, int k, int l, int i1, boolean flag) {
 		int j1 = (int) Math.sqrt(k * k + l * l + i1 * i1);
 		int k1 = j * j1 >> 8;
 		if (anIntArray1634 == null) {
@@ -2243,7 +2243,7 @@ public class Model extends Renderable {
 					int i6 = anInt1685 - Texture.textureInt1;
 					int k6 = anInt1686 - Texture.textureInt2;
 					if (i6 > k3 && i6 < l3 && k6 > i5 && k6 < k4)
-						if (aBoolean1659)
+						if (fits_on_single_square)
 							anIntArray1688[anInt1687++] = i2;
 						else
 							flag1 = true;
@@ -2813,7 +2813,7 @@ public class Model extends Renderable {
 	public int anIntArray1656[];
 	public int anIntArrayArray1657[][];
 	public int anIntArrayArray1658[][];
-	public boolean aBoolean1659;
+	public boolean fits_on_single_square;
 	public Vertex aClass33Array1660[];
 	static ModelHeader aClass21Array1661[];
 	static Requester aOnDemandFetcherParent_1662;

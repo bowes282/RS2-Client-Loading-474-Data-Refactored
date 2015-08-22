@@ -59,7 +59,7 @@ public final class IdentityKit {
 			return true;
 		boolean flag = true;
 		for(int j = 0; j < anIntArray658.length; j++)
-			if(!Model.method463(anIntArray658[j]))
+			if(!Model.isCached(anIntArray658[j]))
 				flag = false;
 
 		return flag;
@@ -92,7 +92,7 @@ public final class IdentityKit {
 	{
 		boolean flag1 = true;
 		for(int i = 0; i < 5; i++)
-			if(anIntArray661[i] != -1 && !Model.method463(anIntArray661[i]))
+			if(anIntArray661[i] != -1 && !Model.isCached(anIntArray661[i]))
 				flag1 = false;
 
 		return flag1;

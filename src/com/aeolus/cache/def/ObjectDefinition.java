@@ -159,13 +159,13 @@ public final class ObjectDefinition {
 				return true;
 			boolean flag1 = true;
 			for (int k = 0; k < anIntArray773.length; k++)
-				flag1 &= Model.method463(anIntArray773[k] & 0xffff);
+				flag1 &= Model.isCached(anIntArray773[k] & 0xffff);
 
 			return flag1;
 		}
 		for (int j = 0; j < anIntArray776.length; j++)
 			if (anIntArray776[j] == i)
-				return Model.method463(anIntArray773[j] & 0xffff);
+				return Model.isCached(anIntArray773[j] & 0xffff);
 
 		return true;
 	}
@@ -197,7 +197,7 @@ public final class ObjectDefinition {
 			return true;
 		boolean flag1 = true;
 		for (int i = 0; i < anIntArray773.length; i++)
-			flag1 &= Model.method463(anIntArray773[i] & 0xffff);
+			flag1 &= Model.isCached(anIntArray773[i] & 0xffff);
 		return flag1;
 	}
 
@@ -301,10 +301,10 @@ public final class ObjectDefinition {
 
 		}
 		if (flag)
-			model_3.method478(anInt748, anInt740, anInt772);
+			model_3.scale(anInt748, anInt740, anInt772);
 		if (flag2)
-			model_3.method475(anInt738, anInt745, anInt783);
-		model_3.method479(84, 1500, -90, -280, -70, !aBoolean769);
+			model_3.translate(anInt738, anInt745, anInt783);
+		model_3.light(84, 1500, -90, -280, -70, !aBoolean769);
 		if (anInt760 == 1)
 			model_3.anInt1654 = model_3.modelHeight;
 		mruNodes2.removeFromCache(model_3, l1);

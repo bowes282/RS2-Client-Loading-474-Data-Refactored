@@ -22,7 +22,7 @@ public final class Player extends Entity {
 		if(model == null)
 			return null;
 		super.height = model.modelHeight;
-		model.aBoolean1659 = true;
+		model.fits_on_single_square = true;
 		if(aBoolean1699)
 			return model;
 		if(super.anInt1520 != -1 && super.anInt1521 != -1) {
@@ -33,14 +33,14 @@ public final class Player extends Entity {
 				int nextFrame = spotAnim.animationSequence.anIntArray353[super.nextGraphicsAnimationFrame];
 				int cycle1 = spotAnim.animationSequence.anIntArray355[super.anInt1521];
 				int cycle2 = super.anInt1522;
-				model_3.method475(0, -super.anInt1524, 0);
+				model_3.translate(0, -super.anInt1524, 0);
 				model_3.method469();
 				model_3.method470(spotAnim.animationSequence.anIntArray353[super.anInt1521], nextFrame, cycle1, cycle2);
 				model_3.anIntArrayArray1658 = null;
 				model_3.anIntArrayArray1657 = null;
 				if(spotAnim.resizeXY != 128 || spotAnim.resizeZ != 128)
-					model_3.method478(spotAnim.resizeXY, spotAnim.resizeXY, spotAnim.resizeZ);
-				model_3.method479(64 + spotAnim.modelBrightness, 850 + spotAnim.modelShadow, -30, -50, -30, true);
+					model_3.scale(spotAnim.resizeXY, spotAnim.resizeXY, spotAnim.resizeZ);
+				model_3.light(64 + spotAnim.modelBrightness, 850 + spotAnim.modelShadow, -30, -50, -30, true);
 				Model aclass30_sub2_sub4_sub6_1s[] = {
 						model, model_3
 				};
@@ -56,7 +56,7 @@ public final class Player extends Entity {
 			if(Game.loopCycle >= anInt1707 && Game.loopCycle < anInt1708)
 			{
 				Model model_1 = aModel_1714;
-				model_1.method475(anInt1711 - super.x, anInt1712 - anInt1709, anInt1713 - super.y);
+				model_1.translate(anInt1711 - super.x, anInt1712 - anInt1709, anInt1713 - super.y);
 				if(super.turnDirection == 512)
 				{
 					model_1.method473();
@@ -88,10 +88,10 @@ public final class Player extends Entity {
 					model_1.method473();
 					model_1.method473();
 				}
-				model_1.method475(super.x - anInt1711, anInt1709 - anInt1712, super.y - anInt1713);
+				model_1.translate(super.x - anInt1711, anInt1709 - anInt1712, super.y - anInt1713);
 			}
 		}
-		model.aBoolean1659 = true;
+		model.fits_on_single_square = true;
 		return model;
 	}
 
@@ -119,7 +119,7 @@ public final class Player extends Entity {
 				desc = EntityDefinition.forID(stream.getUnsignedLEShort());
 				break;
 			}
-			if(equipment[j] >= 512 && equipment[j] - 512 < ItemDefinition.totalItems)
+			if(equipment[j] >= 512 && equipment[j] - 512 < ItemDefinition.item_count)
 			{
 				int l1 = ItemDefinition.forID(equipment[j] - 512).team;
 				if(l1 != 0)
@@ -254,7 +254,7 @@ public final class Player extends Entity {
 					k2 = j1;
 				if(k2 >= 256 && k2 < 512 && !IdentityKit.cache[k2 - 256].method537())
 					flag = true;
-				if(k2 >= 512 && !ItemDefinition.forID(k2 - 512).method195(anInt1702))
+				if(k2 >= 512 && !ItemDefinition.forID(k2 - 512).isEquippedModelCached(anInt1702))
 					flag = true;
 			}
 
@@ -285,7 +285,7 @@ public final class Player extends Entity {
 				}
 				if(i3 >= 512)
 				{
-					Model model_4 = ItemDefinition.forID(i3 - 512).method196(anInt1702);
+					Model model_4 = ItemDefinition.forID(i3 - 512).getEquippedModel(anInt1702);
 					if(model_4 != null)
 						aclass30_sub2_sub4_sub6s[j2++] = model_4;
 				}
@@ -301,8 +301,8 @@ public final class Player extends Entity {
 				}
 
 			model_1.method469();
-			model_1.method478(132, 132, 132);
-			model_1.method479(72, 1300, -30, -50, -30, true);
+			model_1.scale(132, 132, 132);
+			model_1.light(72, 1300, -30, -50, -30, true);
 			mruNodes.removeFromCache(model_1, l);
 			aLong1697 = l;
 		}
@@ -340,7 +340,7 @@ public final class Player extends Entity {
 			int j = equipment[i];
 			if(j >= 256 && j < 512 && !IdentityKit.cache[j - 256].method539())
 				flag = true;
-			if(j >= 512 && !ItemDefinition.forID(j - 512).method192(anInt1702))
+			if(j >= 512 && !ItemDefinition.forID(j - 512).isDialogueModelCached(anInt1702))
 				flag = true;
 		}
 
@@ -359,7 +359,7 @@ public final class Player extends Entity {
 			}
 			if(i1 >= 512)
 			{
-				Model model_2 = ItemDefinition.forID(i1 - 512).method194(anInt1702);
+				Model model_2 = ItemDefinition.forID(i1 - 512).getChatEquipModel(anInt1702);
 				if(model_2 != null)
 					aclass30_sub2_sub4_sub6s[k++] = model_2;
 			}

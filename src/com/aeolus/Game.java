@@ -1307,8 +1307,8 @@ public class Game extends GameShell {
 		ObjectDefinition.mruNodes1.unlinkAll();
 		ObjectDefinition.mruNodes2.unlinkAll();
 		EntityDefinition.mruNodes.unlinkAll();
-		ItemDefinition.mruNodes2.unlinkAll();
-		ItemDefinition.mruNodes1.unlinkAll();
+		ItemDefinition.model_cache.unlinkAll();
+		ItemDefinition.image_cache.unlinkAll();
 		Player.mruNodes.unlinkAll();
 		SpotAnimation.memCache.unlinkAll();
 	}
@@ -1634,9 +1634,9 @@ public class Game extends GameShell {
 									} else {
 										if (childInterface.isInventoryInterface) {
 											for (int l3 = 4; l3 >= 3; l3--)
-												if (itemDef.itemActions != null
-														&& itemDef.itemActions[l3] != null) {
-													menuActionName[menuActionRow] = itemDef.itemActions[l3]
+												if (itemDef.actions != null
+														&& itemDef.actions[l3] != null) {
+													menuActionName[menuActionRow] = itemDef.actions[l3]
 															+ " @lre@"
 															+ itemDef.name;
 													if (l3 == 3)
@@ -1667,10 +1667,10 @@ public class Game extends GameShell {
 											menuActionRow++;
 										}
 										if (childInterface.isInventoryInterface
-												&& itemDef.itemActions != null) {
+												&& itemDef.actions != null) {
 											for (int i4 = 2; i4 >= 0; i4--)
-												if (itemDef.itemActions[i4] != null) {
-													menuActionName[menuActionRow] = itemDef.itemActions[i4]
+												if (itemDef.actions[i4] != null) {
+													menuActionName[menuActionRow] = itemDef.actions[i4]
 															+ " @lre@"
 															+ itemDef.name;
 													if (i4 == 0)
@@ -2102,7 +2102,7 @@ public class Game extends GameShell {
 				Texture.method372(0.69999999999999996D);
 			if (k == 4)
 				Texture.method372(0.59999999999999998D);
-			ItemDefinition.mruNodes1.unlinkAll();
+			ItemDefinition.image_cache.unlinkAll();
 			welcomeScreenRaised = true;
 		}
 
@@ -5816,7 +5816,7 @@ public class Game extends GameShell {
 		nullLoader();
 		ObjectDefinition.nullLoader();
 		EntityDefinition.nullLoader();
-		ItemDefinition.nullLoader();
+		ItemDefinition.clearCache();
 		Floor.cache = null;
 		IdentityKit.cache = null;
 		RSInterface.interfaceCache = null;
@@ -6933,7 +6933,7 @@ public class Game extends GameShell {
 
 				model.method469();
 				model.method470(Animation.anims[myPlayer.anInt1511].anIntArray353[0]);
-				model.method479(64, 850, -30, -50, -30, true);
+				model.light(64, 850, -30, -50, -30, true);
 				class9.anInt233 = 5;
 				class9.mediaID = 0;
 				RSInterface.method208(aBoolean994, model);
@@ -10999,8 +10999,8 @@ public class Game extends GameShell {
 				if (j1 == 4) {
 					RSInterface class9_1 = RSInterface.interfaceCache[ai[l++]];
 					int k2 = ai[l++];
-					if (k2 >= 0 && k2 < ItemDefinition.totalItems
-							&& (!ItemDefinition.forID(k2).membersObject || isMembers)) {
+					if (k2 >= 0 && k2 < ItemDefinition.item_count
+							&& (!ItemDefinition.forID(k2).is_members_only || isMembers)) {
 						for (int j3 = 0; j3 < class9_1.inventoryItemId.length; j3++)
 							if (class9_1.inventoryItemId[j3] == k2 + 1)
 								k1 += class9_1.invStackSizes[j3];
@@ -11024,7 +11024,7 @@ public class Game extends GameShell {
 				if (j1 == 10) {
 					RSInterface class9_2 = RSInterface.interfaceCache[ai[l++]];
 					int l2 = ai[l++] + 1;
-					if (l2 >= 0 && l2 < ItemDefinition.totalItems && isMembers) {
+					if (l2 >= 0 && l2 < ItemDefinition.item_count && isMembers) {
 						for (int k3 = 0; k3 < class9_2.inventoryItemId.length; k3++) {
 							if (class9_2.inventoryItemId[k3] != l2)
 								continue;
@@ -13303,9 +13303,9 @@ public class Game extends GameShell {
 					ItemDefinition itemDef = ItemDefinition.forID(k18);
 					RSInterface.interfaceCache[i6].anInt233 = 4;
 					RSInterface.interfaceCache[i6].mediaID = k18;
-					RSInterface.interfaceCache[i6].modelRotation1 = itemDef.modelRotationY;
-					RSInterface.interfaceCache[i6].modelRotation2 = itemDef.modelRotationX;
-					RSInterface.interfaceCache[i6].modelZoom = (itemDef.modelZoom * 100)
+					RSInterface.interfaceCache[i6].modelRotation1 = itemDef.rotation_y;
+					RSInterface.interfaceCache[i6].modelRotation2 = itemDef.rotation_y;
+					RSInterface.interfaceCache[i6].modelZoom = (itemDef.model_zoom * 100)
 							/ i13;
 					pktType = -1;
 					return true;

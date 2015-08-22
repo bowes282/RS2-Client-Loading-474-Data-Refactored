@@ -22,7 +22,6 @@ public final class SpotAnimation {
 			cache[index].anInt404 = index;
 			cache[index].readValues(stream);
 		}
-
 	}
 
 	public void readValues(Buffer stream) {
