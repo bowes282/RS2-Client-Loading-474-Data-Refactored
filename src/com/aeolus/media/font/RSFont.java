@@ -264,13 +264,13 @@ public class RSFont extends DrawingArea {
                             try {
                                 int imageId = Integer.valueOf(effectString.substring(4));
                                 Sprite icon = chatImages[imageId];
-                                int iconModY = icon.anInt1445;
+                                int iconModY = icon.maxHeight;
                                 if (transparency == 256) {
                                     icon.method346(drawX, (drawY + baseCharacterHeight - iconModY));
                                 } else {
                                     icon.drawSprite(drawX,(drawY + baseCharacterHeight - iconModY), transparency);
                                 }
-                                drawX += icon.anInt1444;
+                                drawX += icon.maxWidth;
                             } catch (Exception exception) {
                                 /* empty */
                             }
@@ -379,7 +379,7 @@ public class RSFont extends DrawingArea {
                                 modifierOffset++;
                                 int iconId = Integer.valueOf(effectString.substring(4));
                                 Sprite class92 = chatImages[iconId];
-                                int iconOffsetY = class92.anInt1445;
+                                int iconOffsetY = class92.maxHeight;
                                 if (transparency == 256) {
                                     class92.drawSprite(drawX + xModI,
 									(drawY + baseCharacterHeight - iconOffsetY + yMod));
@@ -388,7 +388,7 @@ public class RSFont extends DrawingArea {
 										(drawY + baseCharacterHeight - iconOffsetY + yMod),
 										transparency);
                                 }
-                                drawX += class92.anInt1444;
+                                drawX += class92.maxWidth;
                             } catch (Exception exception) {
                                 /* empty */
                             }
@@ -551,7 +551,7 @@ public class RSFont extends DrawingArea {
                         if (effectString.startsWith(startImage)) {
                             try {//<img=
                                 int iconId = Integer.valueOf(effectString.substring(4));
-                                finalWidth += chatImages[iconId].anInt1444;
+                                finalWidth += chatImages[iconId].maxWidth;
                             } catch (Exception exception) {
                                 /* empty */
                             }

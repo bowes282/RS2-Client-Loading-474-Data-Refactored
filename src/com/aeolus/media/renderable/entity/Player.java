@@ -30,17 +30,17 @@ public final class Player extends Entity {
 			Model model_2 = spotAnim.getModel();
 			if(model_2 != null) {
 				Model model_3 = new Model(true, SequenceFrame.method532(super.anInt1521), false, model_2);
-				int nextFrame = spotAnim.aAnimation_407.anIntArray353[super.nextGraphicsAnimationFrame];
-				int cycle1 = spotAnim.aAnimation_407.anIntArray355[super.anInt1521];
+				int nextFrame = spotAnim.animationSequence.anIntArray353[super.nextGraphicsAnimationFrame];
+				int cycle1 = spotAnim.animationSequence.anIntArray355[super.anInt1521];
 				int cycle2 = super.anInt1522;
 				model_3.method475(0, -super.anInt1524, 0);
 				model_3.method469();
-				model_3.method470(spotAnim.aAnimation_407.anIntArray353[super.anInt1521], nextFrame, cycle1, cycle2);
+				model_3.method470(spotAnim.animationSequence.anIntArray353[super.anInt1521], nextFrame, cycle1, cycle2);
 				model_3.anIntArrayArray1658 = null;
 				model_3.anIntArrayArray1657 = null;
-				if(spotAnim.anInt410 != 128 || spotAnim.anInt411 != 128)
-					model_3.method478(spotAnim.anInt410, spotAnim.anInt410, spotAnim.anInt411);
-				model_3.method479(64 + spotAnim.anInt413, 850 + spotAnim.anInt414, -30, -50, -30, true);
+				if(spotAnim.resizeXY != 128 || spotAnim.resizeZ != 128)
+					model_3.method478(spotAnim.resizeXY, spotAnim.resizeXY, spotAnim.resizeZ);
+				model_3.method479(64 + spotAnim.modelBrightness, 850 + spotAnim.modelShadow, -30, -50, -30, true);
 				Model aclass30_sub2_sub4_sub6_1s[] = {
 						model, model_3
 				};
@@ -295,9 +295,9 @@ public final class Player extends Entity {
 			for(int j3 = 0; j3 < 5; j3++)
 				if(anIntArray1700[j3] != 0)
 				{
-					model_1.method476(Game.anIntArrayArray1003[j3][0], Game.anIntArrayArray1003[j3][anIntArray1700[j3]]);
+					model_1.recolor(Game.anIntArrayArray1003[j3][0], Game.anIntArrayArray1003[j3][anIntArray1700[j3]]);
 					if(j3 == 1)
-						model_1.method476(Game.anIntArray1204[0], Game.anIntArray1204[anIntArray1700[j3]]);
+						model_1.recolor(Game.anIntArray1204[0], Game.anIntArray1204[anIntArray1700[j3]]);
 				}
 
 			model_1.method469();
@@ -369,9 +369,9 @@ public final class Player extends Entity {
 		for(int j1 = 0; j1 < 5; j1++)
 			if(anIntArray1700[j1] != 0)
 			{
-				model.method476(Game.anIntArrayArray1003[j1][0], Game.anIntArrayArray1003[j1][anIntArray1700[j1]]);
+				model.recolor(Game.anIntArrayArray1003[j1][0], Game.anIntArrayArray1003[j1][anIntArray1700[j1]]);
 				if(j1 == 1)
-					model.method476(Game.anIntArray1204[0], Game.anIntArray1204[anIntArray1700[j1]]);
+					model.recolor(Game.anIntArray1204[0], Game.anIntArray1204[anIntArray1700[j1]]);
 			}
 
 		return model;

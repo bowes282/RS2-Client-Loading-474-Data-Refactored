@@ -59,15 +59,15 @@ public final class ItemDefinition {
 		}
 		if (k == -1)
 			return null;
-		Model model = Model.method462(k);
+		Model model = Model.getModel(k);
 		if (l != -1) {
-			Model model_1 = Model.method462(l);
+			Model model_1 = Model.getModel(l);
 			Model aclass30_sub2_sub4_sub6s[] = { model, model_1 };
 			model = new Model(2, aclass30_sub2_sub4_sub6s);
 		}
 		if (modifiedModelColors != null) {
 			for (int i1 = 0; i1 < modifiedModelColors.length; i1++)
-				model.method476(modifiedModelColors[i1],
+				model.recolor(modifiedModelColors[i1],
 						originalModelColors[i1]);
 
 		}
@@ -106,15 +106,15 @@ public final class ItemDefinition {
 		}
 		if (j == -1)
 			return null;
-		Model model = Model.method462(j);
+		Model model = Model.getModel(j);
 		if (k != -1)
 			if (l != -1) {
-				Model model_1 = Model.method462(k);
-				Model model_3 = Model.method462(l);
+				Model model_1 = Model.getModel(k);
+				Model model_3 = Model.getModel(l);
 				Model aclass30_sub2_sub4_sub6_1s[] = { model, model_1, model_3 };
 				model = new Model(3, aclass30_sub2_sub4_sub6_1s);
 			} else {
-				Model model_2 = Model.method462(k);
+				Model model_2 = Model.getModel(k);
 				Model aclass30_sub2_sub4_sub6s[] = { model, model_2 };
 				model = new Model(2, aclass30_sub2_sub4_sub6s);
 			}
@@ -124,7 +124,7 @@ public final class ItemDefinition {
 			model.method475(0, aByte154, 0);
 		if (modifiedModelColors != null) {
 			for (int i1 = 0; i1 < modifiedModelColors.length; i1++)
-				model.method476(modifiedModelColors[i1],
+				model.recolor(modifiedModelColors[i1],
 						originalModelColors[i1]);
 
 		}
@@ -223,7 +223,7 @@ public final class ItemDefinition {
 	public static Sprite getSprite(int i, int j, int k) {
 		if (k == 0) {
 			Sprite sprite = (Sprite) mruNodes1.insertFromCache(i);
-			if (sprite != null && sprite.anInt1445 != j && sprite.anInt1445 != -1) {
+			if (sprite != null && sprite.maxHeight != j && sprite.maxHeight != -1) {
 				
 				sprite.unlink();
 				sprite = null;
@@ -330,13 +330,13 @@ public final class ItemDefinition {
 
 		}
 		if (itemDef.certTemplateID != -1) {
-			int l5 = sprite.anInt1444;
-			int j6 = sprite.anInt1445;
-			sprite.anInt1444 = 32;
-			sprite.anInt1445 = 32;
+			int l5 = sprite.maxWidth;
+			int j6 = sprite.maxHeight;
+			sprite.maxWidth = 32;
+			sprite.maxHeight = 32;
 			sprite.drawSprite(0, 0);
-			sprite.anInt1444 = l5;
-			sprite.anInt1445 = j6;
+			sprite.maxWidth = l5;
+			sprite.maxHeight = j6;
 		}
 		if (k == 0)
 			mruNodes1.removeFromCache(enabledSprite, i);
@@ -347,10 +347,10 @@ public final class ItemDefinition {
 		Texture.anIntArray1472 = ai;
 		Texture.aBoolean1464 = true;
 		if (itemDef.stackable)
-			enabledSprite.anInt1444 = 33;
+			enabledSprite.maxWidth = 33;
 		else
-			enabledSprite.anInt1444 = 32;
-		enabledSprite.anInt1445 = j;
+			enabledSprite.maxWidth = 32;
+		enabledSprite.maxHeight = j;
 		return enabledSprite;
 	}
 
@@ -367,14 +367,14 @@ public final class ItemDefinition {
 		Model model = (Model) mruNodes2.insertFromCache(id);
 		if (model != null)
 			return model;
-		model = Model.method462(modelID);
+		model = Model.getModel(modelID);
 		if (model == null)
 			return null;
 		if (anInt167 != 128 || anInt192 != 128 || anInt191 != 128)
 			model.method478(anInt167, anInt191, anInt192);
 		if (modifiedModelColors != null) {
 			for (int l = 0; l < modifiedModelColors.length; l++)
-				model.method476(modifiedModelColors[l], originalModelColors[l]);
+				model.recolor(modifiedModelColors[l], originalModelColors[l]);
 
 		}
 		model.method479(64 + anInt196, 768 + anInt184, -50, -10, -50, true);
@@ -393,12 +393,12 @@ public final class ItemDefinition {
 			if (j != -1)
 				return forID(j).method202(1);
 		}
-		Model model = Model.method462(modelID);
+		Model model = Model.getModel(modelID);
 		if (model == null)
 			return null;
 		if (modifiedModelColors != null) {
 			for (int l = 0; l < modifiedModelColors.length; l++)
-				model.method476(modifiedModelColors[l], originalModelColors[l]);
+				model.recolor(modifiedModelColors[l], originalModelColors[l]);
 
 		}
 		return model;

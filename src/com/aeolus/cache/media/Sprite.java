@@ -14,8 +14,8 @@ public final class Sprite extends DrawingArea {
 
 	public Sprite(int i, int j) {
 		myPixels = new int[i * j];
-		myWidth = anInt1444 = i;
-		myHeight = anInt1445 = j;
+		myWidth = maxWidth = i;
+		myHeight = maxHeight = j;
 		drawOffsetX = drawOffsetY = 0;
 	}
 
@@ -29,8 +29,8 @@ public final class Sprite extends DrawingArea {
 			mediatracker.waitForAll();
 			myWidth = image.getWidth(component);
 			myHeight = image.getHeight(component);
-			anInt1444 = myWidth;
-			anInt1445 = myHeight;
+			maxWidth = myWidth;
+			maxHeight = myHeight;
 			drawOffsetX = 0;
 			drawOffsetY = 0;
 			myPixels = new int[myWidth * myHeight];
@@ -46,8 +46,8 @@ public final class Sprite extends DrawingArea {
 			Image image = Toolkit.getDefaultToolkit().createImage(FileUtility.readFile(img));
 			myWidth = width;
 			myHeight = height;
-			anInt1444 = myWidth;
-			anInt1445 = myHeight;
+			maxWidth = myWidth;
+			maxHeight = myHeight;
 			drawOffsetX = 0;
 			drawOffsetY = 0;
 			myPixels = new int[myWidth * myHeight];
@@ -65,8 +65,8 @@ public final class Sprite extends DrawingArea {
 			ImageIcon sprite = new ImageIcon(image);
 			myWidth = sprite.getIconWidth();
 			myHeight = sprite.getIconHeight();
-			anInt1444 = myWidth;
-			anInt1445 = myHeight;
+			maxWidth = myWidth;
+			maxHeight = myHeight;
 			drawOffsetX = 0;
 			drawOffsetY = 0;
 			myPixels = new int[myWidth * myHeight];
@@ -196,8 +196,8 @@ public final class Sprite extends DrawingArea {
 		Buffer stream = new Buffer(streamLoader.getDataForName(s + ".dat"));
 		Buffer stream_1 = new Buffer(streamLoader.getDataForName("index.dat"));
 		stream_1.currentOffset = stream.getUnsignedLEShort();
-		anInt1444 = stream_1.getUnsignedLEShort();
-		anInt1445 = stream_1.getUnsignedLEShort();
+		maxWidth = stream_1.getUnsignedLEShort();
+		maxHeight = stream_1.getUnsignedLEShort();
 		int j = stream_1.readUnsignedByte();
 		int ai[] = new int[j];
 		for (int k = 0; k < j - 1; k++) {
@@ -268,14 +268,14 @@ public final class Sprite extends DrawingArea {
 	}
 
 	public void method345() {
-		int ai[] = new int[anInt1444 * anInt1445];
+		int ai[] = new int[maxWidth * maxHeight];
 		for (int j = 0; j < myHeight; j++) {
-			System.arraycopy(myPixels, j * myWidth, ai, j + drawOffsetY * anInt1444 + drawOffsetX, myWidth);
+			System.arraycopy(myPixels, j * myWidth, ai, j + drawOffsetY * maxWidth + drawOffsetX, myWidth);
 		}
 
 		myPixels = ai;
-		myWidth = anInt1444;
-		myHeight = anInt1445;
+		myWidth = maxWidth;
+		myHeight = maxHeight;
 		drawOffsetX = 0;
 		drawOffsetY = 0;
 	}
@@ -688,8 +688,8 @@ public final class Sprite extends DrawingArea {
 			ImageIcon sprite = new ImageIcon(image);
 			myWidth = sprite.getIconWidth();
 			myHeight = sprite.getIconHeight();
-			anInt1444 = myWidth;
-			anInt1445 = myHeight;
+			maxWidth = myWidth;
+			maxHeight = myHeight;
 			drawOffsetX = 0;
 			drawOffsetY = 0;
 			myPixels = new int[myWidth * myHeight];
@@ -857,6 +857,6 @@ public final class Sprite extends DrawingArea {
 	public int myHeight;
 	int drawOffsetX;
 	int drawOffsetY;
-	public int anInt1444;
-	public int anInt1445;
+	public int maxWidth;
+	public int maxHeight;
 }

@@ -32,7 +32,7 @@ public final class SceneSpotAnim extends Renderable {
 		if(model == null) {
 			return null;
 		}
-		int j = aSpotAnim_1568.aAnimation_407.anIntArray353[anInt1569];
+		int j = aSpotAnim_1568.animationSequence.anIntArray353[anInt1569];
 		Model model_1 = new Model(true, SequenceFrame.method532(j), false, model);
 		if(!aBoolean1567) {
 			model_1.method469();
@@ -40,32 +40,32 @@ public final class SceneSpotAnim extends Renderable {
 			model_1.anIntArrayArray1658 = null;
 			model_1.anIntArrayArray1657 = null;
 		}
-		if(aSpotAnim_1568.anInt410 != 128 || aSpotAnim_1568.anInt411 != 128) {
-			model_1.method478(aSpotAnim_1568.anInt410, aSpotAnim_1568.anInt410, aSpotAnim_1568.anInt411);
+		if(aSpotAnim_1568.resizeXY != 128 || aSpotAnim_1568.resizeZ != 128) {
+			model_1.method478(aSpotAnim_1568.resizeXY, aSpotAnim_1568.resizeXY, aSpotAnim_1568.resizeZ);
 		}
-		if(aSpotAnim_1568.anInt412 != 0) {
-			if(aSpotAnim_1568.anInt412 == 90) {
+		if(aSpotAnim_1568.rotation != 0) {
+			if(aSpotAnim_1568.rotation == 90) {
 				model_1.method473();
 			}
-			if(aSpotAnim_1568.anInt412 == 180) {
+			if(aSpotAnim_1568.rotation == 180) {
 				model_1.method473();
 				model_1.method473();
 			}
-			if(aSpotAnim_1568.anInt412 == 270) {
+			if(aSpotAnim_1568.rotation == 270) {
 				model_1.method473();
 				model_1.method473();
 				model_1.method473();
 			}
 		}
-		model_1.method479(64 + aSpotAnim_1568.anInt413, 850 + aSpotAnim_1568.anInt414, -30, -50, -30, true);
+		model_1.method479(64 + aSpotAnim_1568.modelBrightness, 850 + aSpotAnim_1568.modelShadow, -30, -50, -30, true);
 		return model_1;
 	}
 
 	public void method454(int i) {
-		for(anInt1570 += i; anInt1570 > aSpotAnim_1568.aAnimation_407.method258(anInt1569);) {
-			anInt1570 -= aSpotAnim_1568.aAnimation_407.method258(anInt1569) + 1;
+		for(anInt1570 += i; anInt1570 > aSpotAnim_1568.animationSequence.method258(anInt1569);) {
+			anInt1570 -= aSpotAnim_1568.animationSequence.method258(anInt1569) + 1;
 			anInt1569++;
-			if(anInt1569 >= aSpotAnim_1568.aAnimation_407.anInt352 && (anInt1569 < 0 || anInt1569 >= aSpotAnim_1568.aAnimation_407.anInt352)) {
+			if(anInt1569 >= aSpotAnim_1568.animationSequence.anInt352 && (anInt1569 < 0 || anInt1569 >= aSpotAnim_1568.animationSequence.anInt352)) {
 				anInt1569 = 0;
 				aBoolean1567 = true;
 			}

@@ -998,7 +998,7 @@ public class Model extends Renderable {
 		aClass21Array1661[j] = null;
 	}
 
-	public static Model method462(int j) {
+	public static Model getModel(int j) {
 		if (aClass21Array1661 == null)
 			return null;
 		ModelHeader class21 = aClass21Array1661[j];
@@ -1930,7 +1930,7 @@ public class Model extends Renderable {
 		}
 	}
 
-	public void method476(int i, int j) {
+	public void recolor(int i, int j) {
 		for (int k = 0; k < anInt1630; k++)
 			if (anIntArray1640[k] == i)
 				anIntArray1640[k] = j;

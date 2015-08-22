@@ -238,7 +238,7 @@ public final class ObjectDefinition {
 					l2 += 0x10000;
 				model = (Model) mruNodes1.insertFromCache(l2);
 				if (model == null) {
-					model = Model.method462(l2 & 0xffff);
+					model = Model.getModel(l2 & 0xffff);
 					if (model == null)
 						return null;
 					if (flag1)
@@ -272,7 +272,7 @@ public final class ObjectDefinition {
 				j2 += 0x10000;
 			model = (Model) mruNodes1.insertFromCache(j2);
 			if (model == null) {
-				model = Model.method462(j2 & 0xffff);
+				model = Model.getModel(j2 & 0xffff);
 				if (model == null)
 					return null;
 				if (flag3)
@@ -296,7 +296,7 @@ public final class ObjectDefinition {
 			model_3.method473();
 		if (modifiedModelColors != null) {
 			for (int k2 = 0; k2 < modifiedModelColors.length; k2++)
-				model_3.method476(modifiedModelColors[k2],
+				model_3.recolor(modifiedModelColors[k2],
 						originalModelColors[k2]);
 
 		}

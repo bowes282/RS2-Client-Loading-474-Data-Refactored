@@ -233,9 +233,9 @@ public final class RSInterface {
 		equipmentScreen(textDrawingAreas);
 		equipmentTab(textDrawingAreas);
 		questTab(textDrawingAreas);
-		//itemsOnDeathDATA(textDrawingAreas);
-		//itemsKeptOnDeath(textDrawingAreas);
-		//itemsOnDeath(textDrawingAreas);
+		itemsOnDeathDATA(textDrawingAreas);
+		itemsKeptOnDeath(textDrawingAreas);
+		itemsOnDeath(textDrawingAreas);
 		aMRUNodes_238 = null;
 	}
 	
@@ -2120,7 +2120,7 @@ public final class RSInterface {
 		if (model != null)
 			return model;
 		if (i == 1)
-			model = Model.method462(j);
+			model = Model.getModel(j);
 		if (i == 2)
 			model = EntityDefinition.forID(j).method160();
 		if (i == 3)

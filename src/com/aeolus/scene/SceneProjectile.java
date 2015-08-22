@@ -56,8 +56,8 @@ public final class SceneProjectile extends Renderable {
 			return null;
 		}
 		int j = -1;
-		if(aSpotAnim_1592.aAnimation_407 != null) {
-			j = aSpotAnim_1592.aAnimation_407.anIntArray353[anInt1593];
+		if(aSpotAnim_1592.animationSequence != null) {
+			j = aSpotAnim_1592.animationSequence.anIntArray353[anInt1593];
 		}
 		Model model_1 = new Model(true, SequenceFrame.method532(j), false, model);
 		if(j != -1) {
@@ -66,11 +66,11 @@ public final class SceneProjectile extends Renderable {
 			model_1.anIntArrayArray1658 = null;
 			model_1.anIntArrayArray1657 = null;
 		}
-		if(aSpotAnim_1592.anInt410 != 128 || aSpotAnim_1592.anInt411 != 128) {
-			model_1.method478(aSpotAnim_1592.anInt410, aSpotAnim_1592.anInt410, aSpotAnim_1592.anInt411);
+		if(aSpotAnim_1592.resizeXY != 128 || aSpotAnim_1592.resizeZ != 128) {
+			model_1.method478(aSpotAnim_1592.resizeXY, aSpotAnim_1592.resizeXY, aSpotAnim_1592.resizeZ);
 		}
 		model_1.method474(anInt1596);
-		model_1.method479(64 + aSpotAnim_1592.anInt413, 850 + aSpotAnim_1592.anInt414, -30, -50, -30, true);
+		model_1.method479(64 + aSpotAnim_1592.modelBrightness, 850 + aSpotAnim_1592.modelShadow, -30, -50, -30, true);
 		return model_1;
 	}
 
@@ -98,11 +98,11 @@ public final class SceneProjectile extends Renderable {
 		aDouble1577 += aDouble1578 * (double)i;
 		anInt1595 = (int)(Math.atan2(aDouble1574, aDouble1575) * 325.94900000000001D) + 1024 & 0x7ff;
 		anInt1596 = (int)(Math.atan2(aDouble1577, aDouble1576) * 325.94900000000001D) & 0x7ff;
-		if(aSpotAnim_1592.aAnimation_407 != null) {
-			for(anInt1594 += i; anInt1594 > aSpotAnim_1592.aAnimation_407.method258(anInt1593);) {
-				anInt1594 -= aSpotAnim_1592.aAnimation_407.method258(anInt1593) + 1;
+		if(aSpotAnim_1592.animationSequence != null) {
+			for(anInt1594 += i; anInt1594 > aSpotAnim_1592.animationSequence.method258(anInt1593);) {
+				anInt1594 -= aSpotAnim_1592.animationSequence.method258(anInt1593) + 1;
 				anInt1593++;
-				if(anInt1593 >= aSpotAnim_1592.aAnimation_407.anInt352) {
+				if(anInt1593 >= aSpotAnim_1592.animationSequence.anInt352) {
 					anInt1593 = 0;
 				}
 			}

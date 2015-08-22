@@ -41,7 +41,7 @@ public final class EntityDefinition {
 			return null;
 		Model aclass30_sub2_sub4_sub6s[] = new Model[aditionalModels.length];
 		for (int j = 0; j < aditionalModels.length; j++)
-			aclass30_sub2_sub4_sub6s[j] = Model.method462(aditionalModels[j]);
+			aclass30_sub2_sub4_sub6s[j] = Model.getModel(aditionalModels[j]);
 
 		Model model;
 		if (aclass30_sub2_sub4_sub6s.length == 1)
@@ -51,7 +51,7 @@ public final class EntityDefinition {
 					aclass30_sub2_sub4_sub6s);
 		if (recolourOriginal != null) {
 			for (int k = 0; k < recolourOriginal.length; k++)
-				model.method476(recolourOriginal[k], recolourTarget[k]);
+				model.recolor(recolourOriginal[k], recolourTarget[k]);
 
 		}
 		return model;
@@ -126,7 +126,7 @@ public final class EntityDefinition {
 			Model aclass30_sub2_sub4_sub6s[] = new Model[npcModels.length];
 			for (int j1 = 0; j1 < npcModels.length; j1++)
 				aclass30_sub2_sub4_sub6s[j1] = Model
-				.method462(npcModels[j1]);
+				.getModel(npcModels[j1]);
 
 			if (aclass30_sub2_sub4_sub6s.length == 1)
 				model = aclass30_sub2_sub4_sub6s[0];
@@ -135,7 +135,7 @@ public final class EntityDefinition {
 						aclass30_sub2_sub4_sub6s);
 			if (recolourOriginal != null) {
 				for (int k1 = 0; k1 < recolourOriginal.length; k1++)
-					model.method476(recolourOriginal[k1], recolourTarget[k1]);
+					model.recolor(recolourOriginal[k1], recolourTarget[k1]);
 
 			}
 			model.method469();
@@ -181,7 +181,7 @@ public final class EntityDefinition {
 			Model aclass30_sub2_sub4_sub6s[] = new Model[npcModels.length];
 			for (int j1 = 0; j1 < npcModels.length; j1++)
 				aclass30_sub2_sub4_sub6s[j1] = Model
-				.method462(npcModels[j1]);
+				.getModel(npcModels[j1]);
 
 			if (aclass30_sub2_sub4_sub6s.length == 1)
 				model = aclass30_sub2_sub4_sub6s[0];
@@ -190,7 +190,7 @@ public final class EntityDefinition {
 						aclass30_sub2_sub4_sub6s);
 			if (recolourOriginal != null) {
 				for (int k1 = 0; k1 < recolourOriginal.length; k1++)
-					model.method476(recolourOriginal[k1], recolourTarget[k1]);
+					model.recolor(recolourOriginal[k1], recolourTarget[k1]);
 
 			}
 			model.method469();

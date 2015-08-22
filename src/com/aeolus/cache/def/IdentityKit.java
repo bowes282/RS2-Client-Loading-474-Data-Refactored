@@ -3,10 +3,6 @@ import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 public final class IdentityKit {
 
 	public static void unpackConfig(CacheArchive streamLoader)
@@ -75,7 +71,7 @@ public final class IdentityKit {
 			return null;
 		Model aclass30_sub2_sub4_sub6s[] = new Model[anIntArray658.length];
 		for(int i = 0; i < anIntArray658.length; i++)
-			aclass30_sub2_sub4_sub6s[i] = Model.method462(anIntArray658[i]);
+			aclass30_sub2_sub4_sub6s[i] = Model.getModel(anIntArray658[i]);
 
 		Model model;
 		if(aclass30_sub2_sub4_sub6s.length == 1)
@@ -86,7 +82,7 @@ public final class IdentityKit {
 		{
 			if(anIntArray659[j] == 0)
 				break;
-			model.method476(anIntArray659[j], anIntArray660[j]);
+			model.recolor(anIntArray659[j], anIntArray660[j]);
 		}
 
 		return model;
@@ -108,14 +104,14 @@ public final class IdentityKit {
 		int j = 0;
 		for(int k = 0; k < 5; k++)
 			if(anIntArray661[k] != -1)
-				aclass30_sub2_sub4_sub6s[j++] = Model.method462(anIntArray661[k]);
+				aclass30_sub2_sub4_sub6s[j++] = Model.getModel(anIntArray661[k]);
 
 		Model model = new Model(j, aclass30_sub2_sub4_sub6s);
 		for(int l = 0; l < 6; l++)
 		{
 			if(anIntArray659[l] == 0)
 				break;
-			model.method476(anIntArray659[l], anIntArray660[l]);
+			model.recolor(anIntArray659[l], anIntArray660[l]);
 		}
 
 		return model;

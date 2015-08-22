@@ -1310,7 +1310,7 @@ public class Game extends GameShell {
 		ItemDefinition.mruNodes2.unlinkAll();
 		ItemDefinition.mruNodes1.unlinkAll();
 		Player.mruNodes.unlinkAll();
-		SpotAnimation.aMRUNodes_415.unlinkAll();
+		SpotAnimation.memCache.unlinkAll();
 	}
 
 	private void renderMapScene(int i) {
@@ -5822,7 +5822,7 @@ public class Game extends GameShell {
 		RSInterface.interfaceCache = null;
 		Animation.anims = null;
 		SpotAnimation.cache = null;
-		SpotAnimation.aMRUNodes_415 = null;
+		SpotAnimation.memCache = null;
 		Varp.cache = null;
 		super.fullGameScreen = null;
 		Player.mruNodes = null;
@@ -6924,10 +6924,10 @@ public class Game extends GameShell {
 				Model model = new Model(i2, aclass30_sub2_sub4_sub6s);
 				for (int l2 = 0; l2 < 5; l2++)
 					if (anIntArray990[l2] != 0) {
-						model.method476(anIntArrayArray1003[l2][0],
+						model.recolor(anIntArrayArray1003[l2][0],
 								anIntArrayArray1003[l2][anIntArray990[l2]]);
 						if (l2 == 1)
-							model.method476(anIntArray1204[0],
+							model.recolor(anIntArray1204[0],
 									anIntArray1204[anIntArray990[l2]]);
 					}
 
@@ -6950,10 +6950,10 @@ public class Game extends GameShell {
 				Model characterDisplay = myPlayer.method452();
 				for (int l2 = 0; l2 < 5; l2++)
 					if (anIntArray990[l2] != 0) {
-						characterDisplay.method476(anIntArrayArray1003[l2][0],
+						characterDisplay.recolor(anIntArrayArray1003[l2][0],
 								anIntArrayArray1003[l2][anIntArray990[l2]]);
 						if (l2 == 1)
-							characterDisplay.method476(anIntArray1204[0],
+							characterDisplay.recolor(anIntArray1204[0],
 									anIntArray1204[anIntArray990[l2]]);
 					}
 				int staticFrame = myPlayer.anInt1511;
@@ -9317,7 +9317,7 @@ public class Game extends GameShell {
 		if (entity.anInt1520 != -1 && loopCycle >= entity.anInt1523) {
 			if (entity.anInt1521 < 0)
 				entity.anInt1521 = 0;
-			Animation animation_1 = SpotAnimation.cache[entity.anInt1520].aAnimation_407;
+			Animation animation_1 = SpotAnimation.cache[entity.anInt1520].animationSequence;
 			for (entity.anInt1522++; entity.anInt1521 < animation_1.anInt352
 					&& entity.anInt1522 > animation_1
 							.method258(entity.anInt1521); entity.anInt1521++)
@@ -9738,7 +9738,7 @@ public class Game extends GameShell {
 										else
 											class30_sub2_sub1_sub1_2
 													.drawSprite(tileX, tileY);
-										if (class30_sub2_sub1_sub1_2.anInt1444 == 33
+										if (class30_sub2_sub1_sub1_2.maxWidth == 33
 												|| childInterface.invStackSizes[item] != 1) {
 											int k10 = childInterface.invStackSizes[item];
 
@@ -11108,19 +11108,19 @@ public class Game extends GameShell {
 			return;
 		}
 		int sineAngle = Model.SINE[angle];
-		int j1 = Model.COSINE[angle];
+		int cosineAngle = Model.COSINE[angle];
 		sineAngle = (sineAngle * 256) / (minimapZoom + 256);
-		j1 = (j1 * 256) / (minimapZoom + 256);
-		int spriteOffsetX = y * sineAngle + x * j1 >> 16;
-		int spriteOffsetY = y * j1 - x * sineAngle >> 16;
+		cosineAngle = (cosineAngle * 256) / (minimapZoom + 256);
+		int spriteOffsetX = y * sineAngle + x * cosineAngle >> 16;
+		int spriteOffsetY = y * cosineAngle - x * sineAngle >> 16;
 		if (frameMode == ScreenMode.FIXED) {
 			sprite.drawSprite(
-					((94 + spriteOffsetX) - sprite.anInt1444 / 2) + 4 + 30, 83
-							- spriteOffsetY - sprite.anInt1445 / 2 - 4 + 5);
+					((94 + spriteOffsetX) - sprite.maxWidth / 2) + 4 + 30, 83
+							- spriteOffsetY - sprite.maxHeight / 2 - 4 + 5);
 		} else {
-			sprite.drawSprite(((77 + spriteOffsetX) - sprite.anInt1444 / 2) + 4
-					+ (frameWidth - 167), 85 - spriteOffsetY - sprite.anInt1445
-					/ 2 - 4);
+			sprite.drawSprite(((77 + spriteOffsetX) - sprite.maxWidth / 2) + 4 + 5
+					+ (frameWidth - 167), 85 - spriteOffsetY - sprite.maxHeight
+					/ 2);
 		}
 	}
 
@@ -13796,25 +13796,15 @@ public class Game extends GameShell {
 		String value = RSInterface.interfaceCache[155].message;
 		int spec = Integer.parseInt(value);
 		if (specialHover) {
-			cacheSprite[56].drawSprite(frameMode == ScreenMode.FIXED ? 153
-					: frameWidth - 63, frameMode == ScreenMode.FIXED ? 131
-					: 150);
+			cacheSprite[56].drawSprite(frameMode == ScreenMode.FIXED ? 153 : frameWidth - 63, frameMode == ScreenMode.FIXED ? 131 : 150);
 		} else {
-			cacheSprite[42].drawSprite(frameMode == ScreenMode.FIXED ? 154
-					: frameWidth - 62, frameMode == ScreenMode.FIXED ? 132
-					: 151);
+			cacheSprite[42].drawSprite(frameMode == ScreenMode.FIXED ? 154 : frameWidth - 62, frameMode == ScreenMode.FIXED ? 132 : 151);
 		}
 		cacheSprite[5].myHeight = (int) (spec * 27 / 100);
-		cacheSprite[5].drawSprite(frameMode == ScreenMode.FIXED ? 157
-				: frameWidth - 58, frameMode == ScreenMode.FIXED ? 135 : 155);
-		cacheSprite[14].drawSprite(frameMode == ScreenMode.FIXED ? 157
-				: frameWidth - 58, frameMode == ScreenMode.FIXED ? 135 : 155);
-		cacheSprite[55].drawSprite(frameMode == ScreenMode.FIXED ? 162
-				: frameWidth - 53, frameMode == ScreenMode.FIXED ? 140 : 160);
-		smallText.method382(getOrbTextColor(spec),
-				frameMode == ScreenMode.FIXED ? 198 : frameWidth - 19, Integer
-						.toString(spec), frameMode == ScreenMode.FIXED ? 158
-						: 177, true);
+		cacheSprite[5].drawSprite(frameMode == ScreenMode.FIXED ? 157 : frameWidth - 58, frameMode == ScreenMode.FIXED ? 135 : 155);
+		cacheSprite[14].drawSprite(frameMode == ScreenMode.FIXED ? 157 : frameWidth - 58, frameMode == ScreenMode.FIXED ? 135 : 155);
+		cacheSprite[55].drawSprite(frameMode == ScreenMode.FIXED ? 162 : frameWidth - 53, frameMode == ScreenMode.FIXED ? 140 : 160);
+		smallText.method382(getOrbTextColor(spec), frameMode == ScreenMode.FIXED ? 198 : frameWidth - 19, Integer.toString(spec), frameMode == ScreenMode.FIXED ? 158 : 177, true);
 	}
 
 	public boolean isPoisoned, clickedQuickPrayers;

@@ -5,6 +5,10 @@ import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 
+/**
+ * Refactored SpotAnimation using rename317
+ * https://code.google.com/p/rename317/source/browse/trunk/src/rs2/SpotAnim.java?r=168
+ */
 public final class SpotAnimation {
 
 	public static void unpackConfig(CacheArchive streamLoader) {
@@ -12,83 +16,82 @@ public final class SpotAnimation {
 		int length = stream.getUnsignedLEShort();
 		if (cache == null)
 			cache = new SpotAnimation[length];
-		for (int j = 0; j < length; j++) {
-			if (cache[j] == null)
-				cache[j] = new SpotAnimation();
-			cache[j].anInt404 = j;
-			cache[j].readValues(stream);
+		for (int index = 0; index < length; index++) {
+			if (cache[index] == null)
+				cache[index] = new SpotAnimation();
+			cache[index].anInt404 = index;
+			cache[index].readValues(stream);
 		}
 
 	}
 
 	public void readValues(Buffer stream) {
 		do {
-			int i = stream.readUnsignedByte();
-			if (i == 0)
+			int opCode = stream.readUnsignedByte();
+			if (opCode == 0)
 				return;
-			if (i == 1)
-				anInt405 = stream.getUnsignedLEShort();
-			else if (i == 2) {
-				anInt406 = stream.getUnsignedLEShort();
+			if (opCode == 1)
+				modelId = stream.getUnsignedLEShort();
+			else if (opCode == 2) {
+				animationId = stream.getUnsignedLEShort();
 				if (Animation.anims != null)
-					aAnimation_407 = Animation.anims[anInt406];
-			} else if (i == 4)
-				anInt410 = stream.getUnsignedLEShort();
-			else if (i == 5)
-				anInt411 = stream.getUnsignedLEShort();
-			else if (i == 6)
-				anInt412 = stream.getUnsignedLEShort();
-			else if (i == 7)
-				anInt413 = stream.readUnsignedByte();
-			else if (i == 8)
-				anInt414 = stream.readUnsignedByte();
-			else if (i == 40) {
+					animationSequence = Animation.anims[animationId];
+			} else if (opCode == 4)
+				resizeXY = stream.getUnsignedLEShort();
+			else if (opCode == 5)
+				resizeZ = stream.getUnsignedLEShort();
+			else if (opCode == 6)
+				rotation = stream.getUnsignedLEShort();
+			else if (opCode == 7)
+				modelBrightness = stream.readUnsignedByte();
+			else if (opCode == 8)
+				modelShadow = stream.readUnsignedByte();
+			else if (opCode == 40) {
 				int j = stream.readUnsignedByte();
 				for (int k = 0; k < j; k++) {
-					anIntArray408[k] = stream.getUnsignedLEShort();
-					anIntArray409[k] = stream.getUnsignedLEShort();
+					originalModelColours[k] = stream.getUnsignedLEShort();
+					modifiedModelColours[k] = stream.getUnsignedLEShort();
 				}
 			} else
 				System.out.println("Error unrecognised spotanim config code: "
-						+ i);
+						+ opCode);
 		} while (true);
 	}
 
 	public Model getModel() {
-		Model model = (Model) aMRUNodes_415.insertFromCache(anInt404);
+		Model model = (Model) memCache.insertFromCache(anInt404);
 		if (model != null)
 			return model;
-		model = Model.method462(anInt405);
+		model = Model.getModel(modelId);
 		if (model == null)
 			return null;
 		for (int i = 0; i < 6; i++)
-			if (anIntArray408[0] != 0)
-				model.method476(anIntArray408[i], anIntArray409[i]);
+			if (originalModelColours[0] != 0)
+				model.recolor(originalModelColours[i], modifiedModelColours[i]);
 
-		aMRUNodes_415.removeFromCache(model, anInt404);
+		memCache.removeFromCache(model, anInt404);
 		return model;
 	}
 
 	private SpotAnimation() {
-		anInt406 = -1;
-		anIntArray408 = new int[6];
-		anIntArray409 = new int[6];
-		anInt410 = 128;
-		anInt411 = 128;
+		animationId = -1;
+		originalModelColours = new int[6];
+		modifiedModelColours = new int[6];
+		resizeXY = 128;
+		resizeZ = 128;
 	}
 
 	public static SpotAnimation cache[];
 	private int anInt404;
-	private int anInt405;
-	private int anInt406;
-	public Animation aAnimation_407;
-	private final int[] anIntArray408;
-	private final int[] anIntArray409;
-	public int anInt410;
-	public int anInt411;
-	public int anInt412;
-	public int anInt413;
-	public int anInt414;
-	public static Cache aMRUNodes_415 = new Cache(30);
-
+	private int modelId;
+	private int animationId;
+	public Animation animationSequence;
+	private final int[] originalModelColours;
+	private final int[] modifiedModelColours;
+	public int resizeXY;
+	public int resizeZ;
+	public int rotation;
+	public int modelBrightness;
+	public int modelShadow;
+	public static Cache memCache = new Cache(30);
 }
