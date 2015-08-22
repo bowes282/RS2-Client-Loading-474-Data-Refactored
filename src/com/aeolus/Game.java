@@ -5976,6 +5976,9 @@ public class Game extends GameShell {
 						}
 						if (inputString.equals("::fps"))
 							fpsOn = !fpsOn;
+						
+						if (inputString.equals("::roofs"))
+							Configuration.enableRoofs = !Configuration.enableRoofs;
 
 						if (inputString.equals("::ids"))
 							Configuration.showIds = !Configuration.showIds;
@@ -10853,7 +10856,9 @@ public class Game extends GameShell {
 		return flag1;
 	}
 
-	private int setCameraLocation() {
+	private int setCameraLocation() {		
+		if (!Configuration.enableRoofs)
+			return plane;		
 		int j = 3;
 		if (yCameraCurve < 310) {
 			int k = xCameraPos >> 7;

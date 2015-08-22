@@ -32,6 +32,11 @@ public class Configuration {
 	public static boolean enableMusic = true;
 	
 	/**
+	 * Toggles the ability for a player to see roofs in-game
+	 */
+	public static boolean enableRoofs = true;
+	
+	/**
 	 * Used for change worlds button on login screen
 	 */
 	public static boolean worldSwitch = false;
