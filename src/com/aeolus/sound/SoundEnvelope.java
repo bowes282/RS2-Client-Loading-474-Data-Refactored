@@ -13,10 +13,10 @@ final class SoundEnvelope
 		anInt540 = stream.readUnsignedByte();
 			anInt538 = stream.readDWord();
 			anInt539 = stream.readDWord();
-			method326(stream);
+			decodeSegments(stream);
 	}
 
-	public void method326(Buffer stream)
+	public void decodeSegments(Buffer stream)
 	{
 		anInt535 = stream.readUnsignedByte();
 		anIntArray536 = new int[anInt535];

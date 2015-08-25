@@ -1,131 +1,143 @@
 package com.aeolus.sound;
+
 import com.aeolus.net.Buffer;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
+/*
+ * an implementation of a reconfigurable filter that calculates
+ * coefficients from pole magnitude/phases and a serial
+ * configuration of cascading second-order iir filters
+ * Refactored information from Major's 317 refactored client
+ */
+final class SoundFilter {
 
-final class SoundFilter
-{
+	final int[] pairs;
+	private final int[][][] phases;
+	private final int[][][] magnitudes;
+	private final int[] unity;
+	private static final float[][] minimisedCoefficients = new float[2][8];
+	static final int[][] coefficients = new int[2][8];
+	private static float forwardMinimisedCoefficientMultiplier;
+	static int forwardMultiplier;
 
-	private float method541(int i, int j, float f)
-	{
-		float f1 = (float)anIntArrayArrayArray667[i][0][j] + f * (float)(anIntArrayArrayArray667[i][1][j] - anIntArrayArrayArray667[i][0][j]);
-			f1 *= 0.001525879F;
-			return 1.0F - (float)Math.pow(10D, -f1 / 20F);
+	public SoundFilter() {
+		pairs = new int[2];
+		phases = new int[2][2][4];
+		magnitudes = new int[2][2][4];
+		unity = new int[2];
 	}
 
-	private float method542(float f)
-	{
-		float f1 = 32.7032F * (float)Math.pow(2D, f);
+	/**
+	 * Perform precise linear interpolation on the magnitude (where "precise" means that the result is guaranteed to be
+	 * the first magnitude ({@code magnitudes[direction][1][pair]}) when the step is {@code 1}).
+	 * 
+	 * @param direction The direction, where {@code 0} is feedforward, and {@code 1} is feedback.
+	 * @param pair The pair.
+	 * @param step The step (the interpolation parameter).
+	 * @return The interpolated magnitude.
+	 */
+	private float interpolateMagnitude(int direction, int pair, float step) {
+		float magnitude = (float) magnitudes[direction][0][pair] + step
+				* (float) (magnitudes[direction][1][pair] - magnitudes[direction][0][pair]);
+		magnitude *= 0.001525879F;
+		return 1.0F - (float) Math.pow(10D, -magnitude / 20F);
+	}
+
+	private float normalise(float exponent) {
+		float f1 = 32.7032F * (float) Math.pow(2D, exponent);
 		return (f1 * 3.141593F) / 11025F;
 	}
 
-	private float method543(float f, int i, int j)
-	{
-		float f1 = (float)anIntArrayArrayArray666[j][0][i] + f * (float)(anIntArrayArrayArray666[j][1][i] - anIntArrayArrayArray666[j][0][i]);
-		f1 *= 0.0001220703F;
-		return method542(f1);
+	/**
+	 * Perform linear interpolation on the phase
+	 * 
+	 * @param direction The direction, where {@code 0} is feedforward, and {@code 1} is feedback.
+	 * @param pair The pair.
+	 * @param step The step (the interpolation parameter).
+	 * @return The interpolated phase.
+	 */
+	private float interpolatePhase(int direction, int pair, float step) {
+		float phase = (float) phases[direction][0][pair] + step
+				* (float) (phases[direction][1][pair] - phases[direction][0][pair]);
+		phase *= 0.0001220703F;
+		return normalise(phase);
 	}
 
-	public int method544(int i, float f)
-	{
-		if(i == 0)
-		{
-			float f1 = (float)anIntArray668[0] + (float)(anIntArray668[1] - anIntArray668[0]) * f;
-			f1 *= 0.003051758F;
-			aFloat671 = (float)Math.pow(0.10000000000000001D, f1 / 20F);
-			anInt672 = (int)(aFloat671 * 65536F);
+	public int compute(int direction, float step) {
+		if (direction == 0) {
+			float unity = (float) this.unity[0] + (float) (this.unity[1] - this.unity[0]) * step;
+			unity *= 0.003051758F;
+			forwardMinimisedCoefficientMultiplier = (float) Math.pow(
+					0.10000000000000001D, unity / 20F);
+			forwardMultiplier = (int) (forwardMinimisedCoefficientMultiplier * 65536F);
 		}
-		if(anIntArray665[i] == 0)
+		if (pairs[direction] == 0)
 			return 0;
-		float f2 = method541(i, 0, f);
-		aFloatArrayArray669[i][0] = -2F * f2 * (float)Math.cos(method543(f, 0, i));
-		aFloatArrayArray669[i][1] = f2 * f2;
-		for(int k = 1; k < anIntArray665[i]; k++)
-		{
-			float f3 = method541(i, k, f);
-			float f4 = -2F * f3 * (float)Math.cos(method543(f, k, i));
-			float f5 = f3 * f3;
-			aFloatArrayArray669[i][k * 2 + 1] = aFloatArrayArray669[i][k * 2 - 1] * f5;
-			aFloatArrayArray669[i][k * 2] = aFloatArrayArray669[i][k * 2 - 1] * f4 + aFloatArrayArray669[i][k * 2 - 2] * f5;
-			for(int j1 = k * 2 - 1; j1 >= 2; j1--)
-				aFloatArrayArray669[i][j1] += aFloatArrayArray669[i][j1 - 1] * f4 + aFloatArrayArray669[i][j1 - 2] * f5;
+		float initialMagnitude = interpolateMagnitude(direction, 0, step);
+		minimisedCoefficients[direction][0] = -2F * initialMagnitude
+				* (float) Math.cos(interpolatePhase(direction, 0, step));
+		minimisedCoefficients[direction][1] = initialMagnitude * initialMagnitude;
+		for (int pair = 1; pair < pairs[direction]; pair++) {
+			float magnitude = interpolateMagnitude(direction, pair, step);
+			float f4 = -2F * magnitude * (float) Math.cos(interpolatePhase(direction, pair, step));
+			float f5 = magnitude * magnitude;
+			minimisedCoefficients[direction][pair * 2 + 1] = minimisedCoefficients[direction][pair * 2 - 1]
+					* f5;
+			minimisedCoefficients[direction][pair * 2] = minimisedCoefficients[direction][pair * 2 - 1]
+					* f4 + minimisedCoefficients[direction][pair * 2 - 2] * f5;
+			for (int j1 = pair * 2 - 1; j1 >= 2; j1--)
+				minimisedCoefficients[direction][j1] += minimisedCoefficients[direction][j1 - 1]
+						* f4 + minimisedCoefficients[direction][j1 - 2] * f5;
 
-			aFloatArrayArray669[i][1] += aFloatArrayArray669[i][0] * f4 + f5;
-			aFloatArrayArray669[i][0] += f4;
+			minimisedCoefficients[direction][1] += minimisedCoefficients[direction][0] * f4
+					+ f5;
+			minimisedCoefficients[direction][0] += f4;
 		}
 
-		if(i == 0)
-		{
-			for(int l = 0; l < anIntArray665[0] * 2; l++)
-				aFloatArrayArray669[0][l] *= aFloat671;
+		if (direction == 0) {
+			for (int l = 0; l < pairs[0] * 2; l++)
+				minimisedCoefficients[0][l] *= forwardMinimisedCoefficientMultiplier;
 
 		}
-		for(int i1 = 0; i1 < anIntArray665[i] * 2; i1++)
-			anIntArrayArray670[i][i1] = (int)(aFloatArrayArray669[i][i1] * 65536F);
+		for (int pair = 0; pair < pairs[direction] * 2; pair++)
+			coefficients[direction][pair] = (int) (minimisedCoefficients[direction][pair] * 65536F);
 
-		return anIntArray665[i] * 2;
+		return pairs[direction] * 2;
 	}
 
-	public void method545(Buffer stream, SoundEnvelope class29)
-	{
-		int i = stream.readUnsignedByte();
-		anIntArray665[0] = i >> 4;
-		anIntArray665[1] = i & 0xf;
-		if(i != 0)
-		{
-			anIntArray668[0] = stream.getUnsignedLEShort();
-			anIntArray668[1] = stream.getUnsignedLEShort();
-			int j = stream.readUnsignedByte();
-			for(int k = 0; k < 2; k++)
-			{
-				for(int l = 0; l < anIntArray665[k]; l++)
-				{
-					anIntArrayArrayArray666[k][0][l] = stream.getUnsignedLEShort();
-					anIntArrayArrayArray667[k][0][l] = stream.getUnsignedLEShort();
+	public void decode(Buffer stream, SoundEnvelope soundEnveleope) {
+		int count = stream.readUnsignedByte();
+		pairs[0] = count >> 4;
+		pairs[1] = count & 0xf;
+		if (count != 0) {
+			unity[0] = stream.getUnsignedLEShort();
+			unity[1] = stream.getUnsignedLEShort();
+			int migration = stream.readUnsignedByte();
+			for (int k = 0; k < 2; k++) {
+				for (int l = 0; l < pairs[k]; l++) {
+					phases[k][0][l] = stream.getUnsignedLEShort();
+					magnitudes[k][0][l] = stream.getUnsignedLEShort();
 				}
 
 			}
 
-			for(int i1 = 0; i1 < 2; i1++)
-			{
-				for(int j1 = 0; j1 < anIntArray665[i1]; j1++)
-					if((j & 1 << i1 * 4 << j1) != 0)
-					{
-						anIntArrayArrayArray666[i1][1][j1] = stream.getUnsignedLEShort();
-						anIntArrayArrayArray667[i1][1][j1] = stream.getUnsignedLEShort();
-					} else
-					{
-						anIntArrayArrayArray666[i1][1][j1] = anIntArrayArrayArray666[i1][0][j1];
-						anIntArrayArrayArray667[i1][1][j1] = anIntArrayArrayArray667[i1][0][j1];
+			for (int direction = 0; direction < 2; direction++) {
+				for (int pair = 0; pair < pairs[direction]; pair++)
+					if ((migration & 1 << direction * 4 << pair) != 0) {
+						phases[direction][1][pair] = stream
+								.getUnsignedLEShort();
+						magnitudes[direction][1][pair] = stream
+								.getUnsignedLEShort();
+					} else {
+						phases[direction][1][pair] = phases[direction][0][pair];
+						magnitudes[direction][1][pair] = magnitudes[direction][0][pair];
 					}
 
 			}
 
-			if(j != 0 || anIntArray668[1] != anIntArray668[0])
-				class29.method326(stream);
-		} else
-		{
-			anIntArray668[0] = anIntArray668[1] = 0;
+			if (migration != 0 || unity[1] != unity[0])
+				soundEnveleope.decodeSegments(stream);
+		} else {
+			unity[0] = unity[1] = 0;
 		}
 	}
-
-	public SoundFilter()
-	{
-		anIntArray665 = new int[2];
-		anIntArrayArrayArray666 = new int[2][2][4];
-		anIntArrayArrayArray667 = new int[2][2][4];
-		anIntArray668 = new int[2];
-	}
-
-	final int[] anIntArray665;
-	private final int[][][] anIntArrayArrayArray666;
-	private final int[][][] anIntArrayArrayArray667;
-	private final int[] anIntArray668;
-	private static final float[][] aFloatArrayArray669 = new float[2][8];
-	static final int[][] anIntArrayArray670 = new int[2][8];
-	private static float aFloat671;
-	static int anInt672;
-
 }
