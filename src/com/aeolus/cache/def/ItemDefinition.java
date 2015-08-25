@@ -1,4 +1,8 @@
 package com.aeolus.cache.def;
+
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
 import com.aeolus.cache.media.Sprite;
 import com.aeolus.collection.Cache;
 import com.aeolus.media.DrawingArea;
@@ -9,7 +13,8 @@ import com.aeolus.scene.graphic.Texture;
 
 /**
  * Refactored reference from rename317
- * https://code.google.com/p/rename317/source/browse/trunk/src/rs2/ItemDef.java?spec=svn202&r=202
+ * https://code.google.com/p/rename317/source
+ * /browse/trunk/src/rs2/ItemDef.java?spec=svn202&r=202
  */
 public final class ItemDefinition {
 
@@ -48,10 +53,9 @@ public final class ItemDefinition {
 			streamIndices[_ctr] = offset;
 			offset += stream.getUnsignedLEShort();
 		}
-
 		cache = new ItemDefinition[10];
 		for (int _ctr = 0; _ctr < 10; _ctr++)
-			cache[_ctr] = new ItemDefinition();
+			cache[_ctr] = new ItemDefinition();		
 	}
 
 	public Model getChatEquipModel(int gender) {
@@ -76,7 +80,7 @@ public final class ItemDefinition {
 
 		}
 		return dialogueModel_;
-	}	
+	}
 
 	public boolean isEquippedModelCached(int gender) {
 		int primaryModel = equipped_model_male_1;
@@ -229,8 +233,9 @@ public final class ItemDefinition {
 	public static Sprite getSprite(int itemId, int stackSize, int outlineColor) {
 		if (outlineColor == 0) {
 			Sprite sprite = (Sprite) image_cache.insertFromCache(itemId);
-			if (sprite != null && sprite.maxHeight != stackSize && sprite.maxHeight != -1) {
-				
+			if (sprite != null && sprite.maxHeight != stackSize
+					&& sprite.maxHeight != -1) {
+
 				sprite.unlink();
 				sprite = null;
 			}
@@ -272,7 +277,8 @@ public final class ItemDefinition {
 		int vp_top = DrawingArea.topY;
 		int vp_bottom = DrawingArea.bottomY;
 		Texture.aBoolean1464 = false;
-		DrawingArea.initDrawingArea(32, 32, enabledSprite.myPixels, new float[32*32]);
+		DrawingArea.initDrawingArea(32, 32, enabledSprite.myPixels,
+				new float[32 * 32]);
 		DrawingArea.method336(32, 0, 0, 0, 32);
 		Texture.method364();
 		int k3 = itemDef.model_zoom;
@@ -283,9 +289,8 @@ public final class ItemDefinition {
 		int l3 = Texture.anIntArray1470[itemDef.rotation_y] * k3 >> 16;
 		int i4 = Texture.anIntArray1471[itemDef.rotation_y] * k3 >> 16;
 		model.method482(itemDef.rotation_x, itemDef.rotation_z,
-				itemDef.rotation_y, itemDef.translate_x, l3
-						+ model.modelHeight / 2 + itemDef.translate_yz, i4
-						+ itemDef.translate_yz);
+				itemDef.rotation_y, itemDef.translate_x, l3 + model.modelHeight
+						/ 2 + itemDef.translate_yz, i4 + itemDef.translate_yz);
 		for (int i5 = 31; i5 >= 0; i5--) {
 			for (int j4 = 31; j4 >= 0; j4--)
 				if (enabledSprite.myPixels[i5 + j4 * 32] == 0)
@@ -364,7 +369,8 @@ public final class ItemDefinition {
 		if (stack_variant_id != null && stack_size > 1) {
 			int stack_item_id = -1;
 			for (int k = 0; k < 10; k++)
-				if (stack_size >= stack_variant_size[k] && stack_variant_size[k] != 0)
+				if (stack_size >= stack_variant_size[k]
+						&& stack_variant_size[k] != 0)
 					stack_item_id = stack_variant_id[k];
 
 			if (stack_item_id != -1)
@@ -376,11 +382,13 @@ public final class ItemDefinition {
 		model = Model.getModel(inventory_model);
 		if (model == null)
 			return null;
-		if (model_scale_x != 128 || model_scale_y != 128 || model_scale_z != 128)
+		if (model_scale_x != 128 || model_scale_y != 128
+				|| model_scale_z != 128)
 			model.scale(model_scale_x, model_scale_z, model_scale_y);
 		if (modified_model_colors != null) {
 			for (int l = 0; l < modified_model_colors.length; l++)
-				model.recolor(modified_model_colors[l], original_model_colors[l]);
+				model.recolor(modified_model_colors[l],
+						original_model_colors[l]);
 
 		}
 		model.light(64 + light_intensity, 768 + light_mag, -50, -10, -50, true);
@@ -393,7 +401,8 @@ public final class ItemDefinition {
 		if (stack_variant_id != null && stack_size > 1) {
 			int stack_item_id = -1;
 			for (int count = 0; count < 10; count++)
-				if (stack_size >= stack_variant_size[count] && stack_variant_size[count] != 0)
+				if (stack_size >= stack_variant_size[count]
+						&& stack_variant_size[count] != 0)
 					stack_item_id = stack_variant_id[count];
 
 			if (stack_item_id != -1)
@@ -404,7 +413,8 @@ public final class ItemDefinition {
 			return null;
 		if (modified_model_colors != null) {
 			for (int colorPtr = 0; colorPtr < modified_model_colors.length; colorPtr++)
-				model.recolor(modified_model_colors[colorPtr], original_model_colors[colorPtr]);
+				model.recolor(modified_model_colors[colorPtr],
+						original_model_colors[colorPtr]);
 
 		}
 		return model;
@@ -413,35 +423,35 @@ public final class ItemDefinition {
 	public void readValues(Buffer buffer) {
 		do {
 			int opCode = buffer.readUnsignedByte();
-			if(opCode == 0)
+			if (opCode == 0)
 				return;
-			if(opCode == 1)
+			if (opCode == 1)
 				inventory_model = buffer.getUnsignedLEShort();
-			else if(opCode == 2)
+			else if (opCode == 2)
 				name = buffer.readString();
-			else if(opCode == 3)
+			else if (opCode == 3)
 				description = buffer.readBytes();
-			else if(opCode == 4)
+			else if (opCode == 4)
 				model_zoom = buffer.getUnsignedLEShort();
 			else if (opCode == 5)
 				rotation_y = buffer.getUnsignedLEShort();
 			else if (opCode == 6)
 				rotation_x = buffer.getUnsignedLEShort();
-			else if(opCode == 7) {
+			else if (opCode == 7) {
 				translate_x = buffer.getUnsignedLEShort();
-				if(translate_x > 32767)
+				if (translate_x > 32767)
 					translate_x -= 0x10000;
-			} else if(opCode == 8) {
+			} else if (opCode == 8) {
 				translate_yz = buffer.getUnsignedLEShort();
-				if(translate_yz > 32767)
+				if (translate_yz > 32767)
 					translate_yz -= 0x10000;
-			} else if(opCode == 10)
+			} else if (opCode == 10)
 				buffer.getUnsignedLEShort();
-			else if(opCode == 11)
+			else if (opCode == 11)
 				stackable = true;
-			else if(opCode == 12)
+			else if (opCode == 12)
 				value = buffer.readDWord();
-			else if(opCode == 16)
+			else if (opCode == 16)
 				is_members_only = true;
 			else if (opCode == 23) {
 				equipped_model_male_1 = buffer.getUnsignedLEShort();
@@ -453,62 +463,62 @@ public final class ItemDefinition {
 				equipped_model_female_translation_y = buffer.readSignedByte();
 			} else if (opCode == 26)
 				equipped_model_female_2 = buffer.getUnsignedLEShort();
-			else if(opCode >= 30 && opCode < 35) {
-				if(groundActions == null)
+			else if (opCode >= 30 && opCode < 35) {
+				if (groundActions == null)
 					groundActions = new String[5];
 				groundActions[opCode - 30] = buffer.readString();
-				if(groundActions[opCode - 30].equalsIgnoreCase("hidden"))
+				if (groundActions[opCode - 30].equalsIgnoreCase("hidden"))
 					groundActions[opCode - 30] = null;
-			} else if(opCode >= 35 && opCode < 40) {
-				if(actions == null)
+			} else if (opCode >= 35 && opCode < 40) {
+				if (actions == null)
 					actions = new String[5];
 				actions[opCode - 35] = buffer.readString();
-			} else if(opCode == 40) {
-					int j = buffer.readUnsignedByte();
-					modified_model_colors= new int[j];
-					original_model_colors = new int[j];
-					for(int k = 0; k < j; k++) {
-						modified_model_colors[k] = buffer.getUnsignedLEShort();
-						original_model_colors [k] = buffer.getUnsignedLEShort();
-					}
-			} else if(opCode == 78)
+			} else if (opCode == 40) {
+				int j = buffer.readUnsignedByte();
+				modified_model_colors = new int[j];
+				original_model_colors = new int[j];
+				for (int k = 0; k < j; k++) {
+					modified_model_colors[k] = buffer.getUnsignedLEShort();
+					original_model_colors[k] = buffer.getUnsignedLEShort();
+				}
+			} else if (opCode == 78)
 				equipped_model_male_3 = buffer.getUnsignedLEShort();
-			else if(opCode == 79)
+			else if (opCode == 79)
 				equipped_model_female_3 = buffer.getUnsignedLEShort();
-			else if(opCode == 90)
+			else if (opCode == 90)
 				equipped_model_male_dialogue_1 = buffer.getUnsignedLEShort();
-			else if(opCode == 91)
+			else if (opCode == 91)
 				equipped_model_female_dialogue_1 = buffer.getUnsignedLEShort();
-			else if(opCode == 92)
+			else if (opCode == 92)
 				equipped_model_male_dialogue_2 = buffer.getUnsignedLEShort();
-			else if(opCode == 93)
+			else if (opCode == 93)
 				equipped_model_female_dialogue_2 = buffer.getUnsignedLEShort();
-			else if(opCode == 95)
+			else if (opCode == 95)
 				rotation_z = buffer.getUnsignedLEShort();
-			else if(opCode == 97)
+			else if (opCode == 97)
 				unnoted_item_id = buffer.getUnsignedLEShort();
-			else if(opCode == 98)
+			else if (opCode == 98)
 				noted_item_id = buffer.getUnsignedLEShort();
-			else if(opCode >= 100 && opCode < 110) {
-				if(stack_variant_id == null) {
+			else if (opCode >= 100 && opCode < 110) {
+				if (stack_variant_id == null) {
 					stack_variant_id = new int[10];
 					stack_variant_size = new int[10];
 				}
 				stack_variant_id[opCode - 100] = buffer.getUnsignedLEShort();
 				stack_variant_size[opCode - 100] = buffer.getUnsignedLEShort();
-			} else if(opCode == 110)
+			} else if (opCode == 110)
 				model_scale_x = buffer.getUnsignedLEShort();
-			else if(opCode == 111)
+			else if (opCode == 111)
 				model_scale_y = buffer.getUnsignedLEShort();
-			else if(opCode == 112)
+			else if (opCode == 112)
 				model_scale_z = buffer.getUnsignedLEShort();
-			else if(opCode == 113)
+			else if (opCode == 113)
 				light_intensity = buffer.readSignedByte();
-			else if(opCode == 114)
+			else if (opCode == 114)
 				light_mag = buffer.readSignedByte() * 5;
-			else if(opCode == 115)
+			else if (opCode == 115)
 				team = buffer.readUnsignedByte();
-		} while(true);
+		} while (true);
 	}
 
 	private ItemDefinition() {

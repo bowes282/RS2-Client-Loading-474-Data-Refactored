@@ -7988,6 +7988,7 @@ public class Game extends GameShell {
 				anInt1155 = 0;
 				anInt1226 = 0;
 				sendFrame36(429, 1);
+				this.stopMidi();
 				setupGameplayScreen();
 				return;
 			}
