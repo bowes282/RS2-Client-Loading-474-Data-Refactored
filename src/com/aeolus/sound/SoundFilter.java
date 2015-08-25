@@ -2,11 +2,12 @@ package com.aeolus.sound;
 
 import com.aeolus.net.Buffer;
 
-/*
+/**
  * an implementation of a reconfigurable filter that calculates
  * coefficients from pole magnitude/phases and a serial
  * configuration of cascading second-order iir filters
  * Refactored information from Major's 317 refactored client
+ * http://www.rune-server.org/runescape-development/rs2-client/downloads/575183-almost-fully-refactored-317-client.html
  */
 final class SoundFilter {
 

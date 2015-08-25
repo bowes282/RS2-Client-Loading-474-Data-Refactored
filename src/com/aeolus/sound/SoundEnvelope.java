@@ -1,73 +1,81 @@
 package com.aeolus.sound;
+
 import com.aeolus.net.Buffer;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
+/**
+ * A simple envelope generator to control a variety of parameters (such as
+ * attack and release).
+ * Refactored using Major's 317 refactored client
+ * http://www.rune-server.org/runescape-development/rs2-client/downloads/575183-almost-fully-refactored-317-client.html
+ */
+final class SoundEnvelope {
 
-final class SoundEnvelope
-{
+	private int segments;
+	private int[] durations;
+	private int[] peaks;
+	int start;
+	int end;
+	int form;
+	private int threshold;
+	private int segmentIndex;
+	private int step;
+	private int amplitude;
+	private int ticks;
 
-	public void method325(Buffer stream)
-	{
-		anInt540 = stream.readUnsignedByte();
-			anInt538 = stream.readDWord();
-			anInt539 = stream.readDWord();
-			decodeSegments(stream);
+	public void decode(Buffer stream) {
+		form = stream.readUnsignedByte();
+		start = stream.readDWord();
+		end = stream.readDWord();
+		decodeSegments(stream);
 	}
 
-	public void decodeSegments(Buffer stream)
-	{
-		anInt535 = stream.readUnsignedByte();
-		anIntArray536 = new int[anInt535];
-		anIntArray537 = new int[anInt535];
-		for(int i = 0; i < anInt535; i++)
-		{
-			anIntArray536[i] = stream.getUnsignedLEShort();
-			anIntArray537[i] = stream.getUnsignedLEShort();
+	/**
+	 * Decodes the segment data from the specified {@link Buffer}.
+	 * 
+	 * @param buffer
+	 *            The buffer.
+	 */
+	public void decodeSegments(Buffer stream) {
+		segments = stream.readUnsignedByte();
+		durations = new int[segments];
+		peaks = new int[segments];
+		for (int i = 0; i < segments; i++) {
+			durations[i] = stream.getUnsignedLEShort();
+			peaks[i] = stream.getUnsignedLEShort();
 		}
 
 	}
 
-	void resetValues()
-	{
-		anInt541 = 0;
-		anInt542 = 0;
-		anInt543 = 0;
-		anInt544 = 0;
-		anInt545 = 0;
+	/**
+	 * Resets this envelope.
+	 */
+	void resetValues() {
+		threshold = 0;
+		segmentIndex = 0;
+		step = 0;
+		amplitude = 0;
+		ticks = 0;
 	}
 
-	int method328(int i)
-	{
-		if(anInt545 >= anInt541)
-		{
-			anInt544 = anIntArray537[anInt542++] << 15;
-			if(anInt542 >= anInt535)
-				anInt542 = anInt535 - 1;
-			anInt541 = (int)(((double)anIntArray536[anInt542] / 65536D) * (double)i);
-			if(anInt541 > anInt545)
-				anInt543 = ((anIntArray537[anInt542] << 15) - anInt544) / (anInt541 - anInt545);
+	/**
+	 * Proceeds to the next step of the envelope,
+	 * 
+	 * @param period
+	 *            The current period.
+	 * @return The change.
+	 */
+	int step(int period) {
+		if (ticks >= threshold) {
+			amplitude = peaks[segmentIndex++] << 15;
+			if (segmentIndex >= segments)
+				segmentIndex = segments - 1;
+			threshold = (int) (((double) durations[segmentIndex] / 65536D) * (double) period);
+			if (threshold > ticks)
+				step = ((peaks[segmentIndex] << 15) - amplitude)
+						/ (threshold - ticks);
 		}
-		anInt544 += anInt543;
-		anInt545++;
-		return anInt544 - anInt543 >> 15;
+		amplitude += step;
+		ticks++;
+		return amplitude - step >> 15;
 	}
-
-	public SoundEnvelope()
-	{
-	}
-
-	private int anInt535;
-	private int[] anIntArray536;
-	private int[] anIntArray537;
-	int anInt538;
-	int anInt539;
-	int anInt540;
-	private int anInt541;
-	private int anInt542;
-	private int anInt543;
-	private int anInt544;
-	private int anInt545;
-	public static int anInt546;
 }
