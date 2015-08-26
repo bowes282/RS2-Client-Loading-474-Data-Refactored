@@ -5,14 +5,14 @@ public final class Sounds {
 
 	private Sounds()
 	{
-		aClass6Array329 = new SoundSample[10];
+		aClass6Array329 = new SoundSynthesizer[10];
 	}
 
 	public static void unpack(Buffer stream)
 	{
 		aByteArray327 = new byte[0x6baa8];
 		aStream_328 = new Buffer(aByteArray327);
-		SoundSample.method166();
+		SoundSynthesizer.init();
 		do
 		{
 			int j = stream.getUnsignedLEShort();
@@ -44,8 +44,8 @@ public final class Sounds {
 			if(j != 0)
 			{
 				stream.currentOffset--;
-				aClass6Array329[i] = new SoundSample();
-				aClass6Array329[i].method169(stream);
+				aClass6Array329[i] = new SoundSynthesizer();
+				aClass6Array329[i].decode(stream);
 			}
 		}
 		anInt330 = stream.getUnsignedLEShort();
@@ -119,7 +119,7 @@ public final class Sounds {
 			{
 				int j2 = (aClass6Array329[i2].anInt113 * 22050) / 1000;
 				int i3 = (aClass6Array329[i2].anInt114 * 22050) / 1000;
-				int ai[] = aClass6Array329[i2].method167(j2, aClass6Array329[i2].anInt113);
+				int ai[] = aClass6Array329[i2].synthesize(j2, aClass6Array329[i2].anInt113);
 				for(int l3 = 0; l3 < j2; l3++)
 					aByteArray327[l3 + i3 + 44] += (byte)(ai[l3] >> 8);
 
@@ -150,7 +150,7 @@ public final class Sounds {
 	public static final int[] anIntArray326 = new int[5000];
 	private static byte[] aByteArray327;
 	private static Buffer aStream_328;
-	private final SoundSample[] aClass6Array329;
+	private final SoundSynthesizer[] aClass6Array329;
 	private int anInt330;
 	private int anInt331;
 
