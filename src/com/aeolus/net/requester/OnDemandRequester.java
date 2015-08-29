@@ -103,9 +103,9 @@ public final class OnDemandRequester extends Requester implements Runnable {
 		mapIndices2 = new int[j1];
 		mapIndices3 = new int[j1];
 		for (int i2 = 0; i2 < j1; i2++) {
-			mapIndices1[i2] = stream2.getUnsignedLEShort();
-			mapIndices2[i2] = stream2.getUnsignedLEShort();
-			mapIndices3[i2] = stream2.getUnsignedLEShort();
+			mapIndices1[i2] = stream2.readUShort();
+			mapIndices2[i2] = stream2.readUShort();
+			mapIndices3[i2] = stream2.readUShort();
 			mapAmount++;
 		}
 		System.out.println("Map Amount: " + mapAmount + "");

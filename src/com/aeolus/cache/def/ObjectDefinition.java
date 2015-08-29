@@ -1,6 +1,6 @@
 package com.aeolus.cache.def;
 import com.aeolus.Game;
-import com.aeolus.cache.config.VarBit;
+import com.aeolus.cache.config.VariableBits;
 import com.aeolus.cache.media.SequenceFrame;
 import com.aeolus.collection.Cache;
 import com.aeolus.media.renderable.Model;
@@ -139,12 +139,12 @@ public final class ObjectDefinition {
 	public static void unpackConfig(CacheArchive streamLoader) {
 		stream = new Buffer(streamLoader.getDataForName("loc.dat"));
 		Buffer stream = new Buffer(streamLoader.getDataForName("loc.idx"));
-		int totalObjects = stream.getUnsignedLEShort();
+		int totalObjects = stream.readUShort();
 		streamIndices = new int[totalObjects];
 		int i = 2;
 		for (int j = 0; j < totalObjects; j++) {
 			streamIndices[j] = i;
-			i += stream.getUnsignedLEShort();
+			i += stream.readUShort();
 		}
 		cache = new ObjectDefinition[20];
 		for (int k = 0; k < 20; k++)
@@ -204,7 +204,7 @@ public final class ObjectDefinition {
 	public ObjectDefinition method580() {
 		int i = -1;
 		if (anInt774 != -1) {
-			VarBit varBit = VarBit.cache[anInt774];
+			VariableBits varBit = VariableBits.cache[anInt774];
 			int j = varBit.getSetting();
 			int k = varBit.getLow();
 			int l = varBit.getHigh();
@@ -324,7 +324,7 @@ public final class ObjectDefinition {
 						anIntArray776 = new int[len];
 						anIntArray773 = new int[len];
 						for (int k1 = 0; k1 < len; k1++) {
-							anIntArray773[k1] = stream.getUnsignedLEShort();
+							anIntArray773[k1] = stream.readUShort();
 							anIntArray776[k1] = stream.readUnsignedByte();
 						}
 					} else {
@@ -342,7 +342,7 @@ public final class ObjectDefinition {
 						anIntArray776 = null;
 						anIntArray773 = new int[len];
 						for (int l1 = 0; l1 < len; l1++)
-							anIntArray773[l1] = stream.getUnsignedLEShort();
+							anIntArray773[l1] = stream.readUShort();
 					} else {
 						stream.currentOffset += len * 2;
 					}
@@ -364,7 +364,7 @@ public final class ObjectDefinition {
 			else if (type == 23)
 				aBoolean764 = true;
 			else if (type == 24) {
-				anInt781 = stream.getUnsignedLEShort();
+				anInt781 = stream.readUShort();
 				if (anInt781 == 65535)
 					anInt781 = -1;
 			} else if (type == 28)
@@ -384,24 +384,24 @@ public final class ObjectDefinition {
 				modifiedModelColors = new int[i1];
 				originalModelColors = new int[i1];
 				for (int i2 = 0; i2 < i1; i2++) {
-					modifiedModelColors[i2] = stream.getUnsignedLEShort();
-					originalModelColors[i2] = stream.getUnsignedLEShort();
+					modifiedModelColors[i2] = stream.readUShort();
+					originalModelColors[i2] = stream.readUShort();
 				}
 
 			} else if (type == 60)
-				anInt746 = stream.getUnsignedLEShort();
+				anInt746 = stream.readUShort();
 			else if (type == 62)
 				aBoolean751 = true;
 			else if (type == 64)
 				aBoolean779 = false;
 			else if (type == 65)
-				anInt748 = stream.getUnsignedLEShort();
+				anInt748 = stream.readUShort();
 			else if (type == 66)
-				anInt772 = stream.getUnsignedLEShort();
+				anInt772 = stream.readUShort();
 			else if (type == 67)
-				anInt740 = stream.getUnsignedLEShort();
+				anInt740 = stream.readUShort();
 			else if (type == 68)
-				anInt758 = stream.getUnsignedLEShort();
+				anInt758 = stream.readUShort();
 			else if (type == 69)
 				anInt768 = stream.readUnsignedByte();
 			else if (type == 70)
@@ -417,16 +417,16 @@ public final class ObjectDefinition {
 			else if (type == 75)
 				anInt760 = stream.readUnsignedByte();
 			else if (type == 77) {
-				anInt774 = stream.getUnsignedLEShort();
+				anInt774 = stream.readUShort();
 				if (anInt774 == 65535)
 					anInt774 = -1;
-				anInt749 = stream.getUnsignedLEShort();
+				anInt749 = stream.readUShort();
 				if (anInt749 == 65535)
 					anInt749 = -1;
 				int j1 = stream.readUnsignedByte();
 				childrenIDs = new int[j1 + 1];
 				for (int j2 = 0; j2 <= j1; j2++) {
-					childrenIDs[j2] = stream.getUnsignedLEShort();
+					childrenIDs[j2] = stream.readUShort();
 					if (childrenIDs[j2] == 65535)
 						childrenIDs[j2] = -1;
 				}

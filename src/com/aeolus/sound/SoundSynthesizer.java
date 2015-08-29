@@ -293,8 +293,8 @@ final class SoundSynthesizer {
 
 		delayTime = stream.method422();
 		delayDecay = stream.method422();
-		duration = stream.getUnsignedLEShort();
-		offset = stream.getUnsignedLEShort();
+		duration = stream.readUShort();
+		offset = stream.readUShort();
 		filter = new SoundFilter();
 		filterEnvelope = new SoundEnvelope();
 		filter.decode(stream, filterEnvelope);

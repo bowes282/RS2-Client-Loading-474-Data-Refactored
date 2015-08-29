@@ -23,7 +23,7 @@ public final class Censor {
 
 	private static void readTldList(Buffer stream)
 	{
-		int i = stream.readDWord();
+		int i = stream.readInt();
 		aCharArrayArray624 = new char[i][];
 		anIntArray625 = new int[i];
 		for(int j = 0; j < i; j++)
@@ -40,7 +40,7 @@ public final class Censor {
 
 	private static void readBadEnc(Buffer stream)
 	{
-		int j = stream.readDWord();
+		int j = stream.readInt();
 		aCharArrayArray621 = new char[j][];
 		aByteArrayArrayArray622 = new byte[j][][];
 		method493(stream, aCharArrayArray621, aByteArrayArrayArray622);
@@ -48,16 +48,16 @@ public final class Censor {
 
 	private static void readDomainEnc(Buffer stream)
 	{
-		int i = stream.readDWord();
+		int i = stream.readInt();
 		aCharArrayArray623 = new char[i][];
 			method494(aCharArrayArray623, stream);
 	}
 
 	private static void readFragmentsEnc(Buffer stream)
 	{
-		anIntArray620 = new int[stream.readDWord()];
+		anIntArray620 = new int[stream.readInt()];
 		for(int i = 0; i < anIntArray620.length; i++)
-			anIntArray620[i] = stream.getUnsignedLEShort();
+			anIntArray620[i] = stream.readUShort();
 	}
 
 	private static void method493(Buffer stream, char ac[][], byte abyte0[][][])

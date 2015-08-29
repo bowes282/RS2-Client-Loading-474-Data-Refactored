@@ -17,7 +17,7 @@ public final class SoundTrack {
 		riff = new Buffer(output);
 		SoundSynthesizer.init();
 		do {
-			int id = stream.getUnsignedLEShort();
+			int id = stream.readUShort();
 			if (id == 65535)
 				return;
 			tracks[id] = new SoundTrack();
@@ -44,8 +44,8 @@ public final class SoundTrack {
 				synthesizers[synthesizer].decode(stream);
 			}
 		}
-		loopStart = stream.getUnsignedLEShort();
-		loopEnd = stream.getUnsignedLEShort();
+		loopStart = stream.readUShort();
+		loopEnd = stream.readUShort();
 	}
 
 	private int calculateDelay() {

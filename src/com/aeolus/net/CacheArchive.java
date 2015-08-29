@@ -26,7 +26,7 @@ public final class CacheArchive {
 			aByteArray726 = abyte0;
 			aBoolean732 = false;
 		}
-		dataSize = stream.getUnsignedLEShort();
+		dataSize = stream.readUShort();
 		anIntArray728 = new int[dataSize];
 		anIntArray729 = new int[dataSize];
 		anIntArray730 = new int[dataSize];
@@ -34,7 +34,7 @@ public final class CacheArchive {
 		int k = stream.currentOffset + dataSize * 10;
 		for(int l = 0; l < dataSize; l++)
 		{
-			anIntArray728[l] = stream.readDWord();
+			anIntArray728[l] = stream.readInt();
 			anIntArray729[l] = stream.read3Bytes();
 			anIntArray730[l] = stream.read3Bytes();
 			anIntArray731[l] = k;

@@ -11,8 +11,8 @@ import java.util.zip.GZIPOutputStream;
 
 import com.aeolus.cache.Index;
 import com.aeolus.cache.config.Censor;
-import com.aeolus.cache.config.VarBit;
-import com.aeolus.cache.config.Varp;
+import com.aeolus.cache.config.VariableBits;
+import com.aeolus.cache.config.VariableParameter;
 import com.aeolus.cache.def.NpcDefinition;
 import com.aeolus.cache.def.IdentityKit;
 import com.aeolus.cache.def.ItemDefinition;
@@ -2089,7 +2089,7 @@ public class Game extends GameShell {
 	}
 
 	private void adjustVolume(int i) {
-		int j = Varp.cache[i].anInt709;
+		int j = VariableParameter.parameters[i].anInt709;
 		if (j == 0)
 			return;
 		int k = variousSettings[i];
@@ -5817,7 +5817,7 @@ public class Game extends GameShell {
 		Animation.anims = null;
 		SpotAnimation.cache = null;
 		SpotAnimation.memCache = null;
-		Varp.cache = null;
+		VariableParameter.parameters = null;
 		super.fullGameScreen = null;
 		Player.mruNodes = null;
 		Texture.nullLoader();
@@ -8381,8 +8381,8 @@ public class Game extends GameShell {
 				npc.maxHealth = stream.readUnsignedByte();
 			}
 			if ((l & 0x80) != 0) {
-				npc.anInt1520 = stream.getUnsignedLEShort();
-				int k1 = stream.readDWord();
+				npc.anInt1520 = stream.readUShort();
+				int k1 = stream.readInt();
 				npc.anInt1524 = k1 >> 16;
 				npc.anInt1523 = loopCycle + (k1 & 0xffff);
 				npc.anInt1521 = 0;
@@ -8393,7 +8393,7 @@ public class Game extends GameShell {
 					npc.anInt1520 = -1;
 			}
 			if ((l & 0x20) != 0) {
-				npc.interactingEntity = stream.getUnsignedLEShort();
+				npc.interactingEntity = stream.readUShort();
 				if (npc.interactingEntity == 65535)
 					npc.interactingEntity = -1;
 			}
@@ -8796,8 +8796,8 @@ public class Game extends GameShell {
 			NpcDefinition.unpackConfig(streamLoader);
 			IdentityKit.unpackConfig(streamLoader);
 			SpotAnimation.unpackConfig(streamLoader);
-			Varp.unpackConfig(streamLoader);
-			VarBit.unpackConfig(streamLoader);
+			VariableParameter.unpackConfig(streamLoader);
+			VariableBits.unpackConfig(streamLoader);
 			ItemDefinition.isMembers = isMembers;
 			drawLoadingText(95, "Unpacking interfaces");
 			TextDrawingArea aclass30_sub2_sub1_sub4s[] = { smallText,
@@ -10247,7 +10247,7 @@ public class Game extends GameShell {
 		}
 		if ((i & 0x100) != 0) {
 			player.anInt1520 = stream.method434();
-			int k = stream.readDWord();
+			int k = stream.readInt();
 			player.anInt1524 = k >> 16;
 			player.anInt1523 = loopCycle + (k & 0xffff);
 			player.anInt1521 = 0;
@@ -11045,7 +11045,7 @@ public class Game extends GameShell {
 				}
 				if (j1 == 14) {
 					int j2 = ai[l++];
-					VarBit varBit = VarBit.cache[j2];
+					VariableBits varBit = VariableBits.cache[j2];
 					int l3 = varBit.getSetting();
 					int i4 = varBit.getLow();
 					int j4 = varBit.getHigh();
@@ -11792,9 +11792,9 @@ public class Game extends GameShell {
 			int k = stream.readUnsignedByte();
 			int j3 = anInt1268 + (k >> 4 & 7);
 			int i6 = anInt1269 + (k & 7);
-			int l8 = stream.getUnsignedLEShort();
-			int k11 = stream.getUnsignedLEShort();
-			int l13 = stream.getUnsignedLEShort();
+			int l8 = stream.readUShort();
+			int k11 = stream.readUShort();
+			int l13 = stream.readUShort();
 			if (j3 >= 0 && i6 >= 0 && j3 < 104 && i6 < 104) {
 				Deque class19_1 = groundArray[plane][j3][i6];
 				if (class19_1 != null) {
@@ -11817,7 +11817,7 @@ public class Game extends GameShell {
 			int l = stream.readUnsignedByte();
 			int k3 = anInt1268 + (l >> 4 & 7);
 			int j6 = anInt1269 + (l & 7);
-			int i9 = stream.getUnsignedLEShort();
+			int i9 = stream.readUShort();
 			int l11 = stream.readUnsignedByte();
 			int i14 = l11 >> 4 & 0xf;
 			int i16 = l11 & 7;
@@ -11838,7 +11838,7 @@ public class Game extends GameShell {
 			int k6 = anInt1268 + (l3 >> 4 & 7);
 			int j9 = anInt1269 + (l3 & 7);
 			int i12 = stream.method435();
-			int j14 = stream.getUnsignedLEShort();
+			int j14 = stream.readUShort();
 			if (k6 >= 0 && j9 >= 0 && k6 < 104 && j9 < 104
 					&& i12 != unknownInt10) {
 				Item class30_sub2_sub4_sub2_2 = new Item();
@@ -11855,7 +11855,7 @@ public class Game extends GameShell {
 			int j1 = stream.method426();
 			int i4 = anInt1268 + (j1 >> 4 & 7);
 			int l6 = anInt1269 + (j1 & 7);
-			int k9 = stream.getUnsignedLEShort();
+			int k9 = stream.readUShort();
 			if (i4 >= 0 && l6 >= 0 && i4 < 104 && l6 < 104) {
 				Deque class19 = groundArray[plane][i4][l6];
 				if (class19 != null) {
@@ -11939,17 +11939,17 @@ public class Game extends GameShell {
 			int l1 = stream.method428();
 			int k4 = anInt1268 + (l1 >> 4 & 7);
 			int j7 = anInt1269 + (l1 & 7);
-			int i10 = stream.getUnsignedLEShort();
+			int i10 = stream.readUShort();
 			byte byte0 = stream.method430();
 			int l14 = stream.method434();
 			byte byte1 = stream.method429();
-			int k17 = stream.getUnsignedLEShort();
+			int k17 = stream.readUShort();
 			int k18 = stream.method428();
 			int j19 = k18 >> 2;
 			int i20 = k18 & 3;
 			int l20 = anIntArray1177[j19];
 			byte byte2 = stream.readSignedByte();
-			int l21 = stream.getUnsignedLEShort();
+			int l21 = stream.readUShort();
 			byte byte3 = stream.method429();
 			Player player;
 			if (i10 == unknownInt10)
@@ -12013,9 +12013,9 @@ public class Game extends GameShell {
 			int j2 = stream.readUnsignedByte();
 			int i5 = anInt1268 + (j2 >> 4 & 7);
 			int l7 = anInt1269 + (j2 & 7);
-			int k10 = stream.getUnsignedLEShort();
+			int k10 = stream.readUShort();
 			int l12 = stream.readUnsignedByte();
-			int j15 = stream.getUnsignedLEShort();
+			int j15 = stream.readUShort();
 			if (i5 >= 0 && l7 >= 0 && i5 < 104 && l7 < 104) {
 				i5 = i5 * 128 + 64;
 				l7 = l7 * 128 + 64;
@@ -12028,7 +12028,7 @@ public class Game extends GameShell {
 		}
 		if (j == 44) {
 			int k2 = stream.method436();
-			int j5 = stream.getUnsignedLEShort();
+			int j5 = stream.readUShort();
 			int i8 = stream.readUnsignedByte();
 			int l10 = anInt1268 + (i8 >> 4 & 7);
 			int i13 = anInt1269 + (i8 & 7);
@@ -12063,11 +12063,11 @@ public class Game extends GameShell {
 			int j11 = l5 + stream.readSignedByte();
 			int k13 = k8 + stream.readSignedByte();
 			int l15 = stream.readSignedWord();
-			int i17 = stream.getUnsignedLEShort();
+			int i17 = stream.readUShort();
 			int i18 = stream.readUnsignedByte() * 4;
 			int l18 = stream.readUnsignedByte() * 4;
-			int k19 = stream.getUnsignedLEShort();
-			int j20 = stream.getUnsignedLEShort();
+			int k19 = stream.readUShort();
+			int j20 = stream.readUShort();
 			int i21 = stream.readUnsignedByte();
 			int j21 = stream.readUnsignedByte();
 			if (l5 >= 0 && k8 >= 0 && l5 < 104 && k8 < 104 && j11 >= 0
@@ -12532,7 +12532,7 @@ public class Game extends GameShell {
 				if (i > 1) {
 					socketStream.flushInputStream(inStream.buffer, 2);
 					inStream.currentOffset = 0;
-					pktSize = inStream.getUnsignedLEShort();
+					pktSize = inStream.readUShort();
 					i -= 2;
 				} else {
 					return false;
@@ -12553,8 +12553,8 @@ public class Game extends GameShell {
 				return true;
 
 			case 124:
-				int skillID = inStream.getUnsignedLEShort();
-				int gainedXP = inStream.getUnsignedLEShort();
+				int skillID = inStream.readUShort();
+				int gainedXP = inStream.readUShort();
 				addToXPCounter(skillID, gainedXP);
 				pktType = -1;
 				return true;
@@ -12564,7 +12564,7 @@ public class Game extends GameShell {
 				unreadMessages = inStream.method435();
 				membersInt = inStream.readUnsignedByte();
 				anInt1193 = inStream.method440();
-				daysSinceLastLogin = inStream.getUnsignedLEShort();
+				daysSinceLastLogin = inStream.readUShort();
 				if (anInt1193 != 0 && openInterfaceID == -1) {
 					Signlink.dnslookup(TextClass.method586(anInt1193));
 					clearTopInterfaces();
@@ -12626,7 +12626,7 @@ public class Game extends GameShell {
 					name = inStream.readString();
 					message = inStream.readString();
 					clanname = inStream.readString();
-					rights = inStream.getUnsignedLEShort();
+					rights = inStream.readUShort();
 					// message = TextInput.processText(message);
 					// message = Censor.doCensor(message);
 					System.out.println(clanname);
@@ -12666,7 +12666,7 @@ public class Game extends GameShell {
 				aBoolean1160 = true;
 				x = inStream.readUnsignedByte();
 				y = inStream.readUnsignedByte();
-				height = inStream.getUnsignedLEShort();
+				height = inStream.readUShort();
 				speed = inStream.readUnsignedByte();
 				angle = inStream.readUnsignedByte();
 				if (angle >= 100) {
@@ -12697,7 +12697,7 @@ public class Game extends GameShell {
 				return true;
 
 			case PacketConstants.SEND_SIDE_TAB:
-				int l1 = inStream.getUnsignedLEShort();
+				int l1 = inStream.readUShort();
 				int j10 = inStream.method426();
 				if (l1 == 65535)
 					l1 = -1;
@@ -12753,7 +12753,7 @@ public class Game extends GameShell {
 				int regionY = anInt1070;
 				if (pktType == 73) {
 					regionX = inStream.method435();
-					regionY = inStream.getUnsignedLEShort();
+					regionY = inStream.readUShort();
 					aBoolean1159 = false;
 				}
 				if (pktType == 241) {
@@ -12772,7 +12772,7 @@ public class Game extends GameShell {
 						}
 					}
 					inStream.finishBitAccess();
-					regionX = inStream.getUnsignedLEShort();
+					regionX = inStream.readUShort();
 					aBoolean1159 = true;
 				}
 				if (anInt1069 == regionX && anInt1070 == regionY
@@ -12996,10 +12996,10 @@ public class Game extends GameShell {
 				return true;
 
 			case PacketConstants.PLAY_SOUND_EFFECT:
-				int soundId = inStream.getUnsignedLEShort();
+				int soundId = inStream.readUShort();
 				int type = inStream.readUnsignedByte();
-				int delay = inStream.getUnsignedLEShort();
-				int volume = inStream.getUnsignedLEShort();
+				int delay = inStream.readUShort();
+				int volume = inStream.readUShort();
 				anIntArray1207[anInt1062] = soundId;
 				anIntArray1241[anInt1062] = type;
 				anIntArray1250[anInt1062] = delay
@@ -13152,7 +13152,7 @@ public class Game extends GameShell {
 			case 254:
 				hintIconType = inStream.readUnsignedByte();
 				if (hintIconType == 1)
-					hintIconNpcId = inStream.getUnsignedLEShort();
+					hintIconNpcId = inStream.readUShort();
 				if (hintIconType >= 2 && hintIconType <= 6) {
 					if (hintIconType == 2) {
 						anInt937 = 64;
@@ -13175,18 +13175,18 @@ public class Game extends GameShell {
 						anInt938 = 128;
 					}
 					hintIconType = 2;
-					hintIconX = inStream.getUnsignedLEShort();
-					hintIconY = inStream.getUnsignedLEShort();
+					hintIconX = inStream.readUShort();
+					hintIconY = inStream.readUShort();
 					anInt936 = inStream.readUnsignedByte();
 				}
 				if (hintIconType == 10)
-					hintIconPlayerId = inStream.getUnsignedLEShort();
+					hintIconPlayerId = inStream.readUShort();
 				pktType = -1;
 				return true;
 
 			case 248:
 				int i5 = inStream.method435();
-				int k12 = inStream.getUnsignedLEShort();
+				int k12 = inStream.readUShort();
 				if (backDialogID != -1) {
 					backDialogID = -1;
 					inputTaken = true;
@@ -13227,7 +13227,7 @@ public class Game extends GameShell {
 
 			case 196:
 				long l5 = inStream.readQWord();
-				int j18 = inStream.readDWord();
+				int j18 = inStream.readInt();
 				int l21 = inStream.readUnsignedByte();
 				boolean flag5 = false;
 				for (int i28 = 0; i28 < 100; i28++) {
@@ -13293,8 +13293,8 @@ public class Game extends GameShell {
 
 			case 246:
 				int i6 = inStream.method434();
-				int i13 = inStream.getUnsignedLEShort();
-				int k18 = inStream.getUnsignedLEShort();
+				int i13 = inStream.readUShort();
+				int k18 = inStream.readUShort();
 				if (k18 == 65535) {
 					RSInterface.interfaceCache[i6].anInt233 = 0;
 					pktType = -1;
@@ -13313,7 +13313,7 @@ public class Game extends GameShell {
 
 			case 171:
 				boolean flag1 = inStream.readUnsignedByte() == 1;
-				int j13 = inStream.getUnsignedLEShort();
+				int j13 = inStream.readUShort();
 				RSInterface.interfaceCache[j13].hoverOnly = flag1;
 				pktType = -1;
 				return true;
@@ -13375,7 +13375,7 @@ public class Game extends GameShell {
 
 			case 8:
 				int k6 = inStream.method436();
-				int l13 = inStream.getUnsignedLEShort();
+				int l13 = inStream.readUShort();
 				RSInterface.interfaceCache[k6].anInt233 = 1;
 				RSInterface.interfaceCache[k6].mediaID = l13;
 				pktType = -1;
@@ -13393,9 +13393,9 @@ public class Game extends GameShell {
 				return true;
 
 			case 53:
-				int i7 = inStream.getUnsignedLEShort();
+				int i7 = inStream.readUShort();
 				RSInterface class9_1 = RSInterface.interfaceCache[i7];
-				int j19 = inStream.getUnsignedLEShort();
+				int j19 = inStream.readUShort();
 				for (int j22 = 0; j22 < j19; j22++) {
 					int i25 = inStream.readUnsignedByte();
 					if (i25 == 255)
@@ -13412,8 +13412,8 @@ public class Game extends GameShell {
 
 			case 230:
 				int j7 = inStream.method435();
-				int j14 = inStream.getUnsignedLEShort();
-				int k19 = inStream.getUnsignedLEShort();
+				int j14 = inStream.readUShort();
+				int k19 = inStream.readUShort();
 				int k22 = inStream.method436();
 				RSInterface.interfaceCache[j14].modelRotation1 = k19;
 				RSInterface.interfaceCache[j14].modelRotation2 = k22;
@@ -13430,7 +13430,7 @@ public class Game extends GameShell {
 				aBoolean1160 = true;
 				anInt995 = inStream.readUnsignedByte();
 				anInt996 = inStream.readUnsignedByte();
-				anInt997 = inStream.getUnsignedLEShort();
+				anInt997 = inStream.readUShort();
 				anInt998 = inStream.readUnsignedByte();
 				anInt999 = inStream.readUnsignedByte();
 				if (anInt999 >= 100) {
@@ -13479,7 +13479,7 @@ public class Game extends GameShell {
 				return true;
 
 			case 97:
-				int interfaceId = inStream.getUnsignedLEShort();
+				int interfaceId = inStream.readUShort();
 				writeInterface(interfaceId);
 				if (invOverlayInterfaceID != -1) {
 					invOverlayInterfaceID = -1;
@@ -13542,7 +13542,7 @@ public class Game extends GameShell {
 				return true;
 
 			case 200:
-				int l8 = inStream.getUnsignedLEShort();
+				int l8 = inStream.readUShort();
 				int i15 = inStream.readSignedWord();
 				RSInterface class9_4 = RSInterface.interfaceCache[l8];
 				class9_4.anInt257 = i15;
@@ -13568,14 +13568,14 @@ public class Game extends GameShell {
 				return true;
 
 			case 34:
-				int i9 = inStream.getUnsignedLEShort();
+				int i9 = inStream.readUShort();
 				RSInterface childInterface2 = RSInterface.interfaceCache[i9];
 				while (inStream.currentOffset < pktSize) {
 					int j20 = inStream.method422();
-					int i23 = inStream.getUnsignedLEShort();
+					int i23 = inStream.readUShort();
 					int l25 = inStream.readUnsignedByte();
 					if (l25 == 255)
-						l25 = inStream.readDWord();
+						l25 = inStream.readInt();
 					if (j20 >= 0
 							&& j20 < childInterface2.inventoryItemId.length) {
 						childInterface2.inventoryItemId[j20] = i23;

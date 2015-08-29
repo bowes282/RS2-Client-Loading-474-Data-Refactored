@@ -13,7 +13,7 @@ public final class SpotAnimation {
 
 	public static void unpackConfig(CacheArchive streamLoader) {
 		Buffer stream = new Buffer(streamLoader.getDataForName("spotanim.dat"));
-		int length = stream.getUnsignedLEShort();
+		int length = stream.readUShort();
 		if (cache == null)
 			cache = new SpotAnimation[length];
 		for (int index = 0; index < length; index++) {
@@ -30,17 +30,17 @@ public final class SpotAnimation {
 			if (opCode == 0)
 				return;
 			if (opCode == 1)
-				modelId = stream.getUnsignedLEShort();
+				modelId = stream.readUShort();
 			else if (opCode == 2) {
-				animationId = stream.getUnsignedLEShort();
+				animationId = stream.readUShort();
 				if (Animation.anims != null)
 					animationSequence = Animation.anims[animationId];
 			} else if (opCode == 4)
-				resizeXY = stream.getUnsignedLEShort();
+				resizeXY = stream.readUShort();
 			else if (opCode == 5)
-				resizeZ = stream.getUnsignedLEShort();
+				resizeZ = stream.readUShort();
 			else if (opCode == 6)
-				rotation = stream.getUnsignedLEShort();
+				rotation = stream.readUShort();
 			else if (opCode == 7)
 				modelBrightness = stream.readUnsignedByte();
 			else if (opCode == 8)
@@ -48,8 +48,8 @@ public final class SpotAnimation {
 			else if (opCode == 40) {
 				int j = stream.readUnsignedByte();
 				for (int k = 0; k < j; k++) {
-					originalModelColours[k] = stream.getUnsignedLEShort();
-					modifiedModelColours[k] = stream.getUnsignedLEShort();
+					originalModelColours[k] = stream.readUShort();
+					modifiedModelColours[k] = stream.readUShort();
 				}
 			} else
 				System.out.println("Error unrecognised spotanim config code: "

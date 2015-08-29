@@ -46,12 +46,12 @@ public final class ItemDefinition {
 	public static void unpackConfig(CacheArchive archive) {
 		item_data = new Buffer(archive.getDataForName("obj.dat"));
 		Buffer stream = new Buffer(archive.getDataForName("obj.idx"));
-		item_count = stream.getUnsignedLEShort() + 21;
+		item_count = stream.readUShort() + 21;
 		streamIndices = new int[item_count + 50000];
 		int offset = 2;
 		for (int _ctr = 0; _ctr < item_count - 21; _ctr++) {
 			streamIndices[_ctr] = offset;
-			offset += stream.getUnsignedLEShort();
+			offset += stream.readUShort();
 		}
 		cache = new ItemDefinition[10];
 		for (int _ctr = 0; _ctr < 10; _ctr++)
@@ -426,43 +426,43 @@ public final class ItemDefinition {
 			if (opCode == 0)
 				return;
 			if (opCode == 1)
-				inventory_model = buffer.getUnsignedLEShort();
+				inventory_model = buffer.readUShort();
 			else if (opCode == 2)
 				name = buffer.readString();
 			else if (opCode == 3)
 				description = buffer.readBytes();
 			else if (opCode == 4)
-				model_zoom = buffer.getUnsignedLEShort();
+				model_zoom = buffer.readUShort();
 			else if (opCode == 5)
-				rotation_y = buffer.getUnsignedLEShort();
+				rotation_y = buffer.readUShort();
 			else if (opCode == 6)
-				rotation_x = buffer.getUnsignedLEShort();
+				rotation_x = buffer.readUShort();
 			else if (opCode == 7) {
-				translate_x = buffer.getUnsignedLEShort();
+				translate_x = buffer.readUShort();
 				if (translate_x > 32767)
 					translate_x -= 0x10000;
 			} else if (opCode == 8) {
-				translate_yz = buffer.getUnsignedLEShort();
+				translate_yz = buffer.readUShort();
 				if (translate_yz > 32767)
 					translate_yz -= 0x10000;
 			} else if (opCode == 10)
-				buffer.getUnsignedLEShort();
+				buffer.readUShort();
 			else if (opCode == 11)
 				stackable = true;
 			else if (opCode == 12)
-				value = buffer.readDWord();
+				value = buffer.readInt();
 			else if (opCode == 16)
 				is_members_only = true;
 			else if (opCode == 23) {
-				equipped_model_male_1 = buffer.getUnsignedLEShort();
+				equipped_model_male_1 = buffer.readUShort();
 				equipped_model_male_translation_y = buffer.readSignedByte();
 			} else if (opCode == 24)
-				equipped_model_male_2 = buffer.getUnsignedLEShort();
+				equipped_model_male_2 = buffer.readUShort();
 			else if (opCode == 25) {
-				equipped_model_female_1 = buffer.getUnsignedLEShort();
+				equipped_model_female_1 = buffer.readUShort();
 				equipped_model_female_translation_y = buffer.readSignedByte();
 			} else if (opCode == 26)
-				equipped_model_female_2 = buffer.getUnsignedLEShort();
+				equipped_model_female_2 = buffer.readUShort();
 			else if (opCode >= 30 && opCode < 35) {
 				if (groundActions == null)
 					groundActions = new String[5];
@@ -478,40 +478,40 @@ public final class ItemDefinition {
 				modified_model_colors = new int[j];
 				original_model_colors = new int[j];
 				for (int k = 0; k < j; k++) {
-					modified_model_colors[k] = buffer.getUnsignedLEShort();
-					original_model_colors[k] = buffer.getUnsignedLEShort();
+					modified_model_colors[k] = buffer.readUShort();
+					original_model_colors[k] = buffer.readUShort();
 				}
 			} else if (opCode == 78)
-				equipped_model_male_3 = buffer.getUnsignedLEShort();
+				equipped_model_male_3 = buffer.readUShort();
 			else if (opCode == 79)
-				equipped_model_female_3 = buffer.getUnsignedLEShort();
+				equipped_model_female_3 = buffer.readUShort();
 			else if (opCode == 90)
-				equipped_model_male_dialogue_1 = buffer.getUnsignedLEShort();
+				equipped_model_male_dialogue_1 = buffer.readUShort();
 			else if (opCode == 91)
-				equipped_model_female_dialogue_1 = buffer.getUnsignedLEShort();
+				equipped_model_female_dialogue_1 = buffer.readUShort();
 			else if (opCode == 92)
-				equipped_model_male_dialogue_2 = buffer.getUnsignedLEShort();
+				equipped_model_male_dialogue_2 = buffer.readUShort();
 			else if (opCode == 93)
-				equipped_model_female_dialogue_2 = buffer.getUnsignedLEShort();
+				equipped_model_female_dialogue_2 = buffer.readUShort();
 			else if (opCode == 95)
-				rotation_z = buffer.getUnsignedLEShort();
+				rotation_z = buffer.readUShort();
 			else if (opCode == 97)
-				unnoted_item_id = buffer.getUnsignedLEShort();
+				unnoted_item_id = buffer.readUShort();
 			else if (opCode == 98)
-				noted_item_id = buffer.getUnsignedLEShort();
+				noted_item_id = buffer.readUShort();
 			else if (opCode >= 100 && opCode < 110) {
 				if (stack_variant_id == null) {
 					stack_variant_id = new int[10];
 					stack_variant_size = new int[10];
 				}
-				stack_variant_id[opCode - 100] = buffer.getUnsignedLEShort();
-				stack_variant_size[opCode - 100] = buffer.getUnsignedLEShort();
+				stack_variant_id[opCode - 100] = buffer.readUShort();
+				stack_variant_size[opCode - 100] = buffer.readUShort();
 			} else if (opCode == 110)
-				model_scale_x = buffer.getUnsignedLEShort();
+				model_scale_x = buffer.readUShort();
 			else if (opCode == 111)
-				model_scale_y = buffer.getUnsignedLEShort();
+				model_scale_y = buffer.readUShort();
 			else if (opCode == 112)
-				model_scale_z = buffer.getUnsignedLEShort();
+				model_scale_z = buffer.readUShort();
 			else if (opCode == 113)
 				light_intensity = buffer.readSignedByte();
 			else if (opCode == 114)

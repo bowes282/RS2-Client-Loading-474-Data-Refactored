@@ -10,9 +10,9 @@ public final class SequenceFrame {
 	public static void load(byte abyte0[], int fileId) {
 		Buffer stream = new Buffer(abyte0);
 		stream.currentOffset = abyte0.length - 12;
-		int i = stream.readDWord();
-		int j = stream.readDWord();
-		int k = stream.readDWord();
+		int i = stream.readInt();
+		int j = stream.readInt();
+		int k = stream.readInt();
 		int i1 = 0;
 		Buffer stream_1 = new Buffer(abyte0);
 		stream_1.currentOffset = i1;
@@ -26,13 +26,13 @@ public final class SequenceFrame {
 		Buffer stream_4 = new Buffer(abyte0);
 		stream_4.currentOffset = i1;
 		SkinList class18 = new SkinList(stream_4);
-		int k1 = stream_1.readDWord();
+		int k1 = stream_1.readInt();
 		int ai[] = new int[500];
 		int ai1[] = new int[500];
 		int ai2[] = new int[500];
 		int ai3[] = new int[500];
 		for (int l1 = 0; l1 < k1; l1++) {
-			int i2 = stream_1.readDWord();
+			int i2 = stream_1.readInt();
 			SequenceFrame class36 = new SequenceFrame();
 			frameList.put(new Integer((fileId << 16) + i2), class36);
 			class36.aClass18_637 = class18;

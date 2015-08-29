@@ -7,7 +7,7 @@ public final class Floor {
 	public static void unpackConfig(CacheArchive streamLoader)
 	{
 		Buffer stream = new Buffer(streamLoader.getDataForName("flo.dat"));
-		int cacheSize = stream.getUnsignedLEShort();
+		int cacheSize = stream.readUShort();
 		if(cache == null)
 			cache = new Floor[cacheSize];
 		for(int j = 0; j < cacheSize; j++)

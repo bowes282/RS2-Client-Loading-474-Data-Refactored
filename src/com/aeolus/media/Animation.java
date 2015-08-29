@@ -36,7 +36,7 @@ public final class Animation {
 
     public static void unpackConfig(CacheArchive streamLoader)  {
 		Buffer stream = new Buffer(streamLoader.getDataForName("seq.dat"));
-        int length = stream.getUnsignedLEShort();
+        int length = stream.readUShort();
         if(anims == null) {
             anims = new Animation[length + 5000];
         }
@@ -170,22 +170,22 @@ public final class Animation {
 				break;
 			}
 			if (i == 1) {
-				anInt352 = stream.getUnsignedLEShort();
+				anInt352 = stream.readUShort();
 				anIntArray353 = new int[anInt352];
 				anIntArray354 = new int[anInt352];
 				anIntArray355 = new int[anInt352];
 				for (int j = 0; j < anInt352; j++) {
-					anIntArray355[j] = stream.getUnsignedLEShort();
+					anIntArray355[j] = stream.readUShort();
 					anIntArray354[j] = -1;
 				}
 				for (int j = 0; j < anInt352; j++) {
-					anIntArray353[j] = stream.getUnsignedLEShort();
+					anIntArray353[j] = stream.readUShort();
 				}
 				for (int i1 = 0; i1 < anInt352; i1++) {
-					anIntArray353[i1] = (stream.getUnsignedLEShort() << 16) + anIntArray353[i1];
+					anIntArray353[i1] = (stream.readUShort() << 16) + anIntArray353[i1];
 				}
 			} else if (i == 2) {
-				anInt356 = stream.getUnsignedLEShort();
+				anInt356 = stream.readUShort();
 			} else if (i == 3) {
 				int k = stream.readUnsignedByte();
 				anIntArray357 = new int[k + 1];
@@ -198,9 +198,9 @@ public final class Animation {
 			} else if (i == 5) {
 				anInt359 = stream.readUnsignedByte();
 			} else if (i == 6) {
-				anInt360 = stream.getUnsignedLEShort();
+				anInt360 = stream.readUShort();
 			} else if (i == 7) {
-				anInt361 = stream.getUnsignedLEShort();
+				anInt361 = stream.readUShort();
 			} else if (i == 8) {
 				anInt362 = stream.readUnsignedByte();
 			} else if (i == 9) {
@@ -210,7 +210,7 @@ public final class Animation {
 			} else if (i == 11) {
 				anInt365 = stream.readUnsignedByte();
 			} else if (i == 12) {
-				stream.readDWord();
+				stream.readInt();
 			} else {
 				System.out.println("Error unrecognised seq config code: " + i);
 			}

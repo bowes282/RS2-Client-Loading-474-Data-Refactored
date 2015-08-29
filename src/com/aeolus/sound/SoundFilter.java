@@ -110,13 +110,13 @@ final class SoundFilter {
 		pairs[0] = count >> 4;
 		pairs[1] = count & 0xf;
 		if (count != 0) {
-			unity[0] = stream.getUnsignedLEShort();
-			unity[1] = stream.getUnsignedLEShort();
+			unity[0] = stream.readUShort();
+			unity[1] = stream.readUShort();
 			int migration = stream.readUnsignedByte();
 			for (int k = 0; k < 2; k++) {
 				for (int l = 0; l < pairs[k]; l++) {
-					phases[k][0][l] = stream.getUnsignedLEShort();
-					magnitudes[k][0][l] = stream.getUnsignedLEShort();
+					phases[k][0][l] = stream.readUShort();
+					magnitudes[k][0][l] = stream.readUShort();
 				}
 
 			}
@@ -125,9 +125,9 @@ final class SoundFilter {
 				for (int pair = 0; pair < pairs[direction]; pair++)
 					if ((migration & 1 << direction * 4 << pair) != 0) {
 						phases[direction][1][pair] = stream
-								.getUnsignedLEShort();
+								.readUShort();
 						magnitudes[direction][1][pair] = stream
-								.getUnsignedLEShort();
+								.readUShort();
 					} else {
 						phases[direction][1][pair] = phases[direction][0][pair];
 						magnitudes[direction][1][pair] = magnitudes[direction][0][pair];

@@ -1,6 +1,6 @@
 package com.aeolus.scene;
 import com.aeolus.Game;
-import com.aeolus.cache.config.VarBit;
+import com.aeolus.cache.config.VariableBits;
 import com.aeolus.cache.def.ObjectDefinition;
 import com.aeolus.media.Animation;
 import com.aeolus.media.renderable.Renderable;
@@ -27,7 +27,7 @@ public final class SceneObject extends Renderable {
 		int i = -1;
 		if (anInt1601 != -1) {
 			try {
-				VarBit varBit = VarBit.cache[anInt1601];
+				VariableBits varBit = VariableBits.cache[anInt1601];
 				int k = varBit.getSetting();
 				int l = varBit.getLow();
 				int i1 = varBit.getHigh();

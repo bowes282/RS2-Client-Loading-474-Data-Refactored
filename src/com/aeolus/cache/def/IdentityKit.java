@@ -8,7 +8,7 @@ public final class IdentityKit {
 	public static void unpackConfig(CacheArchive streamLoader)
 	{
 		Buffer stream = new Buffer(streamLoader.getDataForName("idk.dat"));
-		length = stream.getUnsignedLEShort();
+		length = stream.readUShort();
 		if(cache == null)
 			cache = new IdentityKit[length];
 		for(int j = 0; j < length; j++)
@@ -34,20 +34,20 @@ public final class IdentityKit {
 				int j = stream.readUnsignedByte();
 				anIntArray658 = new int[j];
 				for(int k = 0; k < j; k++)
-					anIntArray658[k] = stream.getUnsignedLEShort();
+					anIntArray658[k] = stream.readUShort();
 
 			} else
 			if(i == 3)
 				aBoolean662 = true;
 			else
 			if(i >= 40 && i < 50)
-				anIntArray659[i - 40] = stream.getUnsignedLEShort();
+				anIntArray659[i - 40] = stream.readUShort();
 			else
 			if(i >= 50 && i < 60)
-				anIntArray660[i - 50] = stream.getUnsignedLEShort();
+				anIntArray660[i - 50] = stream.readUShort();
 			else
 			if(i >= 60 && i < 70)
-				anIntArray661[i - 60] = stream.getUnsignedLEShort();
+				anIntArray661[i - 60] = stream.readUShort();
 			else
 				System.out.println("Error unrecognised config code: " + i);
 		} while(true);

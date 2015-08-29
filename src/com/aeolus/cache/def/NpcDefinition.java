@@ -1,13 +1,17 @@
 package com.aeolus.cache.def;
 
 import com.aeolus.Game;
-import com.aeolus.cache.config.VarBit;
+import com.aeolus.cache.config.VariableBits;
 import com.aeolus.cache.media.SequenceFrame;
 import com.aeolus.collection.Cache;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 
+/**
+ * Refactored reference:
+ * http://www.rune-server.org/runescape-development/rs2-client/downloads/575183-almost-fully-refactored-317-client.html
+ */
 public final class NpcDefinition {
 
 	public int turn90CCWAnimIndex;
@@ -45,6 +49,10 @@ public final class NpcDefinition {
 	public int[] modelId;
 	public static Cache modelCache = new Cache(30);
 
+	/**
+	 * Lookup an NpcDefinition by its id
+	 * @param id
+	 */
 	public static NpcDefinition forID(int id) {
 		for (int index = 0; index < 20; index++)
 			if (cache[index].interfaceType == (long) id)
@@ -95,7 +103,7 @@ public final class NpcDefinition {
 	public NpcDefinition morph() {
 		int child = -1;
 		if (varBitID != -1) {
-			VarBit varBit = VarBit.cache[varBitID];
+			VariableBits varBit = VariableBits.cache[varBitID];
 			int variable = varBit.getSetting();
 			int low = varBit.getLow();
 			int high = varBit.getHigh();
@@ -113,12 +121,12 @@ public final class NpcDefinition {
 	public static void unpackConfig(CacheArchive streamLoader) {
 		stream = new Buffer(streamLoader.getDataForName("npc.dat"));
 		Buffer stream2 = new Buffer(streamLoader.getDataForName("npc.idx"));
-		int totalNPCs = stream2.getUnsignedLEShort();
+		int totalNPCs = stream2.readUShort();
 		streamIndices = new int[totalNPCs];
 		int i = 2;
 		for (int j = 0; j < totalNPCs; j++) {
 			streamIndices[j] = i;
-			i += stream2.getUnsignedLEShort();
+			i += stream2.readUShort();
 		}
 
 		cache = new NpcDefinition[20];
@@ -261,7 +269,7 @@ public final class NpcDefinition {
 				int j = stream.readUnsignedByte();
 				modelId = new int[j];
 				for (int j1 = 0; j1 < j; j1++)
-					modelId[j1] = stream.getUnsignedLEShort();
+					modelId[j1] = stream.readUShort();
 
 			} else if (opCode == 2)
 				name = stream.readNewString();
@@ -270,14 +278,14 @@ public final class NpcDefinition {
 			else if (opCode == 12)
 				boundDim = stream.readSignedByte();
 			else if (opCode == 13)
-				standAnim = stream.getUnsignedLEShort();
+				standAnim = stream.readUShort();
 			else if (opCode == 14)
-				walkAnim = stream.getUnsignedLEShort();
+				walkAnim = stream.readUShort();
 			else if (opCode == 17) {
-				walkAnim = stream.getUnsignedLEShort();
-				turn180AnimIndex = stream.getUnsignedLEShort();
-				turn90CWAnimIndex = stream.getUnsignedLEShort();
-				turn90CCWAnimIndex = stream.getUnsignedLEShort();
+				walkAnim = stream.readUShort();
+				turn180AnimIndex = stream.readUShort();
+				turn90CWAnimIndex = stream.readUShort();
+				turn90CCWAnimIndex = stream.readUShort();
 			} else if (opCode >= 30 && opCode < 40) {
 				if (actions == null)
 					actions = new String[5];
@@ -289,30 +297,30 @@ public final class NpcDefinition {
 				recolourOriginal = new int[colours];
 				recolourTarget = new int[colours];
 				for (int k1 = 0; k1 < colours; k1++) {
-					recolourOriginal[k1] = stream.getUnsignedLEShort();
-					recolourTarget[k1] = stream.getUnsignedLEShort();
+					recolourOriginal[k1] = stream.readUShort();
+					recolourTarget[k1] = stream.readUShort();
 				}
 
 			} else if (opCode == 60) {
 				int additionalModelLen = stream.readUnsignedByte();
 				aditionalModels = new int[additionalModelLen];
 				for (int l1 = 0; l1 < additionalModelLen; l1++)
-					aditionalModels[l1] = stream.getUnsignedLEShort();
+					aditionalModels[l1] = stream.readUShort();
 
 			} else if (opCode == 90)
-				stream.getUnsignedLEShort();
+				stream.readUShort();
 			else if (opCode == 91)
-				stream.getUnsignedLEShort();
+				stream.readUShort();
 			else if (opCode == 92)
-				stream.getUnsignedLEShort();
+				stream.readUShort();
 			else if (opCode == 93)
 				drawMinimapDot = false;
 			else if (opCode == 95)
-				combatLevel = stream.getUnsignedLEShort();
+				combatLevel = stream.readUShort();
 			else if (opCode == 97)
-				scaleXZ = stream.getUnsignedLEShort();
+				scaleXZ = stream.readUShort();
 			else if (opCode == 98)
-				scaleY = stream.getUnsignedLEShort();
+				scaleY = stream.readUShort();
 			else if (opCode == 99)
 				priorityRender = true;
 			else if (opCode == 100)
@@ -320,20 +328,20 @@ public final class NpcDefinition {
 			else if (opCode == 101)
 				shadowModifier = stream.readSignedByte() * 5;
 			else if (opCode == 102)
-				headIcon = stream.getUnsignedLEShort();
+				headIcon = stream.readUShort();
 			else if (opCode == 103)
-				degreesToTurn = stream.getUnsignedLEShort();
+				degreesToTurn = stream.readUShort();
 			else if (opCode == 106) {
-				varBitID = stream.getUnsignedLEShort();
+				varBitID = stream.readUShort();
 				if (varBitID == 65535)
 					varBitID = -1;
-				settingId = stream.getUnsignedLEShort();
+				settingId = stream.readUShort();
 				if (settingId == 65535)
 					settingId = -1;
 				int childCount = stream.readUnsignedByte();
 				childrenIDs = new int[childCount + 1];
 				for (int i2 = 0; i2 <= childCount; i2++) {
-					childrenIDs[i2] = stream.getUnsignedLEShort();
+					childrenIDs[i2] = stream.readUShort();
 					if (childrenIDs[i2] == 65535)
 						childrenIDs[i2] = -1;
 				}

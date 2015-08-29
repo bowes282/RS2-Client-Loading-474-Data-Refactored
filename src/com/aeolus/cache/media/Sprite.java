@@ -195,9 +195,9 @@ public final class Sprite extends DrawingArea {
 	public Sprite(CacheArchive streamLoader, String s, int i) {
 		Buffer stream = new Buffer(streamLoader.getDataForName(s + ".dat"));
 		Buffer stream_1 = new Buffer(streamLoader.getDataForName("index.dat"));
-		stream_1.currentOffset = stream.getUnsignedLEShort();
-		maxWidth = stream_1.getUnsignedLEShort();
-		maxHeight = stream_1.getUnsignedLEShort();
+		stream_1.currentOffset = stream.readUShort();
+		maxWidth = stream_1.readUShort();
+		maxHeight = stream_1.readUShort();
 		int j = stream_1.readUnsignedByte();
 		int ai[] = new int[j];
 		for (int k = 0; k < j - 1; k++) {
@@ -208,14 +208,14 @@ public final class Sprite extends DrawingArea {
 
 		for (int l = 0; l < i; l++) {
 			stream_1.currentOffset += 2;
-			stream.currentOffset += stream_1.getUnsignedLEShort() * stream_1.getUnsignedLEShort();
+			stream.currentOffset += stream_1.readUShort() * stream_1.readUShort();
 			stream_1.currentOffset++;
 		}
 
 		drawOffsetX = stream_1.readUnsignedByte();
 		drawOffsetY = stream_1.readUnsignedByte();
-		myWidth = stream_1.getUnsignedLEShort();
-		myHeight = stream_1.getUnsignedLEShort();
+		myWidth = stream_1.readUShort();
+		myHeight = stream_1.readUShort();
 		int i1 = stream_1.readUnsignedByte();
 		int j1 = myWidth * myHeight;
 		myPixels = new int[j1];

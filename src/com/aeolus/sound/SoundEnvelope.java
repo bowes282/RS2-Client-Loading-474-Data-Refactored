@@ -24,8 +24,8 @@ final class SoundEnvelope {
 
 	public void decode(Buffer stream) {
 		form = stream.readUnsignedByte();
-		start = stream.readDWord();
-		end = stream.readDWord();
+		start = stream.readInt();
+		end = stream.readInt();
 		decodeSegments(stream);
 	}
 
@@ -40,8 +40,8 @@ final class SoundEnvelope {
 		durations = new int[segments];
 		peaks = new int[segments];
 		for (int i = 0; i < segments; i++) {
-			durations[i] = stream.getUnsignedLEShort();
-			peaks[i] = stream.getUnsignedLEShort();
+			durations[i] = stream.readUShort();
+			peaks[i] = stream.readUShort();
 		}
 
 	}

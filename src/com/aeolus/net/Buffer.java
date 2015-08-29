@@ -143,7 +143,7 @@ public final class Buffer extends QueueNode {
 		return buffer[currentOffset++];
 	}
 
-	public int getUnsignedLEShort() {
+	public int readUShort() {
 		currentOffset += 2;
 		return ((buffer[currentOffset - 2] & 0xff) << 8) + (buffer[currentOffset - 1] & 0xff);
 	}
@@ -161,14 +161,14 @@ public final class Buffer extends QueueNode {
 		return ((buffer[currentOffset - 3] & 0xff) << 16) + ((buffer[currentOffset - 2] & 0xff) << 8) + (buffer[currentOffset - 1] & 0xff);
 	}
 
-	public int readDWord() {
+	public int readInt() {
 		currentOffset += 4;
 		return ((buffer[currentOffset - 4] & 0xff) << 24) + ((buffer[currentOffset - 3] & 0xff) << 16) + ((buffer[currentOffset - 2] & 0xff) << 8) + (buffer[currentOffset - 1] & 0xff);
 	}
 
 	public long readQWord() {
-		long l = (long) readDWord() & 0xffffffffL;
-		long l1 = (long) readDWord() & 0xffffffffL;
+		long l = (long) readInt() & 0xffffffffL;
+		long l1 = (long) readInt() & 0xffffffffL;
 		return (l << 32) + l1;
 	}
 
@@ -222,7 +222,7 @@ public final class Buffer extends QueueNode {
 		if (i < 128)
 			return readUnsignedByte() - 64;
 		else
-			return getUnsignedLEShort() - 49152;
+			return readUShort() - 49152;
 	}
 
 	public int method422() {
@@ -230,7 +230,7 @@ public final class Buffer extends QueueNode {
 		if (i < 128)
 			return readUnsignedByte();
 		else
-			return getUnsignedLEShort() - 32768;
+			return readUShort() - 32768;
 	}
 
 	public void doKeys() {
