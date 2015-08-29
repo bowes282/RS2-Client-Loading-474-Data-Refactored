@@ -2,6 +2,10 @@ package com.aeolus.sound;
 
 import com.aeolus.net.Buffer;
 
+/**
+ * Refactored reference:
+ * http://www.rune-server.org/runescape-development/rs2-client/downloads/575183-almost-fully-refactored-317-client.html
+ */
 public final class SoundTrack {
 
 	private SoundTrack() {
@@ -22,10 +26,10 @@ public final class SoundTrack {
 		} while (true);
 	}
 
-	public static Buffer method241(int loops, int id) {
+	public static Buffer data(int loops, int id) {
 		if (tracks[id] != null) {
-			SoundTrack sounds = tracks[id];
-			return sounds.pack(loops);
+			SoundTrack soundTrack = tracks[id];
+			return soundTrack.pack(loops);
 		} else {
 			return null;
 		}

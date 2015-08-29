@@ -4277,15 +4277,9 @@ public class Game extends GameShell {
 
 	private void handleMusicEvents() {
 		for (int i = 0; i < anInt1062; i++) {
-			// if(anIntArray1250[i] <= 0){
 			boolean flag1 = false;
 			try {
-
-				/*
-				 * if(anIntArray1207[i] == anInt874 && anIntArray1241[i] ==
-				 * anInt1289) { if(!replayWave()) flag1 = true; } else {
-				 */
-				Buffer stream = SoundTrack.method241(anIntArray1241[i],
+				Buffer stream = SoundTrack.data(anIntArray1241[i],
 						anIntArray1207[i]);
 				new SoundPlayer((InputStream) new ByteArrayInputStream(
 						stream.buffer, 0, stream.currentOffset),
