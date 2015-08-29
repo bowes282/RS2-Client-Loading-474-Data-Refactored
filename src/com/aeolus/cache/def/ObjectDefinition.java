@@ -205,10 +205,10 @@ public final class ObjectDefinition {
 		int i = -1;
 		if (anInt774 != -1) {
 			VarBit varBit = VarBit.cache[anInt774];
-			int j = varBit.anInt648;
-			int k = varBit.anInt649;
-			int l = varBit.anInt650;
-			int i1 = Game.anIntArray1232[l - k];
+			int j = varBit.getSetting();
+			int k = varBit.getLow();
+			int l = varBit.getHigh();
+			int i1 = Game.BIT_MASKS[l - k];
 			i = clientInstance.variousSettings[j] >> k & i1;
 		} else if (anInt749 != -1)
 			i = clientInstance.variousSettings[anInt749];
@@ -287,7 +287,7 @@ public final class ObjectDefinition {
 		Model model_3 = new Model(modifiedModelColors == null, SequenceFrame
 				.method532(k), l == 0 && k == -1 && !flag && !flag2, model);
 		if (k != -1) {
-			model_3.method469();
+			model_3.prepareSkeleton();
 			model_3.method470(k);
 			model_3.anIntArrayArray1658 = null;
 			model_3.anIntArrayArray1657 = null;

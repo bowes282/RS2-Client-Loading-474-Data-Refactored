@@ -1,6 +1,6 @@
 package com.aeolus.media.renderable.entity;
 import com.aeolus.Game;
-import com.aeolus.cache.def.EntityDefinition;
+import com.aeolus.cache.def.NpcDefinition;
 import com.aeolus.cache.def.IdentityKit;
 import com.aeolus.cache.def.ItemDefinition;
 import com.aeolus.cache.def.SpotAnimation;
@@ -34,7 +34,7 @@ public final class Player extends Entity {
 				int cycle1 = spotAnim.animationSequence.anIntArray355[super.anInt1521];
 				int cycle2 = super.anInt1522;
 				model_3.translate(0, -super.anInt1524, 0);
-				model_3.method469();
+				model_3.prepareSkeleton();
 				model_3.method470(spotAnim.animationSequence.anIntArray353[super.anInt1521], nextFrame, cycle1, cycle2);
 				model_3.anIntArrayArray1658 = null;
 				model_3.anIntArrayArray1657 = null;
@@ -116,7 +116,7 @@ public final class Player extends Entity {
 			equipment[j] = (k << 8) + i1;
 			if(j == 0 && equipment[0] == 65535)
 			{
-				desc = EntityDefinition.forID(stream.getUnsignedLEShort());
+				desc = NpcDefinition.forID(stream.getUnsignedLEShort());
 				break;
 			}
 			if(equipment[j] >= 512 && equipment[j] - 512 < ItemDefinition.item_count)
@@ -300,7 +300,7 @@ public final class Player extends Entity {
 						model_1.recolor(Game.anIntArray1204[0], Game.anIntArray1204[anIntArray1700[j3]]);
 				}
 
-			model_1.method469();
+			model_1.prepareSkeleton();
 			model_1.scale(132, 132, 132);
 			model_1.light(72, 1300, -30, -50, -30, true);
 			mruNodes.removeFromCache(model_1, l);
@@ -308,7 +308,7 @@ public final class Player extends Entity {
 		}
 		if(aBoolean1699)
 			return model_1;
-		Model model_2 = Model.aModel_1621;
+		Model model_2 = Model.EMPTY_MODEL;
 		model_2.method464(model_1, SequenceFrame.method532(currentFrame) & SequenceFrame.method532(i1));
 		if(currentFrame != -1 && i1 != -1)
 			model_2.method471(Animation.anims[super.anim].anIntArray357, i1, currentFrame);
@@ -333,7 +333,7 @@ public final class Player extends Entity {
 		if(!visible)
 			return null;
 		if(desc != null)
-			return desc.method160();
+			return desc.model();
 		boolean flag = false;
 		for(int i = 0; i < 12; i++)
 		{
@@ -387,7 +387,7 @@ public final class Player extends Entity {
 	}
 
 	private long aLong1697;
-	public EntityDefinition desc;
+	public NpcDefinition desc;
 	public boolean aBoolean1699;
 	public final int[] anIntArray1700;
 	public int team;

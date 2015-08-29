@@ -13,7 +13,7 @@ import com.aeolus.cache.Index;
 import com.aeolus.cache.config.Censor;
 import com.aeolus.cache.config.VarBit;
 import com.aeolus.cache.config.Varp;
-import com.aeolus.cache.def.EntityDefinition;
+import com.aeolus.cache.def.NpcDefinition;
 import com.aeolus.cache.def.IdentityKit;
 import com.aeolus.cache.def.ItemDefinition;
 import com.aeolus.cache.def.ObjectDefinition;
@@ -1306,7 +1306,7 @@ public class Game extends GameShell {
 	private void unlinkMRUNodes() {
 		ObjectDefinition.mruNodes1.unlinkAll();
 		ObjectDefinition.mruNodes2.unlinkAll();
-		EntityDefinition.mruNodes.unlinkAll();
+		NpcDefinition.modelCache.unlinkAll();
 		ItemDefinition.model_cache.unlinkAll();
 		ItemDefinition.image_cache.unlinkAll();
 		Player.mruNodes.unlinkAll();
@@ -1413,7 +1413,7 @@ public class Game extends GameShell {
 		for (int j = 0; j < npcCount; j++) {
 			Npc npc = npcs[npcIndices[j]];
 			int k = 0x20000000 + (npcIndices[j] << 14);
-			if (npc == null || !npc.isVisible() || npc.desc.aBoolean93 != flag)
+			if (npc == null || !npc.isVisible() || npc.desc.priorityRender != flag)
 				continue;
 			int l = npc.x >> 7;
 			int i1 = npc.y >> 7;
@@ -2194,7 +2194,7 @@ public class Game extends GameShell {
 				if (obj == null || !((Entity) (obj)).isVisible())
 					continue;
 				if (obj instanceof Npc) {
-					EntityDefinition entityDef = ((Npc) obj).desc;
+					NpcDefinition entityDef = ((Npc) obj).desc;
 					if (Configuration.namesAboveHeads) {
 						npcScreenPos(((Entity) (obj)),
 								((Entity) (obj)).height + 15);
@@ -2204,7 +2204,7 @@ public class Game extends GameShell {
 																// original
 					}
 					if (entityDef.childrenIDs != null)
-						entityDef = entityDef.method161();
+						entityDef = entityDef.morph();
 					if (entityDef == null)
 						continue;
 				}
@@ -2271,7 +2271,7 @@ public class Game extends GameShell {
 									spriteDrawY - 5, spriteDrawX);
 					}
 				} else {
-					EntityDefinition entityDef_1 = ((Npc) obj).desc;
+					NpcDefinition entityDef_1 = ((Npc) obj).desc;
 					if (entityDef_1.headIcon >= 0
 							&& entityDef_1.headIcon < headIcons.length) {
 						npcScreenPos(((Entity) (obj)),
@@ -3079,7 +3079,7 @@ public class Game extends GameShell {
 			if (i1 > 15)
 				i1 -= 32;
 			int j1 = stream.readBits(1);
-			npc.desc = EntityDefinition.forID(stream.readBits(Configuration.npcBits));
+			npc.desc = NpcDefinition.forID(stream.readBits(Configuration.npcBits));
 			int k1 = stream.readBits(1);
 			if (k1 == 1)
 				anIntArray894[anInt893++] = k;
@@ -5159,9 +5159,9 @@ public class Game extends GameShell {
 		if (l == 1025) {
 			Npc class30_sub2_sub4_sub1_sub1_5 = npcs[i1];
 			if (class30_sub2_sub4_sub1_sub1_5 != null) {
-				EntityDefinition entityDef = class30_sub2_sub4_sub1_sub1_5.desc;
+				NpcDefinition entityDef = class30_sub2_sub4_sub1_sub1_5.desc;
 				if (entityDef.childrenIDs != null)
-					entityDef = entityDef.method161();
+					entityDef = entityDef.morph();
 				if (entityDef != null) {
 					String s9;
 					if (entityDef.description != null)
@@ -5809,7 +5809,7 @@ public class Game extends GameShell {
 		multiOverlay = null;
 		nullLoader();
 		ObjectDefinition.nullLoader();
-		EntityDefinition.nullLoader();
+		NpcDefinition.nullLoader();
 		ItemDefinition.clearCache();
 		Floor.cache = null;
 		IdentityKit.cache = null;
@@ -6928,7 +6928,7 @@ public class Game extends GameShell {
 									anIntArray1204[anIntArray990[l2]]);
 					}
 
-				model.method469();
+				model.prepareSkeleton();
 				model.method470(Animation.anims[myPlayer.anInt1511].anIntArray353[0]);
 				model.light(64, 850, -30, -50, -30, true);
 				class9.anInt233 = 5;
@@ -6954,7 +6954,7 @@ public class Game extends GameShell {
 									anIntArray1204[anIntArray990[l2]]);
 					}
 				int staticFrame = myPlayer.anInt1511;
-				characterDisplay.method469();
+				characterDisplay.prepareSkeleton();
 				characterDisplay
 						.method470(Animation.anims[staticFrame].anIntArray353[0]);
 				// characterDisplay.method479(64, 850, -30, -50, -30, true);
@@ -8410,7 +8410,7 @@ public class Game extends GameShell {
 				npc.maxHealth = stream.method427();
 			}
 			if ((l & 2) != 0) {
-				npc.desc = EntityDefinition.forID(stream.method436());
+				npc.desc = NpcDefinition.forID(stream.method436());
 				npc.anInt1540 = npc.desc.boundDim;
 				npc.anInt1504 = npc.desc.degreesToTurn;
 				npc.anInt1554 = npc.desc.walkAnim;
@@ -8426,11 +8426,11 @@ public class Game extends GameShell {
 		}
 	}
 
-	private void buildAtNPCMenu(EntityDefinition entityDef, int i, int j, int k) {
+	private void buildAtNPCMenu(NpcDefinition entityDef, int i, int j, int k) {
 		if (menuActionRow >= 400)
 			return;
 		if (entityDef.childrenIDs != null)
-			entityDef = entityDef.method161();
+			entityDef = entityDef.morph();
 		if (entityDef == null)
 			return;
 		if (!entityDef.clickable)
@@ -8793,7 +8793,7 @@ public class Game extends GameShell {
 			ObjectDefinition.unpackConfig(streamLoader);
 			Floor.unpackConfig(streamLoader);
 			ItemDefinition.unpackConfig(streamLoader);
-			EntityDefinition.unpackConfig(streamLoader);
+			NpcDefinition.unpackConfig(streamLoader);
 			IdentityKit.unpackConfig(streamLoader);
 			SpotAnimation.unpackConfig(streamLoader);
 			Varp.unpackConfig(streamLoader);
@@ -8848,7 +8848,7 @@ public class Game extends GameShell {
 			startRunnable(mouseDetection, 10);
 			SceneObject.clientInstance = this;
 			ObjectDefinition.clientInstance = this;
-			EntityDefinition.clientInstance = this;
+			NpcDefinition.clientInstance = this;
 			return;
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -11046,10 +11046,10 @@ public class Game extends GameShell {
 				if (j1 == 14) {
 					int j2 = ai[l++];
 					VarBit varBit = VarBit.cache[j2];
-					int l3 = varBit.anInt648;
-					int i4 = varBit.anInt649;
-					int j4 = varBit.anInt650;
-					int k4 = anIntArray1232[j4 - i4];
+					int l3 = varBit.getSetting();
+					int i4 = varBit.getLow();
+					int j4 = varBit.getHigh();
+					int k4 = BIT_MASKS[j4 - i4];
 					k1 = variousSettings[l3] >> i4 & k4;
 				}
 				if (j1 == 15)
@@ -11199,9 +11199,9 @@ public class Game extends GameShell {
 		for (int n = 0; n < npcCount; n++) {
 			Npc npc = npcs[npcIndices[n]];
 			if (npc != null && npc.isVisible()) {
-				EntityDefinition entityDef = npc.desc;
+				NpcDefinition entityDef = npc.desc;
 				if (entityDef.childrenIDs != null) {
-					entityDef = entityDef.method161();
+					entityDef = entityDef.morph();
 				}
 				if (entityDef != null && entityDef.drawMinimapDot
 						&& entityDef.clickable) {
@@ -14565,7 +14565,7 @@ public class Game extends GameShell {
 	private boolean songChanging;
 	private final int[] minimapLineWidth;
 	private CollisionMap[] aClass11Array1230;
-	public static int anIntArray1232[];
+	public static int BIT_MASKS[];
 	private int[] anIntArray1234;
 	private int[] anIntArray1235;
 	private int[] anIntArray1236;
@@ -14699,10 +14699,10 @@ public class Game extends GameShell {
 			i += i1;
 			anIntArray1019[j] = i / 4;
 		}
-		anIntArray1232 = new int[32];
+		BIT_MASKS = new int[32];
 		i = 2;
 		for (int k = 0; k < 32; k++) {
-			anIntArray1232[k] = i - 1;
+			BIT_MASKS[k] = i - 1;
 			i += i;
 		}
 	}

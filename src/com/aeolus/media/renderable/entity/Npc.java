@@ -1,13 +1,9 @@
 package com.aeolus.media.renderable.entity;
-import com.aeolus.cache.def.EntityDefinition;
+import com.aeolus.cache.def.NpcDefinition;
 import com.aeolus.cache.def.SpotAnimation;
 import com.aeolus.cache.media.SequenceFrame;
 import com.aeolus.media.Animation;
 import com.aeolus.media.renderable.Model;
-
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 
 public final class Npc extends Entity
 {
@@ -20,12 +16,12 @@ public final class Npc extends Entity
 			int i1 = -1;
 			if(super.anInt1517 >= 0 && super.anInt1517 != super.anInt1511)
 				i1 = Animation.anims[super.anInt1517].anIntArray353[super.anInt1518];
-			return desc.method164(i1, k, Animation.anims[super.anim].anIntArray357);
+			return desc.getAnimatedModel(i1, k, Animation.anims[super.anim].anIntArray357);
 		}
 		int l = -1;
 		if(super.anInt1517 >= 0)
 			l = Animation.anims[super.anInt1517].anIntArray353[super.anInt1518];
-		return desc.method164(-1, l, null);
+		return desc.getAnimatedModel(-1, l, null);
 	}
 
 	public Model getRotatedModel()
@@ -45,7 +41,7 @@ public final class Npc extends Entity
 				int j = spotAnim.animationSequence.anIntArray353[super.anInt1521];
 				Model model_2 = new Model(true, SequenceFrame.method532(j), false, model_1);
 				model_2.translate(0, -super.anInt1524, 0);
-				model_2.method469();
+				model_2.prepareSkeleton();
 				model_2.method470(j);
 				model_2.anIntArrayArray1658 = null;
 				model_2.anIntArrayArray1657 = null;
@@ -72,5 +68,5 @@ public final class Npc extends Entity
 	{
 	}
 
-	public EntityDefinition desc;
+	public NpcDefinition desc;
 }

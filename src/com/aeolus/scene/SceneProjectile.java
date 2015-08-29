@@ -61,7 +61,7 @@ public final class SceneProjectile extends Renderable {
 		}
 		Model model_1 = new Model(true, SequenceFrame.method532(j), false, model);
 		if(j != -1) {
-			model_1.method469();
+			model_1.prepareSkeleton();
 			model_1.method470(j);
 			model_1.anIntArrayArray1658 = null;
 			model_1.anIntArrayArray1657 = null;

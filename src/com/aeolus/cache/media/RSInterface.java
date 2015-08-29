@@ -1,6 +1,6 @@
 package com.aeolus.cache.media;
 import com.aeolus.Game;
-import com.aeolus.cache.def.EntityDefinition;
+import com.aeolus.cache.def.NpcDefinition;
 import com.aeolus.cache.def.ItemDefinition;
 import com.aeolus.collection.Cache;
 import com.aeolus.media.font.TextClass;
@@ -2122,7 +2122,7 @@ public final class RSInterface {
 		if (i == 1)
 			model = Model.getModel(j);
 		if (i == 2)
-			model = EntityDefinition.forID(j).method160();
+			model = NpcDefinition.forID(j).model();
 		if (i == 3)
 			model = Game.myPlayer.method453();
 		if (i == 4)
@@ -2170,7 +2170,7 @@ public final class RSInterface {
 			return model;
 		Model model_1 = new Model(true, SequenceFrame.method532(k) & SequenceFrame.method532(j), false, model);
 		if (k != -1 || j != -1)
-			model_1.method469();
+			model_1.prepareSkeleton();
 		if (k != -1)
 			model_1.method470(k);
 		if (j != -1)

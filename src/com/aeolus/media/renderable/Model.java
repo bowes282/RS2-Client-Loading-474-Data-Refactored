@@ -1542,7 +1542,7 @@ public class Model extends Renderable {
 		}
 	}
 
-	public void method469() {
+	public void prepareSkeleton() {
 		if (anIntArray1655 != null) {
 			int ai[] = new int[256];
 			int j = 0;
@@ -2775,7 +2775,7 @@ public class Model extends Renderable {
 
 	private boolean aBoolean1618;
 	public static int anInt1620;
-	public static Model aModel_1621 = new Model(true);
+	public static Model EMPTY_MODEL = new Model(true);
 	private static int anIntArray1622[] = new int[2000];
 	private static int anIntArray1623[] = new int[2000];
 	private static int anIntArray1624[] = new int[2000];

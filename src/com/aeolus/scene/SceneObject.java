@@ -28,10 +28,10 @@ public final class SceneObject extends Renderable {
 		if (anInt1601 != -1) {
 			try {
 				VarBit varBit = VarBit.cache[anInt1601];
-				int k = varBit.anInt648;
-				int l = varBit.anInt649;
-				int i1 = varBit.anInt650;
-				int j1 = Game.anIntArray1232[i1 - l];
+				int k = varBit.getSetting();
+				int l = varBit.getLow();
+				int i1 = varBit.getHigh();
+				int j1 = Game.BIT_MASKS[i1 - l];
 				i = clientInstance.variousSettings[k] >> l & j1;
 			} catch (Exception ex) {
 			}
