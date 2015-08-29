@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.zip.GZIPOutputStream;
 
 import com.aeolus.cache.Index;
-import com.aeolus.cache.config.Censor;
+import com.aeolus.cache.config.MessageCensor;
 import com.aeolus.cache.config.VariableBits;
 import com.aeolus.cache.config.VariableParameter;
 import com.aeolus.cache.def.NpcDefinition;
@@ -8843,7 +8843,7 @@ public class Game extends GameShell {
 				minimapLineWidth[l6 - 1] = l7 - j7;
 			}
 			setBounds();
-			Censor.loadConfig(streamLoader_4);
+			MessageCensor.load(streamLoader_4);
 			mouseDetection = new MouseDetection(this);
 			startRunnable(mouseDetection, 10);
 			SceneObject.clientInstance = this;
