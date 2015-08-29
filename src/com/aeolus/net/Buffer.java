@@ -43,8 +43,8 @@ public final class Buffer extends QueueNode {
 	private Buffer() {
 	}
 
-	public Buffer(byte abyte0[]) {
-		buffer = abyte0;
+	public Buffer(byte[] playLoad) {
+		buffer = playLoad;
 		currentOffset = 0;
 	}
 	
@@ -78,25 +78,25 @@ public final class Buffer extends QueueNode {
 		buffer[currentOffset++] = (byte) i;
 	}
 
-	public void method400(int i) {
+	public void writeLEShort(int i) {
 		buffer[currentOffset++] = (byte) i;
 		buffer[currentOffset++] = (byte) (i >> 8);
 	}
 
-	public void writeDWordBigEndian(int i) {
+	public void writeTriByte(int i) {
 		buffer[currentOffset++] = (byte) (i >> 16);
 		buffer[currentOffset++] = (byte) (i >> 8);
 		buffer[currentOffset++] = (byte) i;
 	}
 
-	public void writeDWord(int i) {
+	public void writeInt(int i) {
 		buffer[currentOffset++] = (byte) (i >> 24);
 		buffer[currentOffset++] = (byte) (i >> 16);
 		buffer[currentOffset++] = (byte) (i >> 8);
 		buffer[currentOffset++] = (byte) i;
 	}
 
-	public void method403(int j) {
+	public void writeLEInt(int j) {
 		buffer[currentOffset++] = (byte) j;
 		buffer[currentOffset++] = (byte) (j >> 8);
 		buffer[currentOffset++] = (byte) (j >> 16);

@@ -23,8 +23,8 @@ final class SoundSynthesizer {
 	private int delayDecay;
 	private SoundFilter filter;
 	private SoundEnvelope filterEnvelope;
-	int anInt113;
-	int anInt114;
+	int duration;
+	int offset;
 	private static int[] samples;
 	private static int[] NOISE;
 	private static int[] SINE;
@@ -39,7 +39,7 @@ final class SoundSynthesizer {
 		anIntArray107 = new int[5];
 		anIntArray108 = new int[5];
 		delayDecay = 100;
-		anInt113 = 500;
+		duration = 500;
 	}
 
 	public static void init() {
@@ -293,8 +293,8 @@ final class SoundSynthesizer {
 
 		delayTime = stream.method422();
 		delayDecay = stream.method422();
-		anInt113 = stream.getUnsignedLEShort();
-		anInt114 = stream.getUnsignedLEShort();
+		duration = stream.getUnsignedLEShort();
+		offset = stream.getUnsignedLEShort();
 		filter = new SoundFilter();
 		filterEnvelope = new SoundEnvelope();
 		filter.decode(stream, filterEnvelope);

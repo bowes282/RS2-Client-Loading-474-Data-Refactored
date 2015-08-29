@@ -60,7 +60,7 @@ import com.aeolus.scene.tile.WallLock;
 import com.aeolus.scene.util.CollisionMap;
 import com.aeolus.sound.SoundConstants;
 import com.aeolus.sound.SoundPlayer;
-import com.aeolus.sound.Sounds;
+import com.aeolus.sound.SoundTrack;
 import com.aeolus.util.MouseDetection;
 import com.aeolus.util.PacketConstants;
 import com.aeolus.util.SkillConstants;
@@ -1241,7 +1241,7 @@ public class Game extends GameShell {
 		ObjectDefinition.mruNodes1.unlinkAll();
 		if (super.gameFrame != null) {
 			stream.createFrame(210);
-			stream.writeDWord(0x3f008edd);
+			stream.writeInt(0x3f008edd);
 		}
 		if (lowMem && Signlink.cache_dat != null) {
 			int j = onDemandFetcher.getVersionCount(0);
@@ -3861,11 +3861,11 @@ public class Game extends GameShell {
 										+ k6);
 								anInt1022 = 0;
 							} else if (anInt1022 < 8) {
-								stream.writeDWordBigEndian(0x800000
+								stream.writeTriByte(0x800000
 										+ (anInt1022 << 19) + i6);
 								anInt1022 = 0;
 							} else {
-								stream.writeDWord(0xc0000000
+								stream.writeInt(0xc0000000
 										+ (anInt1022 << 19) + i6);
 								anInt1022 = 0;
 							}
@@ -3911,7 +3911,7 @@ public class Game extends GameShell {
 				j5 = 1;
 			int l5 = (int) l;
 			stream.createFrame(241);
-			stream.writeDWord((l5 << 20) + (j5 << 19) + k4);
+			stream.writeInt((l5 << 20) + (j5 << 19) + k4);
 		}
 		if (anInt1016 > 0)
 			anInt1016--;
@@ -4285,7 +4285,7 @@ public class Game extends GameShell {
 				 * if(anIntArray1207[i] == anInt874 && anIntArray1241[i] ==
 				 * anInt1289) { if(!replayWave()) flag1 = true; } else {
 				 */
-				Buffer stream = Sounds.method241(anIntArray1241[i],
+				Buffer stream = SoundTrack.method241(anIntArray1241[i],
 						anIntArray1207[i]);
 				new SoundPlayer((InputStream) new ByteArrayInputStream(
 						stream.buffer, 0, stream.currentOffset),
@@ -4703,7 +4703,7 @@ public class Game extends GameShell {
 			anInt924 += baseX;
 			if (anInt924 >= 113) {
 				stream.createFrame(183);
-				stream.writeDWordBigEndian(0xe63271);
+				stream.writeTriByte(0xe63271);
 				anInt924 = 0;
 			}
 			clickObject(i1, k, j);
@@ -5927,7 +5927,7 @@ public class Game extends GameShell {
 						} catch (Exception _ex) {
 						}
 						stream.createFrame(208);
-						stream.writeDWord(i1);
+						stream.writeInt(i1);
 					}
 					inputDialogState = 0;
 					inputTaken = true;
@@ -7863,11 +7863,11 @@ public class Game extends GameShell {
 				ai[3] = (int) aLong1215;
 				stream.currentOffset = 0;
 				stream.writeWordBigEndian(10);
-				stream.writeDWord(ai[0]);
-				stream.writeDWord(ai[1]);
-				stream.writeDWord(ai[2]);
-				stream.writeDWord(ai[3]);
-				stream.writeDWord(Signlink.uid);
+				stream.writeInt(ai[0]);
+				stream.writeInt(ai[1]);
+				stream.writeInt(ai[2]);
+				stream.writeInt(ai[3]);
+				stream.writeInt(Signlink.uid);
 				stream.writeString(UserIdentification.generateUID());
 				stream.writeString(s);
 				stream.writeString(s1);
@@ -7883,7 +7883,7 @@ public class Game extends GameShell {
 				aStream_847.writeWord(317);
 				aStream_847.writeWordBigEndian(lowMem ? 1 : 0);
 				for (int l1 = 0; l1 < 9; l1++)
-					aStream_847.writeDWord(expectedCRCs[l1]);
+					aStream_847.writeInt(expectedCRCs[l1]);
 
 				aStream_847.writeBytes(stream.buffer, stream.currentOffset, 0);
 				stream.encryption = new ISAACCipher(ai);
@@ -8317,7 +8317,7 @@ public class Game extends GameShell {
 			anInt1288 += k4;
 			if (anInt1288 >= 92) {
 				stream.createFrame(36);
-				stream.writeDWord(0);
+				stream.writeInt(0);
 				anInt1288 = 0;
 			}
 			if (i == 0) {
@@ -8683,7 +8683,7 @@ public class Game extends GameShell {
 			byte abyte0[] = streamLoader_5.getDataForName("sounds.dat");
 
 			Buffer stream = new Buffer(abyte0);
-			Sounds.unpack(stream);
+			SoundTrack.unpack(stream);
 
 			if (Configuration.repackIndexOne) {
 				repackCacheIndex(1);
@@ -11834,7 +11834,7 @@ public class Game extends GameShell {
 					&& anInt1062 < 50) {
 				anIntArray1207[anInt1062] = i9;
 				anIntArray1241[anInt1062] = i16;
-				anIntArray1250[anInt1062] = Sounds.anIntArray326[i9];
+				anIntArray1250[anInt1062] = SoundTrack.delays[i9];
 				anInt1062++;
 			}
 		}
@@ -13009,7 +13009,7 @@ public class Game extends GameShell {
 				anIntArray1207[anInt1062] = soundId;
 				anIntArray1241[anInt1062] = type;
 				anIntArray1250[anInt1062] = delay
-						+ Sounds.anIntArray326[soundId];
+						+ SoundTrack.delays[soundId];
 				soundVolume[anInt1062] = volume;
 				anInt1062++;
 				pktType = -1;
