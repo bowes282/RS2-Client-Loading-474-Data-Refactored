@@ -4,7 +4,7 @@ import com.aeolus.net.Buffer;
 import com.aeolus.net.requester.OnDemandRequester;
 import com.aeolus.scene.SceneGraph;
 import com.aeolus.scene.SceneObject;
-import com.aeolus.scene.graphic.Texture;
+import com.aeolus.scene.graphic.Rasterizer;
 import com.aeolus.scene.tile.Floor;
 import com.aeolus.scene.util.CollisionMap;
 import com.aeolus.util.ChunkUtil;
@@ -171,7 +171,7 @@ public final class ObjectManager {
 									}
 									int i22 = 0;
 									if (j21 != -1)
-										i22 = Texture.anIntArray1482[method187(k21, 96)];
+										i22 = Rasterizer.anIntArray1482[method187(k21, 96)];
 									if (i19 == 0) {
 										worldController.method279(l, l6, k17, 0, 0, -1, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), 0, 0, 0, 0, i22, 0);
 									} else {
@@ -183,19 +183,19 @@ public final class ObjectManager {
 											int j23;
 											int k23;
 											if (i23 >= 0) {
-												k23 = Texture.method369(i23);
+												k23 = Rasterizer.method369(i23);
 												j23 = -1;
 											} else if (flo_2.anInt390 == 0xff00ff) {
 												k23 = 0;
 												j23 = -2;
 												i23 = -1;
 											} else if (flo_2.anInt390 == 0x333333) {
-												k23 = Texture.anIntArray1482[method185(flo_2.anInt399, 96)];
+												k23 = Rasterizer.anIntArray1482[method185(flo_2.anInt399, 96)];
 												j23 = -2;
 												i23 = -1;
 											} else {
 												j23 = method177(flo_2.anInt394, flo_2.anInt395, flo_2.anInt396);
-												k23 = Texture.anIntArray1482[method185(flo_2.anInt399, 96)];
+												k23 = Rasterizer.anIntArray1482[method185(flo_2.anInt399, 96)];
 											}
 											if ((i19 - 1) == 63) {
 												k23 = flo_2.anInt390 = 0x767676;
@@ -203,7 +203,7 @@ public final class ObjectManager {
 												i23 = -1;
 			            				    }
 											if ((i19 - 1) == 111) {
-												k23 = Texture.method369(1);
+												k23 = Rasterizer.method369(1);
 												j23 = -1;
 												i23 = 1;
 											} else if (j23 == 6363) {
@@ -880,7 +880,7 @@ public final class ObjectManager {
 	}
 
 	private static int method184(int i, int j, int k, int l) {
-		int i1 = 0x10000 - Texture.anIntArray1471[(k * 1024) / l] >> 1;
+		int i1 = 0x10000 - Rasterizer.anIntArray1471[(k * 1024) / l] >> 1;
 		return (i * (0x10000 - i1) >> 16) + (j * i1 >> 16);
 	}
 

@@ -7,7 +7,7 @@ import com.aeolus.media.Vertex;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.requester.Requester;
 import com.aeolus.scene.SceneGraph;
-import com.aeolus.scene.graphic.Texture;
+import com.aeolus.scene.graphic.Rasterizer;
 
 public class Model extends Renderable {
 
@@ -2138,8 +2138,8 @@ public class Model extends Renderable {
 
 	public final void method482(int j, int k, int l, int i1, int j1, int k1) {
 		int i = 0;
-		int l1 = Texture.textureInt1;
-		int i2 = Texture.textureInt2;
+		int l1 = Rasterizer.textureInt1;
+		int i2 = Rasterizer.textureInt2;
 		int j2 = SINE[i];
 		int k2 = COSINE[i];
 		int l2 = SINE[j];
@@ -2240,16 +2240,16 @@ public class Model extends Renderable {
 						k4 /= i3;
 						i5 /= k5;
 					}
-					int i6 = anInt1685 - Texture.textureInt1;
-					int k6 = anInt1686 - Texture.textureInt2;
+					int i6 = anInt1685 - Rasterizer.textureInt1;
+					int k6 = anInt1686 - Rasterizer.textureInt2;
 					if (i6 > k3 && i6 < l3 && k6 > i5 && k6 < k4)
 						if (fits_on_single_square)
 							anIntArray1688[anInt1687++] = i2;
 						else
 							flag1 = true;
 				}
-				int l5 = Texture.textureInt1;
-				int j6 = Texture.textureInt2;
+				int l5 = Rasterizer.textureInt1;
+				int j6 = Rasterizer.textureInt2;
 				int l6 = 0;
 				int i7 = 0;
 				if (i != 0) {
@@ -2476,25 +2476,25 @@ public class Model extends Renderable {
 		int j = anIntArray1631[i];
 		int k = anIntArray1632[i];
 		int l = anIntArray1633[i];
-		Texture.aBoolean1462 = aBooleanArray1663[i];
+		Rasterizer.aBoolean1462 = aBooleanArray1663[i];
 		if (anIntArray1639 == null)
-			Texture.anInt1465 = 0;
+			Rasterizer.anInt1465 = 0;
 		else
-			Texture.anInt1465 = anIntArray1639[i];
+			Rasterizer.anInt1465 = anIntArray1639[i];
 		int i1;
 		if (anIntArray1637 == null)
 			i1 = 0;
 		else
 			i1 = anIntArray1637[i] & 3;
 		if (i1 == 0) {
-			Texture.drawShadedTriangle(anIntArray1666[j], anIntArray1666[k],
+			Rasterizer.drawShadedTriangle(anIntArray1666[j], anIntArray1666[k],
 					anIntArray1666[l], anIntArray1665[j], anIntArray1665[k],
 					anIntArray1665[l], anIntArray1634[i], anIntArray1635[i],
 					anIntArray1636[i], vertexPerspectiveZAbs[j], vertexPerspectiveZAbs[k], vertexPerspectiveZAbs[l]);
 			return;
 		}
 		if (i1 == 1) {
-			Texture.drawFlatTriangle(anIntArray1666[j], anIntArray1666[k],
+			Rasterizer.drawFlatTriangle(anIntArray1666[j], anIntArray1666[k],
 					anIntArray1666[l], anIntArray1665[j], anIntArray1665[k],
 					anIntArray1665[l], modelIntArray3[anIntArray1634[i]], vertexPerspectiveZAbs[j], vertexPerspectiveZAbs[k], vertexPerspectiveZAbs[l]);;
 			return;
@@ -2504,7 +2504,7 @@ public class Model extends Renderable {
 			int l1 = anIntArray1643[j1];
 			int j2 = anIntArray1644[j1];
 			int l2 = anIntArray1645[j1];
-			Texture.drawTexturedTriangle(anIntArray1666[j], anIntArray1666[k],
+			Rasterizer.drawTexturedTriangle(anIntArray1666[j], anIntArray1666[k],
 					anIntArray1666[l], anIntArray1665[j], anIntArray1665[k],
 					anIntArray1665[l], anIntArray1634[i], anIntArray1635[i],
 					anIntArray1636[i], anIntArray1668[l1], anIntArray1668[j2],
@@ -2518,7 +2518,7 @@ public class Model extends Renderable {
 				int i2 = anIntArray1643[k1];
 				int k2 = anIntArray1644[k1];
 				int i3 = anIntArray1645[k1];
-				Texture.drawTexturedTriangle(anIntArray1666[j], anIntArray1666[k],
+				Rasterizer.drawTexturedTriangle(anIntArray1666[j], anIntArray1666[k],
 						anIntArray1666[l], anIntArray1665[j], anIntArray1665[k],
 						anIntArray1665[l], anIntArray1634[i], anIntArray1634[i],
 						anIntArray1634[i], anIntArray1668[i2], anIntArray1668[k2],
@@ -2532,8 +2532,8 @@ public class Model extends Renderable {
 		if (anIntArray1640 != null)
 			if (anIntArray1640[i] == 65535)
 				return;
-		int j = Texture.textureInt1;
-		int k = Texture.textureInt2;
+		int j = Rasterizer.textureInt1;
+		int k = Rasterizer.textureInt2;
 		int l = 0;
 		int i1 = anIntArray1631[i];
 		int j1 = anIntArray1632[i];
@@ -2642,29 +2642,29 @@ public class Model extends Renderable {
 		int j7 = anIntArray1679[1];
 		int k7 = anIntArray1679[2];
 		if ((j3 - j4) * (k7 - j7) - (i7 - j7) * (j5 - j4) > 0) {
-			Texture.aBoolean1462 = false;
+			Rasterizer.aBoolean1462 = false;
 			if (l == 3) {
 				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > DrawingArea.centerX
 						|| j4 > DrawingArea.centerX || j5 > DrawingArea.centerX)
-					Texture.aBoolean1462 = true;
+					Rasterizer.aBoolean1462 = true;
 				int l7;
 				if (anIntArray1637 == null)
 					l7 = 0;
 				else
 					l7 = anIntArray1637[i] & 3;
 				if (l7 == 0)
-					Texture.drawShadedTriangle(i7, j7, k7, j3, j4, j5,
+					Rasterizer.drawShadedTriangle(i7, j7, k7, j3, j4, j5,
 							anIntArray1680[0], anIntArray1680[1],
 							anIntArray1680[2], -1f, -1f, -1f);
 				else if (l7 == 1)
-					Texture.drawFlatTriangle(i7, j7, k7, j3, j4, j5,
+					Rasterizer.drawFlatTriangle(i7, j7, k7, j3, j4, j5,
 							modelIntArray3[anIntArray1634[i]], -1f, -1f, -1f);
 				else if (l7 == 2) {
 					int j8 = anIntArray1637[i] >> 2;
 					int k9 = anIntArray1643[j8];
 					int k10 = anIntArray1644[j8];
 					int k11 = anIntArray1645[j8];
-					Texture.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
+					Rasterizer.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
 							anIntArray1680[0], anIntArray1680[1],
 							anIntArray1680[2], anIntArray1668[k9],
 							anIntArray1668[k10], anIntArray1668[k11],
@@ -2677,7 +2677,7 @@ public class Model extends Renderable {
 					int l9 = anIntArray1643[k8];
 					int l10 = anIntArray1644[k8];
 					int l11 = anIntArray1645[k8];
-					Texture.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
+					Rasterizer.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
 							anIntArray1634[i], anIntArray1634[i],
 							anIntArray1634[i], anIntArray1668[l9],
 							anIntArray1668[l10], anIntArray1668[l11],
@@ -2692,25 +2692,25 @@ public class Model extends Renderable {
 						|| j4 > DrawingArea.centerX || j5 > DrawingArea.centerX
 						|| anIntArray1678[3] < 0
 						|| anIntArray1678[3] > DrawingArea.centerX)
-					Texture.aBoolean1462 = true;
+					Rasterizer.aBoolean1462 = true;
 				int i8;
 				if (anIntArray1637 == null)
 					i8 = 0;
 				else
 					i8 = anIntArray1637[i] & 3;
 				if (i8 == 0) {
-					Texture.drawShadedTriangle(i7, j7, k7, j3, j4, j5,
+					Rasterizer.drawShadedTriangle(i7, j7, k7, j3, j4, j5,
 							anIntArray1680[0], anIntArray1680[1],
 							anIntArray1680[2], -1f, -1f, -1f);
-					Texture.drawShadedTriangle(i7, k7, anIntArray1679[3], j3, j5,
+					Rasterizer.drawShadedTriangle(i7, k7, anIntArray1679[3], j3, j5,
 							anIntArray1678[3], anIntArray1680[0],
 							anIntArray1680[2], anIntArray1680[3], vertexPerspectiveZAbs[i1], vertexPerspectiveZAbs[j1], vertexPerspectiveZAbs[k1]);
 					return;
 				}
 				if (i8 == 1) {
 					int l8 = modelIntArray3[anIntArray1634[i]];
-					Texture.drawFlatTriangle(i7, j7, k7, j3, j4, j5, l8, -1f, -1f, -1f);
-					Texture.drawFlatTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], l8, vertexPerspectiveZAbs[i1], vertexPerspectiveZAbs[j1], vertexPerspectiveZAbs[k1]);
+					Rasterizer.drawFlatTriangle(i7, j7, k7, j3, j4, j5, l8, -1f, -1f, -1f);
+					Rasterizer.drawFlatTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], l8, vertexPerspectiveZAbs[i1], vertexPerspectiveZAbs[j1], vertexPerspectiveZAbs[k1]);
 					return;
 				}
 				if (i8 == 2) {
@@ -2718,7 +2718,7 @@ public class Model extends Renderable {
 					int i10 = anIntArray1643[i9];
 					int i11 = anIntArray1644[i9];
 					int i12 = anIntArray1645[i9];
-					Texture.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
+					Rasterizer.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
 							anIntArray1680[0], anIntArray1680[1],
 							anIntArray1680[2], anIntArray1668[i10],
 							anIntArray1668[i11], anIntArray1668[i12],
@@ -2726,7 +2726,7 @@ public class Model extends Renderable {
 							anIntArray1669[i12], anIntArray1670[i10],
 							anIntArray1670[i11], anIntArray1670[i12],
 							anIntArray1640[i], vertexPerspectiveZAbs[i1], vertexPerspectiveZAbs[j1], vertexPerspectiveZAbs[k1]);
-							Texture.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5,
+							Rasterizer.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5,
 							anIntArray1678[3], anIntArray1680[0],
 							anIntArray1680[2], anIntArray1680[3],
 							anIntArray1668[i10], anIntArray1668[i11],
@@ -2741,7 +2741,7 @@ public class Model extends Renderable {
 					int j10 = anIntArray1643[j9];
 					int j11 = anIntArray1644[j9];
 					int j12 = anIntArray1645[j9];
-					Texture.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
+					Rasterizer.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
 							anIntArray1634[i], anIntArray1634[i],
 							anIntArray1634[i], anIntArray1668[j10],
 							anIntArray1668[j11], anIntArray1668[j12],
@@ -2749,7 +2749,7 @@ public class Model extends Renderable {
 							anIntArray1669[j12], anIntArray1670[j10],
 							anIntArray1670[j11], anIntArray1670[j12],
 							anIntArray1640[i], vertexPerspectiveZAbs[i1], vertexPerspectiveZAbs[j1], vertexPerspectiveZAbs[k1]);
-							Texture.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5,
+							Rasterizer.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5,
 							anIntArray1678[3], anIntArray1634[i],
 							anIntArray1634[i], anIntArray1634[i],
 							anIntArray1668[j10], anIntArray1668[j11],
@@ -2850,9 +2850,9 @@ public class Model extends Renderable {
 	static int modelIntArray4[];
 
 	static {
-		SINE = Texture.anIntArray1470;
-		COSINE = Texture.anIntArray1471;
-		modelIntArray3 = Texture.anIntArray1482;
-		modelIntArray4 = Texture.anIntArray1469;
+		SINE = Rasterizer.anIntArray1470;
+		COSINE = Rasterizer.anIntArray1471;
+		modelIntArray3 = Rasterizer.anIntArray1482;
+		modelIntArray4 = Rasterizer.anIntArray1469;
 	}
 }

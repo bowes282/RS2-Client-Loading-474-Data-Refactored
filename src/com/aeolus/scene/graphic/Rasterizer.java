@@ -4,7 +4,7 @@ import com.aeolus.media.DrawingArea;
 import com.aeolus.net.CacheArchive;
 import com.aeolus.scene.SceneGraph;
 
-public final class Texture extends DrawingArea {
+public final class Rasterizer extends DrawingArea {
 
 	public static void nullLoader()
 	{

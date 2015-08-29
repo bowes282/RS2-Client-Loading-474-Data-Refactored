@@ -9,7 +9,7 @@ import com.aeolus.media.DrawingArea;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
-import com.aeolus.scene.graphic.Texture;
+import com.aeolus.scene.graphic.Rasterizer;
 
 /**
  * Refactored reference from rename317
@@ -265,9 +265,9 @@ public final class ItemDefinition {
 				return null;
 		}
 		Sprite enabledSprite = new Sprite(32, 32);
-		int centerX = Texture.textureInt1;
-		int centerY = Texture.textureInt2;
-		int lineOffsets[] = Texture.anIntArray1472;
+		int centerX = Rasterizer.textureInt1;
+		int centerY = Rasterizer.textureInt2;
+		int lineOffsets[] = Rasterizer.anIntArray1472;
 		int pixels[] = DrawingArea.pixels;
 		float depthBuffer[] = DrawingArea.depthBuffer;
 		int width = DrawingArea.width;
@@ -276,18 +276,18 @@ public final class ItemDefinition {
 		int vp_right = DrawingArea.bottomX;
 		int vp_top = DrawingArea.topY;
 		int vp_bottom = DrawingArea.bottomY;
-		Texture.aBoolean1464 = false;
+		Rasterizer.aBoolean1464 = false;
 		DrawingArea.initDrawingArea(32, 32, enabledSprite.myPixels,
 				new float[32 * 32]);
 		DrawingArea.method336(32, 0, 0, 0, 32);
-		Texture.method364();
+		Rasterizer.method364();
 		int k3 = itemDef.model_zoom;
 		if (outlineColor == -1)
 			k3 = (int) ((double) k3 * 1.5D);
 		if (outlineColor > 0)
 			k3 = (int) ((double) k3 * 1.04D);
-		int l3 = Texture.anIntArray1470[itemDef.rotation_y] * k3 >> 16;
-		int i4 = Texture.anIntArray1471[itemDef.rotation_y] * k3 >> 16;
+		int l3 = Rasterizer.anIntArray1470[itemDef.rotation_y] * k3 >> 16;
+		int i4 = Rasterizer.anIntArray1471[itemDef.rotation_y] * k3 >> 16;
 		model.method482(itemDef.rotation_x, itemDef.rotation_z,
 				itemDef.rotation_y, itemDef.translate_x, l3 + model.modelHeight
 						/ 2 + itemDef.translate_yz, i4 + itemDef.translate_yz);
@@ -353,10 +353,10 @@ public final class ItemDefinition {
 			image_cache.removeFromCache(enabledSprite, itemId);
 		DrawingArea.initDrawingArea(height, width, pixels, depthBuffer);
 		DrawingArea.setDrawingArea(vp_bottom, vp_left, vp_right, vp_top);
-		Texture.textureInt1 = centerX;
-		Texture.textureInt2 = centerY;
-		Texture.anIntArray1472 = lineOffsets;
-		Texture.aBoolean1464 = true;
+		Rasterizer.textureInt1 = centerX;
+		Rasterizer.textureInt2 = centerY;
+		Rasterizer.anIntArray1472 = lineOffsets;
+		Rasterizer.aBoolean1464 = true;
 		if (itemDef.stackable)
 			enabledSprite.maxWidth = 33;
 		else

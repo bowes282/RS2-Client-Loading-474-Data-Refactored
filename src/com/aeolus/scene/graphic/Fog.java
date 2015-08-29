@@ -20,7 +20,7 @@ public class Fog {
      */
     public void renderFog(boolean belowGround, int fogStartDistance, int fogEndDistance, int fogIntensity) {
         getColor(setColor);
-        int pos = Texture.anIntArray1472[0];
+        int pos = Rasterizer.anIntArray1472[0];
         int src, dst, alpha;
         int fogBegin = (int) (fogStartDistance + fogDistance);
         int fogEnd = (int) (fogEndDistance + fogDistance);

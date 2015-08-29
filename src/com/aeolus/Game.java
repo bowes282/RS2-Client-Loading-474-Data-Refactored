@@ -52,7 +52,7 @@ import com.aeolus.scene.SceneObject;
 import com.aeolus.scene.SceneProjectile;
 import com.aeolus.scene.SceneSpotAnim;
 import com.aeolus.scene.graphic.Fog;
-import com.aeolus.scene.graphic.Texture;
+import com.aeolus.scene.graphic.Rasterizer;
 import com.aeolus.scene.tile.Floor;
 import com.aeolus.scene.tile.GroundDecoration;
 import com.aeolus.scene.tile.WallDecoration;
@@ -335,31 +335,31 @@ public class Game extends GameShell {
 	}
 
 	private static void setBounds() {
-		Texture.method365(frameWidth, frameHeight);
-		fullScreenTextureArray = Texture.anIntArray1472;
-		Texture.method365(
+		Rasterizer.method365(frameWidth, frameHeight);
+		fullScreenTextureArray = Rasterizer.anIntArray1472;
+		Rasterizer.method365(
 				frameMode == ScreenMode.FIXED ? (chatboxImageProducer != null ? chatboxImageProducer.canvasWidth
 						: 519)
 						: frameWidth,
 				frameMode == ScreenMode.FIXED ? (chatboxImageProducer != null ? chatboxImageProducer.canvasHeight
 						: 165)
 						: frameHeight);
-		anIntArray1180 = Texture.anIntArray1472;
-		Texture.method365(
+		anIntArray1180 = Rasterizer.anIntArray1472;
+		Rasterizer.method365(
 				frameMode == ScreenMode.FIXED ? (tabImageProducer != null ? tabImageProducer.canvasWidth
 						: 249)
 						: frameWidth,
 				frameMode == ScreenMode.FIXED ? (tabImageProducer != null ? tabImageProducer.canvasHeight
 						: 335)
 						: frameHeight);
-		anIntArray1181 = Texture.anIntArray1472;
-		Texture.method365(screenAreaWidth, screenAreaHeight);
-		anIntArray1182 = Texture.anIntArray1472;
+		anIntArray1181 = Rasterizer.anIntArray1472;
+		Rasterizer.method365(screenAreaWidth, screenAreaHeight);
+		anIntArray1182 = Rasterizer.anIntArray1472;
 		int ai[] = new int[9];
 		for (int i8 = 0; i8 < 9; i8++) {
 			int k8 = 128 + i8 * 32 + 15;
 			int l8 = 600 + k8 * 3;
-			int i9 = Texture.anIntArray1470[k8];
+			int i9 = Rasterizer.anIntArray1470[k8];
 			ai[i8] = l8 * i9 >> 16;
 		}
 		if (frameMode == ScreenMode.RESIZABLE && (frameWidth >= 766)
@@ -612,7 +612,7 @@ public class Game extends GameShell {
 		if (frameMode == ScreenMode.FIXED) {
 			chatboxImageProducer.initDrawingArea();
 		}
-		Texture.anIntArray1472 = anIntArray1180;
+		Rasterizer.anIntArray1472 = anIntArray1180;
 		if (chatStateCheck()) {
 			showChatComponents = true;
 			cacheSprite[20].drawSprite(0, yOffset);
@@ -896,7 +896,7 @@ public class Game extends GameShell {
 			chatboxImageProducer.drawGraphics(338, super.graphics, 0);
 		}
 		gameScreenImageProducer.initDrawingArea();
-		Texture.anIntArray1472 = anIntArray1182;
+		Rasterizer.anIntArray1472 = anIntArray1182;
 	}
 
 	public static String capitalize(String s) {
@@ -1093,7 +1093,7 @@ public class Game extends GameShell {
 			anInt985 = -1;
 			aClass19_1056.removeAll();
 			aClass19_1013.removeAll();
-			Texture.method366();
+			Rasterizer.method366();
 			unlinkMRUNodes();
 			worldController.initToNull();
 			System.gc();
@@ -1253,7 +1253,7 @@ public class Game extends GameShell {
 
 		}
 		System.gc();
-		Texture.method367();
+		Rasterizer.method367();
 		onDemandFetcher.method566();
 		int k = (anInt1069 - 6) / 8 - 1;
 		int j1 = (anInt1069 + 6) / 8 + 1;
@@ -2095,13 +2095,13 @@ public class Game extends GameShell {
 		int k = variousSettings[i];
 		if (j == 1) {
 			if (k == 1)
-				Texture.method372(0.90000000000000002D);
+				Rasterizer.method372(0.90000000000000002D);
 			if (k == 2)
-				Texture.method372(0.80000000000000004D);
+				Rasterizer.method372(0.80000000000000004D);
 			if (k == 3)
-				Texture.method372(0.69999999999999996D);
+				Rasterizer.method372(0.69999999999999996D);
 			if (k == 4)
-				Texture.method372(0.59999999999999998D);
+				Rasterizer.method372(0.59999999999999998D);
 			ItemDefinition.image_cache.unlinkAll();
 			welcomeScreenRaised = true;
 		}
@@ -2674,7 +2674,7 @@ public class Game extends GameShell {
 		if (frameMode == ScreenMode.FIXED) {
 			tabImageProducer.initDrawingArea();
 		}
-		Texture.anIntArray1472 = anIntArray1181;
+		Rasterizer.anIntArray1472 = anIntArray1181;
 		if (frameMode == ScreenMode.FIXED) {
 			cacheSprite[21].drawSprite(0, 0);
 		} else if (frameMode != ScreenMode.FIXED && !changeTabArea) {
@@ -2739,13 +2739,13 @@ public class Game extends GameShell {
 			tabImageProducer.drawGraphics(168, super.graphics, 516);
 			gameScreenImageProducer.initDrawingArea();
 		}
-		Texture.anIntArray1472 = anIntArray1182;
+		Rasterizer.anIntArray1472 = anIntArray1182;
 	}
 
 	private void writeBackgroundTexture(int j) {
 		if (!lowMem) {
-			if (Texture.anIntArray1480[17] >= j) {
-				Background background = Texture.aBackgroundArray1474s[17];
+			if (Rasterizer.anIntArray1480[17] >= j) {
+				Background background = Rasterizer.aBackgroundArray1474s[17];
 				int k = background.anInt1452 * background.anInt1453 - 1;
 				int j1 = background.anInt1452 * anInt945 * 2;
 				byte abyte0[] = background.aByteArray1450;
@@ -2755,7 +2755,7 @@ public class Game extends GameShell {
 
 				background.aByteArray1450 = abyte3;
 				aByteArray912 = abyte0;
-				Texture.method370(17);
+				Rasterizer.method370(17);
 				anInt854++;
 				if (anInt854 > 1235) {
 					anInt854 = 0;
@@ -2776,8 +2776,8 @@ public class Game extends GameShell {
 					stream.writeBytes(stream.currentOffset - l2);
 				}
 			}
-			if (Texture.anIntArray1480[24] >= j) {
-				Background background_1 = Texture.aBackgroundArray1474s[24];
+			if (Rasterizer.anIntArray1480[24] >= j) {
+				Background background_1 = Rasterizer.aBackgroundArray1474s[24];
 				int l = background_1.anInt1452 * background_1.anInt1453 - 1;
 				int k1 = background_1.anInt1452 * anInt945 * 2;
 				byte abyte1[] = background_1.aByteArray1450;
@@ -2787,10 +2787,10 @@ public class Game extends GameShell {
 
 				background_1.aByteArray1450 = abyte4;
 				aByteArray912 = abyte1;
-				Texture.method370(24);
+				Rasterizer.method370(24);
 			}
-			if (Texture.anIntArray1480[34] >= j) {
-				Background background_2 = Texture.aBackgroundArray1474s[34];
+			if (Rasterizer.anIntArray1480[34] >= j) {
+				Background background_2 = Rasterizer.aBackgroundArray1474s[34];
 				int i1 = background_2.anInt1452 * background_2.anInt1453 - 1;
 				int l1 = background_2.anInt1452 * anInt945 * 2;
 				byte abyte2[] = background_2.aByteArray1450;
@@ -2800,10 +2800,10 @@ public class Game extends GameShell {
 
 				background_2.aByteArray1450 = abyte5;
 				aByteArray912 = abyte2;
-				Texture.method370(34);
+				Rasterizer.method370(34);
 			}
-			if (Texture.anIntArray1480[40] >= j) {
-				Background background_2 = Texture.aBackgroundArray1474s[40];
+			if (Rasterizer.anIntArray1480[40] >= j) {
+				Background background_2 = Rasterizer.aBackgroundArray1474s[40];
 				int i1 = background_2.anInt1452 * background_2.anInt1453 - 1;
 				int l1 = background_2.anInt1452 * anInt945 * 2;
 				byte abyte2[] = background_2.aByteArray1450;
@@ -2813,7 +2813,7 @@ public class Game extends GameShell {
 
 				background_2.aByteArray1450 = abyte5;
 				aByteArray912 = abyte2;
-				Texture.method370(40);
+				Rasterizer.method370(40);
 			}
 		}
 	}
@@ -3482,7 +3482,7 @@ public class Game extends GameShell {
 
 	private static void setHighMem() {
 		SceneGraph.lowMem = false;
-		Texture.lowMem = false;
+		Rasterizer.lowMem = false;
 		lowMem = false;
 		ObjectManager.lowMem = false;
 		ObjectDefinition.lowMem = false;
@@ -5820,7 +5820,7 @@ public class Game extends GameShell {
 		VariableParameter.parameters = null;
 		super.fullGameScreen = null;
 		Player.mruNodes = null;
-		Texture.nullLoader();
+		Rasterizer.nullLoader();
 		SceneGraph.nullLoader();
 		Model.nullLoader();
 		SequenceFrame.nullLoader();
@@ -8785,9 +8785,9 @@ public class Game extends GameShell {
 					mapScenes[i6].method360(i5 + l5, j5 + l5, k5 + l5);
 			}
 			drawLoadingText(83, "Unpacking textures");
-			Texture.method368(streamLoader_3);
-			Texture.method372(0.80000000000000004D);
-			Texture.method367();
+			Rasterizer.method368(streamLoader_3);
+			Rasterizer.method372(0.80000000000000004D);
+			Rasterizer.method367();
 			drawLoadingText(86, "Unpacking config");
 			Animation.unpackConfig(streamLoader);
 			ObjectDefinition.unpackConfig(streamLoader);
@@ -8924,8 +8924,8 @@ public class Game extends GameShell {
 				i -= 73;
 				j -= 75;
 				int k = cameraHorizontal + minimapRotation & 0x7ff;
-				int i1 = Texture.anIntArray1470[k];
-				int j1 = Texture.anIntArray1471[k];
+				int i1 = Rasterizer.anIntArray1470[k];
+				int j1 = Rasterizer.anIntArray1471[k];
 				i1 = i1 * (minimapZoom + 256) >> 8;
 				j1 = j1 * (minimapZoom + 256) >> 8;
 				int k1 = j * i1 + i * j1 >> 11;
@@ -9384,7 +9384,7 @@ public class Game extends GameShell {
 				anInt945 = 0;
 				resetAllImageProducers();
 				super.fullGameScreen.initDrawingArea();
-				Texture.anIntArray1472 = fullScreenTextureArray;
+				Rasterizer.anIntArray1472 = fullScreenTextureArray;
 				DrawingArea.clear();
 				welcomeScreenRaised = true;
 				if (openInterfaceID != -1) {
@@ -9962,13 +9962,13 @@ public class Game extends GameShell {
 							sprite.drawSprite(_x, _y);
 						}
 				} else if (childInterface.type == 6) {
-					int centreX = Texture.textureInt1;
-					int centreY = Texture.textureInt2;
-					Texture.textureInt1 = _x + childInterface.width / 2;
-					Texture.textureInt2 = _y + childInterface.height / 2;
-					int sine = Texture.anIntArray1470[childInterface.modelRotation1]
+					int centreX = Rasterizer.textureInt1;
+					int centreY = Rasterizer.textureInt2;
+					Rasterizer.textureInt1 = _x + childInterface.width / 2;
+					Rasterizer.textureInt2 = _y + childInterface.height / 2;
+					int sine = Rasterizer.anIntArray1470[childInterface.modelRotation1]
 							* childInterface.modelZoom >> 16;
-					int cosine = Texture.anIntArray1471[childInterface.modelRotation1]
+					int cosine = Rasterizer.anIntArray1471[childInterface.modelRotation1]
 							* childInterface.modelZoom >> 16;
 					boolean selected = interfaceIsSelected(childInterface);
 					int anim;
@@ -9990,8 +9990,8 @@ public class Game extends GameShell {
 					if (model != null)
 						model.method482(childInterface.modelRotation2, 0,
 								childInterface.modelRotation1, 0, sine, cosine);
-					Texture.textureInt1 = centreX;
-					Texture.textureInt2 = centreY;
+					Rasterizer.textureInt1 = centreX;
+					Rasterizer.textureInt2 = centreY;
 				} else if (childInterface.type == 7) {
 					TextDrawingArea font = childInterface.textDrawingAreas;
 					int slot = 0;
@@ -11350,9 +11350,9 @@ public class Game extends GameShell {
 		l = i1 * j1 + l * k1 >> 16;
 		i1 = j2;
 		if (l >= 50) {
-			spriteDrawX = Texture.textureInt1 + (i << SceneGraph.viewDistance)
+			spriteDrawX = Rasterizer.textureInt1 + (i << SceneGraph.viewDistance)
 					/ l;
-			spriteDrawY = Texture.textureInt2 + (i1 << SceneGraph.viewDistance)
+			spriteDrawY = Rasterizer.textureInt2 + (i1 << SceneGraph.viewDistance)
 					/ l;
 		} else {
 			spriteDrawX = -1;
@@ -13695,7 +13695,7 @@ public class Game extends GameShell {
 						yCameraCurve = 383;
 				}
 			}
-		int k2 = Texture.anInt1481;
+		int k2 = Rasterizer.anInt1481;
 		Model.aBoolean1684 = true;
 		Model.anInt1687 = 0;
 		Model.anInt1685 = super.mouseX

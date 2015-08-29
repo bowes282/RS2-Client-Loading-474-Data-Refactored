@@ -6,7 +6,7 @@ import com.aeolus.media.renderable.Renderable;
 import com.aeolus.media.renderable.ItemPile;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.media.renderable.StaticObject;
-import com.aeolus.scene.graphic.Texture;
+import com.aeolus.scene.graphic.Rasterizer;
 import com.aeolus.scene.tile.Tile;
 import com.aeolus.scene.tile.GroundDecoration;
 import com.aeolus.scene.tile.TileOverlay;
@@ -1484,17 +1484,17 @@ public final class SceneGraph {
 		k4 = l4;
 		if (j3 < 50)
 			return;
-		int i5 = Texture.textureInt1 + (i2 << viewDistance) / k2;
-		int j5 = Texture.textureInt2 + (l3 << viewDistance) / k2;
-		int k5 = Texture.textureInt1 + (i3 << viewDistance) / j2;
-		int l5 = Texture.textureInt2 + (i4 << viewDistance) / j2;
-		int i6 = Texture.textureInt1 + (l2 << viewDistance) / k3;
-		int j6 = Texture.textureInt2 + (j4 << viewDistance) / k3;
-		int k6 = Texture.textureInt1 + (l1 << viewDistance) / j3;
-		int l6 = Texture.textureInt2 + (k4 << viewDistance) / j3;
-		Texture.anInt1465 = 0;
+		int i5 = Rasterizer.textureInt1 + (i2 << viewDistance) / k2;
+		int j5 = Rasterizer.textureInt2 + (l3 << viewDistance) / k2;
+		int k5 = Rasterizer.textureInt1 + (i3 << viewDistance) / j2;
+		int l5 = Rasterizer.textureInt2 + (i4 << viewDistance) / j2;
+		int i6 = Rasterizer.textureInt1 + (l2 << viewDistance) / k3;
+		int j6 = Rasterizer.textureInt2 + (j4 << viewDistance) / k3;
+		int k6 = Rasterizer.textureInt1 + (l1 << viewDistance) / j3;
+		int l6 = Rasterizer.textureInt2 + (k4 << viewDistance) / j3;
+		Rasterizer.anInt1465 = 0;
 		if ((i6 - k6) * (l5 - l6) - (j6 - l6) * (k5 - k6) > 0) {
-			Texture.aBoolean1462 = i6 < 0 || k6 < 0 || k5 < 0 || i6 > DrawingArea.centerX || k6 > DrawingArea.centerX
+			Rasterizer.aBoolean1462 = i6 < 0 || k6 < 0 || k5 < 0 || i6 > DrawingArea.centerX || k6 > DrawingArea.centerX
 					|| k5 > DrawingArea.centerX;
 			if (aBoolean467 && method318(anInt468, anInt469, j6, l6, l5, i6, k6, k5)) {
 				anInt470 = j1;
@@ -1502,22 +1502,22 @@ public final class SceneGraph {
 			}
 			if (class43.anInt720 == -1) {
 				if (class43.anInt718 != 0xbc614e)
-					Texture.drawShadedTriangle(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719, class43.anInt717, k3, j3, j2);
+					Rasterizer.drawShadedTriangle(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719, class43.anInt717, k3, j3, j2);
 			} else if (!lowMem) {
 				if (class43.aBoolean721)
-					Texture.drawTexturedTriangle(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719,
+					Rasterizer.drawTexturedTriangle(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719,
 							class43.anInt717, i2, i3, l1, l3, i4, k4, k2, j2, j3, class43.anInt720, k3, j3, j2);
 				else
-					Texture.drawTexturedTriangle(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719,
+					Rasterizer.drawTexturedTriangle(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719,
 							class43.anInt717, l2, l1, i3, j4, k4, i4, k3, j3, j2, class43.anInt720, k3, j3, j2);
 			} else {
 				int i7 = anIntArray485[class43.anInt720];
-				Texture.drawShadedTriangle(j6, l6, l5, i6, k6, k5, method317(i7, class43.anInt718),
+				Rasterizer.drawShadedTriangle(j6, l6, l5, i6, k6, k5, method317(i7, class43.anInt718),
 						method317(i7, class43.anInt719), method317(i7, class43.anInt717), k3, j3, j2);
 			}
 		}
 		if ((i5 - k5) * (l6 - l5) - (j5 - l5) * (k6 - k5) > 0) {
-			Texture.aBoolean1462 = i5 < 0 || k5 < 0 || k6 < 0 || i5 > DrawingArea.centerX || k5 > DrawingArea.centerX
+			Rasterizer.aBoolean1462 = i5 < 0 || k5 < 0 || k6 < 0 || i5 > DrawingArea.centerX || k5 > DrawingArea.centerX
 					|| k6 > DrawingArea.centerX;
 			if (aBoolean467 && method318(anInt468, anInt469, j5, l5, l6, i5, k5, k6)) {
 				anInt470 = j1;
@@ -1525,17 +1525,17 @@ public final class SceneGraph {
 			}
 			if (class43.anInt720 == -1) {
 				if (class43.anInt716 != 0xbc614e) {
-					Texture.drawShadedTriangle(j5, l5, l6, i5, k5, k6, class43.anInt716, class43.anInt717,
+					Rasterizer.drawShadedTriangle(j5, l5, l6, i5, k5, k6, class43.anInt716, class43.anInt717,
 							class43.anInt719, k2, j2, j3);
 				}
 			} else {
 				if (!lowMem) {
-					Texture.drawTexturedTriangle(j5, l5, l6, i5, k5, k6, class43.anInt716, class43.anInt717,
+					Rasterizer.drawTexturedTriangle(j5, l5, l6, i5, k5, k6, class43.anInt716, class43.anInt717,
 							class43.anInt719, i2, i3, l1, l3, i4, k4, k2, j2, j3, class43.anInt720, k2, j2, j3);
 					return;
 				}
 				int j7 = anIntArray485[class43.anInt720];
-				Texture.drawShadedTriangle(j5, l5, l6, i5, k5, k6, method317(j7, class43.anInt716),
+				Rasterizer.drawShadedTriangle(j5, l5, l6, i5, k5, k6, method317(j7, class43.anInt716),
 				method317(j7, class43.anInt717), method317(j7, class43.anInt719), k2, j2, j3);
 			}
 		}
@@ -1560,12 +1560,12 @@ public final class SceneGraph {
 				TileOverlay.anIntArray691[l1] = k2;
 				TileOverlay.anIntArray692[l1] = i3;
 			}
-			TileOverlay.anIntArray688[l1] = Texture.textureInt1 + (i2 << viewDistance) / i3;
-			TileOverlay.anIntArray689[l1] = Texture.textureInt2 + (k2 << viewDistance) / i3;
+			TileOverlay.anIntArray688[l1] = Rasterizer.textureInt1 + (i2 << viewDistance) / i3;
+			TileOverlay.anIntArray689[l1] = Rasterizer.textureInt2 + (k2 << viewDistance) / i3;
 			TileOverlay.depthPoint[l1] = i3;
 		}
 
-		Texture.anInt1465 = 0;
+		Rasterizer.anInt1465 = 0;
 		k1 = class40.anIntArray679.length;
 		for (int j2 = 0; j2 < k1; j2++) {
 			int l2 = class40.anIntArray679[j2];
@@ -1578,29 +1578,29 @@ public final class SceneGraph {
 			int i5 = TileOverlay.anIntArray689[j3];
 			int j5 = TileOverlay.anIntArray689[l3];
 			if ((i4 - j4) * (j5 - i5) - (l4 - i5) * (k4 - j4) > 0) {
-				Texture.aBoolean1462 = i4 < 0 || j4 < 0 || k4 < 0 || i4 > DrawingArea.centerX
+				Rasterizer.aBoolean1462 = i4 < 0 || j4 < 0 || k4 < 0 || i4 > DrawingArea.centerX
 						|| j4 > DrawingArea.centerX || k4 > DrawingArea.centerX;
 				if (aBoolean467 && method318(anInt468, anInt469, l4, i5, j5, i4, j4, k4)) {
 					anInt470 = i;
 					anInt471 = i1;
 				}
-				Texture.drawDepthTriangle(i4, j4, k4, l4, i5, j5, TileOverlay.depthPoint[l2], TileOverlay.depthPoint[j3],
+				Rasterizer.drawDepthTriangle(i4, j4, k4, l4, i5, j5, TileOverlay.depthPoint[l2], TileOverlay.depthPoint[j3],
 						TileOverlay.depthPoint[l3]);
 				if (class40.anIntArray682 == null || class40.anIntArray682[j2] == -1) {
 					if (class40.anIntArray676[j2] != 0xbc614e)
-						Texture.drawShadedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2],
+						Rasterizer.drawShadedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2],
 								class40.anIntArray677[j2], class40.anIntArray678[j2], TileOverlay.depthPoint[l2],
 								TileOverlay.depthPoint[j3], TileOverlay.depthPoint[l3]);
 				} else if (!lowMem) {
 					if (class40.aBoolean683)
-						Texture.drawTexturedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2],
+						Rasterizer.drawTexturedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2],
 								class40.anIntArray677[j2], class40.anIntArray678[j2], TileOverlay.anIntArray690[0],
 								TileOverlay.anIntArray690[1], TileOverlay.anIntArray690[3], TileOverlay.anIntArray691[0],
 								TileOverlay.anIntArray691[1], TileOverlay.anIntArray691[3], TileOverlay.anIntArray692[0],
 								TileOverlay.anIntArray692[1], TileOverlay.anIntArray692[3], class40.anIntArray682[j2],
 								TileOverlay.depthPoint[l2], TileOverlay.depthPoint[j3], TileOverlay.depthPoint[l3]);
 					else
-						Texture.drawTexturedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2],
+						Rasterizer.drawTexturedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2],
 								class40.anIntArray677[j2], class40.anIntArray678[j2], TileOverlay.anIntArray690[l2],
 								TileOverlay.anIntArray690[j3], TileOverlay.anIntArray690[l3], TileOverlay.anIntArray691[l2],
 								TileOverlay.anIntArray691[j3], TileOverlay.anIntArray691[l3], TileOverlay.anIntArray692[l2],
@@ -1608,7 +1608,7 @@ public final class SceneGraph {
 								TileOverlay.depthPoint[l2], TileOverlay.depthPoint[j3], TileOverlay.depthPoint[l3]);
 				} else {
 					int k5 = anIntArray485[class40.anIntArray682[j2]];
-					Texture.drawShadedTriangle(l4, i5, j5, i4, j4, k4, method317(k5, class40.anIntArray676[j2]),
+					Rasterizer.drawShadedTriangle(l4, i5, j5, i4, j4, k4, method317(k5, class40.anIntArray676[j2]),
 							method317(k5, class40.anIntArray677[j2]), method317(k5, class40.anIntArray678[j2]),
 							TileOverlay.depthPoint[l2], TileOverlay.depthPoint[j3], TileOverlay.depthPoint[l3]);
 				}
