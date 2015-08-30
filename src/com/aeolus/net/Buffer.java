@@ -1,6 +1,7 @@
 package com.aeolus.net;
 import java.math.BigInteger;
 
+import com.aeolus.Configuration;
 import com.aeolus.collection.Deque;
 import com.aeolus.collection.QueueNode;
 import com.aeolus.net.security.ISAACCipher;
@@ -69,7 +70,7 @@ public final class Buffer extends QueueNode {
 		buffer[currentOffset++] = (byte) (i + encryption.getNextKey());
 	}
 
-	public void writeWordBigEndian(int i) {
+	public void writeByte(int i) {
 		buffer[currentOffset++] = (byte) i;
 	}
 
@@ -166,7 +167,7 @@ public final class Buffer extends QueueNode {
 		return ((buffer[currentOffset - 4] & 0xff) << 24) + ((buffer[currentOffset - 3] & 0xff) << 16) + ((buffer[currentOffset - 2] & 0xff) << 8) + (buffer[currentOffset - 1] & 0xff);
 	}
 
-	public long readQWord() {
+	public long readLong() {
 		long l = (long) readInt() & 0xffffffffL;
 		long l1 = (long) readInt() & 0xffffffffL;
 		return (l << 32) + l1;
@@ -233,17 +234,21 @@ public final class Buffer extends QueueNode {
 			return readUShort() - 32768;
 	}
 
-	public void doKeys() {
-		int i = currentOffset;
+	public void encodeRSA(BigInteger exponent, BigInteger modulus) {
+		int length = currentOffset;
 		currentOffset = 0;
-		byte abyte0[] = new byte[i];
-		readBytes(i, 0, abyte0);
-		BigInteger biginteger2 = new BigInteger(abyte0);
-		BigInteger biginteger3 = biginteger2.modPow(NetworkConstants.RSA_EXPONENT, NetworkConstants.RSA_MODULUS);
-		byte abyte1[] = biginteger3.toByteArray();
+		byte buffer[] = new byte[length];
+		readBytes(length, 0, buffer);
+		
+		byte rsa[] = buffer;
+		
+		if (Configuration.ENABLE_RSA) {
+			rsa = new BigInteger(buffer).modPow(exponent, modulus).toByteArray();
+		}
+		
 		currentOffset = 0;
-		writeWordBigEndian(abyte1.length);
-		writeBytes(abyte1, abyte1.length, 0);
+		writeByte(rsa.length);
+		writeBytes(rsa, rsa.length, 0);
 	}
 
 	public void method424(int i) {

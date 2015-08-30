@@ -5,9 +5,20 @@ package com.aeolus;
  */
 public class Configuration {
 	
+	/**
+	 * The address of the server that the client will be connecting to
+	 */
 	public static String server_address = "localhost";
 	
+	/**
+	 * The port of the server that the client will be connecting to
+	 */
 	public static int server_port = 43594;
+	
+	/**
+	 * Toggles a security feature called RSA to prevent packet sniffers
+	 */
+	public static final boolean ENABLE_RSA = true;
 	
 	/**
 	 * The url that the users will get redirected to after clicking "New User"
@@ -17,7 +28,7 @@ public class Configuration {
 	/**
 	 * A string which indicates the Client's name.
 	 */
-	public static String clientName = "Project Aeolus - Official";
+	public static final String CLIENT_NAME = "Project Aeolus - Official";
 	
 	public static boolean normalLogin = true;
 	
@@ -58,6 +69,10 @@ public class Configuration {
 
 	/**
 	 * Dump Indexes
+	 * Index 1 = Models
+	 * Index 2 = Animations
+	 * Index 3 = Sounds/Music
+	 * Index 4 = Maps
 	 */
 	public static boolean dumpIndexOne = false, dumpIndexTwo = false,
 			dumpIndexThree = false, dumpIndexFour = false;
@@ -96,7 +111,7 @@ public class Configuration {
 	/**
 	 * Displays health above entities heads
 	 */
-	public static boolean HPaboveHeads = false;
+	public static boolean hpAboveHeads = false;
 	
 	/**
 	 * Displays names above entities
@@ -121,6 +136,6 @@ public class Configuration {
 	/**
 	 * Enables the HUD to display 10 X the amount of hitpoints
 	 */
-	public static boolean TenXHP = false;
+	public static boolean tenXHp = false;
 
 }
