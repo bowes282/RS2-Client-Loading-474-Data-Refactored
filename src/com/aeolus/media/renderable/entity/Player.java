@@ -116,12 +116,12 @@ public final class Player extends Entity {
 			equipment[j] = (k << 8) + i1;
 			if(j == 0 && equipment[0] == 65535)
 			{
-				desc = NpcDefinition.forID(stream.readUShort());
+				desc = NpcDefinition.lookup(stream.readUShort());
 				break;
 			}
 			if(equipment[j] >= 512 && equipment[j] - 512 < ItemDefinition.item_count)
 			{
-				int l1 = ItemDefinition.forID(equipment[j] - 512).team;
+				int l1 = ItemDefinition.lookup(equipment[j] - 512).team;
 				if(l1 != 0)
 					team = l1;
 			}
@@ -254,7 +254,7 @@ public final class Player extends Entity {
 					k2 = j1;
 				if(k2 >= 256 && k2 < 512 && !IdentityKit.cache[k2 - 256].method537())
 					flag = true;
-				if(k2 >= 512 && !ItemDefinition.forID(k2 - 512).isEquippedModelCached(anInt1702))
+				if(k2 >= 512 && !ItemDefinition.lookup(k2 - 512).isEquippedModelCached(anInt1702))
 					flag = true;
 			}
 
@@ -285,7 +285,7 @@ public final class Player extends Entity {
 				}
 				if(i3 >= 512)
 				{
-					Model model_4 = ItemDefinition.forID(i3 - 512).getEquippedModel(anInt1702);
+					Model model_4 = ItemDefinition.lookup(i3 - 512).getEquippedModel(anInt1702);
 					if(model_4 != null)
 						aclass30_sub2_sub4_sub6s[j2++] = model_4;
 				}
@@ -340,7 +340,7 @@ public final class Player extends Entity {
 			int j = equipment[i];
 			if(j >= 256 && j < 512 && !IdentityKit.cache[j - 256].method539())
 				flag = true;
-			if(j >= 512 && !ItemDefinition.forID(j - 512).isDialogueModelCached(anInt1702))
+			if(j >= 512 && !ItemDefinition.lookup(j - 512).isDialogueModelCached(anInt1702))
 				flag = true;
 		}
 
@@ -359,7 +359,7 @@ public final class Player extends Entity {
 			}
 			if(i1 >= 512)
 			{
-				Model model_2 = ItemDefinition.forID(i1 - 512).getChatEquipModel(anInt1702);
+				Model model_2 = ItemDefinition.lookup(i1 - 512).getChatEquipModel(anInt1702);
 				if(model_2 != null)
 					aclass30_sub2_sub4_sub6s[k++] = model_2;
 			}

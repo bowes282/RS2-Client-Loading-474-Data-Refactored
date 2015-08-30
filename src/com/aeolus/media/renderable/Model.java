@@ -373,11 +373,11 @@ public class Model extends Renderable {
 				anIntArray1638[i12] = i2;
 		}
 		anIntArray1640 = triangleColours2;
-		anInt1626 = numVertices;
+		vertices = numVertices;
 		anInt1630 = numTriangles;
-		anIntArray1627 = vertexX;
-		anIntArray1628 = vertexY;
-		anIntArray1629 = vertexZ;
+		vertexX = vertexX;
+		vertexY = vertexY;
+		vertexZ = vertexZ;
 		anIntArray1631 = facePoint1;
 		anIntArray1632 = facePoint2;
 		anIntArray1633 = facePoint3;
@@ -399,10 +399,10 @@ public class Model extends Renderable {
 	}
 
 	public void scale2(int i) {
-		for (int i1 = 0; i1 < anInt1626; i1++) {
-			anIntArray1627[i1] = anIntArray1627[i1] / i;
-			anIntArray1628[i1] = anIntArray1628[i1] / i;
-			anIntArray1629[i1] = anIntArray1629[i1] / i;
+		for (int i1 = 0; i1 < vertices; i1++) {
+			vertexX[i1] = vertexX[i1] / i;
+			vertexY[i1] = vertexY[i1] / i;
+			vertexZ[i1] = vertexZ[i1] / i;
 		}
 	}
 
@@ -767,11 +767,11 @@ public class Model extends Renderable {
 				anIntArray1638[i12] = i2;
 		}
 		anIntArray1640 = triangleColours2;
-		anInt1626 = numVertices;
+		vertices = numVertices;
 		anInt1630 = numTriangles;
-		anIntArray1627 = vertexX;
-		anIntArray1628 = vertexY;
-		anIntArray1629 = vertexZ;
+		vertexX = vertexX;
+		vertexY = vertexY;
+		vertexZ = vertexZ;
 		anIntArray1631 = facePoint1;
 		anIntArray1632 = facePoint2;
 		anIntArray1633 = facePoint3;
@@ -783,12 +783,12 @@ public class Model extends Renderable {
 		fits_on_single_square = false;
 		anInt1620++;
 		ModelHeader class21 = aClass21Array1661[i];
-		anInt1626 = class21.anInt369;
+		vertices = class21.anInt369;
 		anInt1630 = class21.anInt370;
 		anInt1642 = class21.anInt371;
-		anIntArray1627 = new int[anInt1626];
-		anIntArray1628 = new int[anInt1626];
-		anIntArray1629 = new int[anInt1626];
+		vertexX = new int[vertices];
+		vertexY = new int[vertices];
+		vertexZ = new int[vertices];
 		anIntArray1631 = new int[anInt1630];
 		anIntArray1632 = new int[anInt1630];
 		while (j >= 0)
@@ -798,7 +798,7 @@ public class Model extends Renderable {
 		anIntArray1644 = new int[anInt1642];
 		anIntArray1645 = new int[anInt1642];
 		if (class21.anInt376 >= 0)
-			anIntArray1655 = new int[anInt1626];
+			anIntArray1655 = new int[vertices];
 		if (class21.anInt380 >= 0)
 			anIntArray1637 = new int[anInt1630];
 		if (class21.anInt381 >= 0)
@@ -823,7 +823,7 @@ public class Model extends Renderable {
 		int k = 0;
 		int l = 0;
 		int i1 = 0;
-		for (int j1 = 0; j1 < anInt1626; j1++) {
+		for (int j1 = 0; j1 < vertices; j1++) {
 			int k1 = stream.readUnsignedByte();
 			int i2 = 0;
 			if ((k1 & 1) != 0)
@@ -834,12 +834,12 @@ public class Model extends Renderable {
 			int i3 = 0;
 			if ((k1 & 4) != 0)
 				i3 = stream_3.method421();
-			anIntArray1627[j1] = k + i2;
-			anIntArray1628[j1] = l + k2;
-			anIntArray1629[j1] = i1 + i3;
-			k = anIntArray1627[j1];
-			l = anIntArray1628[j1];
-			i1 = anIntArray1629[j1];
+			vertexX[j1] = k + i2;
+			vertexY[j1] = l + k2;
+			vertexZ[j1] = i1 + i3;
+			k = vertexX[j1];
+			l = vertexY[j1];
+			i1 = vertexZ[j1];
 			if (anIntArray1655 != null)
 				anIntArray1655[j1] = stream_4.readUnsignedByte();
 		}
@@ -1038,14 +1038,14 @@ public class Model extends Renderable {
 		boolean flag1 = false;
 		boolean flag2 = false;
 		boolean flag3 = false;
-		anInt1626 = 0;
+		vertices = 0;
 		anInt1630 = 0;
 		anInt1642 = 0;
 		anInt1641 = -1;
 		for (int k = 0; k < i; k++) {
 			Model model = amodel[k];
 			if (model != null) {
-				anInt1626 += model.anInt1626;
+				vertices += model.vertices;
 				anInt1630 += model.anInt1630;
 				anInt1642 += model.anInt1642;
 				flag |= model.anIntArray1637 != null;
@@ -1062,10 +1062,10 @@ public class Model extends Renderable {
 			}
 		}
 
-		anIntArray1627 = new int[anInt1626];
-		anIntArray1628 = new int[anInt1626];
-		anIntArray1629 = new int[anInt1626];
-		anIntArray1655 = new int[anInt1626];
+		vertexX = new int[vertices];
+		vertexY = new int[vertices];
+		vertexZ = new int[vertices];
+		anIntArray1655 = new int[vertices];
 		anIntArray1631 = new int[anInt1630];
 		anIntArray1632 = new int[anInt1630];
 		anIntArray1633 = new int[anInt1630];
@@ -1081,7 +1081,7 @@ public class Model extends Renderable {
 		if (flag3)
 			anIntArray1656 = new int[anInt1630];
 		anIntArray1640 = new int[anInt1630];
-		anInt1626 = 0;
+		vertices = 0;
 		anInt1630 = 0;
 		anInt1642 = 0;
 		int l = 0;
@@ -1146,14 +1146,14 @@ public class Model extends Renderable {
 		boolean flag2 = false;
 		boolean flag3 = false;
 		boolean flag4 = false;
-		anInt1626 = 0;
+		vertices = 0;
 		anInt1630 = 0;
 		anInt1642 = 0;
 		anInt1641 = -1;
 		for (int k = 0; k < i; k++) {
 			Model model = amodel[k];
 			if (model != null) {
-				anInt1626 += model.anInt1626;
+				vertices += model.vertices;
 				anInt1630 += model.anInt1630;
 				anInt1642 += model.anInt1642;
 				flag1 |= model.anIntArray1637 != null;
@@ -1170,9 +1170,9 @@ public class Model extends Renderable {
 			}
 		}
 
-		anIntArray1627 = new int[anInt1626];
-		anIntArray1628 = new int[anInt1626];
-		anIntArray1629 = new int[anInt1626];
+		vertexX = new int[vertices];
+		vertexY = new int[vertices];
+		vertexZ = new int[vertices];
 		anIntArray1631 = new int[anInt1630];
 		anIntArray1632 = new int[anInt1630];
 		anIntArray1633 = new int[anInt1630];
@@ -1190,19 +1190,19 @@ public class Model extends Renderable {
 			anIntArray1639 = new int[anInt1630];
 		if (flag4)
 			anIntArray1640 = new int[anInt1630];
-		anInt1626 = 0;
+		vertices = 0;
 		anInt1630 = 0;
 		anInt1642 = 0;
 		int i1 = 0;
 		for (int j1 = 0; j1 < i; j1++) {
 			Model model_1 = amodel[j1];
 			if (model_1 != null) {
-				int k1 = anInt1626;
-				for (int l1 = 0; l1 < model_1.anInt1626; l1++) {
-					anIntArray1627[anInt1626] = model_1.anIntArray1627[l1];
-					anIntArray1628[anInt1626] = model_1.anIntArray1628[l1];
-					anIntArray1629[anInt1626] = model_1.anIntArray1629[l1];
-					anInt1626++;
+				int k1 = vertices;
+				for (int l1 = 0; l1 < model_1.vertices; l1++) {
+					vertexX[vertices] = model_1.vertexX[l1];
+					vertexY[vertices] = model_1.vertexY[l1];
+					vertexZ[vertices] = model_1.vertexZ[l1];
+					vertices++;
 				}
 
 				for (int i2 = 0; i2 < model_1.anInt1630; i2++) {
@@ -1255,21 +1255,21 @@ public class Model extends Renderable {
 		aBoolean1618 = true;
 		fits_on_single_square = false;
 		anInt1620++;
-		anInt1626 = model.anInt1626;
+		vertices = model.vertices;
 		anInt1630 = model.anInt1630;
 		anInt1642 = model.anInt1642;
 		if (flag2) {
-			anIntArray1627 = model.anIntArray1627;
-			anIntArray1628 = model.anIntArray1628;
-			anIntArray1629 = model.anIntArray1629;
+			vertexX = model.vertexX;
+			vertexY = model.vertexY;
+			vertexZ = model.vertexZ;
 		} else {
-			anIntArray1627 = new int[anInt1626];
-			anIntArray1628 = new int[anInt1626];
-			anIntArray1629 = new int[anInt1626];
-			for (int j = 0; j < anInt1626; j++) {
-				anIntArray1627[j] = model.anIntArray1627[j];
-				anIntArray1628[j] = model.anIntArray1628[j];
-				anIntArray1629[j] = model.anIntArray1629[j];
+			vertexX = new int[vertices];
+			vertexY = new int[vertices];
+			vertexZ = new int[vertices];
+			for (int j = 0; j < vertices; j++) {
+				vertexX[j] = model.vertexX[j];
+				vertexY[j] = model.vertexY[j];
+				vertexZ[j] = model.vertexZ[j];
 			}
 
 		}
@@ -1312,16 +1312,16 @@ public class Model extends Renderable {
 		aBoolean1618 = true;
 		fits_on_single_square = false;
 		anInt1620++;
-		anInt1626 = model.anInt1626;
+		vertices = model.vertices;
 		anInt1630 = model.anInt1630;
 		anInt1642 = model.anInt1642;
 		if (flag) {
-			anIntArray1628 = new int[anInt1626];
-			for (int j = 0; j < anInt1626; j++)
-				anIntArray1628[j] = model.anIntArray1628[j];
+			vertexY = new int[vertices];
+			for (int j = 0; j < vertices; j++)
+				vertexY[j] = model.vertexY[j];
 
 		} else {
-			anIntArray1628 = model.anIntArray1628;
+			vertexY = model.vertexY;
 		}
 		if (flag1) {
 			anIntArray1634 = new int[anInt1630];
@@ -1343,8 +1343,8 @@ public class Model extends Renderable {
 					anIntArray1637[i1] = model.anIntArray1637[i1];
 
 			}
-			super.aClass33Array1425 = new Vertex[anInt1626];
-			for (int j1 = 0; j1 < anInt1626; j1++) {
+			super.aClass33Array1425 = new Vertex[vertices];
+			for (int j1 = 0; j1 < vertices; j1++) {
 				Vertex class33 = super.aClass33Array1425[j1] = new Vertex();
 				Vertex class33_1 = model.aClass33Array1425[j1];
 				class33.anInt602 = class33_1.anInt602;
@@ -1360,8 +1360,8 @@ public class Model extends Renderable {
 			anIntArray1636 = model.anIntArray1636;
 			anIntArray1637 = model.anIntArray1637;
 		}
-		anIntArray1627 = model.anIntArray1627;
-		anIntArray1629 = model.anIntArray1629;
+		vertexX = model.vertexX;
+		vertexZ = model.vertexZ;
 		anIntArray1640 = model.anIntArray1640;
 		anIntArray1639 = model.anIntArray1639;
 		anIntArray1638 = model.anIntArray1638;
@@ -1384,21 +1384,21 @@ public class Model extends Renderable {
 	}
 
 	public void method464(Model model, boolean flag) {
-		anInt1626 = model.anInt1626;
+		vertices = model.vertices;
 		anInt1630 = model.anInt1630;
 		anInt1642 = model.anInt1642;
-		if (anIntArray1622.length < anInt1626) {
-			anIntArray1622 = new int[anInt1626 + 10000];
-			anIntArray1623 = new int[anInt1626 + 10000];
-			anIntArray1624 = new int[anInt1626 + 10000];
+		if (anIntArray1622.length < vertices) {
+			anIntArray1622 = new int[vertices + 10000];
+			anIntArray1623 = new int[vertices + 10000];
+			anIntArray1624 = new int[vertices + 10000];
 		}
-		anIntArray1627 = anIntArray1622;
-		anIntArray1628 = anIntArray1623;
-		anIntArray1629 = anIntArray1624;
-		for (int k = 0; k < anInt1626; k++) {
-			anIntArray1627[k] = model.anIntArray1627[k];
-			anIntArray1628[k] = model.anIntArray1628[k];
-			anIntArray1629[k] = model.anIntArray1629[k];
+		vertexX = anIntArray1622;
+		vertexY = anIntArray1623;
+		vertexZ = anIntArray1624;
+		for (int k = 0; k < vertices; k++) {
+			vertexX[k] = model.vertexX[k];
+			vertexY[k] = model.vertexY[k];
+			vertexZ[k] = model.vertexZ[k];
 		}
 
 		if (flag) {
@@ -1436,24 +1436,24 @@ public class Model extends Renderable {
 
 	private final int method465(Model model, int i) {
 		int j = -1;
-		int k = model.anIntArray1627[i];
-		int l = model.anIntArray1628[i];
-		int i1 = model.anIntArray1629[i];
-		for (int j1 = 0; j1 < anInt1626; j1++) {
-			if (k != anIntArray1627[j1] || l != anIntArray1628[j1]
-			                                                   || i1 != anIntArray1629[j1])
+		int k = model.vertexX[i];
+		int l = model.vertexY[i];
+		int i1 = model.vertexZ[i];
+		for (int j1 = 0; j1 < vertices; j1++) {
+			if (k != vertexX[j1] || l != vertexY[j1]
+			                                                   || i1 != vertexZ[j1])
 				continue;
 			j = j1;
 			break;
 		}
 
 		if (j == -1) {
-			anIntArray1627[anInt1626] = k;
-			anIntArray1628[anInt1626] = l;
-			anIntArray1629[anInt1626] = i1;
+			vertexX[vertices] = k;
+			vertexY[vertices] = l;
+			vertexZ[vertices] = i1;
 			if (model.anIntArray1655 != null)
-				anIntArray1655[anInt1626] = model.anIntArray1655[i];
-			j = anInt1626++;
+				anIntArray1655[vertices] = model.anIntArray1655[i];
+			j = vertices++;
 		}
 		return j;
 	}
@@ -1462,10 +1462,10 @@ public class Model extends Renderable {
 		super.modelHeight = 0;
 		anInt1650 = 0;
 		anInt1651 = 0;
-		for (int i = 0; i < anInt1626; i++) {
-			int j = anIntArray1627[i];
-			int k = anIntArray1628[i];
-			int l = anIntArray1629[i];
+		for (int i = 0; i < vertices; i++) {
+			int j = vertexX[i];
+			int k = vertexY[i];
+			int l = vertexZ[i];
 			if (-k > super.modelHeight)
 				super.modelHeight = -k;
 			if (k > anInt1651)
@@ -1482,11 +1482,11 @@ public class Model extends Renderable {
 				* anInt1651) + 0.98999999999999999D);
 	}
 
-	public void method467() {
+	public void computeSphericalBounds() {
 		super.modelHeight = 0;
 		anInt1651 = 0;
-		for (int i = 0; i < anInt1626; i++) {
-			int j = anIntArray1628[i];
+		for (int i = 0; i < vertices; i++) {
+			int j = vertexY[i];
 			if (-j > super.modelHeight)
 				super.modelHeight = -j;
 			if (j > anInt1651)
@@ -1508,10 +1508,10 @@ public class Model extends Renderable {
 		anInt1647 = 0xfff0bdc1;
 		anInt1648 = 0xfffe7961;
 		anInt1649 = 0x1869f;
-		for (int j = 0; j < anInt1626; j++) {
-			int k = anIntArray1627[j];
-			int l = anIntArray1628[j];
-			int i1 = anIntArray1629[j];
+		for (int j = 0; j < vertices; j++) {
+			int k = vertexX[j];
+			int l = vertexY[j];
+			int i1 = vertexZ[j];
 			if (k < anInt1646)
 				anInt1646 = k;
 			if (k > anInt1647)
@@ -1546,7 +1546,7 @@ public class Model extends Renderable {
 		if (anIntArray1655 != null) {
 			int ai[] = new int[256];
 			int j = 0;
-			for (int l = 0; l < anInt1626; l++) {
+			for (int l = 0; l < vertices; l++) {
 				int j1 = anIntArray1655[l];
 				ai[j1]++;
 				if (j1 > j)
@@ -1559,7 +1559,7 @@ public class Model extends Renderable {
 				ai[k1] = 0;
 			}
 
-			for (int j2 = 0; j2 < anInt1626; j2++) {
+			for (int j2 = 0; j2 < vertices; j2++) {
 				int l2 = anIntArray1655[j2];
 				anIntArrayArray1657[l2][ai[l2]++] = j2;
 			}
@@ -1784,9 +1784,9 @@ public class Model extends Renderable {
 					int ai5[] = anIntArrayArray1657[l3];
 					for (int i5 = 0; i5 < ai5.length; i5++) {
 						int j6 = ai5[i5];
-						anInt1681 += anIntArray1627[j6];
-						anInt1682 += anIntArray1628[j6];
-						anInt1683 += anIntArray1629[j6];
+						anInt1681 += vertexX[j6];
+						anInt1682 += vertexY[j6];
+						anInt1683 += vertexZ[j6];
 						j1++;
 					}
 
@@ -1812,9 +1812,9 @@ public class Model extends Renderable {
 					int ai1[] = anIntArrayArray1657[l2];
 					for (int i4 = 0; i4 < ai1.length; i4++) {
 						int j5 = ai1[i4];
-						anIntArray1627[j5] += j;
-						anIntArray1628[j5] += k;
-						anIntArray1629[j5] += l;
+						vertexX[j5] += j;
+						vertexY[j5] += k;
+						vertexZ[j5] += l;
 					}
 
 				}
@@ -1829,36 +1829,36 @@ public class Model extends Renderable {
 					int ai2[] = anIntArrayArray1657[i3];
 					for (int j4 = 0; j4 < ai2.length; j4++) {
 						int k5 = ai2[j4];
-						anIntArray1627[k5] -= anInt1681;
-						anIntArray1628[k5] -= anInt1682;
-						anIntArray1629[k5] -= anInt1683;
+						vertexX[k5] -= anInt1681;
+						vertexY[k5] -= anInt1682;
+						vertexZ[k5] -= anInt1683;
 						int k6 = (j & 0xff) * 8;
 						int l6 = (k & 0xff) * 8;
 						int i7 = (l & 0xff) * 8;
 						if (i7 != 0) {
 							int j7 = SINE[i7];
 							int i8 = COSINE[i7];
-							int l8 = anIntArray1628[k5] * j7 + anIntArray1627[k5] * i8 >> 16;
-							anIntArray1628[k5] = anIntArray1628[k5] * i8 - anIntArray1627[k5] * j7 >> 16;
-							anIntArray1627[k5] = l8;
+							int l8 = vertexY[k5] * j7 + vertexX[k5] * i8 >> 16;
+							vertexY[k5] = vertexY[k5] * i8 - vertexX[k5] * j7 >> 16;
+							vertexX[k5] = l8;
 						}
 						if (k6 != 0) {
 							int k7 = SINE[k6];
 							int j8 = COSINE[k6];
-							int i9 = anIntArray1628[k5] * j8 - anIntArray1629[k5] * k7 >> 16;
-							anIntArray1629[k5] = anIntArray1628[k5] * k7 + anIntArray1629[k5] * j8 >> 16;
-							anIntArray1628[k5] = i9;
+							int i9 = vertexY[k5] * j8 - vertexZ[k5] * k7 >> 16;
+							vertexZ[k5] = vertexY[k5] * k7 + vertexZ[k5] * j8 >> 16;
+							vertexY[k5] = i9;
 						}
 						if (l6 != 0) {
 							int l7 = SINE[l6];
 							int k8 = COSINE[l6];
-							int j9 = anIntArray1629[k5] * l7 + anIntArray1627[k5] * k8 >> 16;
-							anIntArray1629[k5] = anIntArray1629[k5] * k8 - anIntArray1627[k5] * l7 >> 16;
-							anIntArray1627[k5] = j9;
+							int j9 = vertexZ[k5] * l7 + vertexX[k5] * k8 >> 16;
+							vertexZ[k5] = vertexZ[k5] * k8 - vertexX[k5] * l7 >> 16;
+							vertexX[k5] = j9;
 						}
-						anIntArray1627[k5] += anInt1681;
-						anIntArray1628[k5] += anInt1682;
-						anIntArray1629[k5] += anInt1683;
+						vertexX[k5] += anInt1681;
+						vertexY[k5] += anInt1682;
+						vertexZ[k5] += anInt1683;
 					}
 
 				}
@@ -1872,15 +1872,15 @@ public class Model extends Renderable {
 					int ai3[] = anIntArrayArray1657[j3];
 					for (int k4 = 0; k4 < ai3.length; k4++) {
 						int l5 = ai3[k4];
-						anIntArray1627[l5] -= anInt1681;
-						anIntArray1628[l5] -= anInt1682;
-						anIntArray1629[l5] -= anInt1683;
-						anIntArray1627[l5] = (anIntArray1627[l5] * j) / 128;
-						anIntArray1628[l5] = (anIntArray1628[l5] * k) / 128;
-						anIntArray1629[l5] = (anIntArray1629[l5] * l) / 128;
-						anIntArray1627[l5] += anInt1681;
-						anIntArray1628[l5] += anInt1682;
-						anIntArray1629[l5] += anInt1683;
+						vertexX[l5] -= anInt1681;
+						vertexY[l5] -= anInt1682;
+						vertexZ[l5] -= anInt1683;
+						vertexX[l5] = (vertexX[l5] * j) / 128;
+						vertexY[l5] = (vertexY[l5] * k) / 128;
+						vertexZ[l5] = (vertexZ[l5] * l) / 128;
+						vertexX[l5] += anInt1681;
+						vertexY[l5] += anInt1682;
+						vertexZ[l5] += anInt1683;
 					}
 				}
 			}
@@ -1905,28 +1905,28 @@ public class Model extends Renderable {
 	}
 
 	public void method473() {
-		for (int j = 0; j < anInt1626; j++) {
-			int k = anIntArray1627[j];
-			anIntArray1627[j] = anIntArray1629[j];
-			anIntArray1629[j] = -k;
+		for (int j = 0; j < vertices; j++) {
+			int k = vertexX[j];
+			vertexX[j] = vertexZ[j];
+			vertexZ[j] = -k;
 		}
 	}
 
 	public void method474(int i) {
 		int k = SINE[i];
 		int l = COSINE[i];
-		for (int i1 = 0; i1 < anInt1626; i1++) {
-			int j1 = anIntArray1628[i1] * l - anIntArray1629[i1] * k >> 16;
-			anIntArray1629[i1] = anIntArray1628[i1] * k + anIntArray1629[i1] * l >> 16;
-			anIntArray1628[i1] = j1;
+		for (int i1 = 0; i1 < vertices; i1++) {
+			int j1 = vertexY[i1] * l - vertexZ[i1] * k >> 16;
+			vertexZ[i1] = vertexY[i1] * k + vertexZ[i1] * l >> 16;
+			vertexY[i1] = j1;
 		}
 	}
 
 	public void translate(int i, int j, int l) {
-		for (int i1 = 0; i1 < anInt1626; i1++) {
-			anIntArray1627[i1] += i;
-			anIntArray1628[i1] += j;
-			anIntArray1629[i1] += l;
+		for (int i1 = 0; i1 < vertices; i1++) {
+			vertexX[i1] += i;
+			vertexY[i1] += j;
+			vertexZ[i1] += l;
 		}
 	}
 
@@ -1937,8 +1937,8 @@ public class Model extends Renderable {
 	}
 
 	public void method477() {
-		for (int j = 0; j < anInt1626; j++)
-			anIntArray1629[j] = -anIntArray1629[j];
+		for (int j = 0; j < vertices; j++)
+			vertexZ[j] = -vertexZ[j];
 		for (int k = 0; k < anInt1630; k++) {
 			int l = anIntArray1631[k];
 			anIntArray1631[k] = anIntArray1633[k];
@@ -1947,10 +1947,10 @@ public class Model extends Renderable {
 	}
 
 	public void scale(int i, int j, int l) {
-		for (int i1 = 0; i1 < anInt1626; i1++) {
-			anIntArray1627[i1] = (anIntArray1627[i1] * i) / 128;
-			anIntArray1628[i1] = (anIntArray1628[i1] * l) / 128;
-			anIntArray1629[i1] = (anIntArray1629[i1] * j) / 128;
+		for (int i1 = 0; i1 < vertices; i1++) {
+			vertexX[i1] = (vertexX[i1] * i) / 128;
+			vertexY[i1] = (vertexY[i1] * l) / 128;
+			vertexZ[i1] = (vertexZ[i1] * j) / 128;
 		}
 
 	}
@@ -1964,8 +1964,8 @@ public class Model extends Renderable {
 			anIntArray1636 = new int[anInt1630];
 		}
 		if (super.aClass33Array1425 == null) {
-			super.aClass33Array1425 = new Vertex[anInt1626];
-			for (int l1 = 0; l1 < anInt1626; l1++)
+			super.aClass33Array1425 = new Vertex[vertices];
+			for (int l1 = 0; l1 < vertices; l1++)
 				super.aClass33Array1425[l1] = new Vertex();
 
 		}
@@ -1979,12 +1979,12 @@ public class Model extends Renderable {
 			int j2 = anIntArray1631[i2];
 			int l2 = anIntArray1632[i2];
 			int i3 = anIntArray1633[i2];
-			int j3 = anIntArray1627[l2] - anIntArray1627[j2];
-			int k3 = anIntArray1628[l2] - anIntArray1628[j2];
-			int l3 = anIntArray1629[l2] - anIntArray1629[j2];
-			int i4 = anIntArray1627[i3] - anIntArray1627[j2];
-			int j4 = anIntArray1628[i3] - anIntArray1628[j2];
-			int k4 = anIntArray1629[i3] - anIntArray1629[j2];
+			int j3 = vertexX[l2] - vertexX[j2];
+			int k3 = vertexY[l2] - vertexY[j2];
+			int l3 = vertexZ[l2] - vertexZ[j2];
+			int i4 = vertexX[i3] - vertexX[j2];
+			int j4 = vertexY[i3] - vertexY[j2];
+			int k4 = vertexZ[i3] - vertexZ[j2];
 			int l4 = k3 * k4 - j4 * l3;
 			int i5 = l3 * i4 - k4 * j3;
 			int j5;
@@ -2031,8 +2031,8 @@ public class Model extends Renderable {
 		if (flag) {
 			method480(i, k1, k, l, i1);
 		} else {
-			aClass33Array1660 = new Vertex[anInt1626];
-			for (int k2 = 0; k2 < anInt1626; k2++) {
+			aClass33Array1660 = new Vertex[vertices];
+			for (int k2 = 0; k2 < vertices; k2++) {
 				Vertex class33 = super.aClass33Array1425[k2];
 				Vertex class33_1 = aClass33Array1660[k2] = new Vertex();
 				class33_1.anInt602 = class33.anInt602;
@@ -2149,10 +2149,10 @@ public class Model extends Renderable {
 		int l3 = SINE[l];
 		int i4 = COSINE[l];
 		int j4 = j1 * l3 + k1 * i4 >> 16;
-			for (int k4 = 0; k4 < anInt1626; k4++) {
-				int l4 = anIntArray1627[k4];
-				int i5 = anIntArray1628[k4];
-				int j5 = anIntArray1629[k4];
+			for (int k4 = 0; k4 < vertices; k4++) {
+				int l4 = vertexX[k4];
+				int i5 = vertexY[k4];
+				int j5 = vertexZ[k4];
 				if (k != 0) {
 					int k5 = i5 * j3 + l4 * k3 >> 16;
 			i5 = i5 * k3 - l4 * j3 >> 16;
@@ -2256,10 +2256,10 @@ public class Model extends Renderable {
 					l6 = SINE[i];
 					i7 = COSINE[i];
 				}
-				for (int j7 = 0; j7 < anInt1626; j7++) {
-					int k7 = anIntArray1627[j7];
-					int l7 = anIntArray1628[j7];
-					int i8 = anIntArray1629[j7];
+				for (int j7 = 0; j7 < vertices; j7++) {
+					int k7 = vertexX[j7];
+					int l7 = vertexY[j7];
+					int i8 = vertexZ[j7];
 					if (i != 0) {
 						int j8 = i8 * l6 + k7 * i7 >> 16;
 				i8 = i8 * i7 - k7 * l6 >> 16;
@@ -2780,10 +2780,10 @@ public class Model extends Renderable {
 	private static int anIntArray1623[] = new int[2000];
 	private static int anIntArray1624[] = new int[2000];
 	private static int anIntArray1625[] = new int[2000];
-	public int anInt1626;
-	public int anIntArray1627[];
-	public int anIntArray1628[];
-	public int anIntArray1629[];
+	public int vertices;
+	public int vertexX[];
+	public int vertexY[];
+	public int vertexZ[];
 	public int anInt1630;
 	public int anIntArray1631[];
 	public int anIntArray1632[];

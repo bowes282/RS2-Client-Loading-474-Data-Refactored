@@ -41,7 +41,7 @@ public final class SceneObject extends Renderable {
 		if (i < 0 || i >= anIntArray1600.length || anIntArray1600[i] == -1) {
 			return null;
 		} else {
-			return ObjectDefinition.forID(anIntArray1600[i]);
+			return ObjectDefinition.lookup(anIntArray1600[i]);
 		}
 	}
 
@@ -72,11 +72,11 @@ public final class SceneObject extends Renderable {
 		if (anIntArray1600 != null)
 			class46 = method457();
 		else
-			class46 = ObjectDefinition.forID(anInt1610);
+			class46 = ObjectDefinition.lookup(anInt1610);
 		if (class46 == null) {
 			return null;
 		} else {
-			return class46.method578(anInt1611, anInt1612, anInt1603, anInt1604, anInt1605, anInt1606, j);
+			return class46.modelAt(anInt1611, anInt1612, anInt1603, anInt1604, anInt1605, anInt1606, j);
 		}
 	}
 
@@ -97,9 +97,9 @@ public final class SceneObject extends Renderable {
 				anInt1608 -= (int) (Math.random() * (double) aAnimation_1607.method258(anInt1599));
 			}
 		}
-		ObjectDefinition class46 = ObjectDefinition.forID(anInt1610);
-		anInt1601 = class46.anInt774;
-		anInt1602 = class46.anInt749;
-		anIntArray1600 = class46.childrenIDs;
+		ObjectDefinition objectDef = ObjectDefinition.lookup(anInt1610);
+		anInt1601 = objectDef.varbit;
+		anInt1602 = objectDef.varp;
+		anIntArray1600 = objectDef.childrenIDs;
 	}
 }

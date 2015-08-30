@@ -2122,11 +2122,11 @@ public final class RSInterface {
 		if (i == 1)
 			model = Model.getModel(j);
 		if (i == 2)
-			model = NpcDefinition.forID(j).model();
+			model = NpcDefinition.lookup(j).model();
 		if (i == 3)
 			model = Game.localPlayer.method453();
 		if (i == 4)
-			model = ItemDefinition.forID(j).getUnshadedModel(50);
+			model = ItemDefinition.lookup(j).getUnshadedModel(50);
 		if (i == 5)
 			model = null;
 		if (model != null)

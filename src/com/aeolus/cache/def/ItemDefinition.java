@@ -1,8 +1,5 @@
 package com.aeolus.cache.def;
 
-import java.util.Arrays;
-import java.util.stream.IntStream;
-
 import com.aeolus.cache.media.Sprite;
 import com.aeolus.collection.Cache;
 import com.aeolus.media.DrawingArea;
@@ -180,7 +177,7 @@ public final class ItemDefinition {
 		team = 0;
 	}
 
-	public static ItemDefinition forID(int itemId) {
+	public static ItemDefinition lookup(int itemId) {
 		for (int count = 0; count < 10; count++)
 			if (cache[count].id == itemId)
 				return cache[count];
@@ -206,7 +203,7 @@ public final class ItemDefinition {
 	}
 
 	private void toNote() {
-		ItemDefinition itemDef = forID(noted_item_id);
+		ItemDefinition itemDef = lookup(noted_item_id);
 		inventory_model = itemDef.inventory_model;
 		model_zoom = itemDef.model_zoom;
 		rotation_y = itemDef.rotation_y;
@@ -217,7 +214,7 @@ public final class ItemDefinition {
 		translate_yz = itemDef.translate_yz;
 		modified_model_colors = itemDef.modified_model_colors;
 		original_model_colors = itemDef.original_model_colors;
-		ItemDefinition itemDef_1 = forID(unnoted_item_id);
+		ItemDefinition itemDef_1 = lookup(unnoted_item_id);
 		name = itemDef_1.name;
 		is_members_only = itemDef_1.is_members_only;
 		value = itemDef_1.value;
@@ -242,7 +239,7 @@ public final class ItemDefinition {
 			if (sprite != null)
 				return sprite;
 		}
-		ItemDefinition itemDef = forID(itemId);
+		ItemDefinition itemDef = lookup(itemId);
 		if (itemDef.stack_variant_id == null)
 			stackSize = -1;
 		if (stackSize > 1) {
@@ -253,7 +250,7 @@ public final class ItemDefinition {
 					stack_item_id = itemDef.stack_variant_id[j1];
 
 			if (stack_item_id != -1)
-				itemDef = forID(stack_item_id);
+				itemDef = lookup(stack_item_id);
 		}
 		Model model = itemDef.getModel(1);
 		if (model == null)
@@ -374,7 +371,7 @@ public final class ItemDefinition {
 					stack_item_id = stack_variant_id[k];
 
 			if (stack_item_id != -1)
-				return forID(stack_item_id).getModel(1);
+				return lookup(stack_item_id).getModel(1);
 		}
 		Model model = (Model) model_cache.insertFromCache(id);
 		if (model != null)
@@ -406,7 +403,7 @@ public final class ItemDefinition {
 					stack_item_id = stack_variant_id[count];
 
 			if (stack_item_id != -1)
-				return forID(stack_item_id).getUnshadedModel(1);
+				return lookup(stack_item_id).getUnshadedModel(1);
 		}
 		Model model = Model.getModel(inventory_model);
 		if (model == null)

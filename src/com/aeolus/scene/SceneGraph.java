@@ -653,22 +653,22 @@ public final class SceneGraph {
 	private void mergeNormals(Model a, Model b, int offsetX, int offsetY, int offsetZ, boolean flag) {
 		anInt488++;
 		int count = 0;
-		int second[] = b.anIntArray1627;
-		int secondVertices = b.anInt1626;
-		for (int j1 = 0; j1 < a.anInt1626; j1++) {
+		int second[] = b.vertexX;
+		int secondVertices = b.vertices;
+		for (int j1 = 0; j1 < a.vertices; j1++) {
 			Vertex class33 = a.aClass33Array1425[j1];
 			Vertex class33_1 = a.aClass33Array1660[j1];
 			if (class33_1.anInt605 != 0) {
-				int i2 = a.anIntArray1628[j1] - offsetY;
+				int i2 = a.vertexY[j1] - offsetY;
 				if (i2 <= b.anInt1651) {
-					int j2 = a.anIntArray1627[j1] - offsetX;
+					int j2 = a.vertexX[j1] - offsetX;
 					if (j2 >= b.anInt1646 && j2 <= b.anInt1647) {
-						int k2 = a.anIntArray1629[j1] - offsetZ;
+						int k2 = a.vertexZ[j1] - offsetZ;
 						if (k2 >= b.anInt1649 && k2 <= b.anInt1648) {
 							for (int l2 = 0; l2 < secondVertices; l2++) {
 								Vertex class33_2 = b.aClass33Array1425[l2];
 								Vertex class33_3 = b.aClass33Array1660[l2];
-								if (j2 == second[l2] && k2 == b.anIntArray1629[l2] && i2 == b.anIntArray1628[l2]
+								if (j2 == second[l2] && k2 == b.vertexZ[l2] && i2 == b.vertexY[l2]
 										&& class33_3.anInt605 != 0) {
 									class33.anInt602 += class33_3.anInt602;
 									class33.anInt603 += class33_3.anInt603;

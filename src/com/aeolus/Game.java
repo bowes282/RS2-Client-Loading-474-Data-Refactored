@@ -1346,7 +1346,7 @@ public class Game extends GameShell {
 				int i3 = worldController.method303(plane, k2, l2);
 				if (i3 != 0) {
 					i3 = i3 >> 14 & 0x7fff;
-					int j3 = ObjectDefinition.forID(i3).anInt746;
+					int j3 = ObjectDefinition.lookup(i3).minimapFunction;
 					if (j3 >= 0) {
 						int k3 = k2;
 						int l3 = l2;
@@ -1372,7 +1372,7 @@ public class Game extends GameShell {
 		Object obj = null;
 		for (Item item = (Item) class19.reverseGetFirst(); item != null; item = (Item) class19
 				.reverseGetNext()) {
-			ItemDefinition itemDef = ItemDefinition.forID(item.ID);
+			ItemDefinition itemDef = ItemDefinition.lookup(item.ID);
 			int l = itemDef.value;
 			if (itemDef.stackable)
 				l *= item.anInt1559 + 1;
@@ -1600,7 +1600,7 @@ public class Game extends GameShell {
 								lastActiveInvInterface = childInterface.id;
 								if (childInterface.inventoryItemId[k2] > 0) {
 									ItemDefinition itemDef = ItemDefinition
-											.forID(childInterface.inventoryItemId[k2] - 1);
+											.lookup(childInterface.inventoryItemId[k2] - 1);
 									if (itemSelected == 1
 											&& childInterface.isInventoryInterface) {
 										if (childInterface.id != anInt1284
@@ -3074,7 +3074,7 @@ public class Game extends GameShell {
 			if (i1 > 15)
 				i1 -= 32;
 			int j1 = stream.readBits(1);
-			npc.desc = NpcDefinition.forID(stream.readBits(Configuration.npcBits));
+			npc.desc = NpcDefinition.lookup(stream.readBits(Configuration.npcBits));
 			int k1 = stream.readBits(1);
 			if (k1 == 1)
 				anIntArray894[anInt893++] = k;
@@ -3279,14 +3279,14 @@ public class Game extends GameShell {
 			int ai[] = minimapImage.myPixels;
 			int k4 = 24624 + l * 4 + (103 - i) * 512 * 4;
 			int i5 = k1 >> 14 & 0x7fff;
-			ObjectDefinition class46_2 = ObjectDefinition.forID(i5);
-			if (class46_2.anInt758 != -1) {
-				Background background_2 = mapScenes[class46_2.anInt758];
+			ObjectDefinition class46_2 = ObjectDefinition.lookup(i5);
+			if (class46_2.mapscene != -1) {
+				Background background_2 = mapScenes[class46_2.mapscene];
 				if (background_2 != null) {
-					int i6 = (class46_2.anInt744 * 4 - background_2.anInt1452) / 2;
-					int j6 = (class46_2.anInt761 * 4 - background_2.anInt1453) / 2;
+					int i6 = (class46_2.width * 4 - background_2.anInt1452) / 2;
+					int j6 = (class46_2.length * 4 - background_2.anInt1453) / 2;
 					background_2.drawBackground(48 + l * 4 + i6, 48
-							+ (104 - i - class46_2.anInt761) * 4 + j6);
+							+ (104 - i - class46_2.length) * 4 + j6);
 				}
 			} else {
 				if (i3 == 0 || i3 == 2)
@@ -3350,14 +3350,14 @@ public class Game extends GameShell {
 			int l2 = i2 >> 6 & 3;
 			int j3 = i2 & 0x1f;
 			int l3 = k1 >> 14 & 0x7fff;
-			ObjectDefinition class46_1 = ObjectDefinition.forID(l3);
-			if (class46_1.anInt758 != -1) {
-				Background background_1 = mapScenes[class46_1.anInt758];
+			ObjectDefinition class46_1 = ObjectDefinition.lookup(l3);
+			if (class46_1.mapscene != -1) {
+				Background background_1 = mapScenes[class46_1.mapscene];
 				if (background_1 != null) {
-					int j5 = (class46_1.anInt744 * 4 - background_1.anInt1452) / 2;
-					int k5 = (class46_1.anInt761 * 4 - background_1.anInt1453) / 2;
+					int j5 = (class46_1.width * 4 - background_1.anInt1452) / 2;
+					int k5 = (class46_1.length * 4 - background_1.anInt1453) / 2;
 					background_1.drawBackground(48 + l * 4 + j5, 48
-							+ (104 - i - class46_1.anInt761) * 4 + k5);
+							+ (104 - i - class46_1.length) * 4 + k5);
 				}
 			} else if (j3 == 9) {
 				int l4 = 0xeeeeee;
@@ -3381,14 +3381,14 @@ public class Game extends GameShell {
 		k1 = worldController.method303(j1, l, i);
 		if (k1 != 0) {
 			int j2 = k1 >> 14 & 0x7fff;
-			ObjectDefinition class46 = ObjectDefinition.forID(j2);
-			if (class46.anInt758 != -1) {
-				Background background = mapScenes[class46.anInt758];
+			ObjectDefinition class46 = ObjectDefinition.lookup(j2);
+			if (class46.mapscene != -1) {
+				Background background = mapScenes[class46.mapscene];
 				if (background != null) {
-					int i4 = (class46.anInt744 * 4 - background.anInt1452) / 2;
-					int j4 = (class46.anInt761 * 4 - background.anInt1453) / 2;
+					int i4 = (class46.width * 4 - background.anInt1452) / 2;
+					int j4 = (class46.length * 4 - background.anInt1453) / 2;
 					background.drawBackground(48 + l * 4 + i4, 48
-							+ (104 - i - class46.anInt761) * 4 + j4);
+							+ (104 - i - class46.length) * 4 + j4);
 				}
 			}
 		}
@@ -3480,7 +3480,7 @@ public class Game extends GameShell {
 		Rasterizer.lowMem = false;
 		lowMem = false;
 		ObjectManager.lowMem = false;
-		ObjectDefinition.lowMem = false;
+		ObjectDefinition.lowMemory = false;
 	}
 
 	public static void main(String args[]) {
@@ -4210,17 +4210,17 @@ public class Game extends GameShell {
 		int k1 = j1 & 0x1f;
 		int l1 = j1 >> 6 & 3;
 		if (k1 == 10 || k1 == 11 || k1 == 22) {
-			ObjectDefinition class46 = ObjectDefinition.forID(i1);
+			ObjectDefinition class46 = ObjectDefinition.lookup(i1);
 			int i2;
 			int j2;
 			if (l1 == 0 || l1 == 2) {
-				i2 = class46.anInt744;
-				j2 = class46.anInt761;
+				i2 = class46.width;
+				j2 = class46.length;
 			} else {
-				i2 = class46.anInt761;
-				j2 = class46.anInt744;
+				i2 = class46.length;
+				j2 = class46.width;
 			}
-			int k2 = class46.anInt768;
+			int k2 = class46.surroundings;
 			if (l1 != 0)
 				k2 = (k2 << l1 & 0xf) + (k2 >> 4 - l1);
 			doWalkTo(2, 0, j2, 0, localPlayer.smallY[0], i2, k2, j,
@@ -5415,7 +5415,7 @@ public class Game extends GameShell {
 			outgoing.method432(k + baseY);
 		}
 		if (l == 1125) {
-			ItemDefinition itemDef = ItemDefinition.forID(i1);
+			ItemDefinition itemDef = ItemDefinition.lookup(i1);
 			RSInterface class9_4 = RSInterface.interfaceCache[k];
 			String s5;
 			if (class9_4 != null && class9_4.invStackSizes[j] >= 0x186a0)
@@ -5442,13 +5442,13 @@ public class Game extends GameShell {
 			anInt1283 = j;
 			anInt1284 = k;
 			anInt1285 = i1;
-			selectedItemName = ItemDefinition.forID(i1).name;
+			selectedItemName = ItemDefinition.lookup(i1).name;
 			spellSelected = 0;
 			return;
 		}
 		if (l == 1226) {
 			int j1 = i1 >> 14 & 0x7fff;
-			ObjectDefinition class46 = ObjectDefinition.forID(j1);
+			ObjectDefinition class46 = ObjectDefinition.lookup(j1);
 			String s10;
 			if (class46.description != null)
 				s10 = new String(class46.description);
@@ -5472,7 +5472,7 @@ public class Game extends GameShell {
 			outgoing.method432(i1);
 		}
 		if (l == 1448) {
-			ItemDefinition itemDef_1 = ItemDefinition.forID(i1);
+			ItemDefinition itemDef_1 = ItemDefinition.lookup(i1);
 			String s6;
 			if (itemDef_1.description != null)
 				s6 = new String(itemDef_1.description);
@@ -5525,14 +5525,14 @@ public class Game extends GameShell {
 				continue;
 			j = l;
 			if (k1 == 2 && worldController.method304(plane, i1, j1, l) >= 0) {
-				ObjectDefinition class46 = ObjectDefinition.forID(l1);
-				if (class46.childrenIDs != null)
-					class46 = class46.method580();
-				if (class46 == null)
+				ObjectDefinition objectDef = ObjectDefinition.lookup(l1);
+				if (objectDef.childrenIDs != null)
+					objectDef = objectDef.method580();
+				if (objectDef == null)
 					continue;
 				if (itemSelected == 1) {
 					menuActionName[menuActionRow] = "Use " + selectedItemName
-							+ " with @cya@" + class46.name;
+							+ " with @cya@" + objectDef.name;
 					menuActionID[menuActionRow] = 62;
 					menuActionCmd1[menuActionRow] = l;
 					menuActionCmd2[menuActionRow] = i1;
@@ -5541,7 +5541,7 @@ public class Game extends GameShell {
 				} else if (spellSelected == 1) {
 					if ((spellUsableOn & 4) == 4) {
 						menuActionName[menuActionRow] = spellTooltip + " @cya@"
-								+ class46.name;
+								+ objectDef.name;
 						menuActionID[menuActionRow] = 956;
 						menuActionCmd1[menuActionRow] = l;
 						menuActionCmd2[menuActionRow] = i1;
@@ -5549,11 +5549,11 @@ public class Game extends GameShell {
 						menuActionRow++;
 					}
 				} else {
-					if (class46.actions != null) {
+					if (objectDef.interactions != null) {
 						for (int i2 = 4; i2 >= 0; i2--)
-							if (class46.actions[i2] != null) {
-								menuActionName[menuActionRow] = class46.actions[i2]
-										+ " @cya@" + class46.name;
+							if (objectDef.interactions[i2] != null) {
+								menuActionName[menuActionRow] = objectDef.interactions[i2]
+										+ " @cya@" + objectDef.name;
 								if (i2 == 0)
 									menuActionID[menuActionRow] = 502;
 								if (i2 == 1)
@@ -5574,15 +5574,15 @@ public class Game extends GameShell {
 					if (Configuration.showIds
 							&& (myPrivilege >= 2 || myPrivilege <= 3)) {
 						menuActionName[menuActionRow] = "Examine @cya@"
-								+ class46.name + " @gre@(@whi@" + l1
+								+ objectDef.name + " @gre@(@whi@" + l1
 								+ "@gre@) (@whi@" + (i1 + baseX) + ","
 								+ (j1 + baseY) + "@gre@)";
 					} else {
 						menuActionName[menuActionRow] = "Examine @cya@"
-								+ class46.name;
+								+ objectDef.name;
 					}
 					menuActionID[menuActionRow] = 1226;
-					menuActionCmd1[menuActionRow] = class46.type << 14;
+					menuActionCmd1[menuActionRow] = objectDef.type << 14;
 					menuActionCmd2[menuActionRow] = i1;
 					menuActionCmd3[menuActionRow] = j1;
 					menuActionRow++;
@@ -5644,7 +5644,7 @@ public class Game extends GameShell {
 				if (class19 != null) {
 					for (Item item = (Item) class19.getFirst(); item != null; item = (Item) class19
 							.getNext()) {
-						ItemDefinition itemDef = ItemDefinition.forID(item.ID);
+						ItemDefinition itemDef = ItemDefinition.lookup(item.ID);
 						if (itemSelected == 1) {
 							menuActionName[menuActionRow] = "Use "
 									+ selectedItemName + " with @lre@"
@@ -8405,7 +8405,7 @@ public class Game extends GameShell {
 				npc.maxHealth = stream.method427();
 			}
 			if ((l & 2) != 0) {
-				npc.desc = NpcDefinition.forID(stream.method436());
+				npc.desc = NpcDefinition.lookup(stream.method436());
 				npc.anInt1540 = npc.desc.boundDim;
 				npc.anInt1504 = npc.desc.degreesToTurn;
 				npc.anInt1554 = npc.desc.walkAnim;
@@ -9994,7 +9994,7 @@ public class Game extends GameShell {
 						for (int column = 0; column < childInterface.width; column++) {
 							if (childInterface.inventoryItemId[slot] > 0) {
 								ItemDefinition item = ItemDefinition
-										.forID(childInterface.inventoryItemId[slot] - 1);
+										.lookup(childInterface.inventoryItemId[slot] - 1);
 								String name = item.name;
 								if (item.stackable
 										|| childInterface.invStackSizes[slot] != 1)
@@ -10995,7 +10995,7 @@ public class Game extends GameShell {
 					RSInterface class9_1 = RSInterface.interfaceCache[ai[l++]];
 					int k2 = ai[l++];
 					if (k2 >= 0 && k2 < ItemDefinition.item_count
-							&& (!ItemDefinition.forID(k2).is_members_only || isMembers)) {
+							&& (!ItemDefinition.lookup(k2).is_members_only || isMembers)) {
 						for (int j3 = 0; j3 < class9_1.inventoryItemId.length; j3++)
 							if (class9_1.inventoryItemId[j3] == k2 + 1)
 								k1 += class9_1.invStackSizes[j3];
@@ -11952,23 +11952,23 @@ public class Game extends GameShell {
 			else
 				player = players[i10];
 			if (player != null) {
-				ObjectDefinition class46 = ObjectDefinition.forID(l21);
+				ObjectDefinition class46 = ObjectDefinition.lookup(l21);
 				int i22 = intGroundArray[plane][k4][j7];
 				int j22 = intGroundArray[plane][k4 + 1][j7];
 				int k22 = intGroundArray[plane][k4 + 1][j7 + 1];
 				int l22 = intGroundArray[plane][k4][j7 + 1];
-				Model model = class46.method578(j19, i20, i22, j22, k22, l22,
+				Model model = class46.modelAt(j19, i20, i22, j22, k22, l22,
 						-1);
 				if (model != null) {
 					method130(k17 + 1, -1, 0, l20, j7, 0, plane, k4, l14 + 1);
 					player.anInt1707 = l14 + loopCycle;
 					player.anInt1708 = k17 + loopCycle;
 					player.aModel_1714 = model;
-					int i23 = class46.anInt744;
-					int j23 = class46.anInt761;
+					int i23 = class46.width;
+					int j23 = class46.length;
 					if (i20 == 1 || i20 == 3) {
-						i23 = class46.anInt761;
-						j23 = class46.anInt744;
+						i23 = class46.length;
+						j23 = class46.width;
 					}
 					player.anInt1711 = k4 * 128 + i23 * 64;
 					player.anInt1713 = j7 * 128 + j23 * 64;
@@ -12273,30 +12273,30 @@ public class Game extends GameShell {
 				int l2 = i3 >> 6;
 				if (j1 == 0) {
 					worldController.method291(i1, j, i, (byte) -119);
-					ObjectDefinition class46 = ObjectDefinition.forID(j2);
-					if (class46.aBoolean767)
+					ObjectDefinition class46 = ObjectDefinition.lookup(j2);
+					if (class46.solid)
 						aClass11Array1230[j].method215(l2, k2,
-								class46.aBoolean757, i1, i);
+								class46.impenetrable, i1, i);
 				}
 				if (j1 == 1)
 					worldController.method292(i, j, i1);
 				if (j1 == 2) {
 					worldController.method293(j, i1, i);
-					ObjectDefinition class46_1 = ObjectDefinition.forID(j2);
-					if (i1 + class46_1.anInt744 > 103
-							|| i + class46_1.anInt744 > 103
-							|| i1 + class46_1.anInt761 > 103
-							|| i + class46_1.anInt761 > 103)
+					ObjectDefinition class46_1 = ObjectDefinition.lookup(j2);
+					if (i1 + class46_1.width > 103
+							|| i + class46_1.width > 103
+							|| i1 + class46_1.length > 103
+							|| i + class46_1.length > 103)
 						return;
-					if (class46_1.aBoolean767)
-						aClass11Array1230[j].method216(l2, class46_1.anInt744,
-								i1, i, class46_1.anInt761,
-								class46_1.aBoolean757);
+					if (class46_1.solid)
+						aClass11Array1230[j].method216(l2, class46_1.width,
+								i1, i, class46_1.length,
+								class46_1.impenetrable);
 				}
 				if (j1 == 3) {
 					worldController.method294(j, i, i1);
-					ObjectDefinition class46_2 = ObjectDefinition.forID(j2);
-					if (class46_2.aBoolean767 && class46_2.hasActions)
+					ObjectDefinition class46_2 = ObjectDefinition.lookup(j2);
+					if (class46_2.solid && class46_2.isInteractive)
 						aClass11Array1230[j].method218(i, i1);
 				}
 			}
@@ -13295,7 +13295,7 @@ public class Game extends GameShell {
 					opCode = -1;
 					return true;
 				} else {
-					ItemDefinition itemDef = ItemDefinition.forID(k18);
+					ItemDefinition itemDef = ItemDefinition.lookup(k18);
 					RSInterface.interfaceCache[i6].anInt233 = 4;
 					RSInterface.interfaceCache[i6].mediaID = k18;
 					RSInterface.interfaceCache[i6].modelRotation1 = itemDef.rotation_y;

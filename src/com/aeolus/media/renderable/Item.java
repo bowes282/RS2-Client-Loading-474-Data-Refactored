@@ -1,15 +1,11 @@
 package com.aeolus.media.renderable;
 import com.aeolus.cache.def.ItemDefinition;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 public final class Item extends Renderable {
 
 	public final Model getRotatedModel()
 	{
-		ItemDefinition itemDef = ItemDefinition.forID(ID);
+		ItemDefinition itemDef = ItemDefinition.lookup(ID);
 			return itemDef.getModel(anInt1559);
 	}
 

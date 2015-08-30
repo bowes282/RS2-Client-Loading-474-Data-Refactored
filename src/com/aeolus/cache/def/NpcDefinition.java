@@ -53,7 +53,7 @@ public final class NpcDefinition {
 	 * Lookup an NpcDefinition by its id
 	 * @param id
 	 */
-	public static NpcDefinition forID(int id) {
+	public static NpcDefinition lookup(int id) {
 		for (int index = 0; index < 20; index++)
 			if (cache[index].interfaceType == (long) id)
 				return cache[index];
@@ -115,7 +115,7 @@ public final class NpcDefinition {
 				|| childrenIDs[child] == -1)
 			return null;
 		else
-			return forID(childrenIDs[child]);
+			return lookup(childrenIDs[child]);
 	}
 
 	public static void unpackConfig(CacheArchive streamLoader) {
@@ -133,7 +133,7 @@ public final class NpcDefinition {
 		for (int k = 0; k < 20; k++)
 			cache[k] = new NpcDefinition();
 		for (int index = 0; index < totalNPCs; index++) {
-			NpcDefinition ed = forID(index);
+			NpcDefinition ed = lookup(index);
 			if (ed == null)
 				continue;
 			if (ed.name == null)
