@@ -336,8 +336,8 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
 				RSInterface.interfaceCache[tab.children[childID]].scrollPosition += rotation * 30;
 			}
 		}
-		if (Game.openInterfaceID != -1) {
-			RSInterface rsi = RSInterface.interfaceCache[Game.openInterfaceID];
+		if (Game.openInterfaceId != -1) {
+			RSInterface rsi = RSInterface.interfaceCache[Game.openInterfaceId];
 			offsetX = Game.frameMode == Game.ScreenMode.FIXED ? 4 : (Game.frameWidth / 2) - 356;
 			offsetY = Game.frameMode == Game.ScreenMode.FIXED ? 4 : (Game.frameHeight / 2) - 230;
 			for (int index = 0; index < rsi.children.length; index++) {

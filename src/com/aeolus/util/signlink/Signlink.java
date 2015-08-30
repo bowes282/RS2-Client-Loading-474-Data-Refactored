@@ -8,6 +8,41 @@ import javax.sound.sampled.*;
 
 public final class Signlink implements Runnable {
 
+	public static final int clientversion = 317;
+	public static int uid;
+	public static int storeid = 32;
+	public static RandomAccessFile cache_dat = null;
+	public static final RandomAccessFile[] cache_idx = new RandomAccessFile[5];
+	public static boolean sunjava;
+	public static Applet mainapp = null;
+	private static boolean active;
+	private static int threadliveid;
+	private static InetAddress socketip;
+	private static int socketreq;
+	private static Socket socket = null;
+	private static int threadreqpri = 1;
+	private static Runnable threadreq = null;
+	private static String dnsreq = null;
+	public static String dns = null;
+	private static String urlreq = null;
+	private static DataInputStream urlstream = null;
+	private static int savelen;
+	private static String savereq = null;
+	private static byte[] savebuf = null;
+	private static boolean play;
+	private static int midipos;
+	public static String midi = null;
+	public static int midiVolume;
+	public static int fadeMidi;
+	private static boolean waveplay;
+	private static int wavepos;
+	public static int wavevol;
+	public static boolean reporterror = true;
+	public static String errorName = "";
+
+	private Signlink() {
+	}
+
 	public static void startpriv(InetAddress inetaddress) {
 		threadliveid = (int) (Math.random() * 99999999D);
 		if (active) {
@@ -40,7 +75,8 @@ public final class Signlink implements Runnable {
 		try {
 			cache_dat = new RandomAccessFile(s + "main_file_cache.dat", "rw");
 			for (int j = 0; j < 5; j++)
-				cache_idx[j] = new RandomAccessFile(s + "main_file_cache.idx" + j, "rw");
+				cache_idx[j] = new RandomAccessFile(s + "main_file_cache.idx"
+						+ j, "rw");
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
@@ -68,7 +104,8 @@ public final class Signlink implements Runnable {
 			} else if (savereq != null) {
 				if (savebuf != null)
 					try {
-						FileOutputStream fileoutputstream = new FileOutputStream(s + savereq);
+						FileOutputStream fileoutputstream = new FileOutputStream(
+								s + savereq);
 						fileoutputstream.write(savebuf, 0, savelen);
 						fileoutputstream.close();
 					} catch (Exception _ex) {
@@ -78,7 +115,8 @@ public final class Signlink implements Runnable {
 					waveplay = false;
 					AudioInputStream audioInputStream = null;
 					try {
-						audioInputStream = AudioSystem.getAudioInputStream(new File(wave));
+						audioInputStream = AudioSystem
+								.getAudioInputStream(new File(wave));
 					} catch (UnsupportedAudioFileException e1) {
 						e1.printStackTrace();
 						return;
@@ -88,7 +126,8 @@ public final class Signlink implements Runnable {
 					}
 					AudioFormat format = audioInputStream.getFormat();
 					SourceDataLine auline = null;
-					DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+					DataLine.Info info = new DataLine.Info(
+							SourceDataLine.class, format);
 					try {
 						auline = (SourceDataLine) AudioSystem.getLine(info);
 						auline.open(format);
@@ -118,7 +157,8 @@ public final class Signlink implements Runnable {
 			} else if (urlreq != null) {
 				try {
 					System.out.println("urlstream");
-					urlstream = new DataInputStream((new URL(mainapp.getCodeBase(), urlreq)).openStream());
+					urlstream = new DataInputStream((new URL(
+							mainapp.getCodeBase(), urlreq)).openStream());
 				} catch (Exception _ex) {
 					urlstream = null;
 				}
@@ -133,13 +173,6 @@ public final class Signlink implements Runnable {
 
 	public static String findcachedir() {
 		return "./Cache/";
-	}
-
-	public static String sencondDir() {
-		File file = new File("c:/argon/");
-		if (!file.exists())
-			file.mkdir();
-		return file.toString();
 	}
 
 	/**
@@ -169,9 +202,11 @@ public final class Signlink implements Runnable {
 				synthesizer = MidiSystem.getSynthesizer();
 				synthesizer.open();
 				if (synthesizer.getDefaultSoundbank() == null) {
-					music.getTransmitter().setReceiver(MidiSystem.getReceiver());
+					music.getTransmitter()
+							.setReceiver(MidiSystem.getReceiver());
 				} else {
-					music.getTransmitter().setReceiver(synthesizer.getReceiver());
+					music.getTransmitter().setReceiver(
+							synthesizer.getReceiver());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -194,8 +229,10 @@ public final class Signlink implements Runnable {
 			try {
 				ShortMessage volumeMessage = new ShortMessage();
 				for (int i = 0; i < 16; i++) {
-					volumeMessage.setMessage(ShortMessage.CONTROL_CHANGE, i, CHANGE_VOLUME, midiVolume);
-					volumeMessage.setMessage(ShortMessage.CONTROL_CHANGE, i, 39, midiVolume);
+					volumeMessage.setMessage(ShortMessage.CONTROL_CHANGE, i,
+							CHANGE_VOLUME, midiVolume);
+					volumeMessage.setMessage(ShortMessage.CONTROL_CHANGE, i,
+							39, midiVolume);
 					MidiSystem.getReceiver().send(volumeMessage, -1);
 				}
 			} catch (Exception e) {
@@ -253,42 +290,20 @@ public final class Signlink implements Runnable {
 		}
 	}
 
-	public static String findcachedirORIG() {
-		String as[] = { "c:/windows/", "c:/winnt/", "d:/windows/", "d:/winnt/", "e:/windows/", "e:/winnt/",
-				"f:/windows/", "f:/winnt/", "c:/", "~/", "/tmp/", "", "c:/rscache", "/rscache" };
-		if (storeid < 32 || storeid > 34)
-			storeid = 32;
-		String s = ".file_store_" + storeid;
-		for (int i = 0; i < as.length; i++)
-			try {
-				String s1 = as[i];
-				if (s1.length() > 0) {
-					File file = new File(s1);
-					if (!file.exists())
-						continue;
-				}
-				File file1 = new File(s1 + s);
-				if (file1.exists() || file1.mkdir())
-					return s1 + s + "/";
-			} catch (Exception _ex) {
-			}
-
-		return null;
-
-	}
-
 	private static int getuid(String s) {
 		try {
 			File file = new File(s + "uid.dat");
 			if (!file.exists() || file.length() < 4L) {
-				DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(s + "uid.dat"));
+				DataOutputStream dataoutputstream = new DataOutputStream(
+						new FileOutputStream(s + "uid.dat"));
 				dataoutputstream.writeInt((int) (Math.random() * 99999999D));
 				dataoutputstream.close();
 			}
 		} catch (Exception _ex) {
 		}
 		try {
-			DataInputStream datainputstream = new DataInputStream(new FileInputStream(s + "uid.dat"));
+			DataInputStream datainputstream = new DataInputStream(
+					new FileInputStream(s + "uid.dat"));
 			int i = datainputstream.readInt();
 			datainputstream.close();
 			return i + 1;
@@ -310,7 +325,8 @@ public final class Signlink implements Runnable {
 			return socket;
 	}
 
-	public static synchronized DataInputStream openurl(String s) throws IOException {
+	public static synchronized DataInputStream openurl(String s)
+			throws IOException {
 		for (urlreq = s; urlreq != null;)
 			try {
 				Thread.sleep(50L);
@@ -362,40 +378,8 @@ public final class Signlink implements Runnable {
 	public static void reporterror(String s) {
 		System.out.println("Error: " + s);
 	}
-
-	private Signlink() {
+	
+	public static void setError(String error) {
+		errorName = error;
 	}
-
-	public static final int clientversion = 317;
-	public static int uid;
-	public static int storeid = 32;
-	public static RandomAccessFile cache_dat = null;
-	public static final RandomAccessFile[] cache_idx = new RandomAccessFile[5];
-	public static boolean sunjava;
-	public static Applet mainapp = null;
-	private static boolean active;
-	private static int threadliveid;
-	private static InetAddress socketip;
-	private static int socketreq;
-	private static Socket socket = null;
-	private static int threadreqpri = 1;
-	private static Runnable threadreq = null;
-	private static String dnsreq = null;
-	public static String dns = null;
-	private static String urlreq = null;
-	private static DataInputStream urlstream = null;
-	private static int savelen;
-	private static String savereq = null;
-	private static byte[] savebuf = null;
-	private static boolean play;
-	private static int midipos;
-	public static String midi = null;
-	public static int midiVolume;
-	public static int fadeMidi;
-	private static boolean waveplay;
-	private static int wavepos;
-	public static int wavevol;
-	public static boolean reporterror = true;
-	public static String errorname = "";
-
 }

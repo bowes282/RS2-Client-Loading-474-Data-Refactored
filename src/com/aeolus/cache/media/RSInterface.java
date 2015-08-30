@@ -2124,7 +2124,7 @@ public final class RSInterface {
 		if (i == 2)
 			model = NpcDefinition.forID(j).model();
 		if (i == 3)
-			model = Game.myPlayer.method453();
+			model = Game.localPlayer.method453();
 		if (i == 4)
 			model = ItemDefinition.forID(j).getUnshadedModel(50);
 		if (i == 5)

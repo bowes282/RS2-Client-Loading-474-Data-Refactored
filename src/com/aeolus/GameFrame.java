@@ -13,7 +13,7 @@ public final class GameFrame extends Frame {
 
 	public GameFrame(GameShell applet, int width, int height, boolean resizable, boolean fullscreen) {
 		this.applet = applet;
-		setTitle(Configuration.clientName);
+		setTitle(Configuration.CLIENT_NAME);
 		setResizable(resizable);
 		setUndecorated(fullscreen);
 		setVisible(true); 

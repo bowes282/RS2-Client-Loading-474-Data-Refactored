@@ -156,7 +156,7 @@ public final class Player extends Entity {
 		super.anInt1505 = stream.readUShort();
 		if(super.anInt1505 == 65535)
 			super.anInt1505 = -1;
-		name = TextClass.fixName(TextClass.nameForLong(stream.readQWord()));
+		name = TextClass.fixName(TextClass.nameForLong(stream.readLong()));
 		combatLevel = stream.readUnsignedByte();
 		skill = stream.readUShort();
 		visible = true;

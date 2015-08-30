@@ -420,7 +420,7 @@ public final class OnDemandRequester extends Requester implements Runnable {
 
 	public void method566() {
 		synchronized (aClass19_1344) {
-			aClass19_1344.removeAll();
+			aClass19_1344.clear();
 		}
 	}
 

@@ -99,7 +99,7 @@ public final class Deque {
             return node;
     }
 
-    public void removeAll()
+    public void clear()
     {
         if(head.prev == head)
             return;
