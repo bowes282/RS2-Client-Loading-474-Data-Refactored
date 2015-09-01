@@ -197,13 +197,13 @@ public class Model extends Renderable {
 			int l11 = nc1.readUnsignedByte();
 			int j12 = 0;
 			if ((l11 & 1) != 0)
-				j12 = nc2.method421();
+				j12 = nc2.readSmart();
 			int l12 = 0;
 			if ((l11 & 2) != 0)
-				l12 = nc3.method421();
+				l12 = nc3.readSmart();
 			int j13 = 0;
 			if ((l11 & 4) != 0)
-				j13 = nc4.method421();
+				j13 = nc4.readSmart();
 			vertexX[k11] = l10 + j12;
 			vertexY[k11] = i11 + l12;
 			vertexZ[k11] = j11 + j13;
@@ -282,11 +282,11 @@ public class Model extends Renderable {
 		for (int i14 = 0; i14 < numTriangles; i14++) {
 			int j14 = nc2.readUnsignedByte();
 			if (j14 == 1) {
-				k12 = nc1.method421() + l13;
+				k12 = nc1.readSmart() + l13;
 				l13 = k12;
-				i13 = nc1.method421() + l13;
+				i13 = nc1.readSmart() + l13;
 				l13 = i13;
-				k13 = nc1.method421() + l13;
+				k13 = nc1.readSmart() + l13;
 				l13 = k13;
 				facePoint1[i14] = k12;
 				facePoint2[i14] = i13;
@@ -294,7 +294,7 @@ public class Model extends Renderable {
 			}
 			if (j14 == 2) {
 				i13 = k13;
-				k13 = nc1.method421() + l13;
+				k13 = nc1.readSmart() + l13;
 				l13 = k13;
 				facePoint1[i14] = k12;
 				facePoint2[i14] = i13;
@@ -302,7 +302,7 @@ public class Model extends Renderable {
 			}
 			if (j14 == 3) {
 				k12 = k13;
-				k13 = nc1.method421() + l13;
+				k13 = nc1.readSmart() + l13;
 				l13 = k13;
 				facePoint1[i14] = k12;
 				facePoint2[i14] = i13;
@@ -312,7 +312,7 @@ public class Model extends Renderable {
 				int l14 = k12;
 				k12 = i13;
 				i13 = l14;
-				k13 = nc1.method421() + l13;
+				k13 = nc1.readSmart() + l13;
 				l13 = k13;
 				facePoint1[i14] = k12;
 				facePoint2[i14] = i13;
@@ -591,13 +591,13 @@ public class Model extends Renderable {
 			int l11 = nc1.readUnsignedByte();
 			int j12 = 0;
 			if ((l11 & 1) != 0)
-				j12 = nc2.method421();
+				j12 = nc2.readSmart();
 			int l12 = 0;
 			if ((l11 & 2) != 0)
-				l12 = nc3.method421();
+				l12 = nc3.readSmart();
 			int j13 = 0;
 			if ((l11 & 4) != 0)
-				j13 = nc4.method421();
+				j13 = nc4.readSmart();
 			vertexX[k11] = l10 + j12;
 			vertexY[k11] = i11 + l12;
 			vertexZ[k11] = j11 + j13;
@@ -649,11 +649,11 @@ public class Model extends Renderable {
 		for (int i14 = 0; i14 < numTriangles; i14++) {
 			int j14 = nc2.readUnsignedByte();
 			if (j14 == 1) {
-				k12 = nc1.method421() + l13;
+				k12 = nc1.readSmart() + l13;
 				l13 = k12;
-				i13 = nc1.method421() + l13;
+				i13 = nc1.readSmart() + l13;
 				l13 = i13;
-				k13 = nc1.method421() + l13;
+				k13 = nc1.readSmart() + l13;
 				l13 = k13;
 				facePoint1[i14] = k12;
 				facePoint2[i14] = i13;
@@ -661,7 +661,7 @@ public class Model extends Renderable {
 			}
 			if (j14 == 2) {
 				i13 = k13;
-				k13 = nc1.method421() + l13;
+				k13 = nc1.readSmart() + l13;
 				l13 = k13;
 				facePoint1[i14] = k12;
 				facePoint2[i14] = i13;
@@ -669,7 +669,7 @@ public class Model extends Renderable {
 			}
 			if (j14 == 3) {
 				k12 = k13;
-				k13 = nc1.method421() + l13;
+				k13 = nc1.readSmart() + l13;
 				l13 = k13;
 				facePoint1[i14] = k12;
 				facePoint2[i14] = i13;
@@ -679,7 +679,7 @@ public class Model extends Renderable {
 				int l14 = k12;
 				k12 = i13;
 				i13 = l14;
-				k13 = nc1.method421() + l13;
+				k13 = nc1.readSmart() + l13;
 				l13 = k13;
 				facePoint1[i14] = k12;
 				facePoint2[i14] = i13;
@@ -706,14 +706,14 @@ public class Model extends Renderable {
 				if (newformat < 15) {
 					kb[k14] = nc3.readUShort();
 					if (newformat >= 14)
-						N[k14] = nc3.v(-1);
+						N[k14] = nc3.readUTriByte(-1);
 					else
 						N[k14] = nc3.readUShort();
 					y[k14] = nc3.readUShort();
 				} else {
-					kb[k14] = nc3.v(-1);
-					N[k14] = nc3.v(-1);
-					y[k14] = nc3.v(-1);
+					kb[k14] = nc3.readUTriByte(-1);
+					N[k14] = nc3.readUTriByte(-1);
+					y[k14] = nc3.readUTriByte(-1);
 				}
 				gb[k14] = nc4.readSignedByte();
 				lb[k14] = nc5.readSignedByte();
@@ -724,15 +724,15 @@ public class Model extends Renderable {
 				texTrianglesPoint2[k14] = nc2.readUShort();
 				texTrianglesPoint3[k14] = nc2.readUShort();
 				if (newformat >= 15) {
-					kb[k14] = nc3.v(-1);
-					N[k14] = nc3.v(-1);
-					y[k14] = nc3.v(-1);
+					kb[k14] = nc3.readUTriByte(-1);
+					N[k14] = nc3.readUTriByte(-1);
+					y[k14] = nc3.readUTriByte(-1);
 				} else {
 					kb[k14] = nc3.readUShort();
 					if (newformat < 14)
 						N[k14] = nc3.readUShort();
 					else
-						N[k14] = nc3.v(-1);
+						N[k14] = nc3.readUTriByte(-1);
 					y[k14] = nc3.readUShort();
 				}
 				gb[k14] = nc4.readSignedByte();
@@ -750,12 +750,12 @@ public class Model extends Renderable {
 					if (newformat < 14)
 						N[k14] = nc3.readUShort();
 					else
-						N[k14] = nc3.v(-1);
+						N[k14] = nc3.readUTriByte(-1);
 					y[k14] = nc3.readUShort();
 				} else {
-					kb[k14] = nc3.v(-1);
-					N[k14] = nc3.v(-1);
-					y[k14] = nc3.v(-1);
+					kb[k14] = nc3.readUTriByte(-1);
+					N[k14] = nc3.readUTriByte(-1);
+					y[k14] = nc3.readUTriByte(-1);
 				}
 				gb[k14] = nc4.readSignedByte();
 				lb[k14] = nc5.readSignedByte();
@@ -827,13 +827,13 @@ public class Model extends Renderable {
 			int k1 = stream.readUnsignedByte();
 			int i2 = 0;
 			if ((k1 & 1) != 0)
-				i2 = stream_1.method421();
+				i2 = stream_1.readSmart();
 			int k2 = 0;
 			if ((k1 & 2) != 0)
-				k2 = stream_2.method421();
+				k2 = stream_2.readSmart();
 			int i3 = 0;
 			if ((k1 & 4) != 0)
-				i3 = stream_3.method421();
+				i3 = stream_3.readSmart();
 			vertexX[j1] = k + i2;
 			vertexY[j1] = l + k2;
 			vertexZ[j1] = i1 + i3;
@@ -869,11 +869,11 @@ public class Model extends Renderable {
 		for (int l3 = 0; l3 < anInt1630; l3++) {
 			int i4 = stream_1.readUnsignedByte();
 			if (i4 == 1) {
-				j2 = stream.method421() + k3;
+				j2 = stream.readSmart() + k3;
 				k3 = j2;
-				l2 = stream.method421() + k3;
+				l2 = stream.readSmart() + k3;
 				k3 = l2;
-				j3 = stream.method421() + k3;
+				j3 = stream.readSmart() + k3;
 				k3 = j3;
 				anIntArray1631[l3] = j2;
 				anIntArray1632[l3] = l2;
@@ -881,7 +881,7 @@ public class Model extends Renderable {
 			}
 			if (i4 == 2) {
 				l2 = j3;
-				j3 = stream.method421() + k3;
+				j3 = stream.readSmart() + k3;
 				k3 = j3;
 				anIntArray1631[l3] = j2;
 				anIntArray1632[l3] = l2;
@@ -889,7 +889,7 @@ public class Model extends Renderable {
 			}
 			if (i4 == 3) {
 				j2 = j3;
-				j3 = stream.method421() + k3;
+				j3 = stream.readSmart() + k3;
 				k3 = j3;
 				anIntArray1631[l3] = j2;
 				anIntArray1632[l3] = l2;
@@ -899,7 +899,7 @@ public class Model extends Renderable {
 				int k4 = j2;
 				j2 = l2;
 				l2 = k4;
-				j3 = stream.method421() + k3;
+				j3 = stream.readSmart() + k3;
 				k3 = j3;
 				anIntArray1631[l3] = j2;
 				anIntArray1632[l3] = l2;

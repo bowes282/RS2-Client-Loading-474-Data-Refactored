@@ -19,7 +19,7 @@ public final class VariableBits {
 				VariableParameter.parameters[cache[index].setting].aBoolean713 = true;
 		}
 
-		if(stream.currentOffset != stream.buffer.length)
+		if(stream.currentOffset != stream.payload.length)
 			System.out.println("varbit load mismatch");
 	}
 

@@ -28,7 +28,7 @@ public final class VariableParameter {
 				parameters[index] = new VariableParameter();
 			parameters[index].readValues(stream, index);
 		}
-		if (stream.currentOffset != stream.buffer.length)
+		if (stream.currentOffset != stream.payload.length)
 			System.out.println("varptype load mismatch");
 	}
 

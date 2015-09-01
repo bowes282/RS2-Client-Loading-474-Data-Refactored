@@ -48,7 +48,7 @@ public final class ObjectManager {
 							if ((aByteArrayArrayArray149[1][k][i1] & 2) == 2)
 								k1--;
 							if (k1 >= 0)
-								aclass11[k1].method213(i1, k);
+								aclass11[k1].block(k, i1);
 						}
 
 				}
@@ -388,7 +388,7 @@ public final class ObjectManager {
 				ObjectDefinition class46 = ObjectDefinition.lookup(i);
 				class46.loadModels(class42_sub1);
 				do {
-					int k = stream.method422();
+					int k = stream.readUSmart();
 					if (k == 0)
 						break;
 					stream.readUnsignedByte();
@@ -444,7 +444,7 @@ public final class ObjectManager {
 				obj = new SceneObject(i1, j1, 22, l1, i2, k1, j2, class46.animation, true);
 			worldController.method280(k, k2, i, ((Renderable) (obj)), byte0, l2, l);
 			if (class46.solid && class46.isInteractive && class11 != null)
-				class11.method213(i, l);
+				class11.block(l, i);
 			return;
 		}
 		if (j == 10 || j == 11) {
@@ -739,7 +739,7 @@ public final class ObjectManager {
 		for (int i2 = 0; i2 < 8; i2++) {
 			for (int j2 = 0; j2 < 8; j2++)
 				if (l + i2 > 0 && l + i2 < 103 && l1 + j2 > 0 && l1 + j2 < 103)
-					aclass11[k1].anIntArrayArray294[l + i2][l1 + j2] &= 0xfeffffff;
+					aclass11[k1].adjacencies[l + i2][l1 + j2] &= 0xfeffffff;
 
 		}
 		Buffer stream = new Buffer(abyte0);
@@ -762,7 +762,7 @@ public final class ObjectManager {
 			for (int j1 = 0; j1 < 64; j1++) {
 				for (int k1 = 0; k1 < 64; k1++)
 					if (j + j1 > 0 && j + j1 < 103 && i + k1 > 0 && i + k1 < 103)
-						aclass11[i1].anIntArrayArray294[j + j1][i + k1] &= 0xfeffffff;
+						aclass11[i1].adjacencies[j + j1][i + k1] &= 0xfeffffff;
 
 			}
 
@@ -850,7 +850,7 @@ public final class ObjectManager {
 				l1 += i2;
 				int j2 = 0;
 				do {
-					int k2 = stream.method422();
+					int k2 = stream.readUSmart();
 					if (k2 == 0)
 						break;
 					j2 += k2 - 1;
@@ -940,7 +940,7 @@ public final class ObjectManager {
 				obj = new SceneObject(j1, i, 22, i2, j2, l1, k2, class46.animation, true);
 			worldController.method280(k1, l2, j, ((Renderable) (obj)), byte1, i3, i1);
 			if (class46.solid && class46.isInteractive)
-				class11.method213(j, i1);
+				class11.block(i1, j);
 			return;
 		}
 		if (k == 10 || k == 11) {
@@ -1119,7 +1119,7 @@ public final class ObjectManager {
 		Buffer stream = new Buffer(is);
 		int i_252_ = -1;
 		for (;;) {
-			int i_253_ = stream.method422();
+			int i_253_ = stream.readUSmart();
 			if (i_253_ == 0)
 				break;
 			i_252_ += i_253_;
@@ -1127,12 +1127,12 @@ public final class ObjectManager {
 			boolean bool_255_ = false;
 			for (;;) {
 				if (bool_255_) {
-					int i_256_ = stream.method422();
+					int i_256_ = stream.readUSmart();
 					if (i_256_ == 0)
 						break;
 					stream.readUnsignedByte();
 				} else {
-					int i_257_ = stream.method422();
+					int i_257_ = stream.readUSmart();
 					if (i_257_ == 0)
 						break;
 					i_254_ += i_257_ - 1;
@@ -1159,13 +1159,13 @@ public final class ObjectManager {
 			Buffer stream = new Buffer(abyte0);
 			int l = -1;
 			do {
-				int i1 = stream.method422();
+				int i1 = stream.readUSmart();
 				if (i1 == 0)
 					break label0;
 				l += i1;
 				int j1 = 0;
 				do {
-					int k1 = stream.method422();
+					int k1 = stream.readUSmart();
 					if (k1 == 0)
 						break;
 					j1 += k1 - 1;

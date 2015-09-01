@@ -283,16 +283,16 @@ final class SoundSynthesizer {
 			attack.decode(stream);
 		}
 		for (int index = 0; index < 10; index++) {
-			int volume = stream.method422();
+			int volume = stream.readUSmart();
 			if (volume == 0)
 				break;
 			oscillatorVolume[index] = volume;
-			anIntArray107[index] = stream.method421();
-			anIntArray108[index] = stream.method422();
+			anIntArray107[index] = stream.readSmart();
+			anIntArray108[index] = stream.readUSmart();
 		}
 
-		delayTime = stream.method422();
-		delayDecay = stream.method422();
+		delayTime = stream.readUSmart();
+		delayDecay = stream.readUSmart();
 		duration = stream.readUShort();
 		offset = stream.readUShort();
 		filter = new SoundFilter();

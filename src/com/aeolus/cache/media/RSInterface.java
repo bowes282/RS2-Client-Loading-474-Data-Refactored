@@ -27,7 +27,7 @@ public final class RSInterface {
 		stream.readUShort();
 		interfaceCache = new RSInterface[31000];
 		
-		while (stream.currentOffset < stream.buffer.length) {
+		while (stream.currentOffset < stream.payload.length) {
 			int k = stream.readUShort();
 			if (k == 65535) {
 				i = stream.readUShort();
@@ -79,8 +79,8 @@ public final class RSInterface {
 				rsInterface.childY = new int[i2];
 				for (int j3 = 0; j3 < i2; j3++) {
 					rsInterface.children[j3] = stream.readUShort();
-					rsInterface.childX[j3] = stream.readSignedWord();
-					rsInterface.childY[j3] = stream.readSignedWord();
+					rsInterface.childX[j3] = stream.readShort();
+					rsInterface.childY[j3] = stream.readShort();
 				}
 			}
 			if (rsInterface.type == 1) {
@@ -102,8 +102,8 @@ public final class RSInterface {
 				for (int j2 = 0; j2 < 20; j2++) {
 					int k3 = stream.readUnsignedByte();
 					if (k3 == 1) {
-						rsInterface.spritesX[j2] = stream.readSignedWord();
-						rsInterface.spritesY[j2] = stream.readSignedWord();
+						rsInterface.spritesX[j2] = stream.readShort();
+						rsInterface.spritesY[j2] = stream.readShort();
 						String s1 = stream.readString();
 						if (streamLoader_1 != null && s1.length() > 0) {
 							int i5 = s1.lastIndexOf(",");
@@ -188,8 +188,8 @@ public final class RSInterface {
 					rsInterface.textDrawingAreas = textDrawingAreas[l2];
 				rsInterface.textShadow = stream.readUnsignedByte() == 1;
 				rsInterface.textColor = stream.readInt();
-				rsInterface.inventorySpritePaddingColumn = stream.readSignedWord();
-				rsInterface.inventorySpritePaddingRow = stream.readSignedWord();
+				rsInterface.inventorySpritePaddingColumn = stream.readShort();
+				rsInterface.inventorySpritePaddingRow = stream.readShort();
 				rsInterface.isInventoryInterface = stream.readUnsignedByte() == 1;
 				rsInterface.actions = new String[5];
 				for (int k4 = 0; k4 < 5; k4++) {

@@ -60,15 +60,15 @@ public final class SequenceFrame {
 					if (class18.anIntArray342[i3] == 3)
 						c = '\200';
 					if ((j3 & 1) != 0)
-						ai1[l2] = stream_3.method421();
+						ai1[l2] = stream_3.readSmart();
 					else
 						ai1[l2] = c;
 					if ((j3 & 2) != 0)
-						ai2[l2] = stream_3.method421();
+						ai2[l2] = stream_3.readSmart();
 					else
 						ai2[l2] = c;
 					if ((j3 & 4) != 0)
-						ai3[l2] = stream_3.method421();
+						ai3[l2] = stream_3.readSmart();
 					else
 						ai3[l2] = c;
 					k2 = i3;

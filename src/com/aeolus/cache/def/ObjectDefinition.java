@@ -460,11 +460,11 @@ public final class ObjectDefinition {
 			else if (opCode == 69)
 				surroundings = buffer.readUnsignedByte();
 			else if (opCode == 70)
-				translateX = buffer.readSignedWord();
+				translateX = buffer.readShort();
 			else if (opCode == 71)
-				translateY = buffer.readSignedWord();
+				translateY = buffer.readShort();
 			else if (opCode == 72)
-				translateZ = buffer.readSignedWord();
+				translateZ = buffer.readShort();
 			else if (opCode == 73)
 				obstructsGround = true;
 			else if (opCode == 74)
