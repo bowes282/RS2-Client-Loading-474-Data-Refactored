@@ -2,7 +2,7 @@ package com.aeolus.scene.graphic;
 import com.aeolus.cache.media.Background;
 import com.aeolus.media.DrawingArea;
 import com.aeolus.net.CacheArchive;
-import com.aeolus.scene.SceneGraph;
+import com.aeolus.scene.map.SceneGraph;
 
 public final class Rasterizer extends DrawingArea {
 

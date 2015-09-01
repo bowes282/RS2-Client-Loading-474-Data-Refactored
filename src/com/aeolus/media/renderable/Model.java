@@ -6,8 +6,8 @@ import com.aeolus.media.SkinList;
 import com.aeolus.media.Vertex;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.requester.Requester;
-import com.aeolus.scene.SceneGraph;
 import com.aeolus.scene.graphic.Rasterizer;
+import com.aeolus.scene.map.SceneGraph;
 
 public class Model extends Renderable {
 

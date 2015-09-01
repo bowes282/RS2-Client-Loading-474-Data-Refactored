@@ -1,11 +1,6 @@
-package com.aeolus.util;
+package com.aeolus.scene;
 
-public final class CullingCluster
-{
-
-	public CullingCluster()
-	{
-	}
+public final class CullingCluster {
 
 	public int anInt787;
 	public int anInt788;

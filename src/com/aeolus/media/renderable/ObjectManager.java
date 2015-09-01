@@ -2,11 +2,11 @@ package com.aeolus.media.renderable;
 import com.aeolus.cache.def.ObjectDefinition;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.requester.OnDemandRequester;
-import com.aeolus.scene.SceneGraph;
 import com.aeolus.scene.SceneObject;
 import com.aeolus.scene.graphic.Rasterizer;
+import com.aeolus.scene.map.CollisionMap;
+import com.aeolus.scene.map.SceneGraph;
 import com.aeolus.scene.tile.Floor;
-import com.aeolus.scene.util.CollisionMap;
 import com.aeolus.util.ChunkUtil;
 
 public final class ObjectManager {

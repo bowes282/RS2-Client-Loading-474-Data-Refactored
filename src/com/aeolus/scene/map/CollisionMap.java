@@ -1,4 +1,4 @@
-package com.aeolus.scene.util;
+package com.aeolus.scene.map;
 
 public final class CollisionMap {
 	

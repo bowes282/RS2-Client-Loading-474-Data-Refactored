@@ -1,4 +1,4 @@
-package com.aeolus.scene;
+package com.aeolus.scene.map;
 import com.aeolus.collection.Deque;
 import com.aeolus.media.DrawingArea;
 import com.aeolus.media.Vertex;
@@ -6,6 +6,7 @@ import com.aeolus.media.renderable.Renderable;
 import com.aeolus.media.renderable.ItemPile;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.media.renderable.StaticObject;
+import com.aeolus.scene.CullingCluster;
 import com.aeolus.scene.graphic.Rasterizer;
 import com.aeolus.scene.tile.Tile;
 import com.aeolus.scene.tile.GroundDecoration;
@@ -13,11 +14,6 @@ import com.aeolus.scene.tile.TileOverlay;
 import com.aeolus.scene.tile.TileUnderlay;
 import com.aeolus.scene.tile.WallDecoration;
 import com.aeolus.scene.tile.WallLock;
-import com.aeolus.util.CullingCluster;
-
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 
 public final class SceneGraph {
 
