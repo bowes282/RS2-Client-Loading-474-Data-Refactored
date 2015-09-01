@@ -9,22 +9,22 @@ public final class SequenceFrame {
 
 	public static void load(byte abyte0[], int fileId) {
 		Buffer stream = new Buffer(abyte0);
-		stream.currentOffset = abyte0.length - 12;
+		stream.currentPosition = abyte0.length - 12;
 		int i = stream.readInt();
 		int j = stream.readInt();
 		int k = stream.readInt();
 		int i1 = 0;
 		Buffer stream_1 = new Buffer(abyte0);
-		stream_1.currentOffset = i1;
+		stream_1.currentPosition = i1;
 		i1 += i + 4;
 		Buffer stream_2 = new Buffer(abyte0);
-		stream_2.currentOffset = i1;
+		stream_2.currentPosition = i1;
 		i1 += j;
 		Buffer stream_3 = new Buffer(abyte0);
-		stream_3.currentOffset = i1;
+		stream_3.currentPosition = i1;
 		i1 += k;
 		Buffer stream_4 = new Buffer(abyte0);
-		stream_4.currentOffset = i1;
+		stream_4.currentPosition = i1;
 		SkinList class18 = new SkinList(stream_4);
 		int k1 = stream_1.readInt();
 		int ai[] = new int[500];

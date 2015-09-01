@@ -18,31 +18,31 @@ public final class Buffer extends QueueNode {
 				stream = (Buffer) nodeList.popHead();
 			}
 			if (stream != null) {
-				stream.currentOffset = 0;
+				stream.currentPosition = 0;
 				return stream;
 			}
 		}
 		Buffer stream_1 = new Buffer();
-		stream_1.currentOffset = 0;
+		stream_1.currentPosition = 0;
 		stream_1.payload = new byte[5000];
 		return stream_1;
 	}
 
 	public int readShort2() {
-		currentOffset += 2;
-		int i = ((payload[currentOffset - 2] & 0xff) << 8)
-				+ (payload[currentOffset - 1] & 0xff);
-		if (i > 60000)
-			i = -65535 + i;
-		return i;
+		currentPosition += 2;
+		int value = ((payload[currentPosition - 2] & 0xff) << 8)
+				+ (payload[currentPosition - 1] & 0xff);
+		if (value > 60000)
+			value = -65535 + value;
+		return value;
 
 	}
 
 	public final int readUTriByte(int value) {
-		currentOffset += 3;
-		return (0xff & payload[currentOffset - 3] << 16)
-				+ (0xff & payload[currentOffset - 2] << 8)
-				+ (0xff & payload[currentOffset - 1]);
+		currentPosition += 3;
+		return (0xff & payload[currentPosition - 3] << 16)
+				+ (0xff & payload[currentPosition - 2] << 8)
+				+ (0xff & payload[currentPosition - 1]);
 	}
 
 	private Buffer() {
@@ -50,7 +50,7 @@ public final class Buffer extends QueueNode {
 
 	public Buffer(byte[] playLoad) {
 		payload = playLoad;
-		currentOffset = 0;
+		currentPosition = 0;
 	}
 
 	public int readUSmart2() {
@@ -63,56 +63,56 @@ public final class Buffer extends QueueNode {
 	}
 
 	public String readNewString() {
-		int i = currentOffset;
-		while (payload[currentOffset++] != 0)
+		int i = currentPosition;
+		while (payload[currentPosition++] != 0)
 			;
-		return new String(payload, i, currentOffset - i - 1);
+		return new String(payload, i, currentPosition - i - 1);
 	}
 
 	public void createFrame(int value) {
 		// System.out.println("Frame: " + i);
-		payload[currentOffset++] = (byte) (value + encryption.getNextKey());
+		payload[currentPosition++] = (byte) (value + encryption.getNextKey());
 	}
 
 	public void writeByte(int value) {
-		payload[currentOffset++] = (byte) value;
+		payload[currentPosition++] = (byte) value;
 	}
 
 	public void writeShort(int value) {
-		payload[currentOffset++] = (byte) (value >> 8);
-		payload[currentOffset++] = (byte) value;
+		payload[currentPosition++] = (byte) (value >> 8);
+		payload[currentPosition++] = (byte) value;
 	}
 
 	public void writeTriByte(int value) {
-		payload[currentOffset++] = (byte) (value >> 16);
-		payload[currentOffset++] = (byte) (value >> 8);
-		payload[currentOffset++] = (byte) value;
+		payload[currentPosition++] = (byte) (value >> 16);
+		payload[currentPosition++] = (byte) (value >> 8);
+		payload[currentPosition++] = (byte) value;
 	}
 
 	public void writeInt(int value) {
-		payload[currentOffset++] = (byte) (value >> 24);
-		payload[currentOffset++] = (byte) (value >> 16);
-		payload[currentOffset++] = (byte) (value >> 8);
-		payload[currentOffset++] = (byte) value;
+		payload[currentPosition++] = (byte) (value >> 24);
+		payload[currentPosition++] = (byte) (value >> 16);
+		payload[currentPosition++] = (byte) (value >> 8);
+		payload[currentPosition++] = (byte) value;
 	}
 
 	public void writeLEInt(int value) {
-		payload[currentOffset++] = (byte) value;
-		payload[currentOffset++] = (byte) (value >> 8);
-		payload[currentOffset++] = (byte) (value >> 16);
-		payload[currentOffset++] = (byte) (value >> 24);
+		payload[currentPosition++] = (byte) value;
+		payload[currentPosition++] = (byte) (value >> 8);
+		payload[currentPosition++] = (byte) (value >> 16);
+		payload[currentPosition++] = (byte) (value >> 24);
 	}
 
 	public void writeLong(long value) {
 		try {
-			payload[currentOffset++] = (byte) (int) (value >> 56);
-			payload[currentOffset++] = (byte) (int) (value >> 48);
-			payload[currentOffset++] = (byte) (int) (value >> 40);
-			payload[currentOffset++] = (byte) (int) (value >> 32);
-			payload[currentOffset++] = (byte) (int) (value >> 24);
-			payload[currentOffset++] = (byte) (int) (value >> 16);
-			payload[currentOffset++] = (byte) (int) (value >> 8);
-			payload[currentOffset++] = (byte) (int) value;
+			payload[currentPosition++] = (byte) (int) (value >> 56);
+			payload[currentPosition++] = (byte) (int) (value >> 48);
+			payload[currentPosition++] = (byte) (int) (value >> 40);
+			payload[currentPosition++] = (byte) (int) (value >> 32);
+			payload[currentPosition++] = (byte) (int) (value >> 24);
+			payload[currentPosition++] = (byte) (int) (value >> 16);
+			payload[currentPosition++] = (byte) (int) (value >> 8);
+			payload[currentPosition++] = (byte) (int) value;
 		} catch (RuntimeException runtimeexception) {
 			Signlink.reporterror("14395, " + 5 + ", " + value + ", "
 					+ runtimeexception.toString());
@@ -121,87 +121,88 @@ public final class Buffer extends QueueNode {
 	}
 
 	public void writeString(String text) {
-		System.arraycopy(text.getBytes(), 0, payload, currentOffset, text.length());
-		currentOffset += text.length();
-		payload[currentOffset++] = 10;
+		System.arraycopy(text.getBytes(), 0, payload, currentPosition,
+				text.length());
+		currentPosition += text.length();
+		payload[currentPosition++] = 10;
 	}
 
 	public void writeBytes(byte data[], int offset, int length) {
 		for (int index = length; index < length + offset; index++)
-			payload[currentOffset++] = data[index];
+			payload[currentPosition++] = data[index];
 	}
 
 	public void writeBytes(int value) {
-		payload[currentOffset - value - 1] = (byte) value;
+		payload[currentPosition - value - 1] = (byte) value;
 	}
 
 	public int readUnsignedByte() {
-		return payload[currentOffset++] & 0xff;
+		return payload[currentPosition++] & 0xff;
 	}
 
 	public byte readSignedByte() {
-		return payload[currentOffset++];
+		return payload[currentPosition++];
 	}
 
 	public int readUShort() {
-		currentOffset += 2;
-		return ((payload[currentOffset - 2] & 0xff) << 8)
-				+ (payload[currentOffset - 1] & 0xff);
+		currentPosition += 2;
+		return ((payload[currentPosition - 2] & 0xff) << 8)
+				+ (payload[currentPosition - 1] & 0xff);
 	}
 
 	public int readShort() {
-		currentOffset += 2;
-		int value = ((payload[currentOffset - 2] & 0xff) << 8)
-				+ (payload[currentOffset - 1] & 0xff);
+		currentPosition += 2;
+		int value = ((payload[currentPosition - 2] & 0xff) << 8)
+				+ (payload[currentPosition - 1] & 0xff);
 		if (value > 32767)
 			value -= 0x10000;
 		return value;
 	}
 
 	public int read3Bytes() {
-		currentOffset += 3;
-		return ((payload[currentOffset - 3] & 0xff) << 16)
-				+ ((payload[currentOffset - 2] & 0xff) << 8)
-				+ (payload[currentOffset - 1] & 0xff);
+		currentPosition += 3;
+		return ((payload[currentPosition - 3] & 0xff) << 16)
+				+ ((payload[currentPosition - 2] & 0xff) << 8)
+				+ (payload[currentPosition - 1] & 0xff);
 	}
 
 	public int readInt() {
-		currentOffset += 4;
-		return ((payload[currentOffset - 4] & 0xff) << 24)
-				+ ((payload[currentOffset - 3] & 0xff) << 16)
-				+ ((payload[currentOffset - 2] & 0xff) << 8)
-				+ (payload[currentOffset - 1] & 0xff);
+		currentPosition += 4;
+		return ((payload[currentPosition - 4] & 0xff) << 24)
+				+ ((payload[currentPosition - 3] & 0xff) << 16)
+				+ ((payload[currentPosition - 2] & 0xff) << 8)
+				+ (payload[currentPosition - 1] & 0xff);
 	}
 
 	public long readLong() {
-		long l = (long) readInt() & 0xffffffffL;
-		long l1 = (long) readInt() & 0xffffffffL;
-		return (l << 32) + l1;
+		long msi = (long) readInt() & 0xffffffffL;
+		long lsi = (long) readInt() & 0xffffffffL;
+		return (msi << 32) + lsi;
 	}
 
 	public String readString() {
-		int i = currentOffset;
-		while (payload[currentOffset++] != 10)
+		int index = currentPosition;
+		while (payload[currentPosition++] != 10)
 			;
-		return new String(payload, i, currentOffset - i - 1);
+		return new String(payload, index, currentPosition - index - 1);
 	}
 
 	public byte[] readBytes() {
-		int i = currentOffset;
-		while (payload[currentOffset++] != 10)
+		int index = currentPosition;
+		while (payload[currentPosition++] != 10)
 			;
-		byte abyte0[] = new byte[currentOffset - i - 1];
-		System.arraycopy(payload, i, abyte0, i - i, currentOffset - 1 - i);
-		return abyte0;
+		byte data[] = new byte[currentPosition - index - 1];
+		System.arraycopy(payload, index, data, index - index, currentPosition - 1 - index);
+		return data;
 	}
 
 	public void readBytes(int offset, int length, byte data[]) {
 		for (int index = length; index < length + offset; index++)
-			data[index] = payload[currentOffset++];
+			data[index] = payload[currentPosition++];
 	}
 
 	public void initBitAccess() {
-		bitPosition = currentOffset * 8;
+		bitPosition = currentPosition * 8;
 	}
 
 	public int readBits(int amount) {
@@ -210,22 +211,24 @@ public final class Buffer extends QueueNode {
 		int value = 0;
 		bitPosition += amount;
 		for (; amount > bitOffset; bitOffset = 8) {
-			value += (payload[byteOffset++] & BIT_MASKS[bitOffset]) << amount - bitOffset;
+			value += (payload[byteOffset++] & BIT_MASKS[bitOffset]) << amount
+					- bitOffset;
 			amount -= bitOffset;
 		}
 		if (amount == bitOffset)
 			value += payload[byteOffset] & BIT_MASKS[bitOffset];
 		else
-			value += payload[byteOffset] >> bitOffset - amount & BIT_MASKS[amount];
+			value += payload[byteOffset] >> bitOffset - amount
+					& BIT_MASKS[amount];
 		return value;
 	}
 
 	public void finishBitAccess() {
-		currentOffset = (bitPosition + 7) / 8;
+		currentPosition = (bitPosition + 7) / 8;
 	}
 
 	public int readSmart() {
-		int value = payload[currentOffset] & 0xff;
+		int value = payload[currentPosition] & 0xff;
 		if (value < 128)
 			return readUnsignedByte() - 64;
 		else
@@ -233,7 +236,7 @@ public final class Buffer extends QueueNode {
 	}
 
 	public int readUSmart() {
-		int value = payload[currentOffset] & 0xff;
+		int value = payload[currentPosition] & 0xff;
 		if (value < 128)
 			return readUnsignedByte();
 		else
@@ -241,8 +244,8 @@ public final class Buffer extends QueueNode {
 	}
 
 	public void encodeRSA(BigInteger exponent, BigInteger modulus) {
-		int length = currentOffset;
-		currentOffset = 0;
+		int length = currentPosition;
+		currentPosition = 0;
 		byte buffer[] = new byte[length];
 		readBytes(length, 0, buffer);
 
@@ -253,124 +256,124 @@ public final class Buffer extends QueueNode {
 					.toByteArray();
 		}
 
-		currentOffset = 0;
+		currentPosition = 0;
 		writeByte(rsa.length);
 		writeBytes(rsa, rsa.length, 0);
 	}
 
-	public void method424(int i) {
-		payload[currentOffset++] = (byte) (-i);
+	public void writeNegatedByte(int value) {
+		payload[currentPosition++] = (byte) (-value);
 	}
 
-	public void method425(int j) {
-		payload[currentOffset++] = (byte) (128 - j);
+	public void writeByteS(int value) {
+		payload[currentPosition++] = (byte) (128 - value);
 	}
 
-	public int method426() {
-		return payload[currentOffset++] - 128 & 0xff;
+	public int readUByteA() {
+		return payload[currentPosition++] - 128 & 0xff;
 	}
 
-	public int method427() {
-		return -payload[currentOffset++] & 0xff;
+	public int readNegUByte() {
+		return -payload[currentPosition++] & 0xff;
 	}
 
-	public int method428() {
-		return 128 - payload[currentOffset++] & 0xff;
+	public int readUByteS() {
+		return 128 - payload[currentPosition++] & 0xff;
 	}
 
-	public byte method429() {
-		return (byte) (-payload[currentOffset++]);
+	public byte readNegByte() {
+		return (byte) -payload[currentPosition++];
 	}
 
-	public byte method430() {
-		return (byte) (128 - payload[currentOffset++]);
+	public byte readByteS() {
+		return (byte) (128 - payload[currentPosition++]);
 	}
 
-	public void writeLEShort(int i) {
-		payload[currentOffset++] = (byte) i;
-		payload[currentOffset++] = (byte) (i >> 8);
+	public void writeLEShort(int value) {
+		payload[currentPosition++] = (byte) value;
+		payload[currentPosition++] = (byte) (value >> 8);
 	}
 
 	public void writeShortA(int value) {
-		payload[currentOffset++] = (byte) (value >> 8);
-		payload[currentOffset++] = (byte) (value + 128);
+		payload[currentPosition++] = (byte) (value >> 8);
+		payload[currentPosition++] = (byte) (value + 128);
 	}
 
 	public void writeLEShortA(int value) {
-		payload[currentOffset++] = (byte) (value + 128);
-		payload[currentOffset++] = (byte) (value >> 8);
+		payload[currentPosition++] = (byte) (value + 128);
+		payload[currentPosition++] = (byte) (value >> 8);
 	}
 
-	public int method434() {
-		currentOffset += 2;
-		return ((payload[currentOffset - 1] & 0xff) << 8)
-				+ (payload[currentOffset - 2] & 0xff);
+	public int readLEUShort() {
+		currentPosition += 2;
+		return ((payload[currentPosition - 1] & 0xff) << 8)
+				+ (payload[currentPosition - 2] & 0xff);
 	}
 
-	public int method435() {
-		currentOffset += 2;
-		return ((payload[currentOffset - 2] & 0xff) << 8)
-				+ (payload[currentOffset - 1] - 128 & 0xff);
+	public int readUShortA() {
+		currentPosition += 2;
+		return ((payload[currentPosition - 2] & 0xff) << 8)
+				+ (payload[currentPosition - 1] - 128 & 0xff);
 	}
 
-	public int method436() {
-		currentOffset += 2;
-		return ((payload[currentOffset - 1] & 0xff) << 8)
-				+ (payload[currentOffset - 2] - 128 & 0xff);
+	public int readLEUShortA() {
+		currentPosition += 2;
+		return ((payload[currentPosition - 1] & 0xff) << 8)
+				+ (payload[currentPosition - 2] - 128 & 0xff);
 	}
 
-	public int method437() {
-		currentOffset += 2;
-		int j = ((payload[currentOffset - 1] & 0xff) << 8)
-				+ (payload[currentOffset - 2] & 0xff);
-		if (j > 32767)
-			j -= 0x10000;
-		return j;
+	public int readLEShort() {
+		currentPosition += 2;
+		int value = ((payload[currentPosition - 1] & 0xff) << 8)
+				+ (payload[currentPosition - 2] & 0xff);
+		if (value > 32767)
+			value -= 0x10000;
+		return value;
 	}
 
-	public int method438() {
-		currentOffset += 2;
-		int j = ((payload[currentOffset - 1] & 0xff) << 8)
-				+ (payload[currentOffset - 2] - 128 & 0xff);
-		if (j > 32767)
-			j -= 0x10000;
-		return j;
+	public int readLEShortA() {
+		currentPosition += 2;
+		int value = ((payload[currentPosition - 1] & 0xff) << 8)
+				+ (payload[currentPosition - 2] - 128 & 0xff);
+		if (value > 32767)
+			value -= 0x10000;
+		return value;
 	}
 
-	public int readMEInt() { //V1
-		currentOffset += 4;
-		return ((payload[currentOffset - 2] & 0xff) << 24)
-				+ ((payload[currentOffset - 1] & 0xff) << 16)
-				+ ((payload[currentOffset - 4] & 0xff) << 8)
-				+ (payload[currentOffset - 3] & 0xff);
+	public int readMEInt() { // V1
+		currentPosition += 4;
+		return ((payload[currentPosition - 2] & 0xff) << 24)
+				+ ((payload[currentPosition - 1] & 0xff) << 16)
+				+ ((payload[currentPosition - 4] & 0xff) << 8)
+				+ (payload[currentPosition - 3] & 0xff);
 	}
 
-	public int readIMEInt() { //V2
-		currentOffset += 4;
-		return ((payload[currentOffset - 3] & 0xff) << 24)
-				+ ((payload[currentOffset - 4] & 0xff) << 16)
-				+ ((payload[currentOffset - 1] & 0xff) << 8)
-				+ (payload[currentOffset - 2] & 0xff);
+	public int readIMEInt() { // V2
+		currentPosition += 4;
+		return ((payload[currentPosition - 3] & 0xff) << 24)
+				+ ((payload[currentPosition - 4] & 0xff) << 16)
+				+ ((payload[currentPosition - 1] & 0xff) << 8)
+				+ (payload[currentPosition - 2] & 0xff);
 	}
 
 	public void writeReverseDataA(byte data[], int length, int offset) {
-		for (int k = (length + offset) - 1; k >= length; k--)
-			payload[currentOffset++] = (byte) (data[k] + 128);
+		for (int index = (length + offset) - 1; index >= length; index--)
+			payload[currentPosition++] = (byte) (data[index] + 128);
 
 	}
 
 	public void readReverseData(byte data[], int offset, int length) {
 		for (int index = (length + offset) - 1; index >= length; index--)
-			data[index] = payload[currentOffset++];
+			data[index] = payload[currentPosition++];
 
 	}
 
 	public byte payload[];
-	public int currentOffset;
+	public int currentPosition;
 	public int bitPosition;
-	private static final int[] BIT_MASKS = { 0, 1, 3, 7, 15, 31, 63, 127,
-			255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 0x1ffff,
-			0x3ffff, 0x7ffff, 0xfffff, 0x1fffff, 0x3fffff, 0x7fffff, 0xffffff,
+	private static final int[] BIT_MASKS = { 0, 1, 3, 7, 15, 31, 63, 127, 255,
+			511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 0x1ffff, 0x3ffff,
+			0x7ffff, 0xfffff, 0x1fffff, 0x3fffff, 0x7fffff, 0xffffff,
 			0x1ffffff, 0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 0x3fffffff,
 			0x7fffffff, -1 };
 	public ISAACCipher encryption;

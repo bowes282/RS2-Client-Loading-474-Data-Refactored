@@ -195,7 +195,7 @@ public final class Sprite extends DrawingArea {
 	public Sprite(CacheArchive streamLoader, String s, int i) {
 		Buffer stream = new Buffer(streamLoader.getDataForName(s + ".dat"));
 		Buffer stream_1 = new Buffer(streamLoader.getDataForName("index.dat"));
-		stream_1.currentOffset = stream.readUShort();
+		stream_1.currentPosition = stream.readUShort();
 		maxWidth = stream_1.readUShort();
 		maxHeight = stream_1.readUShort();
 		int j = stream_1.readUnsignedByte();
@@ -207,9 +207,9 @@ public final class Sprite extends DrawingArea {
 		}
 
 		for (int l = 0; l < i; l++) {
-			stream_1.currentOffset += 2;
-			stream.currentOffset += stream_1.readUShort() * stream_1.readUShort();
-			stream_1.currentOffset++;
+			stream_1.currentPosition += 2;
+			stream.currentPosition += stream_1.readUShort() * stream_1.readUShort();
+			stream_1.currentPosition++;
 		}
 
 		drawOffsetX = stream_1.readUnsignedByte();

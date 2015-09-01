@@ -184,7 +184,7 @@ public final class ItemDefinition {
 
 		cacheIndex = (cacheIndex + 1) % 10;
 		ItemDefinition itemDef = cache[cacheIndex];
-		item_data.currentOffset = streamIndices[itemId];
+		item_data.currentPosition = streamIndices[itemId];
 		itemDef.id = itemId;
 		itemDef.setDefaults();
 		itemDef.readValues(item_data);

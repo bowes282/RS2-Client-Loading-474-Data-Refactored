@@ -27,7 +27,7 @@ public final class RSInterface {
 		stream.readUShort();
 		interfaceCache = new RSInterface[31000];
 		
-		while (stream.currentOffset < stream.payload.length) {
+		while (stream.currentPosition < stream.payload.length) {
 			int k = stream.readUShort();
 			if (k == 65535) {
 				i = stream.readUShort();

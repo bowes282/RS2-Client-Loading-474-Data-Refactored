@@ -41,7 +41,7 @@ public class Model extends Renderable {
 		Buffer nc5 = new Buffer(abyte0);
 		Buffer nc6 = new Buffer(abyte0);
 		Buffer nc7 = new Buffer(abyte0);
-		nc1.currentOffset = abyte0.length - 23;
+		nc1.currentPosition = abyte0.length - 23;
 		int numVertices = nc1.readUShort();
 		int numTriangles = nc1.readUShort();
 		int numTexTriangles = nc1.readUnsignedByte();
@@ -79,7 +79,7 @@ public class Model extends Renderable {
 		int[] triangleColours2 = new int[numTriangles];
 		if (numTexTriangles > 0) {
 			O = new byte[numTexTriangles];
-			nc1.currentOffset = 0;
+			nc1.currentPosition = 0;
 			for (int j5 = 0; j5 < numTexTriangles; j5++) {
 				byte byte0 = O[j5] = nc1.readSignedByte();
 				if (byte0 == 0)
@@ -185,11 +185,11 @@ public class Model extends Renderable {
 				J = new byte[i5];
 			}
 		}
-		nc1.currentOffset = l5;
-		nc2.currentOffset = k8;
-		nc3.currentOffset = l8;
-		nc4.currentOffset = i9;
-		nc5.currentOffset = i7;
+		nc1.currentPosition = l5;
+		nc2.currentPosition = k8;
+		nc3.currentPosition = l8;
+		nc4.currentPosition = i9;
+		nc5.currentPosition = i7;
 		int l10 = 0;
 		int i11 = 0;
 		int j11 = 0;
@@ -213,13 +213,13 @@ public class Model extends Renderable {
 			if (anIntArray1655 != null)
 				anIntArray1655[k11] = nc5.readUnsignedByte();
 		}
-		nc1.currentOffset = j8;
-		nc2.currentOffset = i6;
-		nc3.currentOffset = k6;
-		nc4.currentOffset = j7;
-		nc5.currentOffset = l6;
-		nc6.currentOffset = l7;
-		nc7.currentOffset = i8;
+		nc1.currentPosition = j8;
+		nc2.currentPosition = i6;
+		nc3.currentPosition = k6;
+		nc4.currentPosition = j7;
+		nc5.currentPosition = l6;
+		nc6.currentPosition = l7;
+		nc7.currentPosition = i8;
 		for (int i12 = 0; i12 < numTriangles; i12++) {
 			triangleColours2[i12] = nc1.readUShort();
 			if (l1 == 1) {
@@ -273,8 +273,8 @@ public class Model extends Renderable {
 		}
 		} catch (Exception ex) {
 		}*/
-		nc1.currentOffset = k7;
-		nc2.currentOffset = j6;
+		nc1.currentPosition = k7;
+		nc2.currentPosition = j6;
 		int k12 = 0;
 		int i13 = 0;
 		int k13 = 0;
@@ -319,12 +319,12 @@ public class Model extends Renderable {
 				facePoint3[i14] = k13;
 			}
 		}
-		nc1.currentOffset = j9;
-		nc2.currentOffset = k9;
-		nc3.currentOffset = l9;
-		nc4.currentOffset = i10;
-		nc5.currentOffset = j10;
-		nc6.currentOffset = k10;
+		nc1.currentPosition = j9;
+		nc2.currentPosition = k9;
+		nc3.currentPosition = l9;
+		nc4.currentPosition = i10;
+		nc5.currentPosition = j10;
+		nc6.currentPosition = k10;
 		for (int k14 = 0; k14 < numTexTriangles; k14++) {
 			int i15 = O[k14] & 0xff;
 			if (i15 == 0) {
@@ -414,7 +414,7 @@ public class Model extends Renderable {
 		Buffer nc5 = new Buffer(abyte0);
 		Buffer nc6 = new Buffer(abyte0);
 		Buffer nc7 = new Buffer(abyte0);
-		nc1.currentOffset = abyte0.length - 23;
+		nc1.currentPosition = abyte0.length - 23;
 		int numVertices = nc1.readUShort();
 		int numTriangles = nc1.readUShort();
 		int numTexTriangles = nc1.readUnsignedByte();
@@ -432,9 +432,9 @@ public class Model extends Renderable {
 		}
 		int newformat = 0;
 		if (bool_26_) {
-			nc1.currentOffset -= 7;
+			nc1.currentPosition -= 7;
 			newformat = nc1.readUnsignedByte();
-			nc1.currentOffset += 6;
+			nc1.currentPosition += 6;
 		}
 		if (newformat == 15)
 			newmodel[modelID] = true;
@@ -465,7 +465,7 @@ public class Model extends Renderable {
 		int[] triangleColours2 = new int[numTriangles];
 		if (numTexTriangles > 0) {
 			O = new byte[numTexTriangles];
-			nc1.currentOffset = 0;
+			nc1.currentPosition = 0;
 			for (int j5 = 0; j5 < numTexTriangles; j5++) {
 				byte byte0 = O[j5] = nc1.readSignedByte();
 				if (byte0 == 0)
@@ -579,11 +579,11 @@ public class Model extends Renderable {
 				J = new byte[i5];
 			}
 		}
-		nc1.currentOffset = l5;
-		nc2.currentOffset = k8;
-		nc3.currentOffset = l8;
-		nc4.currentOffset = i9;
-		nc5.currentOffset = i7;
+		nc1.currentPosition = l5;
+		nc2.currentPosition = k8;
+		nc3.currentPosition = l8;
+		nc4.currentPosition = i9;
+		nc5.currentPosition = i7;
 		int l10 = 0;
 		int i11 = 0;
 		int j11 = 0;
@@ -607,13 +607,13 @@ public class Model extends Renderable {
 			if (anIntArray1655 != null)
 				anIntArray1655[k11] = nc5.readUnsignedByte();
 		}
-		nc1.currentOffset = j8;
-		nc2.currentOffset = i6;
-		nc3.currentOffset = k6;
-		nc4.currentOffset = j7;
-		nc5.currentOffset = l6;
-		nc6.currentOffset = l7;
-		nc7.currentOffset = i8;
+		nc1.currentPosition = j8;
+		nc2.currentPosition = i6;
+		nc3.currentPosition = k6;
+		nc4.currentPosition = j7;
+		nc5.currentPosition = l6;
+		nc6.currentPosition = l7;
+		nc7.currentPosition = i8;
 		for (int i12 = 0; i12 < numTriangles; i12++) {
 			triangleColours2[i12] = nc1.readUShort();
 			if (l1 == 1) {
@@ -640,8 +640,8 @@ public class Model extends Renderable {
 				else
 					x[i12] = -1;
 		}
-		nc1.currentOffset = k7;
-		nc2.currentOffset = j6;
+		nc1.currentPosition = k7;
+		nc2.currentPosition = j6;
 		int k12 = 0;
 		int i13 = 0;
 		int k13 = 0;
@@ -686,12 +686,12 @@ public class Model extends Renderable {
 				facePoint3[i14] = k13;
 			}
 		}
-		nc1.currentOffset = j9;
-		nc2.currentOffset = k9;
-		nc3.currentOffset = l9;
-		nc4.currentOffset = i10;
-		nc5.currentOffset = j10;
-		nc6.currentOffset = k10;
+		nc1.currentPosition = j9;
+		nc2.currentPosition = k9;
+		nc3.currentPosition = l9;
+		nc4.currentPosition = i10;
+		nc5.currentPosition = j10;
+		nc6.currentPosition = k10;
 		for (int k14 = 0; k14 < numTexTriangles; k14++) {
 			int i15 = O[k14] & 0xff;
 			if (i15 == 0) {
@@ -811,15 +811,15 @@ public class Model extends Renderable {
 			anIntArray1656 = new int[anInt1630];
 		anIntArray1640 = new int[anInt1630];
 		Buffer stream = new Buffer(class21.aByteArray368);
-		stream.currentOffset = class21.anInt372;
+		stream.currentPosition = class21.anInt372;
 		Buffer stream_1 = new Buffer(class21.aByteArray368);
-		stream_1.currentOffset = class21.anInt373;
+		stream_1.currentPosition = class21.anInt373;
 		Buffer stream_2 = new Buffer(class21.aByteArray368);
-		stream_2.currentOffset = class21.anInt374;
+		stream_2.currentPosition = class21.anInt374;
 		Buffer stream_3 = new Buffer(class21.aByteArray368);
-		stream_3.currentOffset = class21.anInt375;
+		stream_3.currentPosition = class21.anInt375;
 		Buffer stream_4 = new Buffer(class21.aByteArray368);
-		stream_4.currentOffset = class21.anInt376;
+		stream_4.currentPosition = class21.anInt376;
 		int k = 0;
 		int l = 0;
 		int i1 = 0;
@@ -843,11 +843,11 @@ public class Model extends Renderable {
 			if (anIntArray1655 != null)
 				anIntArray1655[j1] = stream_4.readUnsignedByte();
 		}
-		stream.currentOffset = class21.anInt379;
-		stream_1.currentOffset = class21.anInt380;
-		stream_2.currentOffset = class21.anInt381;
-		stream_3.currentOffset = class21.anInt382;
-		stream_4.currentOffset = class21.anInt383;
+		stream.currentPosition = class21.anInt379;
+		stream_1.currentPosition = class21.anInt380;
+		stream_2.currentPosition = class21.anInt381;
+		stream_3.currentPosition = class21.anInt382;
+		stream_4.currentPosition = class21.anInt383;
 		for (int l1 = 0; l1 < anInt1630; l1++) {
 			anIntArray1640[l1] = stream.readUShort();
 			if (anIntArray1637 != null)
@@ -860,8 +860,8 @@ public class Model extends Renderable {
 			if (anIntArray1656 != null)
 				anIntArray1656[l1] = stream_4.readUnsignedByte();
 		}
-		stream.currentOffset = class21.anInt377;
-		stream_1.currentOffset = class21.anInt378;
+		stream.currentPosition = class21.anInt377;
+		stream_1.currentPosition = class21.anInt378;
 		int j2 = 0;
 		int l2 = 0;
 		int j3 = 0;
@@ -906,7 +906,7 @@ public class Model extends Renderable {
 				anIntArray1633[l3] = j3;
 			}
 		}
-		stream.currentOffset = class21.anInt384;
+		stream.currentPosition = class21.anInt384;
 		for (int j4 = 0; j4 < anInt1642; j4++) {
 			anIntArray1643[j4] = stream.readUShort();
 			anIntArray1644[j4] = stream.readUShort();
@@ -924,7 +924,7 @@ public class Model extends Renderable {
 			return;
 		}
 		Buffer stream = new Buffer(abyte0);
-		stream.currentOffset = abyte0.length - 18;
+		stream.currentPosition = abyte0.length - 18;
 		ModelHeader class21_1 = aClass21Array1661[j] = new ModelHeader();
 		class21_1.aByteArray368 = abyte0;
 		class21_1.anInt369 = stream.readUShort();

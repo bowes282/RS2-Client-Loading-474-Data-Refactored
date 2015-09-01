@@ -260,7 +260,7 @@ final class SoundSynthesizer {
 		volume.decode(stream);
 		int option = stream.readUnsignedByte();
 		if (option != 0) {
-			stream.currentOffset--;
+			stream.currentPosition--;
 			pitchModifier = new SoundEnvelope();
 			pitchModifier.decode(stream);
 			pitchModifierAmplitude = new SoundEnvelope();
@@ -268,7 +268,7 @@ final class SoundSynthesizer {
 		}
 		option = stream.readUnsignedByte();
 		if (option != 0) {
-			stream.currentOffset--;
+			stream.currentPosition--;
 			volumeMultiplier = new SoundEnvelope();
 			volumeMultiplier.decode(stream);
 			volumeMultiplierAmplitude = new SoundEnvelope();
@@ -276,7 +276,7 @@ final class SoundSynthesizer {
 		}
 		option = stream.readUnsignedByte();
 		if (option != 0) {
-			stream.currentOffset--;
+			stream.currentPosition--;
 			release = new SoundEnvelope();
 			release.decode(stream);
 			attack = new SoundEnvelope();

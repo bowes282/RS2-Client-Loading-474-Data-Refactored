@@ -65,10 +65,10 @@ public class RSFont extends DrawingArea {
         characterScreenWidths = new int[256];
         Buffer stream = new Buffer(archive.getDataForName(s + ".dat"));
         Buffer stream_1 = new Buffer(archive.getDataForName("index.dat"));
-        stream_1.currentOffset = stream.readUShort() + 4;
+        stream_1.currentPosition = stream.readUShort() + 4;
         int k = stream_1.readUnsignedByte();
         if (k > 0) {
-            stream_1.currentOffset += 3 * (k - 1);
+            stream_1.currentPosition += 3 * (k - 1);
         }
         for (int l = 0; l < 256; l++) {
             characterDrawXOffsets[l] = stream_1.readUnsignedByte();

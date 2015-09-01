@@ -1,7 +1,4 @@
 package com.aeolus.media.font;
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 
 import java.util.Random;
 
@@ -22,10 +19,10 @@ public final class TextDrawingArea extends DrawingArea {
 	aBoolean1499 = false;
 	Buffer stream = new Buffer(streamLoader.getDataForName(s + ".dat"));
 	Buffer stream_1 = new Buffer(streamLoader.getDataForName("index.dat"));
-	stream_1.currentOffset = stream.readUShort() + 4;
+	stream_1.currentPosition = stream.readUShort() + 4;
 	int k = stream_1.readUnsignedByte();
 	if(k > 0)
-		stream_1.currentOffset += 3 * (k - 1);
+		stream_1.currentPosition += 3 * (k - 1);
 	for(int l = 0; l < 256; l++) {
 		anIntArray1494[l] = stream_1.readUnsignedByte();
 		anIntArray1495[l] = stream_1.readUnsignedByte();

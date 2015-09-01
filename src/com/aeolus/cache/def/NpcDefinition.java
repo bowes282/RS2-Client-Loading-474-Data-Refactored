@@ -60,7 +60,7 @@ public final class NpcDefinition {
 
 		anInt56 = (anInt56 + 1) % 20;
 		NpcDefinition definition = cache[anInt56] = new NpcDefinition();
-		stream.currentOffset = streamIndices[id];
+		stream.currentPosition = streamIndices[id];
 		definition.interfaceType = id;
 		definition.readValues(stream);
 		return definition;

@@ -39,7 +39,7 @@ public final class SoundTrack {
 		for (int synthesizer = 0; synthesizer < 10; synthesizer++) {
 			int valid = stream.readUnsignedByte();
 			if (valid != 0) {
-				stream.currentOffset--;
+				stream.currentPosition--;
 				synthesizers[synthesizer] = new SoundSynthesizer();
 				synthesizers[synthesizer].decode(stream);
 			}
@@ -72,7 +72,7 @@ public final class SoundTrack {
 
 	private Buffer pack(int loops) {
 		int size = mix(loops);
-		riff.currentOffset = 0;
+		riff.currentPosition = 0;
 		riff.writeInt(0x52494646);
 		riff.writeLEInt(36 + size);
 		riff.writeInt(0x57415645);
@@ -86,7 +86,7 @@ public final class SoundTrack {
 		riff.writeLEShort(8);
 		riff.writeInt(0x64617461);
 		riff.writeLEInt(size);
-		riff.currentOffset += size;
+		riff.currentPosition += size;
 		return riff;
 	}
 

@@ -70,7 +70,7 @@ public final class ObjectDefinition {
 				return cache[index];
 		cacheIndex = (cacheIndex + 1) % 20;
 		ObjectDefinition objectDef = cache[cacheIndex];
-		stream.currentOffset = streamIndices[id];
+		stream.currentPosition = streamIndices[id];
 		objectDef.type = id;
 		objectDef.reset();
 		objectDef.readValues(stream);
@@ -383,7 +383,7 @@ public final class ObjectDefinition {
 							modelTypes[index] = buffer.readUnsignedByte();
 						}
 					} else {
-						buffer.currentOffset += count * 3;
+						buffer.currentPosition += count * 3;
 					}
 				}
 			} else if (opCode == 2)
@@ -399,7 +399,7 @@ public final class ObjectDefinition {
 						for (int index = 0; index < count; index++)
 							modelIds[index] = buffer.readUShort();
 					} else {
-						buffer.currentOffset += count * 2;
+						buffer.currentPosition += count * 2;
 					}
 				}
 			} else if (opCode == 14)

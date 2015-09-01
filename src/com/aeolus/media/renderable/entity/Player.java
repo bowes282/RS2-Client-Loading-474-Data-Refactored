@@ -97,7 +97,7 @@ public final class Player extends Entity {
 
 	public void updatePlayer(Buffer stream)
 	{
-		stream.currentOffset = 0;
+		stream.currentPosition = 0;
 		anInt1702 = stream.readUnsignedByte();
 		headIcon = stream.readUnsignedByte();
 		skullIcon = stream.readUnsignedByte();

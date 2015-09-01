@@ -31,7 +31,7 @@ public final class CacheArchive {
 		anIntArray729 = new int[dataSize];
 		anIntArray730 = new int[dataSize];
 		anIntArray731 = new int[dataSize];
-		int k = stream.currentOffset + dataSize * 10;
+		int k = stream.currentPosition + dataSize * 10;
 		for(int l = 0; l < dataSize; l++)
 		{
 			anIntArray728[l] = stream.readInt();
