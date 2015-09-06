@@ -1,8 +1,4 @@
 package com.aeolus.cache.media;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import com.aeolus.Game;
 import com.aeolus.cache.def.NpcDefinition;
 import com.aeolus.cache.def.ItemDefinition;
@@ -233,7 +229,6 @@ public final class RSInterface {
 			}
 		}		
 		interfaceLoader = streamLoader;
-		constructLunar();
 		clanChatTab(textDrawingAreas);
 		//clanChatSetup(textDrawingAreas);
 		configureLunar(textDrawingAreas);
