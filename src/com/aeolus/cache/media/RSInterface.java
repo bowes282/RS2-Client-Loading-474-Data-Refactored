@@ -1,4 +1,8 @@
 package com.aeolus.cache.media;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import com.aeolus.Game;
 import com.aeolus.cache.def.NpcDefinition;
 import com.aeolus.cache.def.ItemDefinition;
@@ -33,6 +37,7 @@ public final class RSInterface {
 				defaultParentId = stream.readUShort();
 				interfaceId = stream.readUShort();
 			}
+			
 			RSInterface rsInterface = interfaceCache[interfaceId] = new RSInterface();
 			rsInterface.id = interfaceId;
 			rsInterface.parentID = defaultParentId;
@@ -129,11 +134,16 @@ public final class RSInterface {
 					rsInterface.textDrawingAreas = textDrawingAreas[k2];
 				rsInterface.textShadow = stream.readUnsignedByte() == 1;
 			}
+			
 			if (rsInterface.type == 4) {
 				rsInterface.message = stream.readString().replaceAll("RuneScape", "Project Aeolus");
+				if (rsInterface.id == 19209) {
+					rsInterface.message.replaceAll("Total", "");
+				}
 				rsInterface.aString228 = stream.readString();
-				//System.out.println("Id: " + rsInterface.id + " - " + rsInterface.message + " : " + rsInterface.aString228 + "\r\n");
+				//System.out.println("Id: " + rsInterface.id + " - " + rsInterface.message + "\n");
 			}
+
 			if (rsInterface.type == 1 || rsInterface.type == 3 || rsInterface.type == 4)
 				rsInterface.textColor = stream.readInt();
 			if (rsInterface.type == 3 || rsInterface.type == 4) {
@@ -221,7 +231,7 @@ public final class RSInterface {
 						rsInterface.tooltip = "Continue";
 				}
 			}
-		}
+		}		
 		interfaceLoader = streamLoader;
 		constructLunar();
 		clanChatTab(textDrawingAreas);
