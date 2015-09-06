@@ -2129,7 +2129,7 @@ public class Game extends GameShell {
 				if (Configuration.enableMusic) {
 					nextSong = currentSong;
 					songChanging = true;
-					onDemandFetcher.method558(2, nextSong);
+					onDemandFetcher.provide(2, nextSong);
 				} else {
 					stopMidi();
 				}
@@ -3937,7 +3937,7 @@ public class Game extends GameShell {
 			dropClient();
 		updatePlayerInstances();
 		forceNPCUpdateBlock();
-		handleMusicEvents();
+		processTrackUpdates();
 		resetSpokenText();
 		anInt945++;
 		if (crossType != 0) {
@@ -4241,7 +4241,7 @@ public class Game extends GameShell {
 				&& prevSong == 0) {
 			nextSong = id;
 			songChanging = true;
-			onDemandFetcher.method558(2, nextSong);
+			onDemandFetcher.provide(2, nextSong);
 			currentSong = id;
 		}
 	}
@@ -4261,55 +4261,50 @@ public class Game extends GameShell {
 		}
 	}
 
-	private int anInt1257;
-	private long aLong1172;
+	private int currentTrackTime;
+	private long trackTimer;
 
-	private boolean saveWave(byte abyte0[], int i) {
-		return abyte0 == null || Signlink.wavesave(abyte0, i);
+	private boolean saveWave(byte data[], int id) {
+		return data == null || Signlink.wavesave(data, id);
 	}
+	@SuppressWarnings("unused")
+	private int currentTrackLoop;
 
-	private int anInt1289;
-
-	private void handleMusicEvents() {
-		for (int i = 0; i < trackCount; i++) {
-			boolean flag1 = false;
+	private void processTrackUpdates() {
+		for (int count = 0; count < trackCount; count++) {
+			boolean replay = false;
 			try {
-				Buffer stream = SoundTrack.data(anIntArray1241[i],
-						anIntArray1207[i]);
+				Buffer stream = SoundTrack.data(trackLoops[count],
+						tracks[count]);
 				new SoundPlayer((InputStream) new ByteArrayInputStream(
 						stream.payload, 0, stream.currentPosition),
-						soundVolume[i], anIntArray1250[i]);
+						soundVolume[count], soundDelay[count]);
 				if (System.currentTimeMillis()
-						+ (long) (stream.currentPosition / 22) > aLong1172
-						+ (long) (anInt1257 / 22)) {
-					anInt1257 = stream.currentPosition;
-					aLong1172 = System.currentTimeMillis();
+						+ (long) (stream.currentPosition / 22) > trackTimer
+						+ (long) (currentTrackTime / 22)) {
+					currentTrackTime = stream.currentPosition;
+					trackTimer = System.currentTimeMillis();
 					if (saveWave(stream.payload, stream.currentPosition)) {
-						anInt874 = anIntArray1207[i];
-						anInt1289 = anIntArray1241[i];
+						currentTrackPlaying = tracks[count];
+						currentTrackLoop = trackLoops[count];
 					} else {
-						flag1 = true;
+						replay = true;
 					}
 				}
-				// }
 			} catch (Exception exception) {
 			}
-			if (!flag1 || anIntArray1250[i] == -5) {
+			if (!replay || soundDelay[count] == -5) {
 				trackCount--;
-				for (int j = i; j < trackCount; j++) {
-					anIntArray1207[j] = anIntArray1207[j + 1];
-					anIntArray1241[j] = anIntArray1241[j + 1];
-					anIntArray1250[j] = anIntArray1250[j + 1];
-					soundVolume[j] = soundVolume[j + 1];
+				for (int index = count; index < trackCount; index++) {
+					tracks[index] = tracks[index + 1];
+					trackLoops[index] = trackLoops[index + 1];
+					soundDelay[index] = soundDelay[index + 1];
+					soundVolume[index] = soundVolume[index + 1];
 				}
-
-				i--;
+				count--;
 			} else {
-				anIntArray1250[i] = -5;
+				soundDelay[count] = -5;
 			}
-			/*
-			 * } else { anIntArray1250[i]--;
-			 */
 		}
 
 		if (prevSong > 0) {
@@ -4319,7 +4314,7 @@ public class Game extends GameShell {
 			if (prevSong == 0 && Configuration.enableMusic && !lowMem) {
 				nextSong = currentSong;
 				songChanging = true;
-				onDemandFetcher.method558(2, nextSong);
+				onDemandFetcher.provide(2, nextSong);
 			}
 		}
 	}
@@ -11821,9 +11816,9 @@ public class Game extends GameShell {
 					&& localPlayer.smallY[0] >= j6 - i14
 					&& localPlayer.smallY[0] <= j6 + i14 && aBoolean848 && !lowMem
 					&& trackCount < 50) {
-				anIntArray1207[trackCount] = i9;
-				anIntArray1241[trackCount] = i16;
-				anIntArray1250[trackCount] = SoundTrack.delays[i9];
+				tracks[trackCount] = i9;
+				trackLoops[trackCount] = i16;
+				soundDelay[trackCount] = SoundTrack.delays[i9];
 				trackCount++;
 			}
 		}
@@ -12709,7 +12704,7 @@ public class Game extends GameShell {
 						&& prevSong == 0) {
 					nextSong = id;
 					songChanging = true;
-					onDemandFetcher.method558(2, nextSong);
+					onDemandFetcher.provide(2, nextSong);
 				}
 				currentSong = id;
 				opCode = -1;
@@ -12721,7 +12716,7 @@ public class Game extends GameShell {
 				if (Configuration.enableMusic && !lowMem) {
 					nextSong = next;
 					songChanging = false;
-					onDemandFetcher.method558(2, nextSong);
+					onDemandFetcher.provide(2, nextSong);
 					prevSong = previous;
 				}
 				opCode = -1;
@@ -12816,11 +12811,11 @@ public class Game extends GameShell {
 								int k28 = anIntArray1235[k16] = onDemandFetcher
 										.method562(0, j26, l23);
 								if (k28 != -1)
-									onDemandFetcher.method558(3, k28);
+									onDemandFetcher.provide(3, k28);
 								int j30 = anIntArray1236[k16] = onDemandFetcher
 										.method562(1, j26, l23);
 								if (j30 != -1)
-									onDemandFetcher.method558(3, j30);
+									onDemandFetcher.provide(3, j30);
 								k16++;
 							}
 						}
@@ -12861,11 +12856,11 @@ public class Game extends GameShell {
 						int j32 = anIntArray1235[l26] = onDemandFetcher
 								.method562(0, l31, l30);
 						if (j32 != -1)
-							onDemandFetcher.method558(3, j32);
+							onDemandFetcher.provide(3, j32);
 						int i33 = anIntArray1236[l26] = onDemandFetcher
 								.method562(1, l31, l30);
 						if (i33 != -1)
-							onDemandFetcher.method558(3, i33);
+							onDemandFetcher.provide(3, i33);
 					}
 				}
 				int i17 = baseX - anInt1036;
@@ -12995,9 +12990,9 @@ public class Game extends GameShell {
 				int type = incoming.readUnsignedByte();
 				int delay = incoming.readUShort();
 				int volume = incoming.readUShort();
-				anIntArray1207[trackCount] = soundId;
-				anIntArray1241[trackCount] = type;
-				anIntArray1250[trackCount] = delay
+				tracks[trackCount] = soundId;
+				trackLoops[trackCount] = type;
+				soundDelay[trackCount] = delay
 						+ SoundTrack.delays[soundId];
 				soundVolume[trackCount] = volume;
 				trackCount++;
@@ -14040,7 +14035,7 @@ public class Game extends GameShell {
 		fullscreenInterfaceID = -1;
 	}
 
-	private int anInt874;
+	private int currentTrackPlaying;
 
 	public Game() {
 		xpAddedPos = xpCounter = expAdded = 0;
@@ -14050,7 +14045,7 @@ public class Game extends GameShell {
 		chatTypeView = 0;
 		clanChatMode = 0;
 		cButtonHPos = -1;
-		anInt874 = -1;
+		currentTrackPlaying = -1;
 		cButtonCPos = 0;
 		server = Configuration.server_address;
 		anIntArrayArray825 = new int[104][104];
@@ -14174,7 +14169,7 @@ public class Game extends GameShell {
 		outgoing = Buffer.create();
 		menuActionName = new String[500];
 		anIntArray1203 = new int[5];
-		anIntArray1207 = new int[50];
+		tracks = new int[50];
 		anInt1210 = 2;
 		anInt1211 = 78;
 		promptInput = "";
@@ -14184,9 +14179,9 @@ public class Game extends GameShell {
 		songChanging = true;
 		aClass11Array1230 = new CollisionMap[4];
 		anIntArray1240 = new int[100];
-		anIntArray1241 = new int[50];
+		trackLoops = new int[50];
 		aBoolean1242 = false;
-		anIntArray1250 = new int[50];
+		soundDelay = new int[50];
 		rsAlreadyLoaded = false;
 		welcomeScreenRaised = false;
 		messagePromptRaised = false;
@@ -14540,7 +14535,7 @@ public class Game extends GameShell {
 			8526, 918, 38802, 24466, 10145, 58654, 5027, 1457, 16565, 34991,
 			25486 };
 	private static boolean flagged;
-	private final int[] anIntArray1207;
+	private final int[] tracks;
 	private int minimapRotation;
 	public int anInt1210;
 	static int anInt1211;
@@ -14568,7 +14563,7 @@ public class Game extends GameShell {
 	private int anInt1238;
 	public final int anInt1239 = 100;
 	private final int[] anIntArray1240;
-	private final int[] anIntArray1241;
+	private final int[] trackLoops;
 	private boolean aBoolean1242;
 	private int atInventoryLoopCycle;
 	private int atInventoryInterface;
@@ -14577,7 +14572,7 @@ public class Game extends GameShell {
 	private byte[][] aByteArrayArray1247;
 	private int tradeMode;
 	private int anInt1249;
-	private final int[] anIntArray1250;
+	private final int[] soundDelay;
 	private int anInt1251;
 	private final boolean rsAlreadyLoaded;
 	private int anInt1253;

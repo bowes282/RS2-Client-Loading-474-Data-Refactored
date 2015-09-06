@@ -11,7 +11,7 @@ public final class SoundTrack {
 	private SoundTrack() {
 		synthesizers = new SoundSynthesizer[10];
 	}
-
+	
 	public static void unpack(Buffer stream) {
 		output = new byte[0x6baa8];
 		riff = new Buffer(output);
@@ -22,7 +22,7 @@ public final class SoundTrack {
 				return;
 			tracks[id] = new SoundTrack();
 			tracks[id].decode(stream);
-			delays[id] = tracks[id].calculateDelay();
+			delays[id] = tracks[id].calculateDelay();		
 		} while (true);
 	}
 

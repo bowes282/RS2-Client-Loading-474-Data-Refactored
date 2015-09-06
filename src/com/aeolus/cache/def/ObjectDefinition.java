@@ -195,14 +195,16 @@ public final class ObjectDefinition {
 		Buffer stream = new Buffer(streamLoader.getDataForName("loc.idx"));
 		int totalObjects = stream.readUShort();
 		streamIndices = new int[totalObjects];
-		int i = 2;
-		for (int j = 0; j < totalObjects; j++) {
-			streamIndices[j] = i;
-			i += stream.readUShort();
+		int offset = 2;
+		for (int index = 0; index < totalObjects; index++) {
+			streamIndices[index] = offset;
+			offset += stream.readUShort();
 		}
 		cache = new ObjectDefinition[20];
-		for (int k = 0; k < 20; k++)
-			cache[k] = new ObjectDefinition();
+		for (int index = 0; index < 20; index++)
+			cache[index] = new ObjectDefinition();
+		
+		System.out.println("Loaded: " + totalObjects + " Objects");
 	}
 
 	public boolean method577(int i) {

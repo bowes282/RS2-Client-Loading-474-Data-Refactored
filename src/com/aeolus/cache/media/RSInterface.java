@@ -12,30 +12,30 @@ import com.aeolus.net.CacheArchive;
 public final class RSInterface {
 
 	public void swapInventoryItems(int i, int j) {
-		int k = inventoryItemId[i];
+		int id = inventoryItemId[i];
 		inventoryItemId[i] = inventoryItemId[j];
-		inventoryItemId[j] = k;
-		k = invStackSizes[i];
+		inventoryItemId[j] = id;
+		id = invStackSizes[i];
 		invStackSizes[i] = invStackSizes[j];
-		invStackSizes[j] = k;
+		invStackSizes[j] = id;
 	}
 
 	public static void unpack(CacheArchive streamLoader, TextDrawingArea textDrawingAreas[], CacheArchive streamLoader_1) {
 		aMRUNodes_238 = new Cache(50000);
 		Buffer stream = new Buffer(streamLoader.getDataForName("data"));
-		int i = -1;
+		int defaultParentId = -1;
 		stream.readUShort();
 		interfaceCache = new RSInterface[31000];
 		
 		while (stream.currentPosition < stream.payload.length) {
-			int k = stream.readUShort();
-			if (k == 65535) {
-				i = stream.readUShort();
-				k = stream.readUShort();
+			int interfaceId = stream.readUShort();
+			if (interfaceId == 65535) {
+				defaultParentId = stream.readUShort();
+				interfaceId = stream.readUShort();
 			}
-			RSInterface rsInterface = interfaceCache[k] = new RSInterface();
-			rsInterface.id = k;
-			rsInterface.parentID = i;
+			RSInterface rsInterface = interfaceCache[interfaceId] = new RSInterface();
+			rsInterface.id = interfaceId;
+			rsInterface.parentID = defaultParentId;
 			rsInterface.type = stream.readUnsignedByte();
 			rsInterface.atActionType = stream.readUnsignedByte();
 			rsInterface.contentType = stream.readUShort();
@@ -77,10 +77,10 @@ public final class RSInterface {
 				rsInterface.children = new int[i2];
 				rsInterface.childX = new int[i2];
 				rsInterface.childY = new int[i2];
-				for (int j3 = 0; j3 < i2; j3++) {
-					rsInterface.children[j3] = stream.readUShort();
-					rsInterface.childX[j3] = stream.readShort();
-					rsInterface.childY[j3] = stream.readShort();
+				for (int index = 0; index < i2; index++) {
+					rsInterface.children[index] = stream.readUShort();
+					rsInterface.childX[index] = stream.readShort();
+					rsInterface.childY[index] = stream.readShort();
 				}
 			}
 			if (rsInterface.type == 1) {
@@ -112,10 +112,10 @@ public final class RSInterface {
 					}
 				}
 				rsInterface.actions = new String[5];
-				for (int l3 = 0; l3 < 5; l3++) {
-					rsInterface.actions[l3] = stream.readString();
-					if (rsInterface.actions[l3].length() == 0)
-						rsInterface.actions[l3] = null;
+				for (int actionIndex = 0; actionIndex < 5; actionIndex++) {
+					rsInterface.actions[actionIndex] = stream.readString();
+					if (rsInterface.actions[actionIndex].length() == 0)
+						rsInterface.actions[actionIndex] = null;
 					if (rsInterface.parentID == 1644)
 						rsInterface.actions[2] = "Operate";
 				}
@@ -192,10 +192,10 @@ public final class RSInterface {
 				rsInterface.inventorySpritePaddingRow = stream.readShort();
 				rsInterface.isInventoryInterface = stream.readUnsignedByte() == 1;
 				rsInterface.actions = new String[5];
-				for (int k4 = 0; k4 < 5; k4++) {
-					rsInterface.actions[k4] = stream.readString();
-					if (rsInterface.actions[k4].length() == 0)
-						rsInterface.actions[k4] = null;
+				for (int actionCount = 0; actionCount < 5; actionCount++) {
+					rsInterface.actions[actionCount] = stream.readString();
+					if (rsInterface.actions[actionCount].length() == 0)
+						rsInterface.actions[actionCount] = null;
 				}
 
 			}
@@ -222,7 +222,7 @@ public final class RSInterface {
 				}
 			}
 		}
-		aClass44 = streamLoader;
+		interfaceLoader = streamLoader;
 		constructLunar();
 		clanChatTab(textDrawingAreas);
 		//clanChatSetup(textDrawingAreas);
@@ -1183,8 +1183,8 @@ public final class RSInterface {
 
 	public static void addCacheSprite(int id, int sprite1, int sprite2, String sprites) {
 		RSInterface rsi = interfaceCache[id] = new RSInterface();
-		rsi.disabledSprite = method207(sprite1, aClass44, sprites);
-		rsi.enabledSprite = method207(sprite2, aClass44, sprites);
+		rsi.disabledSprite = method207(sprite1, interfaceLoader, sprites);
+		rsi.enabledSprite = method207(sprite2, interfaceLoader, sprites);
 		rsi.parentID = id;
 		rsi.id = id;
 		rsi.type = 5;
@@ -2182,7 +2182,7 @@ public final class RSInterface {
 	public RSInterface() {
 	}
 
-	public static CacheArchive aClass44;
+	public static CacheArchive interfaceLoader;
 	public boolean drawsTransparent;
 	public Sprite disabledSprite;
 	public int anInt208;

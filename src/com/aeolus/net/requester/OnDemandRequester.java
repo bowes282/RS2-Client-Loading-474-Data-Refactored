@@ -195,7 +195,7 @@ public final class OnDemandRequester extends Requester implements Runnable {
 		return 29191;
 	}
 
-	public void method558(int i, int j) {
+	public void provide(int i, int j) {
 		synchronized (nodeSubList) {
 			for (OnDemandNode onDemandData = (OnDemandNode) nodeSubList.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandNode) nodeSubList.reverseGetNext())
 				if (onDemandData.dataType == i && onDemandData.ID == j)
@@ -368,7 +368,7 @@ public final class OnDemandRequester extends Requester implements Runnable {
 	}
 
 	public void method548(int i) {
-		method558(0, i);
+		provide(0, i);
 	}
 
 	public void method563(byte byte0, int i, int j) {

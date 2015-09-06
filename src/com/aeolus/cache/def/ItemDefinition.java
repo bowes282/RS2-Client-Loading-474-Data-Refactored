@@ -46,6 +46,9 @@ public final class ItemDefinition {
 		item_count = stream.readUShort() + 21;
 		streamIndices = new int[item_count + 50000];
 		int offset = 2;
+		
+		System.out.println("Loaded: " + item_count + " Items");
+		
 		for (int _ctr = 0; _ctr < item_count - 21; _ctr++) {
 			streamIndices[_ctr] = offset;
 			offset += stream.readUShort();

@@ -123,15 +123,15 @@ public final class NpcDefinition {
 		Buffer stream2 = new Buffer(streamLoader.getDataForName("npc.idx"));
 		int totalNPCs = stream2.readUShort();
 		streamIndices = new int[totalNPCs];
-		int i = 2;
-		for (int j = 0; j < totalNPCs; j++) {
-			streamIndices[j] = i;
-			i += stream2.readUShort();
+		int offset = 2;
+		for (int count = 0; count < totalNPCs; count++) {
+			streamIndices[count] = offset;
+			offset += stream2.readUShort();
 		}
 
 		cache = new NpcDefinition[20];
-		for (int k = 0; k < 20; k++)
-			cache[k] = new NpcDefinition();
+		for (int count = 0; count < 20; count++)
+			cache[count] = new NpcDefinition();
 		for (int index = 0; index < totalNPCs; index++) {
 			NpcDefinition ed = lookup(index);
 			if (ed == null)
@@ -139,6 +139,7 @@ public final class NpcDefinition {
 			if (ed.name == null)
 				continue;
 		}
+		System.out.println("Loaded: " + totalNPCs + " Npcs");
 	}
 
 	public static void nullLoader() {
