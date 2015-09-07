@@ -13921,7 +13921,7 @@ public class Game extends GameShell {
 						icons_x_off += sprite.myWidth + 3;
 						sprite.drawSprite(x - a + 12 - xp_font.getTextWidth(s)
 								- icons_x_off, y + (140 - xp_added[i][2])
-								- (font_height / 2) - (sprite.myHeight / 2),
+								- (font_height / 2) - (sprite.myHeight / 2) + 7,
 								transparency);
 					}
 					xp_font.drawBasicString(s,
