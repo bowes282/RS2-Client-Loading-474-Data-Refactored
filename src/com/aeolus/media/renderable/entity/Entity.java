@@ -144,12 +144,12 @@ public class Entity extends Renderable {
 	public int anInt1503;
 	public int anInt1504;
 	public int anInt1505;
-	public String textSpoken;
+	public String spokenText;
 	public int height;
 	public int turnDirection;
 	public int anInt1511;
 	public int anInt1512;
-	public int anInt1513;
+	public int textColour;
 	public final int[] hitArray;
 	public final int[] hitMarkTypes;
 	public final int[] hitsLoopCycle;
@@ -167,7 +167,7 @@ public class Entity extends Renderable {
 	public int anInt1528;
 	public int anInt1529;
 	public int anInt1530;
-	public int anInt1531;
+	public int textEffect;
 	public int loopCycleStatus;
 	public int currentHealth;
 	public int maxHealth;

@@ -29,7 +29,7 @@ import com.aeolus.media.DrawingArea;
 import com.aeolus.media.ImageProducer;
 import com.aeolus.media.font.RSFont;
 import com.aeolus.media.font.TextClass;
-import com.aeolus.media.font.TextDrawingArea;
+import com.aeolus.media.font.GameFont;
 import com.aeolus.media.font.TextInput;
 import com.aeolus.media.renderable.Renderable;
 import com.aeolus.media.renderable.Item;
@@ -625,7 +625,7 @@ public class Game extends GameShell {
 			DrawingArea.drawAlphaPixels(7, frameHeight - 23, 506, 24, 0, 100);
 		}
 		drawChannelButtons();
-		TextDrawingArea textDrawingArea = regularText;
+		GameFont textDrawingArea = regularText;
 		if (messagePromptRaised) {
 			newBoldFont.drawCenteredString(aString1121, 259, 60 + yOffset, 0,
 					-1);
@@ -2177,7 +2177,7 @@ public class Game extends GameShell {
 
 	public void updateEntities() {
 		try {
-			int anInt974 = 0;
+			int messageLength = 0;
 			for (int j = -1; j < playerCount + npcCount; j++) {
 				Object obj;
 				if (j == -1)
@@ -2285,30 +2285,31 @@ public class Game extends GameShell {
 									spriteDrawY - 28);
 					}
 				}
-				if (((Entity) (obj)).textSpoken != null
+				if (((Entity) (obj)).spokenText != null
 						&& (j >= playerCount || publicChatMode == 0
 								|| publicChatMode == 3 || publicChatMode == 1
 								&& isFriendOrSelf(((Player) obj).name))) {
 					npcScreenPos(((Entity) (obj)), ((Entity) (obj)).height);
-					if (spriteDrawX > -1 && anInt974 < anInt975) {
-						anIntArray979[anInt974] = boldText
-								.method384(((Entity) (obj)).textSpoken) / 2;
-						anIntArray978[anInt974] = boldText.anInt1497;
-						anIntArray976[anInt974] = spriteDrawX;
-						anIntArray977[anInt974] = spriteDrawY;
-						anIntArray980[anInt974] = ((Entity) (obj)).anInt1513;
-						anIntArray981[anInt974] = ((Entity) (obj)).anInt1531;
-						anIntArray982[anInt974] = ((Entity) (obj)).textCycle;
-						aStringArray983[anInt974++] = ((Entity) (obj)).textSpoken;
-						if (anInt1249 == 0 && ((Entity) (obj)).anInt1531 >= 1
-								&& ((Entity) (obj)).anInt1531 <= 3) {
-							anIntArray978[anInt974] += 10;
-							anIntArray977[anInt974] += 5;
+					if (spriteDrawX > -1 && messageLength < anInt975) {
+						anIntArray979[messageLength] = boldText
+								.method384(((Entity) (obj)).spokenText) / 2;
+						anIntArray978[messageLength] = boldText.anInt1497;
+						anIntArray976[messageLength] = spriteDrawX;
+						anIntArray977[messageLength] = spriteDrawY;
+						//TODO
+						textColourEffect[messageLength] = ((Entity) (obj)).textColour;
+						anIntArray981[messageLength] = ((Entity) (obj)).textEffect;
+						anIntArray982[messageLength] = ((Entity) (obj)).textCycle;
+						aStringArray983[messageLength++] = ((Entity) (obj)).spokenText;
+						if (anInt1249 == 0 && ((Entity) (obj)).textEffect >= 1
+								&& ((Entity) (obj)).textEffect <= 3) {
+							anIntArray978[messageLength] += 10;
+							anIntArray977[messageLength] += 5;
 						}
-						if (anInt1249 == 0 && ((Entity) (obj)).anInt1531 == 4)
-							anIntArray979[anInt974] = 60;
-						if (anInt1249 == 0 && ((Entity) (obj)).anInt1531 == 5)
-							anIntArray978[anInt974] += 5;
+						if (anInt1249 == 0 && ((Entity) (obj)).textEffect == 4)
+							anIntArray979[messageLength] = 60;
+						if (anInt1249 == 0 && ((Entity) (obj)).textEffect == 5)
+							anIntArray978[messageLength] += 5;
 					}
 				}
 				if (((Entity) (obj)).loopCycleStatus > loopCycle) {
@@ -2430,20 +2431,20 @@ public class Game extends GameShell {
 					}
 				}
 			}
-			for (int k = 0; k < anInt974; k++) {
-				int skillId = anIntArray976[k];
-				int l1 = anIntArray977[k];
-				int j2 = anIntArray979[k];
-				int k2 = anIntArray978[k];
+			for (int message = 0; message < messageLength; message++) {
+				int k1 = anIntArray976[message];
+				int l1 = anIntArray977[message];
+				int j2 = anIntArray979[message];
+				int k2 = anIntArray978[message];
 				boolean flag = true;
 				while (flag) {
 					flag = false;
-					for (int l2 = 0; l2 < k; l2++)
+					for (int l2 = 0; l2 < message; l2++)
 						if (l1 + 2 > anIntArray977[l2] - anIntArray978[l2]
 								&& l1 - k2 < anIntArray977[l2] + 2
-								&& skillId - j2 < anIntArray976[l2]
+								&& k1 - j2 < anIntArray976[l2]
 										+ anIntArray979[l2]
-								&& skillId + j2 > anIntArray976[l2]
+								&& k1 + j2 > anIntArray976[l2]
 										- anIntArray979[l2]
 								&& anIntArray977[l2] - anIntArray978[l2] < l1) {
 							l1 = anIntArray977[l2] - anIntArray978[l2];
@@ -2451,21 +2452,21 @@ public class Game extends GameShell {
 						}
 
 				}
-				spriteDrawX = anIntArray976[k];
-				spriteDrawY = anIntArray977[k] = l1;
-				String s = aStringArray983[k];
+				spriteDrawX = anIntArray976[message];
+				spriteDrawY = anIntArray977[message] = l1;
+				String s = aStringArray983[message];
 				if (anInt1249 == 0) {
 					int i3 = 0xffff00;
-					if (anIntArray980[k] < 6)
-						i3 = anIntArray965[anIntArray980[k]];
-					if (anIntArray980[k] == 6)
+					if (textColourEffect[message] < 6)
+						i3 = anIntArray965[textColourEffect[message]];
+					if (textColourEffect[message] == 6)
 						i3 = anInt1265 % 20 >= 10 ? 0xffff00 : 0xff0000;
-					if (anIntArray980[k] == 7)
+					if (textColourEffect[message] == 7)
 						i3 = anInt1265 % 20 >= 10 ? 65535 : 255;
-					if (anIntArray980[k] == 8)
+					if (textColourEffect[message] == 8)
 						i3 = anInt1265 % 20 >= 10 ? 0x80ff80 : 45056;
-					if (anIntArray980[k] == 9) {
-						int j3 = 150 - anIntArray982[k];
+					if (textColourEffect[message] == 9) {
+						int j3 = 150 - anIntArray982[message];
 						if (j3 < 50)
 							i3 = 0xff0000 + 1280 * j3;
 						else if (j3 < 100)
@@ -2473,8 +2474,8 @@ public class Game extends GameShell {
 						else if (j3 < 150)
 							i3 = 65280 + 5 * (j3 - 100);
 					}
-					if (anIntArray980[k] == 10) {
-						int k3 = 150 - anIntArray982[k];
+					if (textColourEffect[message] == 10) {
+						int k3 = 150 - anIntArray982[message];
 						if (k3 < 50)
 							i3 = 0xff0000 + 5 * k3;
 						else if (k3 < 100)
@@ -2482,8 +2483,8 @@ public class Game extends GameShell {
 						else if (k3 < 150)
 							i3 = (255 + 0x50000 * (k3 - 100)) - 5 * (k3 - 100);
 					}
-					if (anIntArray980[k] == 11) {
-						int l3 = 150 - anIntArray982[k];
+					if (textColourEffect[message] == 11) {
+						int l3 = 150 - anIntArray982[message];
 						if (l3 < 50)
 							i3 = 0xffffff - 0x50005 * l3;
 						else if (l3 < 100)
@@ -2491,31 +2492,31 @@ public class Game extends GameShell {
 						else if (l3 < 150)
 							i3 = 0xffffff - 0x50000 * (l3 - 100);
 					}
-					if (anIntArray981[k] == 0) {
+					if (anIntArray981[message] == 0) {
 						boldText.drawText(0, s, spriteDrawY + 1, spriteDrawX);
 						boldText.drawText(i3, s, spriteDrawY, spriteDrawX);
 					}
-					if (anIntArray981[k] == 1) {
-						boldText.method386(0, s, spriteDrawX, anInt1265,
+					if (anIntArray981[message] == 1) {
+						boldText.wave(0, s, spriteDrawX, anInt1265,
 								spriteDrawY + 1);
-						boldText.method386(i3, s, spriteDrawX, anInt1265,
+						boldText.wave(i3, s, spriteDrawX, anInt1265,
 								spriteDrawY);
 					}
-					if (anIntArray981[k] == 2) {
-						boldText.method387(spriteDrawX, s, anInt1265,
+					if (anIntArray981[message] == 2) {
+						boldText.wave2(spriteDrawX, s, anInt1265,
 								spriteDrawY + 1, 0);
-						boldText.method387(spriteDrawX, s, anInt1265,
+						boldText.wave2(spriteDrawX, s, anInt1265,
 								spriteDrawY, i3);
 					}
-					if (anIntArray981[k] == 3) {
-						boldText.method388(150 - anIntArray982[k], s,
+					if (anIntArray981[message] == 3) {
+						boldText.shake(150 - anIntArray982[message], s,
 								anInt1265, spriteDrawY + 1, spriteDrawX, 0);
-						boldText.method388(150 - anIntArray982[k], s,
+						boldText.shake(150 - anIntArray982[message], s,
 								anInt1265, spriteDrawY, spriteDrawX, i3);
 					}
-					if (anIntArray981[k] == 4) {
+					if (anIntArray981[message] == 4) {
 						int i4 = boldText.method384(s);
-						int k4 = ((150 - anIntArray982[k]) * (i4 + 100)) / 150;
+						int k4 = ((150 - anIntArray982[message]) * (i4 + 100)) / 150;
 						DrawingArea.setDrawingArea(334, spriteDrawX - 50,
 								spriteDrawX + 50, 0);
 						boldText.method385(0, s, spriteDrawY + 1,
@@ -2524,8 +2525,8 @@ public class Game extends GameShell {
 								(spriteDrawX + 50) - k4);
 						DrawingArea.defaultDrawingAreaSize();
 					}
-					if (anIntArray981[k] == 5) {
-						int j4 = 150 - anIntArray982[k];
+					if (anIntArray981[message] == 5) {
+						int j4 = 150 - anIntArray982[message];
 						int l4 = 0;
 						if (j4 < 25)
 							l4 = j4 - 25;
@@ -2824,7 +2825,7 @@ public class Game extends GameShell {
 			if (player != null && player.textCycle > 0) {
 				player.textCycle--;
 				if (player.textCycle == 0)
-					player.textSpoken = null;
+					player.spokenText = null;
 			}
 		}
 		for (int k = 0; k < npcCount; k++) {
@@ -2833,7 +2834,7 @@ public class Game extends GameShell {
 			if (npc != null && npc.textCycle > 0) {
 				npc.textCycle--;
 				if (npc.textCycle == 0)
-					npc.textSpoken = null;
+					npc.spokenText = null;
 			}
 		}
 	}
@@ -6120,18 +6121,18 @@ public class Game extends GameShell {
 						outgoing.writeBytes(outgoing.currentPosition - j3);
 						inputString = TextInput.processText(inputString);
 						// inputString = Censor.doCensor(inputString);
-						localPlayer.textSpoken = inputString;
-						localPlayer.anInt1513 = j2;
-						localPlayer.anInt1531 = i3;
+						localPlayer.spokenText = inputString;
+						localPlayer.textColour = j2;
+						localPlayer.textEffect = i3;
 						localPlayer.textCycle = 150;
 						if (myPrivilege == 2)
-							pushMessage(localPlayer.textSpoken, 2, "@cr2@"
+							pushMessage(localPlayer.spokenText, 2, "@cr2@"
 									+ localPlayer.name);
 						else if (myPrivilege == 1)
-							pushMessage(localPlayer.textSpoken, 2, "@cr1@"
+							pushMessage(localPlayer.spokenText, 2, "@cr1@"
 									+ localPlayer.name);
 						else
-							pushMessage(localPlayer.textSpoken, 2, localPlayer.name);
+							pushMessage(localPlayer.spokenText, 2, localPlayer.name);
 						if (publicChatMode == 2) {
 							publicChatMode = 3;
 							outgoing.createFrame(95);
@@ -7079,7 +7080,7 @@ public class Game extends GameShell {
 		if (splitPrivateChat == 0) {
 			return;
 		}
-		TextDrawingArea textDrawingArea = regularText;
+		GameFont textDrawingArea = regularText;
 		int i = 0;
 		if (systemUpdateTime != 0) {
 			i = 1;
@@ -8388,7 +8389,7 @@ public class Game extends GameShell {
 					npc.interactingEntity = -1;
 			}
 			if ((l & 1) != 0) {
-				npc.textSpoken = stream.readString();
+				npc.spokenText = stream.readString();
 				npc.textCycle = 100;
 			}
 			if ((l & 0x40) != 0) {
@@ -8622,16 +8623,16 @@ public class Game extends GameShell {
 		try {
 			titleStreamLoader = streamLoaderForName(1, "title screen", "title",
 					archiveCRCs[1], 25);
-			smallText = new TextDrawingArea(false, "p11_full",
+			smallText = new GameFont(false, "p11_full",
 					titleStreamLoader);
-			regularText = new TextDrawingArea(false, "p12_full",
+			regularText = new GameFont(false, "p12_full",
 					titleStreamLoader);
-			boldText = new TextDrawingArea(false, "b12_full", titleStreamLoader);
+			boldText = new GameFont(false, "b12_full", titleStreamLoader);
 			newSmallFont = new RSFont(false, "p11_full", titleStreamLoader);
 			newRegularFont = new RSFont(false, "p12_full", titleStreamLoader);
 			newBoldFont = new RSFont(false, "b12_full", titleStreamLoader);
 			newFancyFont = new RSFont(true, "q8_full", titleStreamLoader);
-			TextDrawingArea aTextDrawingArea_1273 = new TextDrawingArea(true,
+			GameFont aTextDrawingArea_1273 = new GameFont(true,
 					"q8_full", titleStreamLoader);
 			drawLogo();
 			loadTitleScreen();
@@ -8790,7 +8791,7 @@ public class Game extends GameShell {
 			VariableBits.unpackConfig(streamLoader);
 			ItemDefinition.isMembers = isMembers;
 			drawLoadingText(95, "Unpacking interfaces");
-			TextDrawingArea aclass30_sub2_sub1_sub4s[] = { smallText,
+			GameFont aclass30_sub2_sub1_sub4s[] = { smallText,
 					regularText, boldText, aTextDrawingArea_1273 };
 			RSInterface.unpack(streamLoader_1, aclass30_sub2_sub1_sub4s,
 					streamLoader_2);
@@ -9792,7 +9793,7 @@ public class Game extends GameShell {
 								256 - (childInterface.opacity & 0xff), colour,
 								childInterface.width, _x);
 				} else if (childInterface.type == 4) {
-					TextDrawingArea textDrawingArea = childInterface.textDrawingAreas;
+					GameFont textDrawingArea = childInterface.textDrawingAreas;
 					String text = childInterface.message;
 					boolean flag1 = false;
 					if (anInt1039 == childInterface.id
@@ -9978,7 +9979,7 @@ public class Game extends GameShell {
 					Rasterizer.textureInt1 = centreX;
 					Rasterizer.textureInt2 = centreY;
 				} else if (childInterface.type == 7) {
-					TextDrawingArea font = childInterface.textDrawingAreas;
+					GameFont font = childInterface.textDrawingAreas;
 					int slot = 0;
 					for (int row = 0; row < childInterface.height; row++) {
 						for (int column = 0; column < childInterface.width; column++) {
@@ -10018,7 +10019,7 @@ public class Game extends GameShell {
 						&& anInt1501 == 0 && !menuOpen) {
 					int boxWidth = 0;
 					int boxHeight = 0;
-					TextDrawingArea font = regularText;
+					GameFont font = regularText;
 					for (String s1 = childInterface.message; s1.length() > 0;) {
 						if (s1.indexOf("%") != -1) {
 							do {
@@ -10269,18 +10270,17 @@ public class Game extends GameShell {
 			}
 		}
 		if ((i & 4) != 0) {
-			player.textSpoken = stream.readString();
-			if (player.textSpoken.charAt(0) == '~') {
-				player.textSpoken = player.textSpoken.substring(1);
-				pushMessage(player.textSpoken, 2, player.name);
+			player.spokenText = stream.readString();
+			if (player.spokenText.charAt(0) == '~') {
+				player.spokenText = player.spokenText.substring(1);
+				pushMessage(player.spokenText, 2, player.name);
 			} else if (player == localPlayer)
-				pushMessage(player.textSpoken, 2, player.name);
-			player.anInt1513 = 0;
-			player.anInt1531 = 0;
+				pushMessage(player.spokenText, 2, player.name);
+			player.textColour = 0;
+			player.textEffect = 0;
 			player.textCycle = 150;
 		}
 		if ((i & 0x80) != 0) {
-			// right fucking here
 			int i1 = stream.readLEUShort();
 			int j2 = stream.readUnsignedByte();
 			int j3 = stream.readNegUByte();
@@ -10304,10 +10304,10 @@ public class Game extends GameShell {
 						aStream_834.currentPosition = 0;
 						String s = TextInput.method525(j3, aStream_834);
 						// s = Censor.doCensor(s);
-						player.textSpoken = s;
-						player.anInt1513 = i1 >> 8;
+						player.spokenText = s;
+						player.textColour = i1 >> 8;
 						player.privelage = j2;
-						player.anInt1531 = i1 & 0xff;
+						player.textEffect = i1 & 0xff;
 						player.textCycle = 150;
 						if (j2 == 2 || j2 == 3)
 							pushMessage(s, 1, "@cr2@" + player.name);
@@ -14097,7 +14097,7 @@ public class Game extends GameShell {
 		anIntArray977 = new int[anInt975];
 		anIntArray978 = new int[anInt975];
 		anIntArray979 = new int[anInt975];
-		anIntArray980 = new int[anInt975];
+		textColourEffect = new int[anInt975];
 		anIntArray981 = new int[anInt975];
 		anIntArray982 = new int[anInt975];
 		aStringArray983 = new String[anInt975];
@@ -14322,7 +14322,7 @@ public class Game extends GameShell {
 	private final int[] anIntArray977;
 	private final int[] anIntArray978;
 	private final int[] anIntArray979;
-	private final int[] anIntArray980;
+	private final int[] textColourEffect;
 	private final int[] anIntArray981;
 	private final int[] anIntArray982;
 	private final String[] aStringArray983;
@@ -14585,9 +14585,9 @@ public class Game extends GameShell {
 	private String secondLoginMessage;
 	private int anInt1268;
 	private int anInt1269;
-	private TextDrawingArea smallText;
-	private TextDrawingArea regularText;
-	private TextDrawingArea boldText;
+	private GameFont smallText;
+	private GameFont regularText;
+	private GameFont boldText;
 	public RSFont newSmallFont, newRegularFont, newBoldFont;
 	public RSFont newFancyFont;
 	private int anInt1275;

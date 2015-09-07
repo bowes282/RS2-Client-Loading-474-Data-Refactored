@@ -6,9 +6,9 @@ import com.aeolus.media.DrawingArea;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 
-public final class TextDrawingArea extends DrawingArea {
+public final class GameFont extends DrawingArea {
 
-	public TextDrawingArea(boolean flag, String s, CacheArchive streamLoader) {
+	public GameFont(boolean flag, String s, CacheArchive streamLoader) {
 	aByteArrayArray1491 = new byte[256][];
 	anIntArray1492 = new int[256];
 	anIntArray1493 = new int[256];
@@ -114,7 +114,7 @@ public final class TextDrawingArea extends DrawingArea {
 		}
 	}
 
-	public void method386(int i, String s, int j, int k, int l) {
+	public void wave(int i, String s, int j, int k, int l) {
 		if(s == null)
 			return;
 		j -= method384(s) / 2;
@@ -127,7 +127,7 @@ public final class TextDrawingArea extends DrawingArea {
 		}
 	}
 
-	public void method387(int i, String s, int j, int k, int l) {
+	public void wave2(int i, String s, int j, int k, int l) {
 		if(s == null)
 			return;
 		i -= method384(s) / 2;
@@ -140,7 +140,7 @@ public final class TextDrawingArea extends DrawingArea {
 		}
 	}
 
-	public void method388(int i, String s, int j, int k, int l, int i1) {
+	public void shake(int i, String s, int j, int k, int l, int i1) {
 		if(s == null)
 			return;
 		double d = 7D - (double)i / 8D;

@@ -4,7 +4,7 @@ import com.aeolus.cache.def.NpcDefinition;
 import com.aeolus.cache.def.ItemDefinition;
 import com.aeolus.collection.Cache;
 import com.aeolus.media.font.TextClass;
-import com.aeolus.media.font.TextDrawingArea;
+import com.aeolus.media.font.GameFont;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
@@ -20,7 +20,7 @@ public final class RSInterface {
 		invStackSizes[j] = id;
 	}
 
-	public static void unpack(CacheArchive streamLoader, TextDrawingArea textDrawingAreas[], CacheArchive streamLoader_1) {
+	public static void unpack(CacheArchive streamLoader, GameFont textDrawingAreas[], CacheArchive streamLoader_1) {
 		aMRUNodes_238 = new Cache(50000);
 		Buffer stream = new Buffer(streamLoader.getDataForName("data"));
 		int defaultParentId = -1;
@@ -244,7 +244,7 @@ public final class RSInterface {
 		aMRUNodes_238 = null;
 	}
 	
-	public static void itemsKeptOnDeath(TextDrawingArea[] tda) {
+	public static void itemsKeptOnDeath(GameFont[] tda) {
 		RSInterface Interface = addInterface(22030);
 		addSprite(22031, 1, "Interfaces/Death/SPRITE");
 		addHoverButton(22032, "Interfaces/Death/SPRITE", 2, 17, 17, "Close",
@@ -268,7 +268,7 @@ public final class RSInterface {
 		setBounds(22040, 398, 297, 8, Interface);
 	}
 	
-	public static void clanChatTab(TextDrawingArea[] tda) {
+	public static void clanChatTab(GameFont[] tda) {
 		RSInterface tab = addTabInterface(18128);
 		addHoverButton(18129, "/Clan Chat/SPRITE", 6, 72, 32, "Join Clan", 550,
 				18130, 5);
@@ -327,7 +327,7 @@ public final class RSInterface {
 	
 	
 
-	public static void clanChatSetup(TextDrawingArea[] tda) {
+	public static void clanChatSetup(GameFont[] tda) {
 		RSInterface tab = addTabInterface(15456);
 		addSprite(15251, 0, "Clan Chat/sprite");
 		addHoverButton(15252, "Clan Chat/button", 2, 150, 35, "Set prefix", -1,
@@ -493,7 +493,7 @@ public final class RSInterface {
 	}
 	
 	public static void addHoverText2(int id, String text, String[] tooltips,
-			TextDrawingArea tda[], int idx, int color, boolean center,
+			GameFont tda[], int idx, int color, boolean center,
 			boolean textShadowed, int width) {
 		RSInterface rsinterface = addInterface(id);
 		rsinterface.id = id;
@@ -517,7 +517,7 @@ public final class RSInterface {
 		rsinterface.tooltips = tooltips;
 	}
 	
-	public static void addText2(int id, String text, TextDrawingArea tda[],
+	public static void addText2(int id, String text, GameFont tda[],
 			int idx, int color, boolean center, boolean shadow) {
 		RSInterface tab = addTabInterface(id);
 		tab.parentID = id;
@@ -557,7 +557,7 @@ public final class RSInterface {
 				"Interfaces/Equipment/SPRITE");
 	}
 	
-	public static void addText(int id, String text, TextDrawingArea wid[],
+	public static void addText(int id, String text, GameFont wid[],
 			int idx, int color) {
 		RSInterface rsinterface = addTabInterface(id);
 		rsinterface.id = id;
@@ -580,7 +580,7 @@ public final class RSInterface {
 		rsinterface.anInt239 = 0;
 	}
 	
-	public static void itemsOnDeath(TextDrawingArea[] wid) {
+	public static void itemsOnDeath(GameFont[] wid) {
 		RSInterface rsinterface = addInterface(17100);
 		addSprite(17101, 2, 2);
 		// addHover(17102,"Items Kept On Death/SPRITE", 1, 17, 17, "Close", 0,
@@ -642,7 +642,7 @@ public final class RSInterface {
 		rsinterface.inventorySpritePaddingRow = 5;
 	}
 	
-	public static void itemsOnDeathDATA(TextDrawingArea[] tda) {
+	public static void itemsOnDeathDATA(GameFont[] tda) {
 		RSInterface RSinterface = addInterface(17115);
 		addText(17109, "", 0xff981f, false, false, 0, tda, 0);
 		addText(17110, "The normal amount of", 0xff981f, false, false, 0, tda,
@@ -749,7 +749,7 @@ public final class RSInterface {
 		RSinterface.childY[19] = 228;
 	}
 	
-	public static void equipmentTab(TextDrawingArea[] wid) {
+	public static void equipmentTab(GameFont[] wid) {
 		RSInterface Interface = interfaceCache[1644];
 		addSprite(15101, 0, "Interfaces/Equipment/bl");// cheap hax
 		addSprite(15102, 1, "Interfaces/Equipment/bl");// cheap hax
@@ -796,7 +796,7 @@ public final class RSInterface {
 		setBounds(27657, 127, 205, 5, Interface);
 	}
 	
-	public static void questTab(TextDrawingArea[] TDA) {
+	public static void questTab(GameFont[] TDA) {
 		RSInterface Interface = addInterface(638);
 		setChildren(5, Interface);
 		addText(29155, "Project Aeolus", 0xFF981F, false, true, 52, TDA, 2);
@@ -970,7 +970,7 @@ public final class RSInterface {
 	}
 	
 	public static void addHoverText(int id, String text, String tooltip,
-			TextDrawingArea tda[], int idx, int color, boolean centerText,
+			GameFont tda[], int idx, int color, boolean centerText,
 			boolean textShadowed, int width) {
 		RSInterface rsinterface = addInterface(id);
 		rsinterface.id = id;
@@ -994,7 +994,7 @@ public final class RSInterface {
 		rsinterface.tooltip = tooltip;
 	}
 	
-	public static void equipmentScreen(TextDrawingArea[] wid) {
+	public static void equipmentScreen(GameFont[] wid) {
 		RSInterface Interface = RSInterface.interfaceCache[1644];
 		addButton(19144, 6, "Interfaces/Equipment/CUSTOM",
 				"Show Equipment Stats");
@@ -1097,7 +1097,7 @@ public final class RSInterface {
 		t.anInt258 = -1;
 	}
 
-	public static void edgevilleHomeTeleport(TextDrawingArea[] TDA) {
+	public static void edgevilleHomeTeleport(GameFont[] TDA) {
 		RSInterface rsi = interfaceCache[21741];
 		rsi.atActionType = 1;
 		rsi.tooltip = "Cast @gre@Edgeville Home Teleport";
@@ -1164,7 +1164,7 @@ public final class RSInterface {
 		return rsi;
 	}
 
-	public static void addText(int id, String text, TextDrawingArea tda[], int idx, int color, boolean centered) {
+	public static void addText(int id, String text, GameFont tda[], int idx, int color, boolean centered) {
 		RSInterface rsi = interfaceCache[id] = new RSInterface();
 		if (centered)
 			rsi.centerText = true;
@@ -1181,7 +1181,7 @@ public final class RSInterface {
 		rsi.textColor = color;
 	}
 
-	public static void textSize(int id, TextDrawingArea tda[], int idx) {
+	public static void textSize(int id, GameFont tda[], int idx) {
 		RSInterface rsi = interfaceCache[id];
 		rsi.textDrawingAreas = tda[idx];
 	}
@@ -1301,7 +1301,7 @@ public final class RSInterface {
 		sprite1(id + 11, 7610);
 	}
 
-	public static void Sidebar0(TextDrawingArea[] tda) {
+	public static void Sidebar0(GameFont[] tda) {
 		/*
 		 * Sidebar0a(id, id2, id3, "text1", "text2", "text3", "text4", str1x,
 		 * str1y, str2x, str2y, str3x, str3y, str4x, str4y, img1x, img1y, img2x,
@@ -1355,7 +1355,7 @@ public final class RSInterface {
 		rsi.textColor = 0xff981f;
 	}
 
-	public static void Sidebar0a(int id, int id2, int id3, String text1, String text2, String text3, String text4, int str1x, int str1y, int str2x, int str2y, int str3x, int str3y, int str4x, int str4y, int img1x, int img1y, int img2x, int img2y, int img3x, int img3y, int img4x, int img4y, TextDrawingArea[] tda) // 4button
+	public static void Sidebar0a(int id, int id2, int id3, String text1, String text2, String text3, String text4, int str1x, int str1y, int str2x, int str2y, int str3x, int str3y, int str4x, int str4y, int img1x, int img1y, int img2x, int img2y, int img3x, int img3y, int img4x, int img4y, GameFont[] tda) // 4button
 																																																																															// spec
 	{
 		RSInterface rsi = addInterface(id); // 2423
@@ -1418,7 +1418,7 @@ public final class RSInterface {
 		}
 	}
 
-	public static void Sidebar0b(int id, int id2, String text1, String text2, String text3, String text4, int str1x, int str1y, int str2x, int str2y, int str3x, int str3y, int str4x, int str4y, int img1x, int img1y, int img2x, int img2y, int img3x, int img3y, int img4x, int img4y, TextDrawingArea[] tda) // 4button
+	public static void Sidebar0b(int id, int id2, String text1, String text2, String text3, String text4, int str1x, int str1y, int str2x, int str2y, int str3x, int str3y, int str4x, int str4y, int img1x, int img1y, int img2x, int img2y, int img3x, int img3y, int img4x, int img4y, GameFont[] tda) // 4button
 																																																																													// nospec
 	{
 		RSInterface rsi = addInterface(id); // 2423
@@ -1477,7 +1477,7 @@ public final class RSInterface {
 		}
 	}
 
-	public static void Sidebar0c(int id, int id2, int id3, String text1, String text2, String text3, int str1x, int str1y, int str2x, int str2y, int str3x, int str3y, int img1x, int img1y, int img2x, int img2y, int img3x, int img3y, TextDrawingArea[] tda) // 3button
+	public static void Sidebar0c(int id, int id2, int id3, String text1, String text2, String text3, int str1x, int str1y, int str2x, int str2y, int str3x, int str3y, int img1x, int img1y, int img2x, int img2y, int img3x, int img3y, GameFont[] tda) // 3button
 																																																																// spec
 	{
 		RSInterface rsi = addInterface(id); // 2423
@@ -1533,7 +1533,7 @@ public final class RSInterface {
 		}
 	}
 
-	public static void Sidebar0d(int id, int id2, String text1, String text2, String text3, int str1x, int str1y, int str2x, int str2y, int str3x, int str3y, int img1x, int img1y, int img2x, int img2y, int img3x, int img3y, TextDrawingArea[] tda) // 3button
+	public static void Sidebar0d(int id, int id2, String text1, String text2, String text3, int str1x, int str1y, int str2x, int str2y, int str3x, int str3y, int img1x, int img1y, int img2x, int img2y, int img3x, int img3y, GameFont[] tda) // 3button
 																																																														// nospec
 																																																														// (magic
 																																																														// intf)
@@ -1679,7 +1679,7 @@ public final class RSInterface {
 		scroll.scrollMax = 403;
 	}
 
-	public static void quickCurses(TextDrawingArea[] TDA) {
+	public static void quickCurses(GameFont[] TDA) {
 		RSInterface tab = addTabInterface(17234);
 		addTransparentSprite(17229, 0, "Quicks/Quickprayers", 50);
 		addSprite(17201, 3, "Quicks/Quickprayers");
@@ -1739,7 +1739,7 @@ public final class RSInterface {
 		setBounds(17232, 0, 237, frame++, tab);// Confirm hover
 	}
 
-	public static void quickPrayers(TextDrawingArea[] TDA) {
+	public static void quickPrayers(GameFont[] TDA) {
 		int frame = 0;
 		RSInterface tab = addTabInterface(17200);
 
@@ -1825,7 +1825,7 @@ public final class RSInterface {
 		tab.drawsTransparent = true;
 	}
 
-	public static void Pestpanel(TextDrawingArea[] tda) {
+	public static void Pestpanel(GameFont[] tda) {
 		RSInterface RSinterface = addInterface(21119);
 		addText(21120, "What", 0x999999, false, true, 52, tda, 1);
 		addText(21121, "What", 0x33cc00, false, true, 52, tda, 1);
@@ -1841,7 +1841,7 @@ public final class RSInterface {
 		setBounds(21123, 15, 66, 3, RSinterface);
 	}
 
-	public static void Pestpanel2(TextDrawingArea[] tda) {
+	public static void Pestpanel2(GameFont[] tda) {
 		RSInterface RSinterface = addInterface(21100);
 		addSprite(21101, 0, "Pest Control/PEST1");
 		addSprite(21102, 1, "Pest Control/PEST1");
@@ -1904,7 +1904,7 @@ public final class RSInterface {
 		rsi.valueIndexArray[0][2] = 0;
 	}
 
-	public static void addText(int id, String text, TextDrawingArea tda[], int idx, int color, boolean center, boolean shadow) {
+	public static void addText(int id, String text, GameFont tda[], int idx, int color, boolean center, boolean shadow) {
 		RSInterface tab = addTabInterface(id);
 		tab.parentID = id;
 		tab.id = id;
@@ -1926,7 +1926,7 @@ public final class RSInterface {
 		tab.anInt239 = 0;
 	}
 
-	public static void addText(int i, String s, int k, boolean l, boolean m, int a, TextDrawingArea[] TDA, int j) {
+	public static void addText(int i, String s, int k, boolean l, boolean m, int a, GameFont[] TDA, int j) {
 		RSInterface RSInterface = addInterface(i);
 		RSInterface.parentID = i;
 		RSInterface.id = i;
@@ -2222,7 +2222,7 @@ public final class RSInterface {
 	public int children[];
 	public int childX[];
 	public boolean usableItemInterface;
-	public TextDrawingArea textDrawingAreas;
+	public GameFont textDrawingAreas;
 	public int inventorySpritePaddingRow;
 	public int anIntArray245[];
 	public int anInt246;
@@ -2279,7 +2279,7 @@ public final class RSInterface {
 		RSInterface.height = 500;
 	}
 
-	public static void addRuneText(int ID, int runeAmount, int RuneID, TextDrawingArea[] font) {
+	public static void addRuneText(int ID, int runeAmount, int RuneID, GameFont[] font) {
 		RSInterface rsInterface = addInterface(ID);
 		rsInterface.id = ID;
 		rsInterface.parentID = 1151;
@@ -2329,7 +2329,7 @@ public final class RSInterface {
 		setBounds(30002, 0, 0, 0, Int);
 	}
 
-	public static void addLunar2RunesSmallBox(int ID, int r1, int r2, int ra1, int ra2, int rune1, int lvl, String name, String descr, TextDrawingArea[] TDA, int sid, int suo, int type) {
+	public static void addLunar2RunesSmallBox(int ID, int r1, int r2, int ra1, int ra2, int rune1, int lvl, String name, String descr, GameFont[] TDA, int sid, int suo, int type) {
 		RSInterface rsInterface = addInterface(ID);
 		rsInterface.id = ID;
 		rsInterface.parentID = 1151;
@@ -2386,7 +2386,7 @@ public final class RSInterface {
 		setBounds(ID + 6, 123, 66, 6, INT);
 	}
 
-	public static void addLunar3RunesSmallBox(int ID, int r1, int r2, int r3, int ra1, int ra2, int ra3, int rune1, int rune2, int lvl, String name, String descr, TextDrawingArea[] TDA, int sid, int suo, int type) {
+	public static void addLunar3RunesSmallBox(int ID, int r1, int r2, int r3, int ra1, int ra2, int ra3, int rune1, int rune2, int lvl, String name, String descr, GameFont[] TDA, int sid, int suo, int type) {
 		RSInterface rsInterface = addInterface(ID);
 		rsInterface.id = ID;
 		rsInterface.parentID = 1151;
@@ -2453,7 +2453,7 @@ public final class RSInterface {
 		setBounds(ID + 7, 142, 66, 8, INT);
 	}
 
-	public static void addLunar3RunesBigBox(int ID, int r1, int r2, int r3, int ra1, int ra2, int ra3, int rune1, int rune2, int lvl, String name, String descr, TextDrawingArea[] TDA, int sid, int suo, int type) {
+	public static void addLunar3RunesBigBox(int ID, int r1, int r2, int r3, int ra1, int ra2, int ra3, int rune1, int rune2, int lvl, String name, String descr, GameFont[] TDA, int sid, int suo, int type) {
 		RSInterface rsInterface = addInterface(ID);
 		rsInterface.id = ID;
 		rsInterface.parentID = 1151;
@@ -2520,7 +2520,7 @@ public final class RSInterface {
 		setBounds(ID + 7, 142, 79, 8, INT);
 	}
 
-	public static void addLunar3RunesLargeBox(int ID, int r1, int r2, int r3, int ra1, int ra2, int ra3, int rune1, int rune2, int lvl, String name, String descr, TextDrawingArea[] TDA, int sid, int suo, int type) {
+	public static void addLunar3RunesLargeBox(int ID, int r1, int r2, int r3, int ra1, int ra2, int ra3, int rune1, int rune2, int lvl, String name, String descr, GameFont[] TDA, int sid, int suo, int type) {
 		RSInterface rsInterface = addInterface(ID);
 		rsInterface.id = ID;
 		rsInterface.parentID = 1151;
@@ -2593,7 +2593,7 @@ public final class RSInterface {
 		i.childY = new int[total];
 	}
 
-	public static void configureLunar(TextDrawingArea[] TDA) {
+	public static void configureLunar(GameFont[] TDA) {
 		homeTeleport();
 		constructLunar();
 		drawRune(30003, 1, "Fire");
