@@ -25,8 +25,8 @@ public final class Player extends Entity {
 		model.fits_on_single_square = true;
 		if(aBoolean1699)
 			return model;
-		if(super.anInt1520 != -1 && super.anInt1521 != -1) {
-			SpotAnimation spotAnim = SpotAnimation.cache[super.anInt1520];
+		if(super.gfxId != -1 && super.anInt1521 != -1) {
+			SpotAnimation spotAnim = SpotAnimation.cache[super.gfxId];
 			Model model_2 = spotAnim.getModel();
 			if(model_2 != null) {
 				Model model_3 = new Model(true, SequenceFrame.method532(super.anInt1521), false, model_2);
@@ -135,27 +135,27 @@ public final class Player extends Entity {
 			anIntArray1700[l] = j1;
 		}
 
-		super.anInt1511 = stream.readUShort();
-		if(super.anInt1511 == 65535)
-			super.anInt1511 = -1;
-		super.anInt1512 = stream.readUShort();
-		if(super.anInt1512 == 65535)
-			super.anInt1512 = -1;
-		super.anInt1554 = stream.readUShort();
-		if(super.anInt1554 == 65535)
-			super.anInt1554 = -1;
-		super.anInt1555 = stream.readUShort();
-		if(super.anInt1555 == 65535)
-			super.anInt1555 = -1;
-		super.anInt1556 = stream.readUShort();
-		if(super.anInt1556 == 65535)
-			super.anInt1556 = -1;
-		super.anInt1557 = stream.readUShort();
-		if(super.anInt1557 == 65535)
-			super.anInt1557 = -1;
-		super.anInt1505 = stream.readUShort();
-		if(super.anInt1505 == 65535)
-			super.anInt1505 = -1;
+		super.standAnimIndex = stream.readUShort();
+		if(super.standAnimIndex == 65535)
+			super.standAnimIndex = -1;
+		super.standTurnAnimIndex = stream.readUShort();
+		if(super.standTurnAnimIndex == 65535)
+			super.standTurnAnimIndex = -1;
+		super.walkAnimIndex = stream.readUShort();
+		if(super.walkAnimIndex == 65535)
+			super.walkAnimIndex = -1;
+		super.turn180AnimIndex = stream.readUShort();
+		if(super.turn180AnimIndex == 65535)
+			super.turn180AnimIndex = -1;
+		super.turn90CWAnimIndex = stream.readUShort();
+		if(super.turn90CWAnimIndex == 65535)
+			super.turn90CWAnimIndex = -1;
+		super.turn90CCWAnimIndex = stream.readUShort();
+		if(super.turn90CCWAnimIndex == 65535)
+			super.turn90CCWAnimIndex = -1;
+		super.runAnimIndex = stream.readUShort();
+		if(super.runAnimIndex == 65535)
+			super.runAnimIndex = -1;
 		name = TextClass.fixName(TextClass.nameForLong(stream.readLong()));
 		combatLevel = stream.readUnsignedByte();
 		skill = stream.readUShort();
@@ -190,8 +190,8 @@ public final class Player extends Entity {
 			int nextFrame = -1;
 			int cycle1 = 0;
 			int cycle2 = 0;
-			if(super.anim >= 0 && super.anInt1529 == 0) {
-				Animation animation = Animation.anims[super.anim];
+			if(super.emoteAnimation >= 0 && super.anInt1529 == 0) {
+				Animation animation = Animation.anims[super.emoteAnimation];
 				currentFrame = animation.anIntArray353[super.anInt1527];
 				nextFrame = animation.anIntArray353[super.nextAnimationFrame];
 				cycle1 = animation.anIntArray355[super.anInt1527];
@@ -214,14 +214,14 @@ public final class Player extends Entity {
 		int i1 = -1;
 		int j1 = -1;
 		int k1 = -1;
-		if(super.anim >= 0 && super.anInt1529 == 0)
+		if(super.emoteAnimation >= 0 && super.anInt1529 == 0)
 		{
-			Animation animation = Animation.anims[super.anim];
+			Animation animation = Animation.anims[super.emoteAnimation];
 			currentFrame = animation.anIntArray353[super.anInt1527];
 			nextFrame = animation.anIntArray353[super.nextAnimationFrame];
 			cycle1 = animation.anIntArray355[super.anInt1527];
 			cycle2 = super.anInt1528;
-			if(super.anInt1517 >= 0 && super.anInt1517 != super.anInt1511)
+			if(super.anInt1517 >= 0 && super.anInt1517 != super.standAnimIndex)
 				i1 = Animation.anims[super.anInt1517].anIntArray353[super.anInt1518];
 			if(animation.anInt360 >= 0)
 			{
@@ -311,7 +311,7 @@ public final class Player extends Entity {
 		Model model_2 = Model.EMPTY_MODEL;
 		model_2.method464(model_1, SequenceFrame.method532(currentFrame) & SequenceFrame.method532(i1));
 		if(currentFrame != -1 && i1 != -1)
-			model_2.method471(Animation.anims[super.anim].anIntArray357, i1, currentFrame);
+			model_2.method471(Animation.anims[super.emoteAnimation].anIntArray357, i1, currentFrame);
 		else if(currentFrame != -1 && nextFrame != -1)
 			model_2.method470(currentFrame, nextFrame, cycle1, cycle2);
 		else
