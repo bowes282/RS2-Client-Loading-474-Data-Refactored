@@ -33,8 +33,8 @@ public final class SpotAnimation {
 				modelId = stream.readUShort();
 			else if (opCode == 2) {
 				animationId = stream.readUShort();
-				if (Animation.anims != null)
-					animationSequence = Animation.anims[animationId];
+				if (Animation.animations != null)
+					animationSequence = Animation.animations[animationId];
 			} else if (opCode == 4)
 				resizeXY = stream.readUShort();
 			else if (opCode == 5)

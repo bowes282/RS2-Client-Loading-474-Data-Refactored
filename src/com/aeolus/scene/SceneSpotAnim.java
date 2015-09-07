@@ -35,10 +35,10 @@ public final class SceneSpotAnim extends Renderable {
 		int j = aSpotAnim_1568.animationSequence.anIntArray353[anInt1569];
 		Model model_1 = new Model(true, SequenceFrame.method532(j), false, model);
 		if(!aBoolean1567) {
-			model_1.prepareSkeleton();
-			model_1.method470(j);
-			model_1.anIntArrayArray1658 = null;
-			model_1.anIntArrayArray1657 = null;
+			model_1.skin();
+			model_1.apply(j);
+			model_1.faceGroups = null;
+			model_1.vertexGroups = null;
 		}
 		if(aSpotAnim_1568.resizeXY != 128 || aSpotAnim_1568.resizeZ != 128) {
 			model_1.scale(aSpotAnim_1568.resizeXY, aSpotAnim_1568.resizeXY, aSpotAnim_1568.resizeZ);

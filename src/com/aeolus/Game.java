@@ -3121,7 +3121,7 @@ public class Game extends GameShell {
 			if (player == null || !player.isVisible())
 				continue;
 			player.aBoolean1699 = (lowMem && playerCount > 50 || playerCount > 200)
-					&& !flag && player.anInt1517 == player.standAnimIndex;
+					&& !flag && player.movementAnimation == player.standAnimIndex;
 			int j1 = player.x >> 7;
 			int k1 = player.y >> 7;
 			if (j1 < 0 || j1 >= 104 || k1 < 0 || k1 >= 104)
@@ -5805,7 +5805,7 @@ public class Game extends GameShell {
 		Floor.cache = null;
 		IdentityKit.cache = null;
 		RSInterface.interfaceCache = null;
-		Animation.anims = null;
+		Animation.animations = null;
 		SpotAnimation.cache = null;
 		SpotAnimation.memCache = null;
 		VariableParameter.parameters = null;
@@ -6919,8 +6919,8 @@ public class Game extends GameShell {
 									anIntArray1204[characterDesignColours[l2]]);
 					}
 
-				model.prepareSkeleton();
-				model.method470(Animation.anims[localPlayer.standAnimIndex].anIntArray353[0]);
+				model.skin();
+				model.apply(Animation.animations[localPlayer.standAnimIndex].anIntArray353[0]);
 				model.light(64, 850, -30, -50, -30, true);
 				class9.anInt233 = 5;
 				class9.mediaID = 0;
@@ -6945,9 +6945,9 @@ public class Game extends GameShell {
 									anIntArray1204[characterDesignColours[l2]]);
 					}
 				int staticFrame = localPlayer.standAnimIndex;
-				characterDisplay.prepareSkeleton();
+				characterDisplay.skin();
 				characterDisplay
-						.method470(Animation.anims[staticFrame].anIntArray353[0]);
+						.apply(Animation.animations[staticFrame].anIntArray353[0]);
 				// characterDisplay.method479(64, 850, -30, -50, -30, true);
 				rsInterface.anInt233 = 5;
 				rsInterface.mediaID = 0;
@@ -8343,7 +8343,7 @@ public class Game extends GameShell {
 					i1 = -1;
 				int i2 = stream.readUnsignedByte();
 				if (i1 == npc.emoteAnimation && i1 != -1) {
-					int l2 = Animation.anims[i1].anInt365;
+					int l2 = Animation.animations[i1].anInt365;
 					if (l2 == 1) {
 						npc.anInt1527 = 0;
 						npc.anInt1528 = 0;
@@ -8354,7 +8354,7 @@ public class Game extends GameShell {
 						npc.anInt1530 = 0;
 				} else if (i1 == -1
 						|| npc.emoteAnimation == -1
-						|| Animation.anims[i1].anInt359 >= Animation.anims[npc.emoteAnimation].anInt359) {
+						|| Animation.animations[i1].anInt359 >= Animation.animations[npc.emoteAnimation].anInt359) {
 					npc.emoteAnimation = i1;
 					npc.anInt1527 = 0;
 					npc.anInt1528 = 0;
@@ -9103,7 +9103,7 @@ public class Game extends GameShell {
 		if (entity.anInt1548 == loopCycle
 				|| entity.emoteAnimation == -1
 				|| entity.anInt1529 != 0
-				|| entity.anInt1528 + 1 > Animation.anims[entity.emoteAnimation]
+				|| entity.anInt1528 + 1 > Animation.animations[entity.emoteAnimation]
 						.method258(entity.anInt1527)) {
 			int i = entity.anInt1548 - entity.anInt1547;
 			int j = loopCycle - entity.anInt1547;
@@ -9127,13 +9127,13 @@ public class Game extends GameShell {
 	}
 
 	private void getDegreesToTurn(Entity entity) {
-		entity.anInt1517 = entity.standAnimIndex;
+		entity.movementAnimation = entity.standAnimIndex;
 		if (entity.smallXYIndex == 0) {
 			entity.anInt1503 = 0;
 			return;
 		}
 		if (entity.emoteAnimation != -1 && entity.anInt1529 == 0) {
-			Animation animation = Animation.anims[entity.emoteAnimation];
+			Animation animation = Animation.animations[entity.emoteAnimation];
 			if (entity.anInt1542 > 0 && animation.anInt363 == 0) {
 				entity.anInt1503++;
 				return;
@@ -9184,7 +9184,7 @@ public class Game extends GameShell {
 			j1 = entity.turn90CWAnimIndex;
 		if (j1 == -1)
 			j1 = entity.walkAnimIndex;
-		entity.anInt1517 = j1;
+		entity.movementAnimation = j1;
 		int k1 = 4;
 		if (entity.anInt1552 != entity.turnDirection
 				&& entity.interactingEntity == -1 && entity.degreesToTurn != 0)
@@ -9199,9 +9199,9 @@ public class Game extends GameShell {
 		}
 		if (entity.pathRun[entity.smallXYIndex - 1])
 			k1 <<= 1;
-		if (k1 >= 8 && entity.anInt1517 == entity.walkAnimIndex
+		if (k1 >= 8 && entity.movementAnimation == entity.walkAnimIndex
 				&& entity.runAnimIndex != -1)
-			entity.anInt1517 = entity.runAnimIndex;
+			entity.movementAnimation = entity.runAnimIndex;
 		if (i < k) {
 			entity.x += k1;
 			if (entity.x > k)
@@ -9269,38 +9269,38 @@ public class Game extends GameShell {
 			else
 				entity.anInt1552 += entity.degreesToTurn;
 			entity.anInt1552 &= 0x7ff;
-			if (entity.anInt1517 == entity.standAnimIndex
+			if (entity.movementAnimation == entity.standAnimIndex
 					&& entity.anInt1552 != entity.turnDirection) {
 				if (entity.standTurnAnimIndex != -1) {
-					entity.anInt1517 = entity.standTurnAnimIndex;
+					entity.movementAnimation = entity.standTurnAnimIndex;
 					return;
 				}
-				entity.anInt1517 = entity.walkAnimIndex;
+				entity.movementAnimation = entity.walkAnimIndex;
 			}
 		}
 	}
 
 	public void appendEmote(Entity entity) {
 		entity.aBoolean1541 = false;
-		if (entity.anInt1517 != -1) {
-			if (entity.anInt1517 > Animation.anims.length)
-				entity.anInt1517 = 0;
-			Animation animation = Animation.anims[entity.anInt1517];
+		if (entity.movementAnimation != -1) {
+			if (entity.movementAnimation > Animation.animations.length)
+				entity.movementAnimation = 0;
+			Animation animation = Animation.animations[entity.movementAnimation];
 			entity.anInt1519++;
-			if (entity.anInt1518 < animation.anInt352
-					&& entity.anInt1519 > animation.method258(entity.anInt1518)) {
+			if (entity.displayedMovementFrames < animation.anInt352
+					&& entity.anInt1519 > animation.method258(entity.displayedMovementFrames)) {
 				entity.anInt1519 = 1;
-				entity.anInt1518++;
+				entity.displayedMovementFrames++;
 				entity.nextIdleAnimationFrame++;
 			}
-			entity.nextIdleAnimationFrame = entity.anInt1518 + 1;
+			entity.nextIdleAnimationFrame = entity.displayedMovementFrames + 1;
 			if (entity.nextIdleAnimationFrame >= animation.anInt352) {
 				if (entity.nextIdleAnimationFrame >= animation.anInt352)
 					entity.nextIdleAnimationFrame = 0;
 			}
-			if (entity.anInt1518 >= animation.anInt352) {
+			if (entity.displayedMovementFrames >= animation.anInt352) {
 				entity.anInt1519 = 1;
-				entity.anInt1518 = 0;
+				entity.displayedMovementFrames = 0;
 			}
 		}
 		if (entity.gfxId != -1 && loopCycle >= entity.anInt1523) {
@@ -9323,10 +9323,10 @@ public class Game extends GameShell {
 			}
 		}
 		if (entity.emoteAnimation != -1 && entity.anInt1529 <= 1) {
-			if (entity.emoteAnimation >= Animation.anims.length) {
+			if (entity.emoteAnimation >= Animation.animations.length) {
 				entity.emoteAnimation = -1;
 			}
-			Animation animation_2 = Animation.anims[entity.emoteAnimation];
+			Animation animation_2 = Animation.animations[entity.emoteAnimation];
 			if (animation_2.anInt363 == 1 && entity.anInt1542 > 0
 					&& entity.anInt1547 <= loopCycle
 					&& entity.anInt1548 < loopCycle) {
@@ -9335,7 +9335,7 @@ public class Game extends GameShell {
 			}
 		}
 		if (entity.emoteAnimation != -1 && entity.anInt1529 == 0) {
-			Animation animation_3 = Animation.anims[entity.emoteAnimation];
+			Animation animation_3 = Animation.animations[entity.emoteAnimation];
 			for (entity.anInt1528++; entity.anInt1527 < animation_3.anInt352
 					&& entity.anInt1528 > animation_3
 							.method258(entity.anInt1527); entity.anInt1527++)
@@ -9966,7 +9966,7 @@ public class Game extends GameShell {
 					if (emoteAnimation == -1) {
 						model = childInterface.method209(-1, -1, selected);
 					} else {
-						Animation animation = Animation.anims[emoteAnimation];
+						Animation animation = Animation.animations[emoteAnimation];
 						model = childInterface
 								.method209(
 										animation.anIntArray354[childInterface.anInt246],
@@ -10249,7 +10249,7 @@ public class Game extends GameShell {
 				l = -1;
 			int i2 = stream.readNegUByte();
 			if (l == player.emoteAnimation && l != -1) {
-				int i3 = Animation.anims[l].anInt365;
+				int i3 = Animation.animations[l].anInt365;
 				if (i3 == 1) {
 					player.anInt1527 = 0;
 					player.anInt1528 = 0;
@@ -10260,7 +10260,7 @@ public class Game extends GameShell {
 					player.anInt1530 = 0;
 			} else if (l == -1
 					|| player.emoteAnimation == -1
-					|| Animation.anims[l].anInt359 >= Animation.anims[player.emoteAnimation].anInt359) {
+					|| Animation.animations[l].anInt359 >= Animation.animations[player.emoteAnimation].anInt359) {
 				player.emoteAnimation = l;
 				player.anInt1527 = 0;
 				player.anInt1528 = 0;
@@ -10814,7 +10814,7 @@ public class Game extends GameShell {
 				else
 					l = class9_1.anInt257;
 				if (l != -1) {
-					Animation animation = Animation.anims[l];
+					Animation animation = Animation.animations[l];
 					for (class9_1.anInt208 += i; class9_1.anInt208 > animation
 							.method258(class9_1.anInt246);) {
 						class9_1.anInt208 -= animation

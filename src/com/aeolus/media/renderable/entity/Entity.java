@@ -20,8 +20,8 @@ public class Entity extends Renderable {
 	public final int[] hitDamages;
 	public final int[] hitMarkTypes;
 	public final int[] hitsLoopCycle;
-	public int anInt1517;
-	public int anInt1518;
+	public int movementAnimation;
+	public int displayedMovementFrames;
 	public int anInt1519;
 	public int gfxId;
 	public int anInt1521;
@@ -77,7 +77,7 @@ public class Entity extends Renderable {
 		hitDamages = new int[4];
 		hitMarkTypes = new int[4];
 		hitsLoopCycle = new int[4];
-		anInt1517 = -1;
+		movementAnimation = -1;
 		gfxId = -1;
 		emoteAnimation = -1;
 		loopCycleStatus = -1000;
@@ -92,7 +92,7 @@ public class Entity extends Renderable {
 	}
 
 	public final void setPos(int x, int y, boolean flag) {
-		if (emoteAnimation != -1 && Animation.anims[emoteAnimation].anInt364 == 1)
+		if (emoteAnimation != -1 && Animation.animations[emoteAnimation].anInt364 == 1)
 			emoteAnimation = -1;
 		if (!flag) {
 			int dx = x - pathX[0];
@@ -163,7 +163,7 @@ public class Entity extends Renderable {
 			x++;
 			y--;
 		}
-		if (emoteAnimation != -1 && Animation.anims[emoteAnimation].anInt364 == 1)
+		if (emoteAnimation != -1 && Animation.animations[emoteAnimation].anInt364 == 1)
 			emoteAnimation = -1;
 		if (smallXYIndex < 9)
 			smallXYIndex++;

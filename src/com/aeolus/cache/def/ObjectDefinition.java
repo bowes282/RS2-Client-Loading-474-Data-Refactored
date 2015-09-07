@@ -344,10 +344,10 @@ public final class ObjectDefinition {
 				SequenceFrame.method532(k), l == 0 && k == -1 && !flag
 						&& !flag2, model);
 		if (k != -1) {
-			model_3.prepareSkeleton();
-			model_3.method470(k);
-			model_3.anIntArrayArray1658 = null;
-			model_3.anIntArrayArray1657 = null;
+			model_3.skin();
+			model_3.apply(k);
+			model_3.faceGroups = null;
+			model_3.vertexGroups = null;
 		}
 		while (l-- > 0)
 			model_3.method473();

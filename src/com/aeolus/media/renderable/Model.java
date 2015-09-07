@@ -1421,8 +1421,8 @@ public class Model extends Renderable {
 		anIntArray1640 = model.anIntArray1640;
 		anIntArray1638 = model.anIntArray1638;
 		anInt1641 = model.anInt1641;
-		anIntArrayArray1658 = model.anIntArrayArray1658;
-		anIntArrayArray1657 = model.anIntArrayArray1657;
+		faceGroups = model.faceGroups;
+		vertexGroups = model.vertexGroups;
 		anIntArray1631 = model.anIntArray1631;
 		anIntArray1632 = model.anIntArray1632;
 		anIntArray1633 = model.anIntArray1633;
@@ -1542,7 +1542,7 @@ public class Model extends Renderable {
 		}
 	}
 
-	public void prepareSkeleton() {
+	public void skin() {
 		if (anIntArray1655 != null) {
 			int ai[] = new int[256];
 			int j = 0;
@@ -1553,15 +1553,15 @@ public class Model extends Renderable {
 					j = j1;
 			}
 
-			anIntArrayArray1657 = new int[j + 1][];
+			vertexGroups = new int[j + 1][];
 			for (int k1 = 0; k1 <= j; k1++) {
-				anIntArrayArray1657[k1] = new int[ai[k1]];
+				vertexGroups[k1] = new int[ai[k1]];
 				ai[k1] = 0;
 			}
 
 			for (int j2 = 0; j2 < vertices; j2++) {
 				int l2 = anIntArray1655[j2];
-				anIntArrayArray1657[l2][ai[l2]++] = j2;
+				vertexGroups[l2][ai[l2]++] = j2;
 			}
 
 			anIntArray1655 = null;
@@ -1576,15 +1576,15 @@ public class Model extends Renderable {
 					k = l1;
 			}
 
-			anIntArrayArray1658 = new int[k + 1][];
+			faceGroups = new int[k + 1][];
 			for (int i2 = 0; i2 <= k; i2++) {
-				anIntArrayArray1658[i2] = new int[ai1[i2]];
+				faceGroups[i2] = new int[ai1[i2]];
 				ai1[i2] = 0;
 			}
 
 			for (int k2 = 0; k2 < anInt1630; k2++) {
 				int i3 = anIntArray1656[k2];
-				anIntArrayArray1658[i3][ai1[i3]++] = k2;
+				faceGroups[i3][ai1[i3]++] = k2;
 			}
 
 			anIntArray1656 = null;
@@ -1593,10 +1593,10 @@ public class Model extends Renderable {
 	
 	public void method470(int frame, int nextFrame, int end, int cycle) {
 		if (!Configuration.enableTweening) {
-			method470(frame);
+			apply(frame);
 			return;
 		}
-		if (anIntArrayArray1657 != null && frame != -1) {
+		if (vertexGroups != null && frame != -1) {
 			SequenceFrame currentAnimation = SequenceFrame.method531(frame);
 			SkinList list1 = currentAnimation.aClass18_637;
 			anInt1681 = 0;
@@ -1698,8 +1698,8 @@ public class Model extends Renderable {
 		}
 	}
 
-	public void method470(int i) {
-		if (anIntArrayArray1657 == null)
+	public void apply(int i) {
+		if (vertexGroups == null)
 			return;
 		if (i == -1)
 			return;
@@ -1723,7 +1723,7 @@ public class Model extends Renderable {
 		if (k == -1)
 			return;
 		if (ai == null || j == -1) {
-			method470(k);
+			apply(k);
 			return;
 		}
 		SequenceFrame class36 = SequenceFrame.method531(k);
@@ -1731,7 +1731,7 @@ public class Model extends Renderable {
 			return;
 		SequenceFrame class36_1 = SequenceFrame.method531(j);
 		if (class36_1 == null) {
-			method470(k);
+			apply(k);
 			return;
 		}
 		SkinList class18 = class36.aClass18_637;
@@ -1780,8 +1780,8 @@ public class Model extends Renderable {
 			anInt1683 = 0;
 			for (int k2 = 0; k2 < i1; k2++) {
 				int l3 = ai[k2];
-				if (l3 < anIntArrayArray1657.length) {
-					int ai5[] = anIntArrayArray1657[l3];
+				if (l3 < vertexGroups.length) {
+					int ai5[] = vertexGroups[l3];
 					for (int i5 = 0; i5 < ai5.length; i5++) {
 						int j6 = ai5[i5];
 						anInt1681 += vertexX[j6];
@@ -1808,8 +1808,8 @@ public class Model extends Renderable {
 		if (i == 1) {
 			for (int k1 = 0; k1 < i1; k1++) {
 				int l2 = ai[k1];
-				if (l2 < anIntArrayArray1657.length) {
-					int ai1[] = anIntArrayArray1657[l2];
+				if (l2 < vertexGroups.length) {
+					int ai1[] = vertexGroups[l2];
 					for (int i4 = 0; i4 < ai1.length; i4++) {
 						int j5 = ai1[i4];
 						vertexX[j5] += j;
@@ -1825,8 +1825,8 @@ public class Model extends Renderable {
 		if (i == 2) {
 			for (int l1 = 0; l1 < i1; l1++) {
 				int i3 = ai[l1];
-				if (i3 < anIntArrayArray1657.length) {
-					int ai2[] = anIntArrayArray1657[i3];
+				if (i3 < vertexGroups.length) {
+					int ai2[] = vertexGroups[i3];
 					for (int j4 = 0; j4 < ai2.length; j4++) {
 						int k5 = ai2[j4];
 						vertexX[k5] -= anInt1681;
@@ -1868,8 +1868,8 @@ public class Model extends Renderable {
 		if (i == 3) {
 			for (int i2 = 0; i2 < i1; i2++) {
 				int j3 = ai[i2];
-				if (j3 < anIntArrayArray1657.length) {
-					int ai3[] = anIntArrayArray1657[j3];
+				if (j3 < vertexGroups.length) {
+					int ai3[] = vertexGroups[j3];
 					for (int k4 = 0; k4 < ai3.length; k4++) {
 						int l5 = ai3[k4];
 						vertexX[l5] -= anInt1681;
@@ -1886,11 +1886,11 @@ public class Model extends Renderable {
 			}
 			return;
 		}
-		if (i == 5 && anIntArrayArray1658 != null && anIntArray1639 != null) {
+		if (i == 5 && faceGroups != null && anIntArray1639 != null) {
 			for (int j2 = 0; j2 < i1; j2++) {
 				int k3 = ai[j2];
-				if (k3 < anIntArrayArray1658.length) {
-					int ai4[] = anIntArrayArray1658[k3];
+				if (k3 < faceGroups.length) {
+					int ai4[] = faceGroups[k3];
 					for (int l4 = 0; l4 < ai4.length; l4++) {
 						int i6 = ai4[l4];
 						anIntArray1639[i6] += j * 8;
@@ -2811,8 +2811,8 @@ public class Model extends Renderable {
 	public int anInt1654;
 	public int anIntArray1655[];
 	public int anIntArray1656[];
-	public int anIntArrayArray1657[][];
-	public int anIntArrayArray1658[][];
+	public int vertexGroups[][];
+	public int faceGroups[][];
 	public boolean fits_on_single_square;
 	public Vertex aClass33Array1660[];
 	static ModelHeader aClass21Array1661[];

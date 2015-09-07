@@ -89,7 +89,7 @@ public final class SceneObject extends Renderable {
 		anInt1605 = i1;
 		anInt1606 = k1;
 		if (l1 != -1) {
-			aAnimation_1607 = Animation.anims[l1];
+			aAnimation_1607 = Animation.animations[l1];
 			anInt1599 = 0;
 			anInt1608 = Game.loopCycle;
 			if (flag && aAnimation_1607.anInt356 != -1) {

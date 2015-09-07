@@ -61,10 +61,10 @@ public final class SceneProjectile extends Renderable {
 		}
 		Model model_1 = new Model(true, SequenceFrame.method532(j), false, model);
 		if(j != -1) {
-			model_1.prepareSkeleton();
-			model_1.method470(j);
-			model_1.anIntArrayArray1658 = null;
-			model_1.anIntArrayArray1657 = null;
+			model_1.skin();
+			model_1.apply(j);
+			model_1.faceGroups = null;
+			model_1.vertexGroups = null;
 		}
 		if(aSpotAnim_1592.resizeXY != 128 || aSpotAnim_1592.resizeZ != 128) {
 			model_1.scale(aSpotAnim_1592.resizeXY, aSpotAnim_1592.resizeXY, aSpotAnim_1592.resizeZ);

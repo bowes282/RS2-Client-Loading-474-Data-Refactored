@@ -180,7 +180,7 @@ public final class NpcDefinition {
 					model.recolor(recolourOriginal[k1], recolourTarget[k1]);
 
 			}
-			model.prepareSkeleton();
+			model.skin();
 			model.scale(132, 132, 132);
 			model.light(84 + lightModifier, 1000 + shadowModifier, -90, -580,
 					-90, true);
@@ -195,12 +195,12 @@ public final class NpcDefinition {
 		else if (frame != -1 && nextFrame != -1)
 			empty.method470(frame, nextFrame, idk, idk2);
 		else if (frame != -1)
-			empty.method470(frame);
+			empty.apply(frame);
 		if (scaleXZ != 128 || scaleY != 128)
 			empty.scale(scaleXZ, scaleXZ, scaleY);
 		empty.method466();
-		empty.anIntArrayArray1658 = null;
-		empty.anIntArrayArray1657 = null;
+		empty.faceGroups = null;
+		empty.vertexGroups = null;
 		if (boundDim == 1)
 			empty.fits_on_single_square = true;
 		return empty;
@@ -239,7 +239,7 @@ public final class NpcDefinition {
 							recolourTarget[index]);
 
 			}
-			model.prepareSkeleton();
+			model.skin();
 			model.light(64 + lightModifier, 850 + shadowModifier, -30, -50,
 					-30, true);
 			modelCache.removeFromCache(model, interfaceType);
@@ -250,12 +250,12 @@ public final class NpcDefinition {
 		if (secondaryFrame != -1 && primaryFrame != -1)
 			model_1.method471(interleaveOrder, primaryFrame, secondaryFrame);
 		else if (secondaryFrame != -1)
-			model_1.method470(secondaryFrame);
+			model_1.apply(secondaryFrame);
 		if (scaleXZ != 128 || scaleY != 128)
 			model_1.scale(scaleXZ, scaleXZ, scaleY);
 		model_1.method466();
-		model_1.anIntArrayArray1658 = null;
-		model_1.anIntArrayArray1657 = null;
+		model_1.faceGroups = null;
+		model_1.vertexGroups = null;
 		if (boundDim == 1)
 			model_1.fits_on_single_square = true;
 		return model_1;

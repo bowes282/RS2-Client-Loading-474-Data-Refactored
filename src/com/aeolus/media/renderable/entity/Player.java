@@ -34,10 +34,10 @@ public final class Player extends Entity {
 				int cycle1 = spotAnim.animationSequence.anIntArray355[super.anInt1521];
 				int cycle2 = super.anInt1522;
 				model_3.translate(0, -super.anInt1524, 0);
-				model_3.prepareSkeleton();
+				model_3.skin();
 				model_3.method470(spotAnim.animationSequence.anIntArray353[super.anInt1521], nextFrame, cycle1, cycle2);
-				model_3.anIntArrayArray1658 = null;
-				model_3.anIntArrayArray1657 = null;
+				model_3.faceGroups = null;
+				model_3.vertexGroups = null;
 				if(spotAnim.resizeXY != 128 || spotAnim.resizeZ != 128)
 					model_3.scale(spotAnim.resizeXY, spotAnim.resizeXY, spotAnim.resizeZ);
 				model_3.light(64 + spotAnim.modelBrightness, 850 + spotAnim.modelShadow, -30, -50, -30, true);
@@ -191,16 +191,16 @@ public final class Player extends Entity {
 			int cycle1 = 0;
 			int cycle2 = 0;
 			if(super.emoteAnimation >= 0 && super.anInt1529 == 0) {
-				Animation animation = Animation.anims[super.emoteAnimation];
+				Animation animation = Animation.animations[super.emoteAnimation];
 				currentFrame = animation.anIntArray353[super.anInt1527];
 				nextFrame = animation.anIntArray353[super.nextAnimationFrame];
 				cycle1 = animation.anIntArray355[super.anInt1527];
 				cycle2 = super.anInt1528;
-			} else if(super.anInt1517 >= 0) {
-				Animation animation = Animation.anims[super.anInt1517];
-				currentFrame = animation.anIntArray353[super.anInt1518];
+			} else if(super.movementAnimation >= 0) {
+				Animation animation = Animation.animations[super.movementAnimation];
+				currentFrame = animation.anIntArray353[super.displayedMovementFrames];
 				nextFrame = animation.anIntArray353[super.nextIdleAnimationFrame];
-				cycle1 = animation.anIntArray355[super.anInt1518];
+				cycle1 = animation.anIntArray355[super.displayedMovementFrames];
 				cycle2 = super.anInt1519;
 			}
 			Model model = desc.method164(-1, currentFrame, null, nextFrame, cycle1, cycle2);
@@ -216,13 +216,13 @@ public final class Player extends Entity {
 		int k1 = -1;
 		if(super.emoteAnimation >= 0 && super.anInt1529 == 0)
 		{
-			Animation animation = Animation.anims[super.emoteAnimation];
+			Animation animation = Animation.animations[super.emoteAnimation];
 			currentFrame = animation.anIntArray353[super.anInt1527];
 			nextFrame = animation.anIntArray353[super.nextAnimationFrame];
 			cycle1 = animation.anIntArray355[super.anInt1527];
 			cycle2 = super.anInt1528;
-			if(super.anInt1517 >= 0 && super.anInt1517 != super.standAnimIndex)
-				i1 = Animation.anims[super.anInt1517].anIntArray353[super.anInt1518];
+			if(super.movementAnimation >= 0 && super.movementAnimation != super.standAnimIndex)
+				i1 = Animation.animations[super.movementAnimation].anIntArray353[super.displayedMovementFrames];
 			if(animation.anInt360 >= 0)
 			{
 				j1 = animation.anInt360;
@@ -234,11 +234,11 @@ public final class Player extends Entity {
 				l += k1 - equipment[3] << 48;
 			}
 		} else
-		if(super.anInt1517 >= 0) {
-			Animation animation = Animation.anims[super.anInt1517];
-			currentFrame = animation.anIntArray353[super.anInt1518];
+		if(super.movementAnimation >= 0) {
+			Animation animation = Animation.animations[super.movementAnimation];
+			currentFrame = animation.anIntArray353[super.displayedMovementFrames];
 			nextFrame = animation.anIntArray353[super.nextIdleAnimationFrame];
-			cycle1 = animation.anIntArray355[super.anInt1518];
+			cycle1 = animation.anIntArray355[super.displayedMovementFrames];
 			cycle2 = super.anInt1519;
 		}
 		Model model_1 = (Model) mruNodes.insertFromCache(l);
@@ -300,7 +300,7 @@ public final class Player extends Entity {
 						model_1.recolor(Game.anIntArray1204[0], Game.anIntArray1204[anIntArray1700[j3]]);
 				}
 
-			model_1.prepareSkeleton();
+			model_1.skin();
 			model_1.scale(132, 132, 132);
 			model_1.light(72, 1300, -30, -50, -30, true);
 			mruNodes.removeFromCache(model_1, l);
@@ -311,14 +311,14 @@ public final class Player extends Entity {
 		Model model_2 = Model.EMPTY_MODEL;
 		model_2.method464(model_1, SequenceFrame.method532(currentFrame) & SequenceFrame.method532(i1));
 		if(currentFrame != -1 && i1 != -1)
-			model_2.method471(Animation.anims[super.emoteAnimation].anIntArray357, i1, currentFrame);
+			model_2.method471(Animation.animations[super.emoteAnimation].anIntArray357, i1, currentFrame);
 		else if(currentFrame != -1 && nextFrame != -1)
 			model_2.method470(currentFrame, nextFrame, cycle1, cycle2);
 		else
-			model_2.method470(currentFrame);
+			model_2.apply(currentFrame);
 		model_2.method466();
-		model_2.anIntArrayArray1658 = null;
-		model_2.anIntArrayArray1657 = null;
+		model_2.faceGroups = null;
+		model_2.vertexGroups = null;
 		return model_2;
 	}
 

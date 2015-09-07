@@ -2175,11 +2175,11 @@ public final class RSInterface {
 			return model;
 		Model model_1 = new Model(true, SequenceFrame.method532(k) & SequenceFrame.method532(j), false, model);
 		if (k != -1 || j != -1)
-			model_1.prepareSkeleton();
+			model_1.skin();
 		if (k != -1)
-			model_1.method470(k);
+			model_1.apply(k);
 		if (j != -1)
-			model_1.method470(j);
+			model_1.apply(j);
 		model_1.light(64, 768, -50, -10, -50, true);
 		return model_1;
 	}
