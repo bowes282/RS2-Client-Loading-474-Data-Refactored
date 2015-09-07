@@ -8704,8 +8704,8 @@ public class Game extends GameShell {
 			for (int i = 0; i < size; i++) {
 				cacheSprite[i] = new Sprite("Sprites/" + i);
 			}
-			for (int i = 0; i < SkillConstants.skillsCount; i++) {
-				skill_sprites[i] = new Sprite("XpDrop/" + (95 + i));
+			for (int imageId = 0; imageId < SkillConstants.skillsCount; imageId++) {
+				skill_sprites[imageId] = new Sprite("xp_drop/" + imageId);
 			}
 			multiOverlay = new Sprite(streamLoader_2, "overlay_multiway", 0);
 			mapBack = new Background(streamLoader_2, "mapback", 0);
@@ -13913,11 +13913,11 @@ public class Game extends GameShell {
 									xp_added[i][1]);
 					int icons_x_off = 0;
 					Sprite sprite = null;
-					for (int i2 = 0; i2 < skill_sprites.length; i2++) {
-						if ((xp_added[i][0] & (1 << i2)) == 0)
+					for (int count = 0; count < skill_sprites.length; count++) {
+						if ((xp_added[i][0] & (1 << count)) == 0)
 							continue;
 
-						sprite = skill_sprites[i2];
+						sprite = skill_sprites[count];
 						icons_x_off += sprite.myWidth + 3;
 						sprite.drawSprite(x - a + 12 - xp_font.getTextWidth(s)
 								- icons_x_off, y + (140 - xp_added[i][2])
