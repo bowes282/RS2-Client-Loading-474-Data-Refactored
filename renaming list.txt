@@ -1,8 +1,10 @@
 Animable -> Renderable
 Applet_Sub1 -> RSApplet -> GameShell
+Cache -> ReferenceCache
+Censor -> MessageCensor
 Class3 -> Object4 -> ItemPile
 Class4 -> ChunkUtil
-Class6 -> SoundSample
+Class6 -> SoundSample -> SoundSynthesizer
 Class10 -> Object1 -> WallLock
 Class11 -> CollisionMap
 Class13 -> BZ2InputStream
@@ -32,7 +34,17 @@ Ground -> Tile
 Flo -> Floor
 MRUNodes -> Cache
 NodeSub -> QueueNode
+Node -> Linkable
+NodeCache -> HashTable
+NodeSubList -> Queue
+QueueNode -> Cacheable
 Stream -> Buffer
 StreamLoader -> CacheArchive
+Sounds -> SoundTrack
+Texture -> Rasterizer
+TextDrawingArea -> GameFont
 RSImageProducer -> ImageProducer
+RSInterface -> Widget
+VarBit -> VariableBits
+Varp -> VariableParameter
 WorldController -> SceneGraph
