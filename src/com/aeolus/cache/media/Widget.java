@@ -9,6 +9,10 @@ import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 
+/**
+ * Previously known as RSInterface, which is a class
+ * used to create and show game interfaces.
+ */
 public final class Widget {
 	
 	public static final int OPTION_OK = 1;
@@ -108,11 +112,11 @@ public final class Widget {
 				widget.inventoryItemId = new int[widget.width * widget.height];
 				widget.invStackSizes = new int[widget.width * widget.height];
 				widget.aBoolean259 = buffer.readUnsignedByte() == 1;
-				widget.isInventoryInterface = buffer.readUnsignedByte() == 1;
-				widget.usableItemInterface = buffer.readUnsignedByte() == 1;
-				widget.aBoolean235 = buffer.readUnsignedByte() == 1;
-				widget.inventorySpritePaddingColumn = buffer.readUnsignedByte();
-				widget.inventorySpritePaddingRow = buffer.readUnsignedByte();
+				widget.hasActions = buffer.readUnsignedByte() == 1;
+				widget.usableItems = buffer.readUnsignedByte() == 1;
+				widget.replaceItems = buffer.readUnsignedByte() == 1;
+				widget.spritePaddingX = buffer.readUnsignedByte();
+				widget.spritePaddingY = buffer.readUnsignedByte();
 				widget.spritesX = new int[20];
 				widget.spritesY = new int[20];
 				widget.sprites = new Sprite[20];
@@ -210,9 +214,9 @@ public final class Widget {
 					widget.textDrawingAreas = textDrawingAreas[l2];
 				widget.textShadow = buffer.readUnsignedByte() == 1;
 				widget.textColor = buffer.readInt();
-				widget.inventorySpritePaddingColumn = buffer.readShort();
-				widget.inventorySpritePaddingRow = buffer.readShort();
-				widget.isInventoryInterface = buffer.readUnsignedByte() == 1;
+				widget.spritePaddingX = buffer.readShort();
+				widget.spritePaddingY = buffer.readShort();
+				widget.hasActions = buffer.readUnsignedByte() == 1;
 				widget.actions = new String[5];
 				for (int actionCount = 0; actionCount < 5; actionCount++) {
 					widget.actions[actionCount] = buffer.readString();
@@ -651,11 +655,11 @@ public final class Widget {
 		rsinterface.childX[11] = 478;
 		rsinterface.childY[11] = 17;
 		rsinterface = interfaceCache[10494];
-		rsinterface.inventorySpritePaddingColumn = 6;
-		rsinterface.inventorySpritePaddingRow = 5;
+		rsinterface.spritePaddingX = 6;
+		rsinterface.spritePaddingY = 5;
 		rsinterface = interfaceCache[10600];
-		rsinterface.inventorySpritePaddingColumn = 6;
-		rsinterface.inventorySpritePaddingRow = 5;
+		rsinterface.spritePaddingX = 6;
+		rsinterface.spritePaddingY = 5;
 	}
 	
 	public static void itemsOnDeathDATA(GameFont[] tda) {
@@ -2137,7 +2141,7 @@ public final class Widget {
 	}
 
 	private Model method206(int i, int j) {
-		Model model = (Model) aMRUNodes_264.insertFromCache((i << 16) + j);
+		Model model = (Model) models.insertFromCache((i << 16) + j);
 		if (model != null)
 			return model;
 		if (i == 1)
@@ -2151,7 +2155,7 @@ public final class Widget {
 		if (i == 5)
 			model = null;
 		if (model != null)
-			aMRUNodes_264.removeFromCache(model, (i << 16) + j);
+			models.removeFromCache(model, (i << 16) + j);
 		return model;
 	}
 
@@ -2174,9 +2178,9 @@ public final class Widget {
 		int j = 5;// was parameter
 		if (flag)
 			return;
-		aMRUNodes_264.unlinkAll();
+		models.unlinkAll();
 		if (model != null && j != 4)
-			aMRUNodes_264.removeFromCache(model, (j << 16) + i);
+			models.removeFromCache(model, (j << 16) + i);
 	}
 
 	public Model method209(int j, int k, boolean flag) {
@@ -2226,25 +2230,25 @@ public final class Widget {
 	public boolean filled;
 	public String secondaryText;
 	public int hoverType;
-	public int inventorySpritePaddingColumn;
+	public int spritePaddingX;
 	public int textColor;
 	public int defaultMediaType;
 	public int defaultMedia;
-	public boolean aBoolean235;
+	public boolean replaceItems;
 	public int parent;
 	public int spellUsableOn;
 	private static ReferenceCache spriteCache;
 	public int secondaryHoverColor;
 	public int children[];
 	public int childX[];
-	public boolean usableItemInterface;
+	public boolean usableItems;
 	public GameFont textDrawingAreas;
-	public int inventorySpritePaddingRow;
+	public int spritePaddingY;
 	public int scriptOperators[];
 	public int anInt246;
 	public int spritesY[];
 	public String defaultText;
-	public boolean isInventoryInterface;
+	public boolean hasActions;
 	public int id;
 	public int invStackSizes[];
 	public int inventoryItemId[];
@@ -2258,7 +2262,7 @@ public final class Widget {
 	public int scrollMax;
 	public int type;
 	public int x;
-	private static final ReferenceCache aMRUNodes_264 = new ReferenceCache(30);
+	private static final ReferenceCache models = new ReferenceCache(30);
 	public int anInt265;
 	public boolean hoverOnly;
 	public int height;

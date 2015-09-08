@@ -1026,7 +1026,7 @@ public class Game extends GameShell {
 					int l1 = menuActionCmd2[menuActionRow - 1];
 					int j2 = menuActionCmd3[menuActionRow - 1];
 					Widget class9 = Widget.interfaceCache[j2];
-					if (class9.aBoolean259 || class9.aBoolean235) {
+					if (class9.aBoolean259 || class9.replaceItems) {
 						aBoolean1242 = false;
 						anInt989 = 0;
 						anInt1084 = j2;
@@ -1586,10 +1586,10 @@ public class Game extends GameShell {
 						for (int i3 = 0; i3 < childInterface.width; i3++) {
 							int j3 = i2
 									+ i3
-									* (32 + childInterface.inventorySpritePaddingColumn);
+									* (32 + childInterface.spritePaddingX);
 							int k3 = j2
 									+ l2
-									* (32 + childInterface.inventorySpritePaddingRow);
+									* (32 + childInterface.spritePaddingY);
 							if (k2 < 20) {
 								j3 += childInterface.spritesX[k2];
 								k3 += childInterface.spritesY[k2];
@@ -1602,7 +1602,7 @@ public class Game extends GameShell {
 									ItemDefinition itemDef = ItemDefinition
 											.lookup(childInterface.inventoryItemId[k2] - 1);
 									if (itemSelected == 1
-											&& childInterface.isInventoryInterface) {
+											&& childInterface.hasActions) {
 										if (childInterface.id != anInt1284
 												|| k2 != anInt1283) {
 											menuActionName[menuActionRow] = "Use "
@@ -1616,7 +1616,7 @@ public class Game extends GameShell {
 											menuActionRow++;
 										}
 									} else if (spellSelected == 1
-											&& childInterface.isInventoryInterface) {
+											&& childInterface.hasActions) {
 										if ((spellUsableOn & 0x10) == 16) {
 											menuActionName[menuActionRow] = spellTooltip
 													+ " @lre@" + itemDef.name;
@@ -1627,7 +1627,7 @@ public class Game extends GameShell {
 											menuActionRow++;
 										}
 									} else {
-										if (childInterface.isInventoryInterface) {
+										if (childInterface.hasActions) {
 											for (int l3 = 4; l3 >= 3; l3--)
 												if (itemDef.actions != null
 														&& itemDef.actions[l3] != null) {
@@ -1652,7 +1652,7 @@ public class Game extends GameShell {
 													menuActionRow++;
 												}
 										}
-										if (childInterface.usableItemInterface) {
+										if (childInterface.usableItems) {
 											menuActionName[menuActionRow] = "Use @lre@"
 													+ itemDef.name;
 											menuActionID[menuActionRow] = 447;
@@ -1661,7 +1661,7 @@ public class Game extends GameShell {
 											menuActionCmd3[menuActionRow] = childInterface.id;
 											menuActionRow++;
 										}
-										if (childInterface.isInventoryInterface
+										if (childInterface.hasActions
 												&& itemDef.actions != null) {
 											for (int i4 = 2; i4 >= 0; i4--)
 												if (itemDef.actions[i4] != null) {
@@ -3979,7 +3979,7 @@ public class Game extends GameShell {
 							j1 = 1;
 						if (childInterface.inventoryItemId[mouseInvInterfaceIndex] <= 0)
 							j1 = 0;
-						if (childInterface.aBoolean235) {
+						if (childInterface.replaceItems) {
 							int l2 = anInt1085;
 							int l3 = mouseInvInterfaceIndex;
 							childInterface.inventoryItemId[l3] = childInterface.inventoryItemId[l2];
@@ -9638,10 +9638,10 @@ public class Game extends GameShell {
 						for (int column = 0; column < childInterface.width; column++) {
 							int tileX = _x
 									+ column
-									* (32 + childInterface.inventorySpritePaddingColumn);
+									* (32 + childInterface.spritePaddingX);
 							int tileY = _y
 									+ row
-									* (32 + childInterface.inventorySpritePaddingRow);
+									* (32 + childInterface.spritePaddingY);
 							if (item < 20) {
 								tileX += childInterface.spritesX[item];
 								tileY += childInterface.spritesY[item];
@@ -9994,10 +9994,10 @@ public class Game extends GameShell {
 											+ intToKOrMilLongName(childInterface.invStackSizes[slot]);
 								int __x = _x
 										+ column
-										* (115 + childInterface.inventorySpritePaddingColumn);
+										* (115 + childInterface.spritePaddingX);
 								int __y = _y
 										+ row
-										* (12 + childInterface.inventorySpritePaddingRow);
+										* (12 + childInterface.spritePaddingY);
 								if (childInterface.centerText)
 									font.method382(childInterface.textColor,
 											__x + childInterface.width / 2,
