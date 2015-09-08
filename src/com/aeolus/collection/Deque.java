@@ -1,33 +1,36 @@
 package com.aeolus.collection;
 
 public final class Deque {
+	
+	private final Linkable head;
+	private Linkable current;
 
 	public Deque() {
-		head = new Node();
-		head.prev = head;
+		head = new Linkable();
+		head.previous = head;
 		head.next = head;
 	}
 
-	public void insertHead(Node node) {
+	public void insertHead(Linkable node) {
 		if (node.next != null)
 			node.unlink();
 		node.next = head.next;
-		node.prev = head;
-		node.next.prev = node;
-		node.prev.next = node;
+		node.previous = head;
+		node.next.previous = node;
+		node.previous.next = node;
 	}
 
-	public void insertTail(Node node) {
+	public void insertTail(Linkable node) {
 		if (node.next != null)
 			node.unlink();
 		node.next = head;
-		node.prev = head.prev;
-		node.next.prev = node;
-		node.prev.next = node;
+		node.previous = head.previous;
+		node.next.previous = node;
+		node.previous.next = node;
 	}
 
-	public Node popHead() {
-		Node node = head.prev;
+	public Linkable popHead() {
+		Linkable node = head.previous;
 		if (node == head) {
 			return null;
 		} else {
@@ -36,19 +39,19 @@ public final class Deque {
 		}
 	}
 
-	public Node reverseGetFirst() {
-		Node node = head.prev;
+	public Linkable reverseGetFirst() {
+		Linkable node = head.previous;
 		if (node == head) {
 			current = null;
 			return null;
 		} else {
-			current = node.prev;
+			current = node.previous;
 			return node;
 		}
 	}
 
-	public Node getFirst() {
-		Node node = head.next;
+	public Linkable getFirst() {
+		Linkable node = head.next;
 		if (node == head) {
 			current = null;
 			return null;
@@ -58,19 +61,19 @@ public final class Deque {
 		}
 	}
 
-	public Node reverseGetNext() {
-		Node node = current;
+	public Linkable reverseGetNext() {
+		Linkable node = current;
 		if (node == head) {
 			current = null;
 			return null;
 		} else {
-			current = node.prev;
+			current = node.previous;
 			return node;
 		}
 	}
 
-	public Node getNext() {
-		Node node = current;
+	public Linkable getNext() {
+		Linkable node = current;
 		if (node == head) {
 			current = null;
 			return null;
@@ -80,16 +83,13 @@ public final class Deque {
 	}
 
 	public void clear() {
-		if (head.prev == head)
+		if (head.previous == head)
 			return;
 		do {
-			Node node = head.prev;
+			Linkable node = head.previous;
 			if (node == head)
 				return;
 			node.unlink();
 		} while (true);
 	}
-
-	private final Node head;
-	private Node current;
 }

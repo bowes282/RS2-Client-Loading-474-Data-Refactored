@@ -1,5 +1,5 @@
 package com.aeolus.scene.tile;
-import com.aeolus.collection.Node;
+import com.aeolus.collection.Linkable;
 import com.aeolus.media.renderable.ItemPile;
 import com.aeolus.media.renderable.StaticObject;
 
@@ -8,7 +8,7 @@ import com.aeolus.media.renderable.StaticObject;
 // Decompiler options: packimports(3) 
 
 
-public final class Tile extends Node {
+public final class Tile extends Linkable {
 
 	public Tile(int i, int j, int k)
 	{

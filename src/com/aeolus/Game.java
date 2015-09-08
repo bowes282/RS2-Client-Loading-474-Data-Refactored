@@ -22,7 +22,7 @@ import com.aeolus.cache.media.Background;
 import com.aeolus.cache.media.Widget;
 import com.aeolus.cache.media.SequenceFrame;
 import com.aeolus.cache.media.Sprite;
-import com.aeolus.collection.Node;
+import com.aeolus.collection.Linkable;
 import com.aeolus.collection.Deque;
 import com.aeolus.media.Animation;
 import com.aeolus.media.Raster;
@@ -1384,7 +1384,7 @@ public class Game extends GameShell {
 			}
 		}
 
-		class19.insertTail(((Node) (obj)));
+		class19.insertTail(((Linkable) (obj)));
 		Object obj1 = null;
 		Object obj2 = null;
 		for (Item class30_sub2_sub4_sub2_1 = (Item) class19.reverseGetFirst(); class30_sub2_sub4_sub2_1 != null; class30_sub2_sub4_sub2_1 = (Item) class19

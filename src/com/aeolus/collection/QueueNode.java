@@ -1,6 +1,10 @@
 package com.aeolus.collection;
 
-public class QueueNode extends Node {
+public class QueueNode extends Linkable {
+
+	public QueueNode prevNodeSub;
+	QueueNode nextNodeSub;
+	public static int anInt1305;
 
 	public final void unlinkSub() {
 		if (nextNodeSub == null) {
@@ -11,11 +15,4 @@ public class QueueNode extends Node {
 			nextNodeSub = null;
 		}
 	}
-
-	public QueueNode() {
-	}
-
-	public QueueNode prevNodeSub;
-	QueueNode nextNodeSub;
-	public static int anInt1305;
 }

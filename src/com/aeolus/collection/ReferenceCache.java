@@ -8,11 +8,11 @@ public final class ReferenceCache {
 		nodeSubList = new NodeSubList();
 		initialCount = i;
 		spaceLeft = i;
-		nodeCache = new NodeCache();
+		nodeCache = new HashTable();
 	}
 
 	public QueueNode insertFromCache(long l) {
-		QueueNode nodeSub = (QueueNode) nodeCache.findNodeByID(l);
+		QueueNode nodeSub = (QueueNode) nodeCache.get(l);
 		if (nodeSub != null) {
 			nodeSubList.insertHead(nodeSub);
 		}
@@ -33,7 +33,7 @@ public final class ReferenceCache {
 			} else {
 				spaceLeft--;
 			}
-			nodeCache.removeFromCache(nodeSub, l);
+			nodeCache.put(nodeSub, l);
 			nodeSubList.insertHead(nodeSub);
 			return;
 		} catch (RuntimeException runtimeexception) {
@@ -58,6 +58,6 @@ public final class ReferenceCache {
 	private final QueueNode emptyNodeSub;
 	private final int initialCount;
 	private int spaceLeft;
-	private final NodeCache nodeCache;
+	private final HashTable nodeCache;
 	private final NodeSubList nodeSubList;
 }

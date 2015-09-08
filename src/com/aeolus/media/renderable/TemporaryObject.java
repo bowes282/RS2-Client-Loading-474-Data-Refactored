@@ -1,7 +1,7 @@
 package com.aeolus.media.renderable;
-import com.aeolus.collection.Node;
+import com.aeolus.collection.Linkable;
 
-public final class TemporaryObject extends Node {
+public final class TemporaryObject extends Linkable {
 
 	public TemporaryObject()
 	{
