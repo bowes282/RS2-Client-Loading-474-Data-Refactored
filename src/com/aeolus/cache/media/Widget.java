@@ -237,13 +237,14 @@ public final class Widget {
 			if (widget.optionType == OPTION_OK || widget.optionType == OPTION_TOGGLE_SETTING || widget.optionType == OPTION_RESET_SETTING || widget.optionType == OPTION_CONTINUE) {
 				widget.tooltip = buffer.readString();
 				if (widget.tooltip.length() == 0) {
-					if (widget.optionType == 1)
+					//TODO
+					if (widget.optionType == OPTION_OK)
 						widget.tooltip = "Ok";
-					if (widget.optionType == 4)
+					if (widget.optionType == OPTION_TOGGLE_SETTING)
 						widget.tooltip = "Select";
-					if (widget.optionType == 5)
+					if (widget.optionType == OPTION_RESET_SETTING)
 						widget.tooltip = "Select";
-					if (widget.optionType == 6)
+					if (widget.optionType == OPTION_CONTINUE)
 						widget.tooltip = "Continue";
 				}
 			}

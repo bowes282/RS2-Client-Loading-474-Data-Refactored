@@ -1450,19 +1450,19 @@ public class Game extends GameShell {
 		}
 	}
 
-	private void buildInterfaceMenu(int i, Widget class9, int k, int l, int i1,
+	private void buildInterfaceMenu(int i, Widget widget, int k, int l, int i1,
 			int j1) {
-		if (class9 == null)
-			class9 = Widget.interfaceCache[21356];
-		if (class9.type != 0 || class9.children == null || class9.hoverOnly)
+		if (widget == null)
+			widget = Widget.interfaceCache[21356];
+		if (widget.type != 0 || widget.children == null || widget.hoverOnly)
 			return;
-		if (k < i || i1 < l || k > i + class9.width || i1 > l + class9.height)
+		if (k < i || i1 < l || k > i + widget.width || i1 > l + widget.height)
 			return;
-		int k1 = class9.children.length;
+		int k1 = widget.children.length;
 		for (int l1 = 0; l1 < k1; l1++) {
-			int i2 = class9.childX[l1] + i;
-			int j2 = (class9.childY[l1] + l) - j1;
-			Widget childInterface = Widget.interfaceCache[class9.children[l1]];
+			int i2 = widget.childX[l1] + i;
+			int j2 = (widget.childY[l1] + l) - j1;
+			Widget childInterface = Widget.interfaceCache[widget.children[l1]];
 			i2 += childInterface.x;
 			j2 += childInterface.anInt265;
 			if ((childInterface.hoverType >= 0 || childInterface.defaultHoverColor != 0)
@@ -1479,7 +1479,7 @@ public class Game extends GameShell {
 					&& i1 < j2 + childInterface.height) {
 				anInt1315 = childInterface.id;
 			}
-			if (childInterface.type == 0) {
+			if (childInterface.type == Widget.TYPE_CONTAINER) {
 				buildInterfaceMenu(i2, childInterface, k, j2, i1,
 						childInterface.scrollPosition);
 				if (childInterface.scrollMax > childInterface.height)
@@ -1487,7 +1487,7 @@ public class Game extends GameShell {
 							k, i1, childInterface, j2, true,
 							childInterface.scrollMax);
 			} else {
-				if (childInterface.optionType == 1 && k >= i2 && i1 >= j2
+				if (childInterface.optionType == Widget.OPTION_OK && k >= i2 && i1 >= j2
 						&& k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
 					boolean flag = false;
@@ -1500,7 +1500,7 @@ public class Game extends GameShell {
 						menuActionRow++;
 					}
 				}
-				if (childInterface.optionType == 2 && spellSelected == 0
+				if (childInterface.optionType == Widget.OPTION_USABLE && spellSelected == 0
 						&& k >= i2 && i1 >= j2 && k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
 					String s = childInterface.selectedActionName;
@@ -1533,7 +1533,7 @@ public class Game extends GameShell {
 					menuActionCmd3[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
-				if (childInterface.optionType == 3 && k >= i2 && i1 >= j2
+				if (childInterface.optionType == Widget.OPTION_CLOSE && k >= i2 && i1 >= j2
 						&& k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
 					menuActionName[menuActionRow] = "Close";
@@ -1541,7 +1541,7 @@ public class Game extends GameShell {
 					menuActionCmd3[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
-				if (childInterface.optionType == 4 && k >= i2 && i1 >= j2
+				if (childInterface.optionType == Widget.OPTION_TOGGLE_SETTING && k >= i2 && i1 >= j2
 						&& k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
 					// System.out.println("2"+class9_1.tooltip + ", " +
@@ -1558,7 +1558,7 @@ public class Game extends GameShell {
 						// class9_1.hoverText);
 					}
 				}
-				if (childInterface.optionType == 5 && k >= i2 && i1 >= j2
+				if (childInterface.optionType == Widget.OPTION_RESET_SETTING && k >= i2 && i1 >= j2
 						&& k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
 					// System.out.println("3"+class9_1.tooltip + ", " +
@@ -1570,7 +1570,7 @@ public class Game extends GameShell {
 					menuActionCmd3[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
-				if (childInterface.optionType == 6 && !continuedDialogue
+				if (childInterface.optionType == Widget.OPTION_CONTINUE && !continuedDialogue
 						&& k >= i2 && i1 >= j2 && k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
 					// System.out.println("4"+class9_1.tooltip + ", " +
@@ -1582,7 +1582,7 @@ public class Game extends GameShell {
 					menuActionCmd3[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
-				if (childInterface.type == 2) {
+				if (childInterface.type == Widget.TYPE_INVENTORY) {
 					int k2 = 0;
 					for (int l2 = 0; l2 < childInterface.height; l2++) {
 						for (int i3 = 0; i3 < childInterface.width; i3++) {
@@ -9587,7 +9587,7 @@ public class Game extends GameShell {
 		Raster.method335(0, yPos, 174, 68, 220, xPos);
 	}
 
-	private void drawInterface(int j, int x, Widget rsInterface, int y) {
+	private void drawInterface(int scroll_y, int x, Widget rsInterface, int y) {
 		if (rsInterface == null)
 			rsInterface = Widget.interfaceCache[21356];
 		if (rsInterface.type != 0 || rsInterface.children == null)
@@ -9605,7 +9605,7 @@ public class Game extends GameShell {
 		int alpha = rsInterface.transparency;
 		for (int childId = 0; childId < childCount; childId++) {
 			int _x = rsInterface.childX[childId] + x;
-			int _y = (rsInterface.childY[childId] + y) - j;
+			int _y = (rsInterface.childY[childId] + y) - scroll_y;
 			Widget childInterface = Widget.interfaceCache[rsInterface.children[childId]];
 			_x += childInterface.x;
 			_y += childInterface.anInt265;
@@ -9651,7 +9651,7 @@ public class Game extends GameShell {
 			for (int r = 0; r < runeChildren.length; r++)
 				if (childInterface.id == runeChildren[r])
 					childInterface.modelZoom = 775;
-			if (childInterface.type == 0) {
+			if (childInterface.type == Widget.TYPE_CONTAINER) {
 				if (childInterface.scrollPosition > childInterface.scrollMax
 						- childInterface.height)
 					childInterface.scrollPosition = childInterface.scrollMax
@@ -9666,7 +9666,7 @@ public class Game extends GameShell {
 									+ childInterface.width,
 							childInterface.scrollMax, false);
 			} else if (childInterface.type != 1)
-				if (childInterface.type == 2) {
+				if (childInterface.type == Widget.TYPE_INVENTORY) {
 					int item = 0;
 					for (int row = 0; row < childInterface.height; row++) {
 						for (int column = 0; column < childInterface.width; column++) {
@@ -9692,12 +9692,12 @@ public class Game extends GameShell {
 									if (itemSelected == 1 && anInt1283 == item
 											&& anInt1284 == childInterface.id)
 										l9 = 0xffffff;
-									Sprite class30_sub2_sub1_sub1_2 = ItemDefinition
+									Sprite item_icon = ItemDefinition
 											.getSprite(
 													itemId,
 													childInterface.invStackSizes[item],
 													l9);
-									if (class30_sub2_sub1_sub1_2 != null) {
+									if (item_icon != null) {
 										if (activeInterfaceType != 0
 												&& anInt1085 == item
 												&& anInt1084 == childInterface.id) {
@@ -9715,7 +9715,7 @@ public class Game extends GameShell {
 												differenceX = 0;
 												differenceY = 0;
 											}
-											class30_sub2_sub1_sub1_2
+											item_icon
 													.drawSprite1(tileX
 															+ differenceX,
 															tileY + differenceY);
@@ -9749,12 +9749,12 @@ public class Game extends GameShell {
 										} else if (atInventoryInterfaceType != 0
 												&& atInventoryIndex == item
 												&& atInventoryInterface == childInterface.id)
-											class30_sub2_sub1_sub1_2
+											item_icon
 													.drawSprite1(tileX, tileY);
 										else
-											class30_sub2_sub1_sub1_2
+											item_icon
 													.drawSprite(tileX, tileY);
-										if (class30_sub2_sub1_sub1_2.maxWidth == 33
+										if (item_icon.maxWidth == 33
 												|| childInterface.invStackSizes[item] != 1) {
 											int k10 = childInterface.invStackSizes[item];
 
@@ -9785,15 +9785,15 @@ public class Game extends GameShell {
 								}
 							} else if (childInterface.sprites != null
 									&& item < 20) {
-								Sprite class30_sub2_sub1_sub1_1 = childInterface.sprites[item];
-								if (class30_sub2_sub1_sub1_1 != null)
-									class30_sub2_sub1_sub1_1.drawSprite(tileX,
+								Sprite image = childInterface.sprites[item];
+								if (image != null)
+									image.drawSprite(tileX,
 											tileY);
 							}
 							item++;
 						}
 					}
-				} else if (childInterface.type == 3) {
+				} else if (childInterface.type == Widget.TYPE_RECTANGLE) {
 					boolean hover = false;
 					if (anInt1039 == childInterface.id
 							|| anInt1048 == childInterface.id
@@ -9824,7 +9824,7 @@ public class Game extends GameShell {
 						Raster.method338(_y, childInterface.height,
 								256 - (childInterface.opacity & 0xff), colour,
 								childInterface.width, _x);
-				} else if (childInterface.type == 4) {
+				} else if (childInterface.type == Widget.TYPE_TEXT) {
 					GameFont textDrawingArea = childInterface.textDrawingAreas;
 					String text = childInterface.defaultText;
 					boolean flag1 = false;
@@ -9844,7 +9844,7 @@ public class Game extends GameShell {
 						if (flag1 && childInterface.defaultHoverColor != 0)
 							colour = childInterface.defaultHoverColor;
 					}
-					if (childInterface.optionType == 6 && continuedDialogue) {
+					if (childInterface.optionType == Widget.OPTION_CONTINUE && continuedDialogue) {
 						text = "Please wait...";
 						colour = childInterface.textColor;
 					}
@@ -9954,7 +9954,7 @@ public class Game extends GameShell {
 									childInterface.textShadow, _x, colour, s1,
 									l6);
 					}
-				} else if (childInterface.type == 5) {
+				} else if (childInterface.type == Widget.TYPE_SPRITE) {
 					Sprite sprite;
 					if (interfaceIsSelected(childInterface))
 						sprite = childInterface.enabledSprite;
@@ -9979,7 +9979,7 @@ public class Game extends GameShell {
 						} else {
 							sprite.drawSprite(_x, _y);
 						}
-				} else if (childInterface.type == 6) {
+				} else if (childInterface.type == Widget.TYPE_MODEL) {
 					int centreX = Rasterizer.textureInt1;
 					int centreY = Rasterizer.textureInt2;
 					Rasterizer.textureInt1 = _x + childInterface.width / 2;
@@ -10010,7 +10010,7 @@ public class Game extends GameShell {
 								childInterface.modelRotation1, 0, sine, cosine);
 					Rasterizer.textureInt1 = centreX;
 					Rasterizer.textureInt2 = centreY;
-				} else if (childInterface.type == 7) {
+				} else if (childInterface.type == Widget.TYPE_ITEM_LIST) {
 					GameFont font = childInterface.textDrawingAreas;
 					int slot = 0;
 					for (int row = 0; row < childInterface.height; row++) {
