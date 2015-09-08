@@ -80,7 +80,7 @@ public class Configuration {
 	/**
 	 * Shows the ids of items, objects, and npcs on right click
 	 */
-	public static boolean showIds = false;	
+	public static boolean enableIds = false;	
 	
 	/**
 	 * Used to merge all the OS Buddy XP Drops so the counter doesn't get too big if you are
