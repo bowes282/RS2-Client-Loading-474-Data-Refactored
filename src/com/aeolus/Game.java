@@ -25,7 +25,7 @@ import com.aeolus.cache.media.Sprite;
 import com.aeolus.collection.Node;
 import com.aeolus.collection.Deque;
 import com.aeolus.media.Animation;
-import com.aeolus.media.DrawingArea;
+import com.aeolus.media.Raster;
 import com.aeolus.media.ImageProducer;
 import com.aeolus.media.font.RSFont;
 import com.aeolus.media.font.TextClass;
@@ -464,11 +464,11 @@ public class Game extends GameShell {
 	private void drawLoadingMessages(int used, String s, String s1) {
 		int width = regularText.getTextWidth(used == 1 ? s : s1);
 		int height = s1 == null ? 25 : 38;
-		DrawingArea.drawPixels(height, 1, 1, 0, width + 6);
-		DrawingArea.drawPixels(1, 1, 1, 0xffffff, width + 6);
-		DrawingArea.drawPixels(height, 1, 1, 0xffffff, 1);
-		DrawingArea.drawPixels(1, height, 1, 0xffffff, width + 6);
-		DrawingArea.drawPixels(height, 1, width + 6, 0xffffff, 1);
+		Raster.drawPixels(height, 1, 1, 0, width + 6);
+		Raster.drawPixels(1, 1, 1, 0xffffff, width + 6);
+		Raster.drawPixels(height, 1, 1, 0xffffff, 1);
+		Raster.drawPixels(1, height, 1, 0xffffff, width + 6);
+		Raster.drawPixels(height, 1, width + 6, 0xffffff, 1);
 		regularText.drawText(0xffffff, s, 18, width / 2 + 5);
 		if (s1 != null) {
 			regularText.drawText(0xffffff, s1, 31, width / 2 + 5);
@@ -614,15 +614,15 @@ public class Game extends GameShell {
 		}
 		if (showChatComponents) {
 			if (changeChatArea && !chatStateCheck()) {
-				DrawingArea.method339(7 + yOffset, 0x575757, 506, 7);
-				DrawingArea.drawAlphaGradient(7, 7 + yOffset, 506, 135, 0,
+				Raster.method339(7 + yOffset, 0x575757, 506, 7);
+				Raster.drawAlphaGradient(7, 7 + yOffset, 506, 135, 0,
 						0xFFFFFF, 20);
 			} else {
 				cacheSprite[20].drawSprite(0, yOffset);
 			}
 		}
 		if (!showChatComponents || changeChatArea) {
-			DrawingArea.drawAlphaPixels(7, frameHeight - 23, 506, 24, 0, 100);
+			Raster.drawAlphaPixels(7, frameHeight - 23, 506, 24, 0, 100);
 		}
 		drawChannelButtons();
 		GameFont textDrawingArea = regularText;
@@ -656,7 +656,7 @@ public class Game extends GameShell {
 			int j77 = -3;
 			int j = 0;
 			int shadow = changeChatArea ? 0 : -1;
-			DrawingArea.setDrawingArea(122 + yOffset, 8, 497, 7 + yOffset);
+			Raster.setDrawingArea(122 + yOffset, 8, 497, 7 + yOffset);
 			for (int k = 0; k < 500; k++) {
 				if (chatMessages[k] != null) {
 					int chatType = chatTypes[k];
@@ -856,7 +856,7 @@ public class Game extends GameShell {
 					}
 				}
 			}
-			DrawingArea.defaultDrawingAreaSize();
+			Raster.defaultDrawingAreaSize();
 			anInt1211 = j * 14 + 7 + 5;
 			if (anInt1211 < 111) {
 				anInt1211 = 111;
@@ -869,7 +869,7 @@ public class Game extends GameShell {
 			} else {
 				s = TextClass.fixName(capitalize(myUsername));
 			}
-			DrawingArea.setDrawingArea(140 + yOffset, 8, 509, 120 + yOffset);
+			Raster.setDrawingArea(140 + yOffset, 8, 509, 120 + yOffset);
 			int xOffset = 0;
 			if (myPrivilege > 0) {
 				modIcons[myPrivilege - 1].drawSprite(10, 122 + yOffset);
@@ -880,9 +880,9 @@ public class Game extends GameShell {
 			newRegularFont.drawBasicString(inputString + "*", xOffset + 12
 					+ textDrawingArea.getTextWidth(s + ": "), 133 + yOffset,
 					changeChatArea ? 0x7FA9FF : 255, shadow);
-			DrawingArea.method339(121 + yOffset, changeChatArea ? 0x575757
+			Raster.method339(121 + yOffset, changeChatArea ? 0x575757
 					: 0x807660, 506, 7);
-			DrawingArea.defaultDrawingAreaSize();
+			Raster.defaultDrawingAreaSize();
 		}
 		if (menuOpen) {
 			drawMenu(0, frameMode == ScreenMode.FIXED ? 338 : 0);
@@ -1438,8 +1438,8 @@ public class Game extends GameShell {
 		for (int i = 1; i < results.length; i++)
 			if (width <= smallText.getTextWidth(results[i]) + 6)
 				width = smallText.getTextWidth(results[i]) + 6;
-		DrawingArea.drawPixels(height, yPos, xPos, 0xFFFFA0, width);
-		DrawingArea.fillPixels(xPos, width, height, 0, yPos);
+		Raster.drawPixels(height, yPos, xPos, 0xFFFFA0, width);
+		Raster.fillPixels(xPos, width, height, 0, yPos);
 		yPos += 14;
 		for (int i = 0; i < results.length; i++) {
 			smallText.drawTextWithPotentialShadow(false, xPos + 3, 0,
@@ -1735,8 +1735,8 @@ public class Game extends GameShell {
 			int maxScroll, int pos) {
 		cacheSprite[29].drawARGBSprite(x, y, 120);
 		cacheSprite[30].drawARGBSprite(x, y + height - 16, 120);
-		DrawingArea.drawVerticalLine(x, y + 16, height - 32, 0xffffff, 64);
-		DrawingArea.drawVerticalLine(x + 15, y + 16, height - 32, 0xffffff, 64);
+		Raster.drawVerticalLine(x, y + 16, height - 32, 0xffffff, 64);
+		Raster.drawVerticalLine(x + 15, y + 16, height - 32, 0xffffff, 64);
 		int barHeight = (height - 32) * height / maxScroll;
 		if (barHeight < 10) {
 			barHeight = 10;
@@ -1745,7 +1745,7 @@ public class Game extends GameShell {
 		if (maxScroll != height) {
 			barPos = (height - 32 - barHeight) * pos / (maxScroll - height);
 		}
-		DrawingArea.drawRectangle(x, y + 16 + barPos, 16, 5 + y + 16 + barPos
+		Raster.drawRectangle(x, y + 16 + barPos, 16, 5 + y + 16 + barPos
 				+ barHeight - 5 - (y + 16 + barPos), 0xffffff, 32);
 	}
 
@@ -1756,121 +1756,121 @@ public class Game extends GameShell {
 		} else {
 			scrollBar1.drawSprite(x, y);
 			scrollBar2.drawSprite(x, (y + height) - 16);
-			DrawingArea.drawPixels(height - 32, y + 16, x, 0x000001, 16);
-			DrawingArea.drawPixels(height - 32, y + 16, x, 0x3d3426, 15);
-			DrawingArea.drawPixels(height - 32, y + 16, x, 0x342d21, 13);
-			DrawingArea.drawPixels(height - 32, y + 16, x, 0x2e281d, 11);
-			DrawingArea.drawPixels(height - 32, y + 16, x, 0x29241b, 10);
-			DrawingArea.drawPixels(height - 32, y + 16, x, 0x252019, 9);
-			DrawingArea.drawPixels(height - 32, y + 16, x, 0x000001, 1);
+			Raster.drawPixels(height - 32, y + 16, x, 0x000001, 16);
+			Raster.drawPixels(height - 32, y + 16, x, 0x3d3426, 15);
+			Raster.drawPixels(height - 32, y + 16, x, 0x342d21, 13);
+			Raster.drawPixels(height - 32, y + 16, x, 0x2e281d, 11);
+			Raster.drawPixels(height - 32, y + 16, x, 0x29241b, 10);
+			Raster.drawPixels(height - 32, y + 16, x, 0x252019, 9);
+			Raster.drawPixels(height - 32, y + 16, x, 0x000001, 1);
 			int k1 = ((height - 32) * height) / maxScroll;
 			if (k1 < 8) {
 				k1 = 8;
 			}
 			int l1 = ((height - 32 - k1) * pos) / (maxScroll - height);
-			DrawingArea.drawPixels(k1, y + 16 + l1, x, barFillColor, 16);
-			DrawingArea.method341(y + 16 + l1, 0x000001, k1, x);
-			DrawingArea.method341(y + 16 + l1, 0x817051, k1, x + 1);
-			DrawingArea.method341(y + 16 + l1, 0x73654a, k1, x + 2);
-			DrawingArea.method341(y + 16 + l1, 0x6a5c43, k1, x + 3);
-			DrawingArea.method341(y + 16 + l1, 0x6a5c43, k1, x + 4);
-			DrawingArea.method341(y + 16 + l1, 0x655841, k1, x + 5);
-			DrawingArea.method341(y + 16 + l1, 0x655841, k1, x + 6);
-			DrawingArea.method341(y + 16 + l1, 0x61553e, k1, x + 7);
-			DrawingArea.method341(y + 16 + l1, 0x61553e, k1, x + 8);
-			DrawingArea.method341(y + 16 + l1, 0x5d513c, k1, x + 9);
-			DrawingArea.method341(y + 16 + l1, 0x5d513c, k1, x + 10);
-			DrawingArea.method341(y + 16 + l1, 0x594e3a, k1, x + 11);
-			DrawingArea.method341(y + 16 + l1, 0x594e3a, k1, x + 12);
-			DrawingArea.method341(y + 16 + l1, 0x514635, k1, x + 13);
-			DrawingArea.method341(y + 16 + l1, 0x4b4131, k1, x + 14);
-			DrawingArea.method339(y + 16 + l1, 0x000001, 15, x);
-			DrawingArea.method339(y + 17 + l1, 0x000001, 15, x);
-			DrawingArea.method339(y + 17 + l1, 0x655841, 14, x);
-			DrawingArea.method339(y + 17 + l1, 0x6a5c43, 13, x);
-			DrawingArea.method339(y + 17 + l1, 0x6d5f48, 11, x);
-			DrawingArea.method339(y + 17 + l1, 0x73654a, 10, x);
-			DrawingArea.method339(y + 17 + l1, 0x76684b, 7, x);
-			DrawingArea.method339(y + 17 + l1, 0x7b6a4d, 5, x);
-			DrawingArea.method339(y + 17 + l1, 0x7e6e50, 4, x);
-			DrawingArea.method339(y + 17 + l1, 0x817051, 3, x);
-			DrawingArea.method339(y + 17 + l1, 0x000001, 2, x);
-			DrawingArea.method339(y + 18 + l1, 0x000001, 16, x);
-			DrawingArea.method339(y + 18 + l1, 0x564b38, 15, x);
-			DrawingArea.method339(y + 18 + l1, 0x5d513c, 14, x);
-			DrawingArea.method339(y + 18 + l1, 0x625640, 11, x);
-			DrawingArea.method339(y + 18 + l1, 0x655841, 10, x);
-			DrawingArea.method339(y + 18 + l1, 0x6a5c43, 7, x);
-			DrawingArea.method339(y + 18 + l1, 0x6e6046, 5, x);
-			DrawingArea.method339(y + 18 + l1, 0x716247, 4, x);
-			DrawingArea.method339(y + 18 + l1, 0x7b6a4d, 3, x);
-			DrawingArea.method339(y + 18 + l1, 0x817051, 2, x);
-			DrawingArea.method339(y + 18 + l1, 0x000001, 1, x);
-			DrawingArea.method339(y + 19 + l1, 0x000001, 16, x);
-			DrawingArea.method339(y + 19 + l1, 0x514635, 15, x);
-			DrawingArea.method339(y + 19 + l1, 0x564b38, 14, x);
-			DrawingArea.method339(y + 19 + l1, 0x5d513c, 11, x);
-			DrawingArea.method339(y + 19 + l1, 0x61553e, 9, x);
-			DrawingArea.method339(y + 19 + l1, 0x655841, 7, x);
-			DrawingArea.method339(y + 19 + l1, 0x6a5c43, 5, x);
-			DrawingArea.method339(y + 19 + l1, 0x6e6046, 4, x);
-			DrawingArea.method339(y + 19 + l1, 0x73654a, 3, x);
-			DrawingArea.method339(y + 19 + l1, 0x817051, 2, x);
-			DrawingArea.method339(y + 19 + l1, 0x000001, 1, x);
-			DrawingArea.method339(y + 20 + l1, 0x000001, 16, x);
-			DrawingArea.method339(y + 20 + l1, 0x4b4131, 15, x);
-			DrawingArea.method339(y + 20 + l1, 0x544936, 14, x);
-			DrawingArea.method339(y + 20 + l1, 0x594e3a, 13, x);
-			DrawingArea.method339(y + 20 + l1, 0x5d513c, 10, x);
-			DrawingArea.method339(y + 20 + l1, 0x61553e, 8, x);
-			DrawingArea.method339(y + 20 + l1, 0x655841, 6, x);
-			DrawingArea.method339(y + 20 + l1, 0x6a5c43, 4, x);
-			DrawingArea.method339(y + 20 + l1, 0x73654a, 3, x);
-			DrawingArea.method339(y + 20 + l1, 0x817051, 2, x);
-			DrawingArea.method339(y + 20 + l1, 0x000001, 1, x);
-			DrawingArea.method341(y + 16 + l1, 0x000001, k1, x + 15);
-			DrawingArea.method339(y + 15 + l1 + k1, 0x000001, 16, x);
-			DrawingArea.method339(y + 14 + l1 + k1, 0x000001, 15, x);
-			DrawingArea.method339(y + 14 + l1 + k1, 0x3f372a, 14, x);
-			DrawingArea.method339(y + 14 + l1 + k1, 0x443c2d, 10, x);
-			DrawingArea.method339(y + 14 + l1 + k1, 0x483e2f, 9, x);
-			DrawingArea.method339(y + 14 + l1 + k1, 0x4a402f, 7, x);
-			DrawingArea.method339(y + 14 + l1 + k1, 0x4b4131, 4, x);
-			DrawingArea.method339(y + 14 + l1 + k1, 0x564b38, 3, x);
-			DrawingArea.method339(y + 14 + l1 + k1, 0x000001, 2, x);
-			DrawingArea.method339(y + 13 + l1 + k1, 0x000001, 16, x);
-			DrawingArea.method339(y + 13 + l1 + k1, 0x443c2d, 15, x);
-			DrawingArea.method339(y + 13 + l1 + k1, 0x4b4131, 11, x);
-			DrawingArea.method339(y + 13 + l1 + k1, 0x514635, 9, x);
-			DrawingArea.method339(y + 13 + l1 + k1, 0x544936, 7, x);
-			DrawingArea.method339(y + 13 + l1 + k1, 0x564b38, 6, x);
-			DrawingArea.method339(y + 13 + l1 + k1, 0x594e3a, 4, x);
-			DrawingArea.method339(y + 13 + l1 + k1, 0x625640, 3, x);
-			DrawingArea.method339(y + 13 + l1 + k1, 0x6a5c43, 2, x);
-			DrawingArea.method339(y + 13 + l1 + k1, 0x000001, 1, x);
-			DrawingArea.method339(y + 12 + l1 + k1, 0x000001, 16, x);
-			DrawingArea.method339(y + 12 + l1 + k1, 0x443c2d, 15, x);
-			DrawingArea.method339(y + 12 + l1 + k1, 0x4b4131, 14, x);
-			DrawingArea.method339(y + 12 + l1 + k1, 0x544936, 12, x);
-			DrawingArea.method339(y + 12 + l1 + k1, 0x564b38, 11, x);
-			DrawingArea.method339(y + 12 + l1 + k1, 0x594e3a, 10, x);
-			DrawingArea.method339(y + 12 + l1 + k1, 0x5d513c, 7, x);
-			DrawingArea.method339(y + 12 + l1 + k1, 0x61553e, 4, x);
-			DrawingArea.method339(y + 12 + l1 + k1, 0x6e6046, 3, x);
-			DrawingArea.method339(y + 12 + l1 + k1, 0x7b6a4d, 2, x);
-			DrawingArea.method339(y + 12 + l1 + k1, 0x000001, 1, x);
-			DrawingArea.method339(y + 11 + l1 + k1, 0x000001, 16, x);
-			DrawingArea.method339(y + 11 + l1 + k1, 0x4b4131, 15, x);
-			DrawingArea.method339(y + 11 + l1 + k1, 0x514635, 14, x);
-			DrawingArea.method339(y + 11 + l1 + k1, 0x564b38, 13, x);
-			DrawingArea.method339(y + 11 + l1 + k1, 0x594e3a, 11, x);
-			DrawingArea.method339(y + 11 + l1 + k1, 0x5d513c, 9, x);
-			DrawingArea.method339(y + 11 + l1 + k1, 0x61553e, 7, x);
-			DrawingArea.method339(y + 11 + l1 + k1, 0x655841, 5, x);
-			DrawingArea.method339(y + 11 + l1 + k1, 0x6a5c43, 4, x);
-			DrawingArea.method339(y + 11 + l1 + k1, 0x73654a, 3, x);
-			DrawingArea.method339(y + 11 + l1 + k1, 0x7b6a4d, 2, x);
-			DrawingArea.method339(y + 11 + l1 + k1, 0x000001, 1, x);
+			Raster.drawPixels(k1, y + 16 + l1, x, barFillColor, 16);
+			Raster.method341(y + 16 + l1, 0x000001, k1, x);
+			Raster.method341(y + 16 + l1, 0x817051, k1, x + 1);
+			Raster.method341(y + 16 + l1, 0x73654a, k1, x + 2);
+			Raster.method341(y + 16 + l1, 0x6a5c43, k1, x + 3);
+			Raster.method341(y + 16 + l1, 0x6a5c43, k1, x + 4);
+			Raster.method341(y + 16 + l1, 0x655841, k1, x + 5);
+			Raster.method341(y + 16 + l1, 0x655841, k1, x + 6);
+			Raster.method341(y + 16 + l1, 0x61553e, k1, x + 7);
+			Raster.method341(y + 16 + l1, 0x61553e, k1, x + 8);
+			Raster.method341(y + 16 + l1, 0x5d513c, k1, x + 9);
+			Raster.method341(y + 16 + l1, 0x5d513c, k1, x + 10);
+			Raster.method341(y + 16 + l1, 0x594e3a, k1, x + 11);
+			Raster.method341(y + 16 + l1, 0x594e3a, k1, x + 12);
+			Raster.method341(y + 16 + l1, 0x514635, k1, x + 13);
+			Raster.method341(y + 16 + l1, 0x4b4131, k1, x + 14);
+			Raster.method339(y + 16 + l1, 0x000001, 15, x);
+			Raster.method339(y + 17 + l1, 0x000001, 15, x);
+			Raster.method339(y + 17 + l1, 0x655841, 14, x);
+			Raster.method339(y + 17 + l1, 0x6a5c43, 13, x);
+			Raster.method339(y + 17 + l1, 0x6d5f48, 11, x);
+			Raster.method339(y + 17 + l1, 0x73654a, 10, x);
+			Raster.method339(y + 17 + l1, 0x76684b, 7, x);
+			Raster.method339(y + 17 + l1, 0x7b6a4d, 5, x);
+			Raster.method339(y + 17 + l1, 0x7e6e50, 4, x);
+			Raster.method339(y + 17 + l1, 0x817051, 3, x);
+			Raster.method339(y + 17 + l1, 0x000001, 2, x);
+			Raster.method339(y + 18 + l1, 0x000001, 16, x);
+			Raster.method339(y + 18 + l1, 0x564b38, 15, x);
+			Raster.method339(y + 18 + l1, 0x5d513c, 14, x);
+			Raster.method339(y + 18 + l1, 0x625640, 11, x);
+			Raster.method339(y + 18 + l1, 0x655841, 10, x);
+			Raster.method339(y + 18 + l1, 0x6a5c43, 7, x);
+			Raster.method339(y + 18 + l1, 0x6e6046, 5, x);
+			Raster.method339(y + 18 + l1, 0x716247, 4, x);
+			Raster.method339(y + 18 + l1, 0x7b6a4d, 3, x);
+			Raster.method339(y + 18 + l1, 0x817051, 2, x);
+			Raster.method339(y + 18 + l1, 0x000001, 1, x);
+			Raster.method339(y + 19 + l1, 0x000001, 16, x);
+			Raster.method339(y + 19 + l1, 0x514635, 15, x);
+			Raster.method339(y + 19 + l1, 0x564b38, 14, x);
+			Raster.method339(y + 19 + l1, 0x5d513c, 11, x);
+			Raster.method339(y + 19 + l1, 0x61553e, 9, x);
+			Raster.method339(y + 19 + l1, 0x655841, 7, x);
+			Raster.method339(y + 19 + l1, 0x6a5c43, 5, x);
+			Raster.method339(y + 19 + l1, 0x6e6046, 4, x);
+			Raster.method339(y + 19 + l1, 0x73654a, 3, x);
+			Raster.method339(y + 19 + l1, 0x817051, 2, x);
+			Raster.method339(y + 19 + l1, 0x000001, 1, x);
+			Raster.method339(y + 20 + l1, 0x000001, 16, x);
+			Raster.method339(y + 20 + l1, 0x4b4131, 15, x);
+			Raster.method339(y + 20 + l1, 0x544936, 14, x);
+			Raster.method339(y + 20 + l1, 0x594e3a, 13, x);
+			Raster.method339(y + 20 + l1, 0x5d513c, 10, x);
+			Raster.method339(y + 20 + l1, 0x61553e, 8, x);
+			Raster.method339(y + 20 + l1, 0x655841, 6, x);
+			Raster.method339(y + 20 + l1, 0x6a5c43, 4, x);
+			Raster.method339(y + 20 + l1, 0x73654a, 3, x);
+			Raster.method339(y + 20 + l1, 0x817051, 2, x);
+			Raster.method339(y + 20 + l1, 0x000001, 1, x);
+			Raster.method341(y + 16 + l1, 0x000001, k1, x + 15);
+			Raster.method339(y + 15 + l1 + k1, 0x000001, 16, x);
+			Raster.method339(y + 14 + l1 + k1, 0x000001, 15, x);
+			Raster.method339(y + 14 + l1 + k1, 0x3f372a, 14, x);
+			Raster.method339(y + 14 + l1 + k1, 0x443c2d, 10, x);
+			Raster.method339(y + 14 + l1 + k1, 0x483e2f, 9, x);
+			Raster.method339(y + 14 + l1 + k1, 0x4a402f, 7, x);
+			Raster.method339(y + 14 + l1 + k1, 0x4b4131, 4, x);
+			Raster.method339(y + 14 + l1 + k1, 0x564b38, 3, x);
+			Raster.method339(y + 14 + l1 + k1, 0x000001, 2, x);
+			Raster.method339(y + 13 + l1 + k1, 0x000001, 16, x);
+			Raster.method339(y + 13 + l1 + k1, 0x443c2d, 15, x);
+			Raster.method339(y + 13 + l1 + k1, 0x4b4131, 11, x);
+			Raster.method339(y + 13 + l1 + k1, 0x514635, 9, x);
+			Raster.method339(y + 13 + l1 + k1, 0x544936, 7, x);
+			Raster.method339(y + 13 + l1 + k1, 0x564b38, 6, x);
+			Raster.method339(y + 13 + l1 + k1, 0x594e3a, 4, x);
+			Raster.method339(y + 13 + l1 + k1, 0x625640, 3, x);
+			Raster.method339(y + 13 + l1 + k1, 0x6a5c43, 2, x);
+			Raster.method339(y + 13 + l1 + k1, 0x000001, 1, x);
+			Raster.method339(y + 12 + l1 + k1, 0x000001, 16, x);
+			Raster.method339(y + 12 + l1 + k1, 0x443c2d, 15, x);
+			Raster.method339(y + 12 + l1 + k1, 0x4b4131, 14, x);
+			Raster.method339(y + 12 + l1 + k1, 0x544936, 12, x);
+			Raster.method339(y + 12 + l1 + k1, 0x564b38, 11, x);
+			Raster.method339(y + 12 + l1 + k1, 0x594e3a, 10, x);
+			Raster.method339(y + 12 + l1 + k1, 0x5d513c, 7, x);
+			Raster.method339(y + 12 + l1 + k1, 0x61553e, 4, x);
+			Raster.method339(y + 12 + l1 + k1, 0x6e6046, 3, x);
+			Raster.method339(y + 12 + l1 + k1, 0x7b6a4d, 2, x);
+			Raster.method339(y + 12 + l1 + k1, 0x000001, 1, x);
+			Raster.method339(y + 11 + l1 + k1, 0x000001, 16, x);
+			Raster.method339(y + 11 + l1 + k1, 0x4b4131, 15, x);
+			Raster.method339(y + 11 + l1 + k1, 0x514635, 14, x);
+			Raster.method339(y + 11 + l1 + k1, 0x564b38, 13, x);
+			Raster.method339(y + 11 + l1 + k1, 0x594e3a, 11, x);
+			Raster.method339(y + 11 + l1 + k1, 0x5d513c, 9, x);
+			Raster.method339(y + 11 + l1 + k1, 0x61553e, 7, x);
+			Raster.method339(y + 11 + l1 + k1, 0x655841, 5, x);
+			Raster.method339(y + 11 + l1 + k1, 0x6a5c43, 4, x);
+			Raster.method339(y + 11 + l1 + k1, 0x73654a, 3, x);
+			Raster.method339(y + 11 + l1 + k1, 0x7b6a4d, 2, x);
+			Raster.method339(y + 11 + l1 + k1, 0x000001, 1, x);
 		}
 	}
 
@@ -2330,9 +2330,9 @@ public class Game extends GameShell {
 								hpPercent = 56;
 							}
 							if (!Configuration.hpBar554) {
-								DrawingArea.drawPixels(5, spriteDrawY - 3,
+								Raster.drawPixels(5, spriteDrawY - 3,
 										spriteDrawX - 15, 65280, i1);
-								DrawingArea.drawPixels(5, spriteDrawY - 3,
+								Raster.drawPixels(5, spriteDrawY - 3,
 										(spriteDrawX - 15) + i1, 0xff0000,
 										30 - i1);
 							} else {
@@ -2517,13 +2517,13 @@ public class Game extends GameShell {
 					if (anIntArray981[message] == 4) {
 						int i4 = boldText.method384(s);
 						int k4 = ((150 - anIntArray982[message]) * (i4 + 100)) / 150;
-						DrawingArea.setDrawingArea(334, spriteDrawX - 50,
+						Raster.setDrawingArea(334, spriteDrawX - 50,
 								spriteDrawX + 50, 0);
 						boldText.method385(0, s, spriteDrawY + 1,
 								(spriteDrawX + 50) - k4);
 						boldText.method385(i3, s, spriteDrawY,
 								(spriteDrawX + 50) - k4);
-						DrawingArea.defaultDrawingAreaSize();
+						Raster.defaultDrawingAreaSize();
 					}
 					if (anIntArray981[message] == 5) {
 						int j4 = 150 - anIntArray982[message];
@@ -2532,12 +2532,12 @@ public class Game extends GameShell {
 							l4 = j4 - 25;
 						else if (j4 > 125)
 							l4 = j4 - 125;
-						DrawingArea.setDrawingArea(spriteDrawY + 5, 0, 512,
+						Raster.setDrawingArea(spriteDrawY + 5, 0, 512,
 								spriteDrawY - boldText.anInt1497 - 1);
 						boldText.drawText(0, s, spriteDrawY + 1 + l4,
 								spriteDrawX);
 						boldText.drawText(i3, s, spriteDrawY + l4, spriteDrawX);
-						DrawingArea.defaultDrawingAreaSize();
+						Raster.defaultDrawingAreaSize();
 					}
 				} else {
 					boldText.drawText(0, s, spriteDrawY + 1, spriteDrawX);
@@ -2674,13 +2674,13 @@ public class Game extends GameShell {
 		if (frameMode == ScreenMode.FIXED) {
 			cacheSprite[21].drawSprite(0, 0);
 		} else if (frameMode != ScreenMode.FIXED && !changeTabArea) {
-			DrawingArea.method335(0x3E3529, frameHeight - 304, 195, 270,
+			Raster.method335(0x3E3529, frameHeight - 304, 195, 270,
 					transparentTabArea ? 80 : 256, frameWidth - 217);
 			cacheSprite[47].drawSprite(xOffset, yOffset);
 		} else {
 			if (frameWidth >= 1000) {
 				if (showTabComponents) {
-					DrawingArea.method335(0x3E3529, frameHeight - 304, 197,
+					Raster.method335(0x3E3529, frameHeight - 304, 197,
 							265, transparentTabArea ? 80 : 256,
 							frameWidth - 197);
 					cacheSprite[50].drawSprite(frameWidth - 204,
@@ -2692,7 +2692,7 @@ public class Game extends GameShell {
 				}
 			} else if (frameWidth < 1000) {
 				if (showTabComponents) {
-					DrawingArea.method335(0x3E3529, frameHeight - 341, 195,
+					Raster.method335(0x3E3529, frameHeight - 341, 195,
 							265, transparentTabArea ? 80 : 256,
 							frameWidth - 197);
 					cacheSprite[50].drawSprite(frameWidth - 204,
@@ -2926,9 +2926,9 @@ public class Game extends GameShell {
 		inputTaken = true;
 		tabAreaAltered = true;
 		int menuColor = 0x5d5447;
-		DrawingArea.drawPixels(h, yPos, xPos, menuColor, w);
-		DrawingArea.drawPixels(16, yPos + 1, xPos + 1, 0, w - 2);
-		DrawingArea.fillPixels(xPos + 1, w - 2, h - 19, 0, yPos + 18);
+		Raster.drawPixels(h, yPos, xPos, menuColor, w);
+		Raster.drawPixels(16, yPos + 1, xPos + 1, 0, w - 2);
+		Raster.fillPixels(xPos + 1, w - 2, h - 19, 0, yPos + 18);
 		boldText.method385(menuColor, "Choose Option", yPos + 14, xPos + 3);
 		int mouseX = super.mouseX - (x);
 		int mouseY = (-y) + super.mouseY;
@@ -2937,7 +2937,7 @@ public class Game extends GameShell {
 			int textColor = 0xffffff;
 			if (mouseX > xPos && mouseX < xPos + w && mouseY > textY - 13
 					&& mouseY < textY + 3) {
-				DrawingArea.drawPixels(15, textY - 11, xPos + 3, 0x6f695d,
+				Raster.drawPixels(15, textY - 11, xPos + 3, 0x6f695d,
 						menuWidth - 6);
 				textColor = 0xffff00;
 			}
@@ -4107,27 +4107,27 @@ public class Game extends GameShell {
 		gameScreenImageProducer = null;
 		chatSettingImageProducer = null;
 		flameLeftBackground = new ImageProducer(128, 265);
-			DrawingArea.clear();
+			Raster.clear();
 		flameRightBackground = new ImageProducer(128, 265);
-			DrawingArea.clear();
+			Raster.clear();
 		topLeft1BackgroundTile = new ImageProducer(509, 171);
-			DrawingArea.clear();
+			Raster.clear();
 		bottomLeft1BackgroundTile = new ImageProducer(360, 132);
-			DrawingArea.clear();
+			Raster.clear();
 		loginBoxImageProducer = new ImageProducer(360, 200);
-			DrawingArea.clear();
+			Raster.clear();
 		loginScreenAccessories = new ImageProducer(300, 800);
-			DrawingArea.clear();
+			Raster.clear();
 		bottomLeft0BackgroundTile = new ImageProducer(202, 238);
-			DrawingArea.clear();
+			Raster.clear();
 		bottomRightImageProducer = new ImageProducer(203, 238);
-			DrawingArea.clear();
+			Raster.clear();
 		loginMusicImageProducer = new ImageProducer(203, 238);
-			DrawingArea.clear();
+			Raster.clear();
 		middleLeft1BackgroundTile = new ImageProducer(74, 94);
-			DrawingArea.clear();
+			Raster.clear();
 		aRSImageProducer_1115 = new ImageProducer(75, 94);
-			DrawingArea.clear();
+			Raster.clear();
 		if (titleStreamLoader != null) {
 			drawLogo();
 			loadTitleScreen();
@@ -4150,10 +4150,10 @@ public class Game extends GameShell {
 		boldText.drawText(0xffffff, Configuration.CLIENT_NAME
 				+ " is loading - please wait...", c1 / 2 - 26 - byte1, c / 2);
 		int j = c1 / 2 - 18 - byte1;
-		DrawingArea.fillPixels(c / 2 - 152, 304, 34, 0x8c1111, j);
-		DrawingArea.fillPixels(c / 2 - 151, 302, 32, 0, j + 1);
-		DrawingArea.drawPixels(30, j + 2, c / 2 - 150, 0x8c1111, i * 3);
-		DrawingArea
+		Raster.fillPixels(c / 2 - 152, 304, 34, 0x8c1111, j);
+		Raster.fillPixels(c / 2 - 151, 302, 32, 0, j + 1);
+		Raster.drawPixels(30, j + 2, c / 2 - 150, 0x8c1111, i * 3);
+		Raster
 				.drawPixels(30, j + 2, (c / 2 - 150) + i * 3, 0, 300 - i * 3);
 		boldText.drawText(0xffffff, s, (c1 / 2 + 5) - byte1, c / 2);
 		loginBoxImageProducer.drawGraphics(171, super.graphics, 202);
@@ -4434,8 +4434,8 @@ public class Game extends GameShell {
 			resetLogout();
 			return;
 		}
-		DrawingArea.fillPixels(2, 229, 39, 0xffffff, 2); // white box around
-		DrawingArea.drawPixels(37, 3, 3, 0, 227); // black fill
+		Raster.fillPixels(2, 229, 39, 0xffffff, 2); // white box around
+		Raster.drawPixels(37, 3, 3, 0, 227); // black fill
 		regularText.drawText(0, "Connection lost.", 19, 120);
 		regularText.drawText(0xffffff, "Connection lost.", 18, 119);
 		regularText.drawText(0, "Please wait - attempting to reestablish.", 34,
@@ -7576,11 +7576,11 @@ public class Game extends GameShell {
 		aRSImageProducer_1115 = null;
 		chatboxImageProducer = new ImageProducer(519, 165);// chatback
 		minimapImageProducer = new ImageProducer(249, 168);// mapback
-		DrawingArea.clear();
+		Raster.clear();
 		cacheSprite[19].drawSprite(0, 0);
 		tabImageProducer = new ImageProducer(249, 335);// inventory
 		gameScreenImageProducer = new ImageProducer(512, 334);// gamescreen
-		DrawingArea.clear();
+		Raster.clear();
 		chatSettingImageProducer = new ImageProducer(249, 45);
 		welcomeScreenRaised = true;
 	}
@@ -9376,7 +9376,7 @@ public class Game extends GameShell {
 				resetAllImageProducers();
 				super.fullGameScreen.initDrawingArea();
 				Rasterizer.anIntArray1472 = fullScreenTextureArray;
-				DrawingArea.clear();
+				Raster.clear();
 				welcomeScreenRaised = true;
 				if (openInterfaceId != -1) {
 					RSInterface rsInterface_1 = RSInterface.interfaceCache[openInterfaceId];
@@ -9547,15 +9547,15 @@ public class Game extends GameShell {
 	}
 
 	public void drawBlackBox(int xPos, int yPos) {
-		DrawingArea.drawPixels(71, yPos - 1, xPos - 2, 0x726451, 1);
-		DrawingArea.drawPixels(69, yPos, xPos + 174, 0x726451, 1);
-		DrawingArea.drawPixels(1, yPos - 2, xPos - 2, 0x726451, 178);
-		DrawingArea.drawPixels(1, yPos + 68, xPos, 0x726451, 174);
-		DrawingArea.drawPixels(71, yPos - 1, xPos - 1, 0x2E2B23, 1);
-		DrawingArea.drawPixels(71, yPos - 1, xPos + 175, 0x2E2B23, 1);
-		DrawingArea.drawPixels(1, yPos - 1, xPos, 0x2E2B23, 175);
-		DrawingArea.drawPixels(1, yPos + 69, xPos, 0x2E2B23, 175);
-		DrawingArea.method335(0, yPos, 174, 68, 220, xPos);
+		Raster.drawPixels(71, yPos - 1, xPos - 2, 0x726451, 1);
+		Raster.drawPixels(69, yPos, xPos + 174, 0x726451, 1);
+		Raster.drawPixels(1, yPos - 2, xPos - 2, 0x726451, 178);
+		Raster.drawPixels(1, yPos + 68, xPos, 0x726451, 174);
+		Raster.drawPixels(71, yPos - 1, xPos - 1, 0x2E2B23, 1);
+		Raster.drawPixels(71, yPos - 1, xPos + 175, 0x2E2B23, 1);
+		Raster.drawPixels(1, yPos - 1, xPos, 0x2E2B23, 175);
+		Raster.drawPixels(1, yPos + 69, xPos, 0x2E2B23, 175);
+		Raster.method335(0, yPos, 174, 68, 220, xPos);
 	}
 
 	private void drawInterface(int j, int x, RSInterface rsInterface, int y) {
@@ -9566,11 +9566,11 @@ public class Game extends GameShell {
 		if (rsInterface.hoverOnly && anInt1026 != rsInterface.id
 				&& anInt1048 != rsInterface.id && anInt1039 != rsInterface.id)
 			return;
-		int clipLeft = DrawingArea.topX;
-		int clipTop = DrawingArea.topY;
-		int clipRight = DrawingArea.bottomX;
-		int clipBottom = DrawingArea.bottomY;
-		DrawingArea.setDrawingArea(y + rsInterface.height, x, x
+		int clipLeft = Raster.topX;
+		int clipTop = Raster.topY;
+		int clipRight = Raster.bottomX;
+		int clipBottom = Raster.bottomY;
+		Raster.setDrawingArea(y + rsInterface.height, x, x
 				+ rsInterface.width, y);
 		int childCount = rsInterface.children.length;
 		int alpha = rsInterface.transparency;
@@ -9650,10 +9650,10 @@ public class Game extends GameShell {
 								int differenceX = 0;
 								int differenceY = 0;
 								int itemId = childInterface.inventoryItemId[item] - 1;
-								if (tileX > DrawingArea.topX - 32
-										&& tileX < DrawingArea.bottomX
-										&& tileY > DrawingArea.topY - 32
-										&& tileY < DrawingArea.bottomY
+								if (tileX > Raster.topX - 32
+										&& tileX < Raster.bottomX
+										&& tileY > Raster.topY - 32
+										&& tileY < Raster.bottomY
 										|| activeInterfaceType != 0
 										&& anInt1085 == item) {
 									int l9 = 0;
@@ -9687,9 +9687,9 @@ public class Game extends GameShell {
 													.drawSprite1(tileX
 															+ differenceX,
 															tileY + differenceY);
-											if (tileY + differenceY < DrawingArea.topY
+											if (tileY + differenceY < Raster.topY
 													&& rsInterface.scrollPosition > 0) {
-												int i10 = (anInt945 * (DrawingArea.topY
+												int i10 = (anInt945 * (Raster.topY
 														- tileY - differenceY)) / 3;
 												if (i10 > anInt945 * 10)
 													i10 = anInt945 * 10;
@@ -9698,11 +9698,11 @@ public class Game extends GameShell {
 												rsInterface.scrollPosition -= i10;
 												anInt1088 += i10;
 											}
-											if (tileY + differenceY + 32 > DrawingArea.bottomY
+											if (tileY + differenceY + 32 > Raster.bottomY
 													&& rsInterface.scrollPosition < rsInterface.scrollMax
 															- rsInterface.height) {
 												int j10 = (anInt945 * ((tileY
-														+ differenceY + 32) - DrawingArea.bottomY)) / 3;
+														+ differenceY + 32) - Raster.bottomY)) / 3;
 												if (j10 > anInt945 * 10)
 													j10 = anInt945 * 10;
 												if (j10 > rsInterface.scrollMax
@@ -9779,17 +9779,17 @@ public class Game extends GameShell {
 					}
 					if (childInterface.opacity == 0) {
 						if (childInterface.filled)
-							DrawingArea.drawPixels(childInterface.height, _y,
+							Raster.drawPixels(childInterface.height, _y,
 									_x, colour, childInterface.width);
 						else
-							DrawingArea.fillPixels(_x, childInterface.width,
+							Raster.fillPixels(_x, childInterface.width,
 									childInterface.height, colour, _y);
 					} else if (childInterface.filled)
-						DrawingArea.method335(colour, _y, childInterface.width,
+						Raster.method335(colour, _y, childInterface.width,
 								childInterface.height,
 								256 - (childInterface.opacity & 0xff), _x);
 					else
-						DrawingArea.method338(_y, childInterface.height,
+						Raster.method338(_y, childInterface.height,
 								256 - (childInterface.opacity & 0xff), colour,
 								childInterface.width, _x);
 				} else if (childInterface.type == 4) {
@@ -9816,7 +9816,7 @@ public class Game extends GameShell {
 						text = "Please wait...";
 						colour = childInterface.textColor;
 					}
-					if (DrawingArea.width == 516) {
+					if (Raster.width == 516) {
 						if (colour == 0xffff00)
 							colour = 255;
 						if (colour == 49152)
@@ -10096,9 +10096,9 @@ public class Game extends GameShell {
 					if (yPos + boxHeight > y + rsInterface.height) {
 						yPos = (_y - boxHeight);
 					}
-					DrawingArea.drawPixels(boxHeight, yPos, xPos, 0xFFFFA0,
+					Raster.drawPixels(boxHeight, yPos, xPos, 0xFFFFA0,
 							boxWidth);
-					DrawingArea.fillPixels(xPos, boxWidth, boxHeight, 0, yPos);
+					Raster.fillPixels(xPos, boxWidth, boxHeight, 0, yPos);
 					String s2 = childInterface.message;
 					for (int j11 = yPos + font.anInt1497 + 2; s2.length() > 0; j11 += font.anInt1497 + 1) {// anInt1497
 						if (s2.indexOf("%") != -1) {
@@ -10180,7 +10180,7 @@ public class Game extends GameShell {
 					}
 				}
 		}
-		DrawingArea.setDrawingArea(clipBottom, clipLeft, clipRight, clipTop);
+		Raster.setDrawingArea(clipBottom, clipLeft, clipRight, clipTop);
 	}
 
 	private void randomizeBackground(Background background) {
@@ -11268,7 +11268,7 @@ public class Game extends GameShell {
 			int mapY = (destY * 4 + 2) - localPlayer.y / 32;
 			markMinimap(mapFlag, mapX, mapY);
 		}
-		DrawingArea.drawPixels(3, (frameMode == ScreenMode.FIXED ? 83 : 80),
+		Raster.drawPixels(3, (frameMode == ScreenMode.FIXED ? 83 : 80),
 				(frameMode == ScreenMode.FIXED ? 127 : frameWidth - 88),
 				0xffffff, 3);
 		if (frameMode == ScreenMode.FIXED) {
@@ -13687,7 +13687,7 @@ public class Game extends GameShell {
 				- (frameMode == ScreenMode.FIXED ? 4 : 0);
 		Model.anInt1686 = super.mouseY
 				- (frameMode == ScreenMode.FIXED ? 4 : 0);
-		DrawingArea.clear();
+		Raster.clear();
 		worldController.method313(xCameraPos, yCameraPos, xCameraCurve,
 				zCameraPos, j, yCameraCurve);
 		worldController.clearObj5Cache();

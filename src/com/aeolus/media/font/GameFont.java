@@ -2,11 +2,11 @@ package com.aeolus.media.font;
 
 import java.util.Random;
 
-import com.aeolus.media.DrawingArea;
+import com.aeolus.media.Raster;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 
-public final class GameFont extends DrawingArea {
+public final class GameFont extends Raster {
 
 	public GameFont(boolean flag, String s, CacheArchive streamLoader) {
 	aByteArrayArray1491 = new byte[256][];
@@ -178,7 +178,7 @@ public final class GameFont extends DrawingArea {
 				i += anIntArray1496[c];
 			}
 		if(aBoolean1499)
-			DrawingArea.method339(k + (int)((double)anInt1497 * 0.69999999999999996D), 0x800000, i - l, l);
+			Raster.method339(k + (int)((double)anInt1497 * 0.69999999999999996D), 0x800000, i - l, l);
 	}
 
 	public void method390(int i, int j, String s, int k, int i1) {

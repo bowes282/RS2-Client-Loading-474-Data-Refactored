@@ -1,10 +1,10 @@
 package com.aeolus.scene.graphic;
 import com.aeolus.cache.media.Background;
-import com.aeolus.media.DrawingArea;
+import com.aeolus.media.Raster;
 import com.aeolus.net.CacheArchive;
 import com.aeolus.scene.map.SceneGraph;
 
-public final class Rasterizer extends DrawingArea {
+public final class Rasterizer extends Raster {
 
 	public static void nullLoader()
 	{
@@ -26,12 +26,12 @@ public final class Rasterizer extends DrawingArea {
 	
 	public static void method364()
 	{
-		anIntArray1472 = new int[DrawingArea.height];
-		for(int j = 0; j < DrawingArea.height; j++)
-			anIntArray1472[j] = DrawingArea.width * j;
+		anIntArray1472 = new int[Raster.height];
+		for(int j = 0; j < Raster.height; j++)
+			anIntArray1472[j] = Raster.width * j;
 
-		textureInt1 = DrawingArea.width / 2;
-		textureInt2 = DrawingArea.height / 2;
+		textureInt1 = Raster.width / 2;
+		textureInt2 = Raster.height / 2;
 	}
 
 	public static void method365(int j, int k)
@@ -351,14 +351,14 @@ public final class Rasterizer extends DrawingArea {
 		float depth_slope = (b_aZ * c_aY - c_aZ * b_aY) / div;
 		float depth_increment = (c_aZ * b_aX - b_aZ * c_aX) / div;
 		if(y_a <= y_b && y_a <= y_c) {
-			if(y_a >= DrawingArea.bottomY) {
+			if(y_a >= Raster.bottomY) {
 				return;
 			}
-			if(y_b > DrawingArea.bottomY) {
-				y_b = DrawingArea.bottomY;
+			if(y_b > Raster.bottomY) {
+				y_b = Raster.bottomY;
 			}
-			if(y_c > DrawingArea.bottomY) {
-				y_c = DrawingArea.bottomY;
+			if(y_c > Raster.bottomY) {
+				y_c = Raster.bottomY;
 			}
 			z_a = z_a - depth_slope * x_a + depth_slope;
 			if(y_b < y_c) {
@@ -392,8 +392,8 @@ public final class Rasterizer extends DrawingArea {
 				if(y_a != y_b && c_to_a < a_to_b || y_a == y_b && c_to_a > b_to_c) {
 					y_c -= y_b;
 					y_b -= y_a;
-					for(y_a = anIntArray1472[y_a]; --y_b >= 0; y_a += DrawingArea.width) {
-						drawShadedScanline(DrawingArea.pixels, y_a, x_c >> 16, x_a >> 16, r3, g3, b3, r1, g1, b1, z_a, depth_slope);
+					for(y_a = anIntArray1472[y_a]; --y_b >= 0; y_a += Raster.width) {
+						drawShadedScanline(Raster.pixels, y_a, x_c >> 16, x_a >> 16, r3, g3, b3, r1, g1, b1, z_a, depth_slope);
 						x_c += c_to_a;
 						x_a += a_to_b;
 						r3 += dr3;
@@ -405,7 +405,7 @@ public final class Rasterizer extends DrawingArea {
 						z_a += depth_increment;
 					}
 					while(--y_c >= 0) {
-						drawShadedScanline(DrawingArea.pixels, y_a, x_c >> 16, x_b >> 16, r3, g3, b3, r2, g2, b2, z_a, depth_slope);
+						drawShadedScanline(Raster.pixels, y_a, x_c >> 16, x_b >> 16, r3, g3, b3, r2, g2, b2, z_a, depth_slope);
 						x_c += c_to_a;
 						x_b += b_to_c;
 						r3 += dr3;
@@ -414,15 +414,15 @@ public final class Rasterizer extends DrawingArea {
 						r2 += dr2;
 						g2 += dg2;
 						b2 += db2;
-						y_a += DrawingArea.width;
+						y_a += Raster.width;
 						z_a += depth_increment;
 					}
 					return;
 				}
 				y_c -= y_b;
 				y_b -= y_a;
-				for(y_a = anIntArray1472[y_a]; --y_b >= 0; y_a += DrawingArea.width) {
-					drawShadedScanline(DrawingArea.pixels, y_a, x_a >> 16, x_c >> 16, r1, g1, b1, r3, g3, b3, z_a, depth_slope);
+				for(y_a = anIntArray1472[y_a]; --y_b >= 0; y_a += Raster.width) {
+					drawShadedScanline(Raster.pixels, y_a, x_a >> 16, x_c >> 16, r1, g1, b1, r3, g3, b3, z_a, depth_slope);
 					x_c += c_to_a;
 					x_a += a_to_b;
 					r3 += dr3;
@@ -434,7 +434,7 @@ public final class Rasterizer extends DrawingArea {
 					z_a += depth_increment;
 				}
 				while(--y_c >= 0) {
-					drawShadedScanline(DrawingArea.pixels, y_a, x_b >> 16, x_c >> 16, r2, g2, b2, r3, g3, b3, z_a, depth_slope);
+					drawShadedScanline(Raster.pixels, y_a, x_b >> 16, x_c >> 16, r2, g2, b2, r3, g3, b3, z_a, depth_slope);
 					x_c += c_to_a;
 					x_b += b_to_c;
 					r3 += dr3;
@@ -443,7 +443,7 @@ public final class Rasterizer extends DrawingArea {
 					r2 += dr2;
 					g2 += dg2;
 					b2 += db2;
-					y_a += DrawingArea.width;
+					y_a += Raster.width;
 					z_a += depth_increment;
 				}
 				return;
@@ -478,8 +478,8 @@ public final class Rasterizer extends DrawingArea {
 			if(y_a != y_c && c_to_a < a_to_b || y_a == y_c && b_to_c > a_to_b) {
 				y_b -= y_c;
 				y_c -= y_a;
-				for(y_a = anIntArray1472[y_a]; --y_c >= 0; y_a += DrawingArea.width) {
-					drawShadedScanline(DrawingArea.pixels, y_a, x_b >> 16, x_a >> 16, r2, g2, b2, r1, g1, b1, z_a, depth_slope);
+				for(y_a = anIntArray1472[y_a]; --y_c >= 0; y_a += Raster.width) {
+					drawShadedScanline(Raster.pixels, y_a, x_b >> 16, x_a >> 16, r2, g2, b2, r1, g1, b1, z_a, depth_slope);
 					x_b += c_to_a;
 					x_a += a_to_b;
 					r2 += dr3;
@@ -491,7 +491,7 @@ public final class Rasterizer extends DrawingArea {
 					z_a += depth_increment;
 				}
 				while(--y_b >= 0) {
-					drawShadedScanline(DrawingArea.pixels, y_a, x_c >> 16, x_a >> 16, r3, g3, b3, r1, g1, b1, z_a, depth_slope);
+					drawShadedScanline(Raster.pixels, y_a, x_c >> 16, x_a >> 16, r3, g3, b3, r1, g1, b1, z_a, depth_slope);
 					x_c += b_to_c;
 					x_a += a_to_b;
 					r3 += dr2;
@@ -500,15 +500,15 @@ public final class Rasterizer extends DrawingArea {
 					r1 += dr1;
 					g1 += dg1;
 					b1 += db1;
-					y_a += DrawingArea.width;
+					y_a += Raster.width;
 					z_a += depth_increment;
 				}
 				return;
 			}
 			y_b -= y_c;
 			y_c -= y_a;
-			for(y_a = anIntArray1472[y_a]; --y_c >= 0; y_a += DrawingArea.width) {
-				drawShadedScanline(DrawingArea.pixels, y_a, x_a >> 16, x_b >> 16, r1, g1, b1, r2, g2, b2, z_a, depth_slope);
+			for(y_a = anIntArray1472[y_a]; --y_c >= 0; y_a += Raster.width) {
+				drawShadedScanline(Raster.pixels, y_a, x_a >> 16, x_b >> 16, r1, g1, b1, r2, g2, b2, z_a, depth_slope);
 				x_b += c_to_a;
 				x_a += a_to_b;
 				r2 += dr3;
@@ -520,7 +520,7 @@ public final class Rasterizer extends DrawingArea {
 				z_a += depth_increment;
 			}
 			while(--y_b >= 0) {
-				drawShadedScanline(DrawingArea.pixels, y_a, x_a >> 16, x_c >> 16, r1, g1, b1, r3, g3, b3, z_a, depth_slope);
+				drawShadedScanline(Raster.pixels, y_a, x_a >> 16, x_c >> 16, r1, g1, b1, r3, g3, b3, z_a, depth_slope);
 				x_c += b_to_c;
 				x_a += a_to_b;
 				r3 += dr2;
@@ -529,20 +529,20 @@ public final class Rasterizer extends DrawingArea {
 				r1 += dr1;
 				g1 += dg1;
 				b1 += db1;
-				y_a += DrawingArea.width;
+				y_a += Raster.width;
 				z_a += depth_increment;
 			}
 			return;
 		}
 		if(y_b <= y_c) {
-			if(y_b >= DrawingArea.bottomY) {
+			if(y_b >= Raster.bottomY) {
 				return;
 			}
-			if(y_c > DrawingArea.bottomY) {
-				y_c = DrawingArea.bottomY;
+			if(y_c > Raster.bottomY) {
+				y_c = Raster.bottomY;
 			}
-			if(y_a > DrawingArea.bottomY) {
-				y_a = DrawingArea.bottomY;
+			if(y_a > Raster.bottomY) {
+				y_a = Raster.bottomY;
 			}
 			z_b = z_b - depth_slope * x_b + depth_slope;
 			if(y_c < y_a) {
@@ -576,8 +576,8 @@ public final class Rasterizer extends DrawingArea {
 				if(y_b != y_c && a_to_b < b_to_c || y_b == y_c && a_to_b > c_to_a) {
 					y_a -= y_c;
 					y_c -= y_b;
-					for(y_b = anIntArray1472[y_b]; --y_c >= 0; y_b += DrawingArea.width) {
-						drawShadedScanline(DrawingArea.pixels, y_b, x_a >> 16, x_b >> 16, r1, g1, b1, r2, g2, b2, z_b, depth_slope);
+					for(y_b = anIntArray1472[y_b]; --y_c >= 0; y_b += Raster.width) {
+						drawShadedScanline(Raster.pixels, y_b, x_a >> 16, x_b >> 16, r1, g1, b1, r2, g2, b2, z_b, depth_slope);
 						x_a += a_to_b;
 						x_b += b_to_c;
 						r1 += dr1;
@@ -589,7 +589,7 @@ public final class Rasterizer extends DrawingArea {
 						z_b += depth_increment;
 					}
 					while(--y_a >= 0) {
-						drawShadedScanline(DrawingArea.pixels, y_b, x_a >> 16, x_c >> 16, r1, g1, b1, r3, g3, b3, z_b, depth_slope);
+						drawShadedScanline(Raster.pixels, y_b, x_a >> 16, x_c >> 16, r1, g1, b1, r3, g3, b3, z_b, depth_slope);
 						x_a += a_to_b;
 						x_c += c_to_a;
 						r1 += dr1;
@@ -598,15 +598,15 @@ public final class Rasterizer extends DrawingArea {
 						r3 += dr3;
 						g3 += dg3;
 						b3 += db3;
-						y_b += DrawingArea.width;
+						y_b += Raster.width;
 						z_b += depth_increment;
 					}
 					return;
 				}
 				y_a -= y_c;
 				y_c -= y_b;
-				for(y_b = anIntArray1472[y_b]; --y_c >= 0; y_b += DrawingArea.width) {
-					drawShadedScanline(DrawingArea.pixels, y_b, x_b >> 16, x_a >> 16, r2, g2, b2, r1, g1, b1, z_b, depth_slope);
+				for(y_b = anIntArray1472[y_b]; --y_c >= 0; y_b += Raster.width) {
+					drawShadedScanline(Raster.pixels, y_b, x_b >> 16, x_a >> 16, r2, g2, b2, r1, g1, b1, z_b, depth_slope);
 					x_a += a_to_b;
 					x_b += b_to_c;
 					r1 += dr1;
@@ -618,7 +618,7 @@ public final class Rasterizer extends DrawingArea {
 					z_b += depth_increment;
 				}
 				while(--y_a >= 0) {
-					drawShadedScanline(DrawingArea.pixels, y_b, x_c >> 16, x_a >> 16, r3, g3, b3, r1, g1, b1, z_b, depth_slope);
+					drawShadedScanline(Raster.pixels, y_b, x_c >> 16, x_a >> 16, r3, g3, b3, r1, g1, b1, z_b, depth_slope);
 					x_a += a_to_b;
 					x_c += c_to_a;
 					r1 += dr1;
@@ -627,7 +627,7 @@ public final class Rasterizer extends DrawingArea {
 					r3 += dr3;
 					g3 += dg3;
 					b3 += db3;
-					y_b += DrawingArea.width;
+					y_b += Raster.width;
 					z_b += depth_increment;
 				}
 				return;
@@ -662,8 +662,8 @@ public final class Rasterizer extends DrawingArea {
 			if(a_to_b < b_to_c) {
 				y_c -= y_a;
 				y_a -= y_b;
-				for(y_b = anIntArray1472[y_b]; --y_a >= 0; y_b += DrawingArea.width) {
-					drawShadedScanline(DrawingArea.pixels, y_b, x_c >> 16, x_b >> 16, r3, g3, b3, r2, g2, b2, z_b, depth_slope);
+				for(y_b = anIntArray1472[y_b]; --y_a >= 0; y_b += Raster.width) {
+					drawShadedScanline(Raster.pixels, y_b, x_c >> 16, x_b >> 16, r3, g3, b3, r2, g2, b2, z_b, depth_slope);
 					x_c += a_to_b;
 					x_b += b_to_c;
 					r3 += dr1;
@@ -675,7 +675,7 @@ public final class Rasterizer extends DrawingArea {
 					z_b += depth_increment;
 				}
 				while(--y_c >= 0) {
-					drawShadedScanline(DrawingArea.pixels, y_b, x_a >> 16, x_b >> 16, r1, g1, b1, r2, g2, b2, z_b, depth_slope);
+					drawShadedScanline(Raster.pixels, y_b, x_a >> 16, x_b >> 16, r1, g1, b1, r2, g2, b2, z_b, depth_slope);
 					x_a += c_to_a;
 					x_b += b_to_c;
 					r1 += dr3;
@@ -684,15 +684,15 @@ public final class Rasterizer extends DrawingArea {
 					r2 += dr2;
 					g2 += dg2;
 					b2 += db2;
-					y_b += DrawingArea.width;
+					y_b += Raster.width;
 					z_b += depth_increment;
 				}
 				return;
 			}
 			y_c -= y_a;
 			y_a -= y_b;
-			for(y_b = anIntArray1472[y_b]; --y_a >= 0; y_b += DrawingArea.width) {
-				drawShadedScanline(DrawingArea.pixels, y_b, x_b >> 16, x_c >> 16, r2, g2, b2, r3, g3, b3, z_b, depth_slope);
+			for(y_b = anIntArray1472[y_b]; --y_a >= 0; y_b += Raster.width) {
+				drawShadedScanline(Raster.pixels, y_b, x_b >> 16, x_c >> 16, r2, g2, b2, r3, g3, b3, z_b, depth_slope);
 				x_c += a_to_b;
 				x_b += b_to_c;
 				r3 += dr1;
@@ -704,7 +704,7 @@ public final class Rasterizer extends DrawingArea {
 				z_b += depth_increment;
 			}
 			while(--y_c >= 0) {
-				drawShadedScanline(DrawingArea.pixels, y_b, x_b >> 16, x_a >> 16, r2, g2, b2, r1, g1, b1, z_b, depth_slope);
+				drawShadedScanline(Raster.pixels, y_b, x_b >> 16, x_a >> 16, r2, g2, b2, r1, g1, b1, z_b, depth_slope);
 				x_a += c_to_a;
 				x_b += b_to_c;
 				r1 += dr3;
@@ -713,19 +713,19 @@ public final class Rasterizer extends DrawingArea {
 				r2 += dr2;
 				g2 += dg2;
 				b2 += db2;
-				y_b += DrawingArea.width;
+				y_b += Raster.width;
 				z_b += depth_increment;
 			}
 			return;
 		}
-		if(y_c >= DrawingArea.bottomY) {
+		if(y_c >= Raster.bottomY) {
 			return;
 		}
-		if(y_a > DrawingArea.bottomY) {
-			y_a = DrawingArea.bottomY;
+		if(y_a > Raster.bottomY) {
+			y_a = Raster.bottomY;
 		}
-		if(y_b > DrawingArea.bottomY) {
-			y_b = DrawingArea.bottomY;
+		if(y_b > Raster.bottomY) {
+			y_b = Raster.bottomY;
 		}
 		z_c = z_c - depth_slope * x_c + depth_slope;
 		if(y_a < y_b) {
@@ -759,8 +759,8 @@ public final class Rasterizer extends DrawingArea {
 			if(b_to_c < c_to_a) {
 				y_b -= y_a;
 				y_a -= y_c;
-				for(y_c = anIntArray1472[y_c]; --y_a >= 0; y_c += DrawingArea.width) {
-					drawShadedScanline(DrawingArea.pixels, y_c, x_b >> 16, x_c >> 16, r2, g2, b2, r3, g3, b3, z_c, depth_slope);
+				for(y_c = anIntArray1472[y_c]; --y_a >= 0; y_c += Raster.width) {
+					drawShadedScanline(Raster.pixels, y_c, x_b >> 16, x_c >> 16, r2, g2, b2, r3, g3, b3, z_c, depth_slope);
 					x_b += b_to_c;
 					x_c += c_to_a;
 					r2 += dr2;
@@ -772,7 +772,7 @@ public final class Rasterizer extends DrawingArea {
 					z_c += depth_increment;
 				}
 				while(--y_b >= 0) {
-					drawShadedScanline(DrawingArea.pixels, y_c, x_b >> 16, x_a >> 16, r2, g2, b2, r1, g1, b1, z_c, depth_slope);
+					drawShadedScanline(Raster.pixels, y_c, x_b >> 16, x_a >> 16, r2, g2, b2, r1, g1, b1, z_c, depth_slope);
 					x_b += b_to_c;
 					x_a += a_to_b;
 					r2 += dr2;
@@ -781,15 +781,15 @@ public final class Rasterizer extends DrawingArea {
 					r1 += dr1;
 					g1 += dg1;
 					b1 += db1;
-					y_c += DrawingArea.width;
+					y_c += Raster.width;
 					z_c += depth_increment;
 				}
 				return;
 			}
 			y_b -= y_a;
 			y_a -= y_c;
-			for(y_c = anIntArray1472[y_c]; --y_a >= 0; y_c += DrawingArea.width) {
-				drawShadedScanline(DrawingArea.pixels, y_c, x_c >> 16, x_b >> 16, r3, g3, b3, r2, g2, b2, z_c, depth_slope);
+			for(y_c = anIntArray1472[y_c]; --y_a >= 0; y_c += Raster.width) {
+				drawShadedScanline(Raster.pixels, y_c, x_c >> 16, x_b >> 16, r3, g3, b3, r2, g2, b2, z_c, depth_slope);
 				x_b += b_to_c;
 				x_c += c_to_a;
 				r2 += dr2;
@@ -801,7 +801,7 @@ public final class Rasterizer extends DrawingArea {
 				z_c += depth_increment;
 			}
 			while(--y_b >= 0) {
-				drawShadedScanline(DrawingArea.pixels, y_c, x_a >> 16, x_b >> 16, r1, g1, b1, r2, g2, b2, z_c, depth_slope);
+				drawShadedScanline(Raster.pixels, y_c, x_a >> 16, x_b >> 16, r1, g1, b1, r2, g2, b2, z_c, depth_slope);
 				x_b += b_to_c;
 				x_a += a_to_b;
 				r2 += dr2;
@@ -811,7 +811,7 @@ public final class Rasterizer extends DrawingArea {
 				g1 += dg1;
 				b1 += db1;
 				z_c += depth_increment;
-				y_c += DrawingArea.width;
+				y_c += Raster.width;
 			}
 			return;
 		}
@@ -845,8 +845,8 @@ public final class Rasterizer extends DrawingArea {
 		if(b_to_c < c_to_a) {
 			y_a -= y_b;
 			y_b -= y_c;
-			for(y_c = anIntArray1472[y_c]; --y_b >= 0; y_c += DrawingArea.width) {
-				drawShadedScanline(DrawingArea.pixels, y_c, x_a >> 16, x_c >> 16, r1, g1, b1, r3, g3, b3, z_c, depth_slope);
+			for(y_c = anIntArray1472[y_c]; --y_b >= 0; y_c += Raster.width) {
+				drawShadedScanline(Raster.pixels, y_c, x_a >> 16, x_c >> 16, r1, g1, b1, r3, g3, b3, z_c, depth_slope);
 				x_a += b_to_c;
 				x_c += c_to_a;
 				r1 += dr2;
@@ -858,7 +858,7 @@ public final class Rasterizer extends DrawingArea {
 				z_c += depth_increment;
 			}
 			while(--y_a >= 0) {
-				drawShadedScanline(DrawingArea.pixels, y_c, x_b >> 16, x_c >> 16, r2, g2, b2, r3, g3, b3, z_c, depth_slope);
+				drawShadedScanline(Raster.pixels, y_c, x_b >> 16, x_c >> 16, r2, g2, b2, r3, g3, b3, z_c, depth_slope);
 				x_b += a_to_b;
 				x_c += c_to_a;
 				r2 += dr1;
@@ -868,14 +868,14 @@ public final class Rasterizer extends DrawingArea {
 				g3 += dg3;
 				b3 += db3;
 				z_c += depth_increment;
-				y_c += DrawingArea.width;
+				y_c += Raster.width;
 			}
 			return;
 		}
 		y_a -= y_b;
 		y_b -= y_c;
-		for(y_c = anIntArray1472[y_c]; --y_b >= 0; y_c += DrawingArea.width) {
-			drawShadedScanline(DrawingArea.pixels, y_c, x_c >> 16, x_a >> 16, r3, g3, b3, r1, g1, b1, z_c, depth_slope);
+		for(y_c = anIntArray1472[y_c]; --y_b >= 0; y_c += Raster.width) {
+			drawShadedScanline(Raster.pixels, y_c, x_c >> 16, x_a >> 16, r3, g3, b3, r1, g1, b1, z_c, depth_slope);
 			x_a += b_to_c;
 			x_c += c_to_a;
 			r1 += dr2;
@@ -887,7 +887,7 @@ public final class Rasterizer extends DrawingArea {
 			z_c += depth_increment;
 		}
 		while(--y_a >= 0) {
-			drawShadedScanline(DrawingArea.pixels, y_c, x_c >> 16, x_b >> 16, r3, g3, b3, r2, g2, b2, z_c, depth_slope);
+			drawShadedScanline(Raster.pixels, y_c, x_c >> 16, x_b >> 16, r3, g3, b3, r2, g2, b2, z_c, depth_slope);
 			x_b += a_to_b;
 			x_c += c_to_a;
 			r2 += dr1;
@@ -896,7 +896,7 @@ public final class Rasterizer extends DrawingArea {
 			r3 += dr3;
 			g3 += dg3;
 			b3 += db3;
-			y_c += DrawingArea.width;
+			y_c += Raster.width;
 			z_c += depth_increment;
 		}
 	}
@@ -910,9 +910,9 @@ public final class Rasterizer extends DrawingArea {
 		g2 = (g2 - g1) / n;
 		b2 = (b2 - b1) / n;
 		if (aBoolean1462) {
-			if (x2 > DrawingArea.centerX) {
-				n -= x2 - DrawingArea.centerX;
-				x2 = DrawingArea.centerX;
+			if (x2 > Raster.centerX) {
+				n -= x2 - Raster.centerX;
+				x2 = Raster.centerX;
 			}
 			if (x1 < 0) {
 				n = x2;
@@ -929,7 +929,7 @@ public final class Rasterizer extends DrawingArea {
 				while (--n >= 0) {
 					if (true) {
 						dest[offset] = (r1 & 0xff0000) | (g1 >> 8 & 0xff00) | (b1 >> 16 & 0xff);
-						DrawingArea.depthBuffer[offset] = depth;
+						Raster.depthBuffer[offset] = depth;
 					}
 					depth += depth_slope;
 					r1 += r2;
@@ -948,7 +948,7 @@ public final class Rasterizer extends DrawingArea {
 					dst = dest[offset];
 					if (true) {
 						dest[offset] = rgb + ((dst & 0xff00ff) * a1 >> 8 & 0xff00ff) + ((dst & 0xff00) * a1 >> 8 & 0xff00);
-						DrawingArea.depthBuffer[offset] = depth;
+						Raster.depthBuffer[offset] = depth;
 					}
 					depth += depth_slope;
 					r1 += r2;
@@ -987,12 +987,12 @@ public final class Rasterizer extends DrawingArea {
 		float depth_slope = (b_aZ * c_aY - c_aZ * b_aY) / div;
 		float depth_increment = (c_aZ * b_aX - b_aZ * c_aX) / div;
 		if(y_a <= y_b && y_a <= y_c) {
-			if(y_a >= DrawingArea.bottomY)
+			if(y_a >= Raster.bottomY)
 				return;
-			if(y_b > DrawingArea.bottomY)
-				y_b = DrawingArea.bottomY;
-			if(y_c > DrawingArea.bottomY)
-				y_c = DrawingArea.bottomY;
+			if(y_b > Raster.bottomY)
+				y_b = Raster.bottomY;
+			if(y_c > Raster.bottomY)
+				y_c = Raster.bottomY;
 			z_a = z_a - depth_slope * x_a + depth_slope;
 			if(y_b < y_c)
 			{
@@ -1014,9 +1014,9 @@ public final class Rasterizer extends DrawingArea {
 				{
 					y_c -= y_b;
 					y_b -= y_a;
-					for(y_a = anIntArray1472[y_a]; --y_b >= 0; y_a += DrawingArea.width)
+					for(y_a = anIntArray1472[y_a]; --y_b >= 0; y_a += Raster.width)
 					{
-						drawFlatTexturedScanline(DrawingArea.pixels, y_a, k1, x_c >> 16, x_a >> 16, z_a, depth_slope);
+						drawFlatTexturedScanline(Raster.pixels, y_a, k1, x_c >> 16, x_a >> 16, z_a, depth_slope);
 						x_c += c_to_a;
 						x_a += a_to_b;
 						z_a += depth_increment;
@@ -1024,19 +1024,19 @@ public final class Rasterizer extends DrawingArea {
 
 					while(--y_c >= 0) 
 					{
-						drawFlatTexturedScanline(DrawingArea.pixels, y_a, k1, x_c >> 16, x_b >> 16, z_a, depth_slope);
+						drawFlatTexturedScanline(Raster.pixels, y_a, k1, x_c >> 16, x_b >> 16, z_a, depth_slope);
 						x_c += c_to_a;
 						x_b += b_to_c;
-						y_a += DrawingArea.width;
+						y_a += Raster.width;
 						z_a += depth_increment;
 					}
 					return;
 				}
 				y_c -= y_b;
 				y_b -= y_a;
-				for(y_a = anIntArray1472[y_a]; --y_b >= 0; y_a += DrawingArea.width)
+				for(y_a = anIntArray1472[y_a]; --y_b >= 0; y_a += Raster.width)
 				{
-					drawFlatTexturedScanline(DrawingArea.pixels, y_a, k1, x_a >> 16, x_c >> 16, z_a, depth_slope);
+					drawFlatTexturedScanline(Raster.pixels, y_a, k1, x_a >> 16, x_c >> 16, z_a, depth_slope);
 					x_c += c_to_a;
 					x_a += a_to_b;
 					z_a += depth_increment;
@@ -1044,10 +1044,10 @@ public final class Rasterizer extends DrawingArea {
 
 				while(--y_c >= 0) 
 				{
-					drawFlatTexturedScanline(DrawingArea.pixels, y_a, k1, x_b >> 16, x_c >> 16, z_a, depth_slope);
+					drawFlatTexturedScanline(Raster.pixels, y_a, k1, x_b >> 16, x_c >> 16, z_a, depth_slope);
 					x_c += c_to_a;
 					x_b += b_to_c;
-					y_a += DrawingArea.width;
+					y_a += Raster.width;
 					z_a += depth_increment;
 				}
 				return;
@@ -1071,9 +1071,9 @@ public final class Rasterizer extends DrawingArea {
 			{
 				y_b -= y_c;
 				y_c -= y_a;
-				for(y_a = anIntArray1472[y_a]; --y_c >= 0; y_a += DrawingArea.width)
+				for(y_a = anIntArray1472[y_a]; --y_c >= 0; y_a += Raster.width)
 				{
-					drawFlatTexturedScanline(DrawingArea.pixels, y_a, k1, x_b >> 16, x_a >> 16, z_a, depth_slope);
+					drawFlatTexturedScanline(Raster.pixels, y_a, k1, x_b >> 16, x_a >> 16, z_a, depth_slope);
 					z_a += depth_increment;
 					x_b += c_to_a;
 					x_a += a_to_b;
@@ -1081,19 +1081,19 @@ public final class Rasterizer extends DrawingArea {
 
 				while(--y_b >= 0) 
 				{
-					drawFlatTexturedScanline(DrawingArea.pixels, y_a, k1, x_c >> 16, x_a >> 16, z_a, depth_slope);
+					drawFlatTexturedScanline(Raster.pixels, y_a, k1, x_c >> 16, x_a >> 16, z_a, depth_slope);
 					z_a += depth_increment;
 					x_c += b_to_c;
 					x_a += a_to_b;
-					y_a += DrawingArea.width;
+					y_a += Raster.width;
 				}
 				return;
 			}
 			y_b -= y_c;
 			y_c -= y_a;
-			for(y_a = anIntArray1472[y_a]; --y_c >= 0; y_a += DrawingArea.width)
+			for(y_a = anIntArray1472[y_a]; --y_c >= 0; y_a += Raster.width)
 			{
-				drawFlatTexturedScanline(DrawingArea.pixels, y_a, k1, x_a >> 16, x_b >> 16, z_a, depth_slope);
+				drawFlatTexturedScanline(Raster.pixels, y_a, k1, x_a >> 16, x_b >> 16, z_a, depth_slope);
 				z_a += depth_increment;
 				x_b += c_to_a;
 				x_a += a_to_b;
@@ -1101,22 +1101,22 @@ public final class Rasterizer extends DrawingArea {
 
 			while(--y_b >= 0) 
 			{
-				drawFlatTexturedScanline(DrawingArea.pixels, y_a, k1, x_a >> 16, x_c >> 16, z_a, depth_slope);
+				drawFlatTexturedScanline(Raster.pixels, y_a, k1, x_a >> 16, x_c >> 16, z_a, depth_slope);
 				z_a += depth_increment;
 				x_c += b_to_c;
 				x_a += a_to_b;
-				y_a += DrawingArea.width;
+				y_a += Raster.width;
 			}
 			return;
 		}
 		if(y_b <= y_c)
 		{
-			if(y_b >= DrawingArea.bottomY)
+			if(y_b >= Raster.bottomY)
 				return;
-			if(y_c > DrawingArea.bottomY)
-				y_c = DrawingArea.bottomY;
-			if(y_a > DrawingArea.bottomY)
-				y_a = DrawingArea.bottomY;
+			if(y_c > Raster.bottomY)
+				y_c = Raster.bottomY;
+			if(y_a > Raster.bottomY)
+				y_a = Raster.bottomY;
 			z_b = z_b - depth_slope * x_b + depth_slope;
 			if(y_c < y_a)
 			{
@@ -1138,9 +1138,9 @@ public final class Rasterizer extends DrawingArea {
 				{
 					y_a -= y_c;
 					y_c -= y_b;
-					for(y_b = anIntArray1472[y_b]; --y_c >= 0; y_b += DrawingArea.width)
+					for(y_b = anIntArray1472[y_b]; --y_c >= 0; y_b += Raster.width)
 					{
-						drawFlatTexturedScanline(DrawingArea.pixels, y_b, k1, x_a >> 16, x_b >> 16, z_b, depth_slope);
+						drawFlatTexturedScanline(Raster.pixels, y_b, k1, x_a >> 16, x_b >> 16, z_b, depth_slope);
 						z_b += depth_increment;
 						x_a += a_to_b;
 						x_b += b_to_c;
@@ -1148,19 +1148,19 @@ public final class Rasterizer extends DrawingArea {
 
 					while(--y_a >= 0) 
 					{
-						drawFlatTexturedScanline(DrawingArea.pixels, y_b, k1, x_a >> 16, x_c >> 16, z_b, depth_slope);
+						drawFlatTexturedScanline(Raster.pixels, y_b, k1, x_a >> 16, x_c >> 16, z_b, depth_slope);
 						z_b += depth_increment;
 						x_a += a_to_b;
 						x_c += c_to_a;
-						y_b += DrawingArea.width;
+						y_b += Raster.width;
 					}
 					return;
 				}
 				y_a -= y_c;
 				y_c -= y_b;
-				for(y_b = anIntArray1472[y_b]; --y_c >= 0; y_b += DrawingArea.width)
+				for(y_b = anIntArray1472[y_b]; --y_c >= 0; y_b += Raster.width)
 				{
-					drawFlatTexturedScanline(DrawingArea.pixels, y_b, k1, x_b >> 16, x_a >> 16, z_b, depth_slope);
+					drawFlatTexturedScanline(Raster.pixels, y_b, k1, x_b >> 16, x_a >> 16, z_b, depth_slope);
 					z_b += depth_increment;
 					x_a += a_to_b;
 					x_b += b_to_c;
@@ -1168,11 +1168,11 @@ public final class Rasterizer extends DrawingArea {
 
 				while(--y_a >= 0) 
 				{
-					drawFlatTexturedScanline(DrawingArea.pixels, y_b, k1, x_c >> 16, x_a >> 16, z_b, depth_slope);
+					drawFlatTexturedScanline(Raster.pixels, y_b, k1, x_c >> 16, x_a >> 16, z_b, depth_slope);
 					z_b += depth_increment;
 					x_a += a_to_b;
 					x_c += c_to_a;
-					y_b += DrawingArea.width;
+					y_b += Raster.width;
 				}
 				return;
 			}
@@ -1194,9 +1194,9 @@ public final class Rasterizer extends DrawingArea {
 			{
 				y_c -= y_a;
 				y_a -= y_b;
-				for(y_b = anIntArray1472[y_b]; --y_a >= 0; y_b += DrawingArea.width)
+				for(y_b = anIntArray1472[y_b]; --y_a >= 0; y_b += Raster.width)
 				{
-					drawFlatTexturedScanline(DrawingArea.pixels, y_b, k1, x_c >> 16, x_b >> 16, z_b, depth_slope);
+					drawFlatTexturedScanline(Raster.pixels, y_b, k1, x_c >> 16, x_b >> 16, z_b, depth_slope);
 					z_b += depth_increment;
 					x_c += a_to_b;
 					x_b += b_to_c;
@@ -1204,19 +1204,19 @@ public final class Rasterizer extends DrawingArea {
 
 				while(--y_c >= 0) 
 				{
-					drawFlatTexturedScanline(DrawingArea.pixels, y_b, k1, x_a >> 16, x_b >> 16, z_b, depth_slope);
+					drawFlatTexturedScanline(Raster.pixels, y_b, k1, x_a >> 16, x_b >> 16, z_b, depth_slope);
 					z_b += depth_increment;
 					x_a += c_to_a;
 					x_b += b_to_c;
-					y_b += DrawingArea.width;
+					y_b += Raster.width;
 				}
 				return;
 			}
 			y_c -= y_a;
 			y_a -= y_b;
-			for(y_b = anIntArray1472[y_b]; --y_a >= 0; y_b += DrawingArea.width)
+			for(y_b = anIntArray1472[y_b]; --y_a >= 0; y_b += Raster.width)
 			{
-				drawFlatTexturedScanline(DrawingArea.pixels, y_b, k1, x_b >> 16, x_c >> 16, z_b, depth_slope);
+				drawFlatTexturedScanline(Raster.pixels, y_b, k1, x_b >> 16, x_c >> 16, z_b, depth_slope);
 				z_b += depth_increment;
 				x_c += a_to_b;
 				x_b += b_to_c;
@@ -1224,20 +1224,20 @@ public final class Rasterizer extends DrawingArea {
 
 			while(--y_c >= 0) 
 			{
-				drawFlatTexturedScanline(DrawingArea.pixels, y_b, k1, x_b >> 16, x_a >> 16, z_b, depth_slope);
+				drawFlatTexturedScanline(Raster.pixels, y_b, k1, x_b >> 16, x_a >> 16, z_b, depth_slope);
 				z_b += depth_increment;
 				x_a += c_to_a;
 				x_b += b_to_c;
-				y_b += DrawingArea.width;
+				y_b += Raster.width;
 			}
 			return;
 		}
-		if(y_c >= DrawingArea.bottomY)
+		if(y_c >= Raster.bottomY)
 			return;
-		if(y_a > DrawingArea.bottomY)
-			y_a = DrawingArea.bottomY;
-		if(y_b > DrawingArea.bottomY)
-			y_b = DrawingArea.bottomY;
+		if(y_a > Raster.bottomY)
+			y_a = Raster.bottomY;
+		if(y_b > Raster.bottomY)
+			y_b = Raster.bottomY;
 		z_c = z_c - depth_slope * x_c + depth_slope;
 		if(y_a < y_b)
 		{
@@ -1259,9 +1259,9 @@ public final class Rasterizer extends DrawingArea {
 			{
 				y_b -= y_a;
 				y_a -= y_c;
-				for(y_c = anIntArray1472[y_c]; --y_a >= 0; y_c += DrawingArea.width)
+				for(y_c = anIntArray1472[y_c]; --y_a >= 0; y_c += Raster.width)
 				{
-					drawFlatTexturedScanline(DrawingArea.pixels, y_c, k1, x_b >> 16, x_c >> 16, z_c, depth_slope);
+					drawFlatTexturedScanline(Raster.pixels, y_c, k1, x_b >> 16, x_c >> 16, z_c, depth_slope);
 					z_c += depth_increment;
 					x_b += b_to_c;
 					x_c += c_to_a;
@@ -1269,19 +1269,19 @@ public final class Rasterizer extends DrawingArea {
 
 				while(--y_b >= 0) 
 				{
-					drawFlatTexturedScanline(DrawingArea.pixels, y_c, k1, x_b >> 16, x_a >> 16, z_c, depth_slope);
+					drawFlatTexturedScanline(Raster.pixels, y_c, k1, x_b >> 16, x_a >> 16, z_c, depth_slope);
 					z_c += depth_increment;
 					x_b += b_to_c;
 					x_a += a_to_b;
-					y_c += DrawingArea.width;
+					y_c += Raster.width;
 				}
 				return;
 			}
 			y_b -= y_a;
 			y_a -= y_c;
-			for(y_c = anIntArray1472[y_c]; --y_a >= 0; y_c += DrawingArea.width)
+			for(y_c = anIntArray1472[y_c]; --y_a >= 0; y_c += Raster.width)
 			{
-				drawFlatTexturedScanline(DrawingArea.pixels, y_c, k1, x_c >> 16, x_b >> 16, z_c, depth_slope);
+				drawFlatTexturedScanline(Raster.pixels, y_c, k1, x_c >> 16, x_b >> 16, z_c, depth_slope);
 				z_c += depth_increment;
 				x_b += b_to_c;
 				x_c += c_to_a;
@@ -1289,11 +1289,11 @@ public final class Rasterizer extends DrawingArea {
 
 			while(--y_b >= 0) 
 			{
-				drawFlatTexturedScanline(DrawingArea.pixels, y_c, k1, x_a >> 16, x_b >> 16, z_c, depth_slope);
+				drawFlatTexturedScanline(Raster.pixels, y_c, k1, x_a >> 16, x_b >> 16, z_c, depth_slope);
 				z_c += depth_increment;
 				x_b += b_to_c;
 				x_a += a_to_b;
-				y_c += DrawingArea.width;
+				y_c += Raster.width;
 			}
 			return;
 		}
@@ -1315,9 +1315,9 @@ public final class Rasterizer extends DrawingArea {
 		{
 			y_a -= y_b;
 			y_b -= y_c;
-			for(y_c = anIntArray1472[y_c]; --y_b >= 0; y_c += DrawingArea.width)
+			for(y_c = anIntArray1472[y_c]; --y_b >= 0; y_c += Raster.width)
 			{
-				drawFlatTexturedScanline(DrawingArea.pixels, y_c, k1, x_a >> 16, x_c >> 16, z_c, depth_slope);
+				drawFlatTexturedScanline(Raster.pixels, y_c, k1, x_a >> 16, x_c >> 16, z_c, depth_slope);
 				z_c += depth_increment;
 				x_a += b_to_c;
 				x_c += c_to_a;
@@ -1325,19 +1325,19 @@ public final class Rasterizer extends DrawingArea {
 
 			while(--y_a >= 0) 
 			{
-				drawFlatTexturedScanline(DrawingArea.pixels, y_c, k1, x_b >> 16, x_c >> 16, z_c, depth_slope);
+				drawFlatTexturedScanline(Raster.pixels, y_c, k1, x_b >> 16, x_c >> 16, z_c, depth_slope);
 				z_c += depth_increment;
 				x_b += a_to_b;
 				x_c += c_to_a;
-				y_c += DrawingArea.width;
+				y_c += Raster.width;
 			}
 			return;
 		}
 		y_a -= y_b;
 		y_b -= y_c;
-		for(y_c = anIntArray1472[y_c]; --y_b >= 0; y_c += DrawingArea.width)
+		for(y_c = anIntArray1472[y_c]; --y_b >= 0; y_c += Raster.width)
 		{
-			drawFlatTexturedScanline(DrawingArea.pixels, y_c, k1, x_c >> 16, x_a >> 16, z_c, depth_slope);
+			drawFlatTexturedScanline(Raster.pixels, y_c, k1, x_c >> 16, x_a >> 16, z_c, depth_slope);
 			z_c += depth_increment;
 			x_a += b_to_c;
 			x_c += c_to_a;
@@ -1345,19 +1345,19 @@ public final class Rasterizer extends DrawingArea {
 
 		while(--y_a >= 0) 
 		{
-			drawFlatTexturedScanline(DrawingArea.pixels, y_c, k1, x_c >> 16, x_b >> 16, z_c, depth_slope);
+			drawFlatTexturedScanline(Raster.pixels, y_c, k1, x_c >> 16, x_b >> 16, z_c, depth_slope);
 			z_c += depth_increment;
 			x_b += a_to_b;
 			x_c += c_to_a;
-			y_c += DrawingArea.width;
+			y_c += Raster.width;
 		}
 	}
 
 	private static void drawFlatTexturedScanline(int dest[], int dest_off, int loops, int start_x, int end_x, float depth, float depth_slope) {
 		int rgb;
 		if(aBoolean1462) {
-			if(end_x > DrawingArea.centerX)
-				end_x = DrawingArea.centerX;
+			if(end_x > Raster.centerX)
+				end_x = Raster.centerX;
 			if(start_x < 0)
 				start_x = 0;
 		}
@@ -1373,7 +1373,7 @@ public final class Rasterizer extends DrawingArea {
 				for (int i = 0; i < 4; i++) {
 					if (true) {
 						dest[dest_off] = loops;
-						DrawingArea.depthBuffer[dest_off] = depth;
+						Raster.depthBuffer[dest_off] = depth;
 					}
 					dest_off++;
 					depth += depth_slope;
@@ -1382,7 +1382,7 @@ public final class Rasterizer extends DrawingArea {
 			for(rgb = end_x - start_x & 3; --rgb >= 0;) {
 				if (true) {
 					dest[dest_off] = loops;
-					DrawingArea.depthBuffer[dest_off] = depth;
+					Raster.depthBuffer[dest_off] = depth;
 				}
 				dest_off++;
 				depth += depth_slope;
@@ -1397,7 +1397,7 @@ public final class Rasterizer extends DrawingArea {
 			for (int i = 0; i < 4; i++) {
 				if (true) {
 					dest[dest_off] = loops + ((dest[dest_off] & 0xff00ff) * dest_alpha >> 8 & 0xff00ff) + ((dest[dest_off] & 0xff00) * dest_alpha >> 8 & 0xff00);
-					DrawingArea.depthBuffer[dest_off] = depth;
+					Raster.depthBuffer[dest_off] = depth;
 				}
 				dest_off++;
 				depth += depth_slope;
@@ -1406,7 +1406,7 @@ public final class Rasterizer extends DrawingArea {
 		for(rgb = end_x - start_x & 3; --rgb >= 0;) {
 			if (true) {
 				dest[dest_off] = loops + ((dest[dest_off] & 0xff00ff) * dest_alpha >> 8 & 0xff00ff) + ((dest[dest_off] & 0xff00) * dest_alpha >> 8 & 0xff00);
-				DrawingArea.depthBuffer[dest_off] = depth;
+				Raster.depthBuffer[dest_off] = depth;
 			}
 			dest_off++;
 			depth += depth_slope;
@@ -1466,12 +1466,12 @@ public final class Rasterizer extends DrawingArea {
 		float depth_increment = (c_aZ * b_aX - b_aZ * c_aX) / div;
 		if(y_a <= y_b && y_a <= y_c)
 		{
-			if(y_a >= DrawingArea.bottomY)
+			if(y_a >= Raster.bottomY)
 				return;
-			if(y_b > DrawingArea.bottomY)
-				y_b = DrawingArea.bottomY;
-			if(y_c > DrawingArea.bottomY)
-				y_c = DrawingArea.bottomY;
+			if(y_b > Raster.bottomY)
+				y_b = Raster.bottomY;
+			if(y_c > Raster.bottomY)
+				y_c = Raster.bottomY;
 			z_a = z_a - depth_slope * x_a + depth_slope;
 			if(y_b < y_c)
 			{
@@ -1505,26 +1505,26 @@ public final class Rasterizer extends DrawingArea {
 					y_a = anIntArray1472[y_a];
 					while(--y_b >= 0) 
 					{
-						drawTexturedScanline(DrawingArea.pixels, texture, y_a, x_c >> 16, x_a >> 16, i2 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
+						drawTexturedScanline(Raster.pixels, texture, y_a, x_c >> 16, x_a >> 16, i2 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
 						x_c += c_to_a;
 						x_a += a_to_b;
 						z_a += depth_increment;
 						i2 += grad_c_off;
 						k1 += grad_a_off;
-						y_a += DrawingArea.width;
+						y_a += Raster.width;
 						Oa += Va;
 						Ob += Vb;
 						Oc += Vc;
 					}
 					while(--y_c >= 0) 
 					{
-						drawTexturedScanline(DrawingArea.pixels, texture, y_a, x_c >> 16, x_b >> 16, i2 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
+						drawTexturedScanline(Raster.pixels, texture, y_a, x_c >> 16, x_b >> 16, i2 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
 						x_c += c_to_a;
 						x_b += b_to_c;
 						z_a += depth_increment;
 						i2 += grad_c_off;
 						l1 += grad_b_off;
-						y_a += DrawingArea.width;
+						y_a += Raster.width;
 						Oa += Va;
 						Ob += Vb;
 						Oc += Vc;
@@ -1536,26 +1536,26 @@ public final class Rasterizer extends DrawingArea {
 				y_a = anIntArray1472[y_a];
 				while(--y_b >= 0) 
 				{
-					drawTexturedScanline(DrawingArea.pixels, texture, y_a, x_a >> 16, x_c >> 16, k1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
+					drawTexturedScanline(Raster.pixels, texture, y_a, x_a >> 16, x_c >> 16, k1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
 					x_c += c_to_a;
 					x_a += a_to_b;
 					z_a += depth_increment;
 					i2 += grad_c_off;
 					k1 += grad_a_off;
-					y_a += DrawingArea.width;
+					y_a += Raster.width;
 					Oa += Va;
 					Ob += Vb;
 					Oc += Vc;
 				}
 				while(--y_c >= 0) 
 				{
-					drawTexturedScanline(DrawingArea.pixels, texture, y_a, x_b >> 16, x_c >> 16, l1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
+					drawTexturedScanline(Raster.pixels, texture, y_a, x_b >> 16, x_c >> 16, l1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
 					x_c += c_to_a;
 					x_b += b_to_c;
 					z_a += depth_increment;
 					i2 += grad_c_off;
 					l1 += grad_b_off;
-					y_a += DrawingArea.width;
+					y_a += Raster.width;
 					Oa += Va;
 					Ob += Vb;
 					Oc += Vc;
@@ -1592,26 +1592,26 @@ public final class Rasterizer extends DrawingArea {
 				y_a = anIntArray1472[y_a];
 				while(--y_c >= 0) 
 				{
-					drawTexturedScanline(DrawingArea.pixels, texture, y_a, x_b >> 16, x_a >> 16, l1 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
+					drawTexturedScanline(Raster.pixels, texture, y_a, x_b >> 16, x_a >> 16, l1 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
 					x_b += c_to_a;
 					x_a += a_to_b;
 					l1 += grad_c_off;
 					k1 += grad_a_off;
 					z_a += depth_increment;
-					y_a += DrawingArea.width;
+					y_a += Raster.width;
 					Oa += Va;
 					Ob += Vb;
 					Oc += Vc;
 				}
 				while(--y_b >= 0) 
 				{
-					drawTexturedScanline(DrawingArea.pixels, texture, y_a, x_c >> 16, x_a >> 16, i2 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
+					drawTexturedScanline(Raster.pixels, texture, y_a, x_c >> 16, x_a >> 16, i2 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
 					x_c += b_to_c;
 					x_a += a_to_b;
 					i2 += grad_b_off;
 					k1 += grad_a_off;
 					z_a += depth_increment;
-					y_a += DrawingArea.width;
+					y_a += Raster.width;
 					Oa += Va;
 					Ob += Vb;
 					Oc += Vc;
@@ -1623,26 +1623,26 @@ public final class Rasterizer extends DrawingArea {
 			y_a = anIntArray1472[y_a];
 			while(--y_c >= 0) 
 			{
-				drawTexturedScanline(DrawingArea.pixels, texture, y_a, x_a >> 16, x_b >> 16, k1 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
+				drawTexturedScanline(Raster.pixels, texture, y_a, x_a >> 16, x_b >> 16, k1 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
 				x_b += c_to_a;
 				x_a += a_to_b;
 				l1 += grad_c_off;
 				k1 += grad_a_off;
 				z_a += depth_increment;
-				y_a += DrawingArea.width;
+				y_a += Raster.width;
 				Oa += Va;
 				Ob += Vb;
 				Oc += Vc;
 			}
 			while(--y_b >= 0) 
 			{
-				drawTexturedScanline(DrawingArea.pixels, texture, y_a, x_a >> 16, x_c >> 16, k1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
+				drawTexturedScanline(Raster.pixels, texture, y_a, x_a >> 16, x_c >> 16, k1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_a, depth_slope);
 				x_c += b_to_c;
 				x_a += a_to_b;
 				i2 += grad_b_off;
 				k1 += grad_a_off;
 				z_a += depth_increment;
-				y_a += DrawingArea.width;
+				y_a += Raster.width;
 				Oa += Va;
 				Ob += Vb;
 				Oc += Vc;
@@ -1651,12 +1651,12 @@ public final class Rasterizer extends DrawingArea {
 		}
 		if(y_b <= y_c)
 		{
-			if(y_b >= DrawingArea.bottomY)
+			if(y_b >= Raster.bottomY)
 				return;
-			if(y_c > DrawingArea.bottomY)
-				y_c = DrawingArea.bottomY;
-			if(y_a > DrawingArea.bottomY)
-				y_a = DrawingArea.bottomY;
+			if(y_c > Raster.bottomY)
+				y_c = Raster.bottomY;
+			if(y_a > Raster.bottomY)
+				y_a = Raster.bottomY;
 			z_b = z_b - depth_slope * x_b + depth_slope;
 			if(y_c < y_a)
 			{
@@ -1690,26 +1690,26 @@ public final class Rasterizer extends DrawingArea {
 					y_b = anIntArray1472[y_b];
 					while(--y_c >= 0) 
 					{
-						drawTexturedScanline(DrawingArea.pixels, texture, y_b, x_a >> 16, x_b >> 16, k1 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
+						drawTexturedScanline(Raster.pixels, texture, y_b, x_a >> 16, x_b >> 16, k1 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
 						x_a += a_to_b;
 						x_b += b_to_c;
 						k1 += grad_a_off;
 						l1 += grad_b_off;
 						z_b += depth_increment;
-						y_b += DrawingArea.width;
+						y_b += Raster.width;
 						Oa += Va;
 						Ob += Vb;
 						Oc += Vc;
 					}
 					while(--y_a >= 0) 
 					{
-						drawTexturedScanline(DrawingArea.pixels, texture, y_b, x_a >> 16, x_c >> 16, k1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
+						drawTexturedScanline(Raster.pixels, texture, y_b, x_a >> 16, x_c >> 16, k1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
 						x_a += a_to_b;
 						x_c += c_to_a;
 						k1 += grad_a_off;
 						i2 += grad_c_off;
 						z_b += depth_increment;
-						y_b += DrawingArea.width;
+						y_b += Raster.width;
 						Oa += Va;
 						Ob += Vb;
 						Oc += Vc;
@@ -1721,26 +1721,26 @@ public final class Rasterizer extends DrawingArea {
 				y_b = anIntArray1472[y_b];
 				while(--y_c >= 0) 
 				{
-					drawTexturedScanline(DrawingArea.pixels, texture, y_b, x_b >> 16, x_a >> 16, l1 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
+					drawTexturedScanline(Raster.pixels, texture, y_b, x_b >> 16, x_a >> 16, l1 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
 					x_a += a_to_b;
 					x_b += b_to_c;
 					k1 += grad_a_off;
 					l1 += grad_b_off;
 					z_b += depth_increment;
-					y_b += DrawingArea.width;
+					y_b += Raster.width;
 					Oa += Va;
 					Ob += Vb;
 					Oc += Vc;
 				}
 				while(--y_a >= 0) 
 				{
-					drawTexturedScanline(DrawingArea.pixels, texture, y_b, x_c >> 16, x_a >> 16, i2 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
+					drawTexturedScanline(Raster.pixels, texture, y_b, x_c >> 16, x_a >> 16, i2 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
 					x_a += a_to_b;
 					x_c += c_to_a;
 					k1 += grad_a_off;
 					i2 += grad_c_off;
 					z_b += depth_increment;
-					y_b += DrawingArea.width;
+					y_b += Raster.width;
 					Oa += Va;
 					Ob += Vb;
 					Oc += Vc;
@@ -1777,26 +1777,26 @@ public final class Rasterizer extends DrawingArea {
 				y_b = anIntArray1472[y_b];
 				while(--y_a >= 0) 
 				{
-					drawTexturedScanline(DrawingArea.pixels, texture, y_b, x_c >> 16, x_b >> 16, i2 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
+					drawTexturedScanline(Raster.pixels, texture, y_b, x_c >> 16, x_b >> 16, i2 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
 					x_c += a_to_b;
 					x_b += b_to_c;
 					i2 += grad_a_off;
 					l1 += grad_b_off;
 					z_b += depth_increment;
-					y_b += DrawingArea.width;
+					y_b += Raster.width;
 					Oa += Va;
 					Ob += Vb;
 					Oc += Vc;
 				}
 				while(--y_c >= 0) 
 				{
-					drawTexturedScanline(DrawingArea.pixels, texture, y_b, x_a >> 16, x_b >> 16, k1 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
+					drawTexturedScanline(Raster.pixels, texture, y_b, x_a >> 16, x_b >> 16, k1 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
 					x_a += c_to_a;
 					x_b += b_to_c;
 					k1 += grad_c_off;
 					l1 += grad_b_off;
 					z_b += depth_increment;
-					y_b += DrawingArea.width;
+					y_b += Raster.width;
 					Oa += Va;
 					Ob += Vb;
 					Oc += Vc;
@@ -1808,38 +1808,38 @@ public final class Rasterizer extends DrawingArea {
 			y_b = anIntArray1472[y_b];
 			while(--y_a >= 0) 
 			{
-				drawTexturedScanline(DrawingArea.pixels, texture, y_b, x_b >> 16, x_c >> 16, l1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
+				drawTexturedScanline(Raster.pixels, texture, y_b, x_b >> 16, x_c >> 16, l1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
 				x_c += a_to_b;
 				x_b += b_to_c;
 				i2 += grad_a_off;
 				l1 += grad_b_off;
 				z_b += depth_increment;
-				y_b += DrawingArea.width;
+				y_b += Raster.width;
 				Oa += Va;
 				Ob += Vb;
 				Oc += Vc;
 			}
 			while(--y_c >= 0) 
 			{
-				drawTexturedScanline(DrawingArea.pixels, texture, y_b, x_b >> 16, x_a >> 16, l1 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
+				drawTexturedScanline(Raster.pixels, texture, y_b, x_b >> 16, x_a >> 16, l1 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_b, depth_slope);
 				x_a += c_to_a;
 				x_b += b_to_c;
 				k1 += grad_c_off;
 				l1 += grad_b_off;
 				z_b += depth_increment;
-				y_b += DrawingArea.width;
+				y_b += Raster.width;
 				Oa += Va;
 				Ob += Vb;
 				Oc += Vc;
 			}
 			return;
 		}
-		if(y_c >= DrawingArea.bottomY)
+		if(y_c >= Raster.bottomY)
 			return;
-		if(y_a > DrawingArea.bottomY)
-			y_a = DrawingArea.bottomY;
-		if(y_b > DrawingArea.bottomY)
-			y_b = DrawingArea.bottomY;
+		if(y_a > Raster.bottomY)
+			y_a = Raster.bottomY;
+		if(y_b > Raster.bottomY)
+			y_b = Raster.bottomY;
 		z_c = z_c - depth_slope * x_c + depth_slope;
 		if(y_a < y_b)
 		{
@@ -1873,26 +1873,26 @@ public final class Rasterizer extends DrawingArea {
 				y_c = anIntArray1472[y_c];
 				while(--y_a >= 0) 
 				{
-					drawTexturedScanline(DrawingArea.pixels, texture, y_c, x_b >> 16, x_c >> 16, l1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
+					drawTexturedScanline(Raster.pixels, texture, y_c, x_b >> 16, x_c >> 16, l1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
 					x_b += b_to_c;
 					x_c += c_to_a;
 					l1 += grad_b_off;
 					i2 += grad_c_off;
 					z_c += depth_increment;
-					y_c += DrawingArea.width;
+					y_c += Raster.width;
 					Oa += Va;
 					Ob += Vb;
 					Oc += Vc;
 				}
 				while(--y_b >= 0) 
 				{
-					drawTexturedScanline(DrawingArea.pixels, texture, y_c, x_b >> 16, x_a >> 16, l1 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
+					drawTexturedScanline(Raster.pixels, texture, y_c, x_b >> 16, x_a >> 16, l1 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
 					x_b += b_to_c;
 					x_a += a_to_b;
 					l1 += grad_b_off;
 					k1 += grad_a_off;
 					z_c += depth_increment;
-					y_c += DrawingArea.width;
+					y_c += Raster.width;
 					Oa += Va;
 					Ob += Vb;
 					Oc += Vc;
@@ -1904,26 +1904,26 @@ public final class Rasterizer extends DrawingArea {
 			y_c = anIntArray1472[y_c];
 			while(--y_a >= 0) 
 			{
-				drawTexturedScanline(DrawingArea.pixels, texture, y_c, x_c >> 16, x_b >> 16, i2 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
+				drawTexturedScanline(Raster.pixels, texture, y_c, x_c >> 16, x_b >> 16, i2 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
 				x_b += b_to_c;
 				x_c += c_to_a;
 				l1 += grad_b_off;
 				i2 += grad_c_off;
 				z_c += depth_increment;
-				y_c += DrawingArea.width;
+				y_c += Raster.width;
 				Oa += Va;
 				Ob += Vb;
 				Oc += Vc;
 			}
 			while(--y_b >= 0) 
 			{
-				drawTexturedScanline(DrawingArea.pixels, texture, y_c, x_a >> 16, x_b >> 16, k1 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
+				drawTexturedScanline(Raster.pixels, texture, y_c, x_a >> 16, x_b >> 16, k1 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
 				x_b += b_to_c;
 				x_a += a_to_b;
 				l1 += grad_b_off;
 				k1 += grad_a_off;
 				z_c += depth_increment;
-				y_c += DrawingArea.width;
+				y_c += Raster.width;
 				Oa += Va;
 				Ob += Vb;
 				Oc += Vc;
@@ -1960,26 +1960,26 @@ public final class Rasterizer extends DrawingArea {
 			y_c = anIntArray1472[y_c];
 			while(--y_b >= 0) 
 			{
-				drawTexturedScanline(DrawingArea.pixels, texture, y_c, x_a >> 16, x_c >> 16, k1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
+				drawTexturedScanline(Raster.pixels, texture, y_c, x_a >> 16, x_c >> 16, k1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
 				x_a += b_to_c;
 				x_c += c_to_a;
 				k1 += grad_b_off;
 				i2 += grad_c_off;
 				z_c += depth_increment;
-				y_c += DrawingArea.width;
+				y_c += Raster.width;
 				Oa += Va;
 				Ob += Vb;
 				Oc += Vc;
 			}
 			while(--y_a >= 0) 
 			{
-				drawTexturedScanline(DrawingArea.pixels, texture, y_c, x_b >> 16, x_c >> 16, l1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
+				drawTexturedScanline(Raster.pixels, texture, y_c, x_b >> 16, x_c >> 16, l1 >> 8, i2 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
 				x_b += a_to_b;
 				x_c += c_to_a;
 				l1 += grad_a_off;
 				i2 += grad_c_off;
 				z_c += depth_increment;
-				y_c += DrawingArea.width;
+				y_c += Raster.width;
 				Oa += Va;
 				Ob += Vb;
 				Oc += Vc;
@@ -1991,26 +1991,26 @@ public final class Rasterizer extends DrawingArea {
 		y_c = anIntArray1472[y_c];
 		while(--y_b >= 0) 
 		{
-			drawTexturedScanline(DrawingArea.pixels, texture, y_c, x_c >> 16, x_a >> 16, i2 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
+			drawTexturedScanline(Raster.pixels, texture, y_c, x_c >> 16, x_a >> 16, i2 >> 8, k1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
 			x_a += b_to_c;
 			x_c += c_to_a;
 			k1 += grad_b_off;
 			i2 += grad_c_off;
 			z_c += depth_increment;
-			y_c += DrawingArea.width;
+			y_c += Raster.width;
 			Oa += Va;
 			Ob += Vb;
 			Oc += Vc;
 		}
 		while(--y_a >= 0) 
 		{
-			drawTexturedScanline(DrawingArea.pixels, texture, y_c, x_c >> 16, x_b >> 16, i2 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
+			drawTexturedScanline(Raster.pixels, texture, y_c, x_c >> 16, x_b >> 16, i2 >> 8, l1 >> 8, Oa, Ob, Oc, Ha, Hb, Hc, z_c, depth_slope);
 			x_b += a_to_b;
 			x_c += c_to_a;
 			l1 += grad_a_off;
 			i2 += grad_c_off;
 			z_c += depth_increment;
-			y_c += DrawingArea.width;
+			y_c += Raster.width;
 			Oa += Va;
 			Ob += Vb;
 			Oc += Vc;
@@ -2026,8 +2026,8 @@ public final class Rasterizer extends DrawingArea {
 	    int k3;
 	    if (aBoolean1462) {
 	        j3 = (gradient - shadeValue) / (end_x - start_x);
-	        if (end_x > DrawingArea.centerX)
-	            end_x = DrawingArea.centerX;
+	        if (end_x > Raster.centerX)
+	            end_x = Raster.centerX;
 	        if (start_x < 0) {
 	            shadeValue -= start_x * j3;
 	            start_x = 0;
@@ -2088,7 +2088,7 @@ public final class Rasterizer extends DrawingArea {
 	            	for (int i = 0; i < 8; i++) {
 		            	if (true) {
 		            		dest[dest_off] = texture[(loops & 0xfc0) + (rgb >> 6)] >>> i8;
-		            		DrawingArea.depthBuffer[dest_off] = depth;
+		            		Raster.depthBuffer[dest_off] = depth;
 		            	}
 		                dest_off++;
 		                depth += depth_slope;
@@ -2119,7 +2119,7 @@ public final class Rasterizer extends DrawingArea {
 	            for (k3 = end_x - start_x & 7; k3-- > 0;) {
 	            	if (true) {
 	            		dest[dest_off] = texture[(loops & 0xfc0) + (rgb >> 6)] >>> i8;
-	            		DrawingArea.depthBuffer[dest_off] = depth;
+	            		Raster.depthBuffer[dest_off] = depth;
 	            	}
 	            	dest_off++;
 	            	depth += depth_slope;
@@ -2134,7 +2134,7 @@ public final class Rasterizer extends DrawingArea {
 	            for (int i = 0; i < 8; i++) {
 		            if ((k8 = texture[(loops & 0xfc0) + (rgb >> 6)] >>> i8) != 0 && true) {
 		                dest[dest_off] = k8;
-		                DrawingArea.depthBuffer[dest_off] = depth;
+		                Raster.depthBuffer[dest_off] = depth;
 		            }
 		            dest_off++;
 		            depth += depth_slope;
@@ -2167,7 +2167,7 @@ public final class Rasterizer extends DrawingArea {
 	            int l8;
 	            if ((l8 = texture[(loops & 0xfc0) + (rgb >> 6)] >>> i8) != 0 && true) {
 	                dest[dest_off] = l8;
-	                DrawingArea.depthBuffer[dest_off] = depth;
+	                Raster.depthBuffer[dest_off] = depth;
 	            }
 	            dest_off++;
 	            depth += depth_slope;
@@ -2215,7 +2215,7 @@ public final class Rasterizer extends DrawingArea {
 	        	for (int i = 0; i < 8; i++) {
 		        	if (true) {
 		        		dest[dest_off] = texture[(loops & 0x3f80) + (rgb >> 7)] >>> j8;
-		        		DrawingArea.depthBuffer[dest_off] = depth;
+		        		Raster.depthBuffer[dest_off] = depth;
 		        	}
 		        	depth += depth_slope;
 		            dest_off++;
@@ -2246,7 +2246,7 @@ public final class Rasterizer extends DrawingArea {
 	        for (k3 = end_x - start_x & 7; k3-- > 0;) {
 	        	if (true) {
 	        		dest[dest_off] = texture[(loops & 0x3f80) + (rgb >> 7)] >>> j8;
-	        		DrawingArea.depthBuffer[dest_off] = depth;
+	        		Raster.depthBuffer[dest_off] = depth;
 	        	}
 	            dest_off++;
 	            depth += depth_slope;
@@ -2261,7 +2261,7 @@ public final class Rasterizer extends DrawingArea {
 	        for (int i = 0; i < 8; i++) {
 		        if ((i9 = texture[(loops & 0x3f80) + (rgb >> 7)] >>> j8) != 0 && true) {
 		            dest[dest_off] = i9;
-		            DrawingArea.depthBuffer[dest_off] = depth;
+		            Raster.depthBuffer[dest_off] = depth;
 		        }
 		        dest_off++;
 		        depth += depth_slope;
@@ -2293,7 +2293,7 @@ public final class Rasterizer extends DrawingArea {
 	        int j9;
 	        if ((j9 = texture[(loops & 0x3f80) + (rgb >> 7)] >>> j8) != 0 && true) {
 	            dest[dest_off] = j9;
-	            DrawingArea.depthBuffer[dest_off] = depth;
+	            Raster.depthBuffer[dest_off] = depth;
 	        }
 	        depth += depth_slope;
 	        dest_off++;
@@ -2327,11 +2327,11 @@ public final class Rasterizer extends DrawingArea {
 		float depth_slope = (b_aZ * c_aY - c_aZ * b_aY) / div;
 		float depth_increment = (c_aZ * b_aX - b_aZ * c_aX) / div;
 		if (y_a <= y_b && y_a <= y_c) {
-			if (y_a < DrawingArea.bottomY) {
-				if (y_b > DrawingArea.bottomY)
-					y_b = DrawingArea.bottomY;
-				if (y_c > DrawingArea.bottomY)
-					y_c = DrawingArea.bottomY;
+			if (y_a < Raster.bottomY) {
+				if (y_b > Raster.bottomY)
+					y_b = Raster.bottomY;
+				if (y_c > Raster.bottomY)
+					y_c = Raster.bottomY;
 				z_a = z_a - depth_slope * x_a + depth_slope;
 				if (y_b < y_c) {
 					x_c = x_a <<= 16;
@@ -2355,14 +2355,14 @@ public final class Rasterizer extends DrawingArea {
 							x_c += c_to_a;
 							x_a += a_to_b;
 							z_a += depth_increment;
-							y_a += DrawingArea.width;
+							y_a += Raster.width;
 						}
 						while (--y_c >= 0) {
 							drawDepthTriangleScanline(y_a, x_c >> 16, x_b >> 16, z_a, depth_slope);
 							x_c += c_to_a;
 							x_b += b_to_c;
 							z_a += depth_increment;
-							y_a += DrawingArea.width;
+							y_a += Raster.width;
 						}
 					} else {
 						y_c -= y_b;
@@ -2373,14 +2373,14 @@ public final class Rasterizer extends DrawingArea {
 							x_c += c_to_a;
 							x_a += a_to_b;
 							z_a += depth_increment;
-							y_a += DrawingArea.width;
+							y_a += Raster.width;
 						}
 						while (--y_c >= 0) {
 							drawDepthTriangleScanline(y_a, x_b >> 16, x_c >> 16, z_a, depth_slope);
 							x_c += c_to_a;
 							x_b += b_to_c;
 							z_a += depth_increment;
-							y_a += DrawingArea.width;
+							y_a += Raster.width;
 						}
 					}
 				} else {
@@ -2405,14 +2405,14 @@ public final class Rasterizer extends DrawingArea {
 							x_b += c_to_a;
 							x_a += a_to_b;
 							z_a += depth_increment;
-							y_a += DrawingArea.width;
+							y_a += Raster.width;
 						}
 						while (--y_b >= 0) {
 							drawDepthTriangleScanline(y_a, x_c >> 16, x_a >> 16, z_a, depth_slope);
 							x_c += b_to_c;
 							x_a += a_to_b;
 							z_a += depth_increment;
-							y_a += DrawingArea.width;
+							y_a += Raster.width;
 						}
 					} else {
 						y_b -= y_c;
@@ -2423,24 +2423,24 @@ public final class Rasterizer extends DrawingArea {
 							x_b += c_to_a;
 							x_a += a_to_b;
 							z_a += depth_increment;
-							y_a += DrawingArea.width;
+							y_a += Raster.width;
 						}
 						while (--y_b >= 0) {
 							drawDepthTriangleScanline(y_a, x_a >> 16, x_c >> 16, z_a, depth_slope);
 							x_c += b_to_c;
 							x_a += a_to_b;
 							z_a += depth_increment;
-							y_a += DrawingArea.width;
+							y_a += Raster.width;
 						}
 					}
 				}
 			}
 		} else if (y_b <= y_c) {
-			if (y_b < DrawingArea.bottomY) {
-				if (y_c > DrawingArea.bottomY)
-					y_c = DrawingArea.bottomY;
-				if (y_a > DrawingArea.bottomY)
-					y_a = DrawingArea.bottomY;
+			if (y_b < Raster.bottomY) {
+				if (y_c > Raster.bottomY)
+					y_c = Raster.bottomY;
+				if (y_a > Raster.bottomY)
+					y_a = Raster.bottomY;
 				z_b = z_b - depth_slope * x_b + depth_slope;
 				if (y_c < y_a) {
 					x_a = x_b <<= 16;
@@ -2464,14 +2464,14 @@ public final class Rasterizer extends DrawingArea {
 							x_a += a_to_b;
 							x_b += b_to_c;
 							z_b += depth_increment;
-							y_b += DrawingArea.width;
+							y_b += Raster.width;
 						}
 						while (--y_a >= 0) {
 							drawDepthTriangleScanline(y_b, x_a >> 16, x_c >> 16, z_b, depth_slope);
 							x_a += a_to_b;
 							x_c += c_to_a;
 							z_b += depth_increment;
-							y_b += DrawingArea.width;
+							y_b += Raster.width;
 						}
 					} else {
 						y_a -= y_c;
@@ -2482,14 +2482,14 @@ public final class Rasterizer extends DrawingArea {
 							x_a += a_to_b;
 							x_b += b_to_c;
 							z_b += depth_increment;
-							y_b += DrawingArea.width;
+							y_b += Raster.width;
 						}
 						while (--y_a >= 0) {
 							drawDepthTriangleScanline(y_b, x_c >> 16, x_a >> 16, z_b, depth_slope);
 							x_a += a_to_b;
 							x_c += c_to_a;
 							z_b += depth_increment;
-							y_b += DrawingArea.width;
+							y_b += Raster.width;
 						}
 					}
 				} else {
@@ -2514,14 +2514,14 @@ public final class Rasterizer extends DrawingArea {
 							x_c += a_to_b;
 							x_b += b_to_c;
 							z_b += depth_increment;
-							y_b += DrawingArea.width;
+							y_b += Raster.width;
 						}
 						while (--y_c >= 0) {
 							drawDepthTriangleScanline(y_b, x_a >> 16, x_b >> 16, z_b, depth_slope);
 							x_a += c_to_a;
 							x_b += b_to_c;
 							z_b += depth_increment;
-							y_b += DrawingArea.width;
+							y_b += Raster.width;
 						}
 					} else {
 						y_c -= y_a;
@@ -2532,23 +2532,23 @@ public final class Rasterizer extends DrawingArea {
 							x_c += a_to_b;
 							x_b += b_to_c;
 							z_b += depth_increment;
-							y_b += DrawingArea.width;
+							y_b += Raster.width;
 						}
 						while (--y_c >= 0) {
 							drawDepthTriangleScanline(y_b, x_b >> 16, x_a >> 16, z_b, depth_slope);
 							x_a += c_to_a;
 							x_b += b_to_c;
 							z_b += depth_increment;
-							y_b += DrawingArea.width;
+							y_b += Raster.width;
 						}
 					}
 				}
 			}
-		} else if (y_c < DrawingArea.bottomY) {
-			if (y_a > DrawingArea.bottomY)
-				y_a = DrawingArea.bottomY;
-			if (y_b > DrawingArea.bottomY)
-				y_b = DrawingArea.bottomY;
+		} else if (y_c < Raster.bottomY) {
+			if (y_a > Raster.bottomY)
+				y_a = Raster.bottomY;
+			if (y_b > Raster.bottomY)
+				y_b = Raster.bottomY;
 			z_c = z_c - depth_slope * x_c + depth_slope;
 			if (y_a < y_b) {
 				x_b = x_c <<= 16;
@@ -2572,14 +2572,14 @@ public final class Rasterizer extends DrawingArea {
 						x_b += b_to_c;
 						x_c += c_to_a;
 						z_c += depth_increment;
-						y_c += DrawingArea.width;
+						y_c += Raster.width;
 					}
 					while (--y_b >= 0) {
 						drawDepthTriangleScanline(y_c, x_b >> 16, x_a >> 16, z_c, depth_slope);
 						x_b += b_to_c;
 						x_a += a_to_b;
 						z_c += depth_increment;
-						y_c += DrawingArea.width;
+						y_c += Raster.width;
 					}
 				} else {
 					y_b -= y_a;
@@ -2590,14 +2590,14 @@ public final class Rasterizer extends DrawingArea {
 						x_b += b_to_c;
 						x_c += c_to_a;
 						z_c += depth_increment;
-						y_c += DrawingArea.width;
+						y_c += Raster.width;
 					}
 					while (--y_b >= 0) {
 						drawDepthTriangleScanline(y_c, x_a >> 16, x_b >> 16, z_c, depth_slope);
 						x_b += b_to_c;
 						x_a += a_to_b;
 						z_c += depth_increment;
-						y_c += DrawingArea.width;
+						y_c += Raster.width;
 					}
 				}
 			} else {
@@ -2622,14 +2622,14 @@ public final class Rasterizer extends DrawingArea {
 						x_a += b_to_c;
 						x_c += c_to_a;
 						z_c += depth_increment;
-						y_c += DrawingArea.width;
+						y_c += Raster.width;
 					}
 					while (--y_a >= 0) {
 						drawDepthTriangleScanline(y_c, x_b >> 16, x_c >> 16, z_c, depth_slope);
 						x_b += a_to_b;
 						x_c += c_to_a;
 						z_c += depth_increment;
-						y_c += DrawingArea.width;
+						y_c += Raster.width;
 					}
 				} else {
 					y_a -= y_b;
@@ -2640,14 +2640,14 @@ public final class Rasterizer extends DrawingArea {
 						x_a += b_to_c;
 						x_c += c_to_a;
 						z_c += depth_increment;
-						y_c += DrawingArea.width;
+						y_c += Raster.width;
 					}
 					while (--y_a >= 0) {
 						drawDepthTriangleScanline(y_c, x_c >> 16, x_b >> 16, z_c, depth_slope);
 						x_b += a_to_b;
 						x_c += c_to_a;
 						z_c += depth_increment;
-						y_c += DrawingArea.width;
+						y_c += Raster.width;
 					}
 				}
 			}
@@ -2655,10 +2655,10 @@ public final class Rasterizer extends DrawingArea {
 	}
 
 	private static void drawDepthTriangleScanline(int dest_off, int start_x, int end_x, float depth, float depth_slope) {
-		int dbl = DrawingArea.depthBuffer.length;
+		int dbl = Raster.depthBuffer.length;
 		if (aBoolean1462) {
-			if (end_x > DrawingArea.width) {
-				end_x = DrawingArea.width;
+			if (end_x > Raster.width) {
+				end_x = Raster.width;
 			}
 			if (start_x < 0) {
 				start_x = 0;
@@ -2674,29 +2674,29 @@ public final class Rasterizer extends DrawingArea {
 			while (--loops >= 0) {
 				dest_off++;
 				if (dest_off >= 0 && dest_off < dbl && true) {
-					DrawingArea.depthBuffer[dest_off] = depth;
+					Raster.depthBuffer[dest_off] = depth;
 				}
 				depth += depth_slope;
 				dest_off++;
 				if (dest_off >= 0 && dest_off < dbl && true) {
-					DrawingArea.depthBuffer[dest_off] = depth;
+					Raster.depthBuffer[dest_off] = depth;
 				}
 				depth += depth_slope;
 				dest_off++;
 				if (dest_off >= 0 && dest_off < dbl && true) {
-					DrawingArea.depthBuffer[dest_off] = depth;
+					Raster.depthBuffer[dest_off] = depth;
 				}
 				depth += depth_slope;
 				dest_off++;
 				if (dest_off >= 0 && dest_off < dbl && true) {
-					DrawingArea.depthBuffer[dest_off] = depth;
+					Raster.depthBuffer[dest_off] = depth;
 				}
 				depth += depth_slope;
 			}
 			for (loops = end_x - start_x & 3; --loops >= 0;) {
 				dest_off++;
 				if (dest_off >= 0 && dest_off < dbl && true) {
-					DrawingArea.depthBuffer[dest_off] = depth;
+					Raster.depthBuffer[dest_off] = depth;
 				}
 				depth += depth_slope;
 			}
@@ -2705,29 +2705,29 @@ public final class Rasterizer extends DrawingArea {
 		while (--loops >= 0) {
 			dest_off++;
 			if (dest_off >= 0 && dest_off < dbl && true) {
-				DrawingArea.depthBuffer[dest_off] = depth;
+				Raster.depthBuffer[dest_off] = depth;
 			}
 			depth += depth_slope;
 			dest_off++;
 			if (dest_off >= 0 && dest_off < dbl && true) {
-				DrawingArea.depthBuffer[dest_off] = depth;
+				Raster.depthBuffer[dest_off] = depth;
 			}
 			depth += depth_slope;
 			dest_off++;
 			if (dest_off >= 0 && dest_off < dbl && true) {
-				DrawingArea.depthBuffer[dest_off] = depth;
+				Raster.depthBuffer[dest_off] = depth;
 			}
 			depth += depth_slope;
 			dest_off++;
 			if (dest_off >= 0 && dest_off < dbl && true) {
-				DrawingArea.depthBuffer[dest_off] = depth;
+				Raster.depthBuffer[dest_off] = depth;
 			}
 			depth += depth_slope;
 		}
 		for (loops = end_x - start_x & 3; --loops >= 0;) {
 			dest_off++;
 			if (dest_off >= 0 && dest_off < dbl && true) {
-				DrawingArea.depthBuffer[dest_off] = depth;
+				Raster.depthBuffer[dest_off] = depth;
 			}
 			depth += depth_slope;
 		}

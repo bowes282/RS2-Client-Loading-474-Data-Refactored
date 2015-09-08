@@ -1,6 +1,6 @@
 package com.aeolus.scene.map;
 import com.aeolus.collection.Deque;
-import com.aeolus.media.DrawingArea;
+import com.aeolus.media.Raster;
 import com.aeolus.media.Vertex;
 import com.aeolus.media.renderable.Renderable;
 import com.aeolus.media.renderable.ItemPile;
@@ -1490,8 +1490,8 @@ public final class SceneGraph {
 		int l6 = Rasterizer.textureInt2 + (k4 << viewDistance) / j3;
 		Rasterizer.anInt1465 = 0;
 		if ((i6 - k6) * (l5 - l6) - (j6 - l6) * (k5 - k6) > 0) {
-			Rasterizer.aBoolean1462 = i6 < 0 || k6 < 0 || k5 < 0 || i6 > DrawingArea.centerX || k6 > DrawingArea.centerX
-					|| k5 > DrawingArea.centerX;
+			Rasterizer.aBoolean1462 = i6 < 0 || k6 < 0 || k5 < 0 || i6 > Raster.centerX || k6 > Raster.centerX
+					|| k5 > Raster.centerX;
 			if (aBoolean467 && method318(anInt468, anInt469, j6, l6, l5, i6, k6, k5)) {
 				anInt470 = j1;
 				anInt471 = k1;
@@ -1513,8 +1513,8 @@ public final class SceneGraph {
 			}
 		}
 		if ((i5 - k5) * (l6 - l5) - (j5 - l5) * (k6 - k5) > 0) {
-			Rasterizer.aBoolean1462 = i5 < 0 || k5 < 0 || k6 < 0 || i5 > DrawingArea.centerX || k5 > DrawingArea.centerX
-					|| k6 > DrawingArea.centerX;
+			Rasterizer.aBoolean1462 = i5 < 0 || k5 < 0 || k6 < 0 || i5 > Raster.centerX || k5 > Raster.centerX
+					|| k6 > Raster.centerX;
 			if (aBoolean467 && method318(anInt468, anInt469, j5, l5, l6, i5, k5, k6)) {
 				anInt470 = j1;
 				anInt471 = k1;
@@ -1574,8 +1574,8 @@ public final class SceneGraph {
 			int i5 = TileOverlay.anIntArray689[j3];
 			int j5 = TileOverlay.anIntArray689[l3];
 			if ((i4 - j4) * (j5 - i5) - (l4 - i5) * (k4 - j4) > 0) {
-				Rasterizer.aBoolean1462 = i4 < 0 || j4 < 0 || k4 < 0 || i4 > DrawingArea.centerX
-						|| j4 > DrawingArea.centerX || k4 > DrawingArea.centerX;
+				Rasterizer.aBoolean1462 = i4 < 0 || j4 < 0 || k4 < 0 || i4 > Raster.centerX
+						|| j4 > Raster.centerX || k4 > Raster.centerX;
 				if (aBoolean467 && method318(anInt468, anInt469, l4, i5, j5, i4, j4, k4)) {
 					anInt470 = i;
 					anInt471 = i1;

@@ -1,8 +1,8 @@
 package com.aeolus.media.font;
 
-import com.aeolus.media.DrawingArea;
+import com.aeolus.media.Raster;
 
-public class rsDrawingArea extends DrawingArea{
+public class rsDrawingArea extends Raster{
 
     public static int height;
     public static int bottomX;

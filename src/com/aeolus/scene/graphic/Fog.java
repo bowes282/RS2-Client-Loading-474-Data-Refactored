@@ -1,5 +1,5 @@
 package com.aeolus.scene.graphic;
-import com.aeolus.media.DrawingArea;
+import com.aeolus.media.Raster;
 
 public class Fog {    
     /**
@@ -24,21 +24,21 @@ public class Fog {
         int src, dst, alpha;
         int fogBegin = (int) (fogStartDistance + fogDistance);
         int fogEnd = (int) (fogEndDistance + fogDistance);
-        for (int y = 0; y < DrawingArea.bottomY; y++) {
-            for (int x = 0; x < DrawingArea.centerX; x++) {
-                if (DrawingArea.depthBuffer[pos] >= fogEnd) {
-                    DrawingArea.pixels[pos] = setColor;
-                } else if (DrawingArea.depthBuffer[pos] >= fogBegin) {
-                    alpha = (int)(DrawingArea.depthBuffer[pos] - fogBegin) / fogIntensity;
+        for (int y = 0; y < Raster.bottomY; y++) {
+            for (int x = 0; x < Raster.centerX; x++) {
+                if (Raster.depthBuffer[pos] >= fogEnd) {
+                    Raster.pixels[pos] = setColor;
+                } else if (Raster.depthBuffer[pos] >= fogBegin) {
+                    alpha = (int)(Raster.depthBuffer[pos] - fogBegin) / fogIntensity;
                     src = ((setColor & 0xff00ff) * alpha >> 8 & 0xff00ff) + ((setColor & 0xff00) * alpha >> 8 & 0xff00);
                     alpha = 256 - alpha;
-                    dst = DrawingArea.pixels[pos];
+                    dst = Raster.pixels[pos];
                     dst = ((dst & 0xff00ff) * alpha >> 8 & 0xff00ff) + ((dst & 0xff00) * alpha >> 8 & 0xff00);
-                    DrawingArea.pixels[pos] = src + dst;
+                    Raster.pixels[pos] = src + dst;
                 }
                 pos++;
             }
-            pos += DrawingArea.width - DrawingArea.centerX;
+            pos += Raster.width - Raster.centerX;
         }
     }
     

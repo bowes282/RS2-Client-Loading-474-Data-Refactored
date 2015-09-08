@@ -1,7 +1,7 @@
 package com.aeolus.media.renderable;
 import com.aeolus.Configuration;
 import com.aeolus.cache.media.SequenceFrame;
-import com.aeolus.media.DrawingArea;
+import com.aeolus.media.Raster;
 import com.aeolus.media.SkinList;
 import com.aeolus.media.Vertex;
 import com.aeolus.net.Buffer;
@@ -2203,19 +2203,19 @@ public class Model extends Renderable {
 								return;
 							int j3 = l1 * l + j1 * i1 >> 16;
 				int k3 = j3 - anInt1650 << SceneGraph.viewDistance;
-				if (k3 / i3 >= DrawingArea.centerY)
+				if (k3 / i3 >= Raster.centerY)
 					return;
 				int l3 = j3 + anInt1650 << SceneGraph.viewDistance;
-				if (l3 / i3 <= -DrawingArea.centerY)
+				if (l3 / i3 <= -Raster.centerY)
 					return;
 				int i4 = k1 * k - j2 * j >> 16;
 				int j4 = anInt1650 * j >> 16;
 				int k4 = i4 + j4 << SceneGraph.viewDistance;
-				if (k4 / i3 <= -DrawingArea.anInt1387)
+				if (k4 / i3 <= -Raster.anInt1387)
 					return;
 				int l4 = j4 + (super.modelHeight * k >> 16);
 				int i5 = i4 - l4 << SceneGraph.viewDistance;
-				if (i5 / i3 >= DrawingArea.anInt1387)
+				if (i5 / i3 >= Raster.anInt1387)
 					return;
 				int j5 = l2 + (super.modelHeight * j >> 16);
 				boolean flag = false;
@@ -2328,9 +2328,9 @@ public class Model extends Renderable {
 							* (k4 - l3) > 0) {
 						aBooleanArray1664[k] = false;
 						if (i3 < 0 || l3 < 0 || k4 < 0
-								|| i3 > DrawingArea.centerX
-								|| l3 > DrawingArea.centerX
-								|| k4 > DrawingArea.centerX)
+								|| i3 > Raster.centerX
+								|| l3 > Raster.centerX
+								|| k4 > Raster.centerX)
 							aBooleanArray1663[k] = true;
 						else
 							aBooleanArray1663[k] = false;
@@ -2644,8 +2644,8 @@ public class Model extends Renderable {
 		if ((j3 - j4) * (k7 - j7) - (i7 - j7) * (j5 - j4) > 0) {
 			Rasterizer.aBoolean1462 = false;
 			if (l == 3) {
-				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > DrawingArea.centerX
-						|| j4 > DrawingArea.centerX || j5 > DrawingArea.centerX)
+				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Raster.centerX
+						|| j4 > Raster.centerX || j5 > Raster.centerX)
 					Rasterizer.aBoolean1462 = true;
 				int l7;
 				if (anIntArray1637 == null)
@@ -2688,10 +2688,10 @@ public class Model extends Renderable {
 				}
 			}
 			if (l == 4) {
-				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > DrawingArea.centerX
-						|| j4 > DrawingArea.centerX || j5 > DrawingArea.centerX
+				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Raster.centerX
+						|| j4 > Raster.centerX || j5 > Raster.centerX
 						|| anIntArray1678[3] < 0
-						|| anIntArray1678[3] > DrawingArea.centerX)
+						|| anIntArray1678[3] > Raster.centerX)
 					Rasterizer.aBoolean1462 = true;
 				int i8;
 				if (anIntArray1637 == null)

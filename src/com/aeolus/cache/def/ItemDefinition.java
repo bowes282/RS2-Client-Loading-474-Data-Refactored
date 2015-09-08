@@ -2,7 +2,7 @@ package com.aeolus.cache.def;
 
 import com.aeolus.cache.media.Sprite;
 import com.aeolus.collection.Cache;
-import com.aeolus.media.DrawingArea;
+import com.aeolus.media.Raster;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
@@ -268,18 +268,18 @@ public final class ItemDefinition {
 		int centerX = Rasterizer.textureInt1;
 		int centerY = Rasterizer.textureInt2;
 		int lineOffsets[] = Rasterizer.anIntArray1472;
-		int pixels[] = DrawingArea.pixels;
-		float depthBuffer[] = DrawingArea.depthBuffer;
-		int width = DrawingArea.width;
-		int height = DrawingArea.height;
-		int vp_left = DrawingArea.topX;
-		int vp_right = DrawingArea.bottomX;
-		int vp_top = DrawingArea.topY;
-		int vp_bottom = DrawingArea.bottomY;
+		int pixels[] = Raster.pixels;
+		float depthBuffer[] = Raster.depthBuffer;
+		int width = Raster.width;
+		int height = Raster.height;
+		int vp_left = Raster.topX;
+		int vp_right = Raster.bottomX;
+		int vp_top = Raster.topY;
+		int vp_bottom = Raster.bottomY;
 		Rasterizer.aBoolean1464 = false;
-		DrawingArea.initDrawingArea(32, 32, enabledSprite.myPixels,
+		Raster.initDrawingArea(32, 32, enabledSprite.myPixels,
 				new float[32 * 32]);
-		DrawingArea.method336(32, 0, 0, 0, 32);
+		Raster.method336(32, 0, 0, 0, 32);
 		Rasterizer.method364();
 		int k3 = itemDef.model_zoom;
 		if (outlineColor == -1)
@@ -351,8 +351,8 @@ public final class ItemDefinition {
 		}
 		if (outlineColor == 0)
 			image_cache.removeFromCache(enabledSprite, itemId);
-		DrawingArea.initDrawingArea(height, width, pixels, depthBuffer);
-		DrawingArea.setDrawingArea(vp_bottom, vp_left, vp_right, vp_top);
+		Raster.initDrawingArea(height, width, pixels, depthBuffer);
+		Raster.setDrawingArea(vp_bottom, vp_left, vp_right, vp_top);
 		Rasterizer.textureInt1 = centerX;
 		Rasterizer.textureInt2 = centerY;
 		Rasterizer.anIntArray1472 = lineOffsets;

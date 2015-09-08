@@ -1,9 +1,9 @@
 package com.aeolus.cache.media;
-import com.aeolus.media.DrawingArea;
+import com.aeolus.media.Raster;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 
-public final class Background extends DrawingArea {
+public final class Background extends Raster {
 	
 	public byte aByteArray1450[];
 	public final int[] anIntArray1451;
@@ -141,39 +141,39 @@ public final class Background extends DrawingArea {
 	public void drawBackground(int i, int k) {
 		i += anInt1454;
 		k += anInt1455;
-		int l = i + k * DrawingArea.width;
+		int l = i + k * Raster.width;
 		int i1 = 0;
 		int j1 = anInt1453;
 		int k1 = anInt1452;
-		int l1 = DrawingArea.width - k1;
+		int l1 = Raster.width - k1;
 		int i2 = 0;
-		if(k < DrawingArea.topY) {
-			int j2 = DrawingArea.topY - k;
+		if(k < Raster.topY) {
+			int j2 = Raster.topY - k;
 			j1 -= j2;
-			k = DrawingArea.topY;
+			k = Raster.topY;
 			i1 += j2 * k1;
-			l += j2 * DrawingArea.width;
+			l += j2 * Raster.width;
 		}
-		if(k + j1 > DrawingArea.bottomY) {
-			j1 -= (k + j1) - DrawingArea.bottomY;
+		if(k + j1 > Raster.bottomY) {
+			j1 -= (k + j1) - Raster.bottomY;
 		}
-		if(i < DrawingArea.topX) {
-			int k2 = DrawingArea.topX - i;
+		if(i < Raster.topX) {
+			int k2 = Raster.topX - i;
 			k1 -= k2;
-			i = DrawingArea.topX;
+			i = Raster.topX;
 			i1 += k2;
 			l += k2;
 			i2 += k2;
 			l1 += k2;
 		}
-		if(i + k1 > DrawingArea.bottomX) {
-			int l2 = (i + k1) - DrawingArea.bottomX;
+		if(i + k1 > Raster.bottomX) {
+			int l2 = (i + k1) - Raster.bottomX;
 			k1 -= l2;
 			i2 += l2;
 			l1 += l2;
 		}
 		if(!(k1 <= 0 || j1 <= 0)) {
-			method362(j1, DrawingArea.pixels, aByteArray1450, l1, l, k1, i1, anIntArray1451, i2);
+			method362(j1, Raster.pixels, aByteArray1450, l1, l, k1, i1, anIntArray1451, i2);
 		}
 	}
 

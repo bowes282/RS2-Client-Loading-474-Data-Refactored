@@ -2,11 +2,11 @@ package com.aeolus.media.font;
 import java.awt.Color;
 
 import com.aeolus.cache.media.Sprite;
-import com.aeolus.media.DrawingArea;
+import com.aeolus.media.Raster;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 
-public class RSFont extends DrawingArea {
+public class RSFont extends Raster {
 
     public int baseCharacterHeight = 0;
     public int anInt4142;
@@ -633,37 +633,37 @@ public class RSFont extends DrawingArea {
 
     public void drawTransparentCharacter(int i, int i_11_, int i_12_, int i_13_, int i_14_,
             int i_15_, int i_16_, boolean bool) {
-        int i_17_ = i_11_ + i_12_ * DrawingArea.width;
-        int i_18_ = DrawingArea.width - i_13_;
+        int i_17_ = i_11_ + i_12_ * Raster.width;
+        int i_18_ = Raster.width - i_13_;
         int i_19_ = 0;
         int i_20_ = 0;
-        if (i_12_ < DrawingArea.topY) {
-            int i_21_ = DrawingArea.topY - i_12_;
+        if (i_12_ < Raster.topY) {
+            int i_21_ = Raster.topY - i_12_;
             i_14_ -= i_21_;
-            i_12_ = DrawingArea.topY;
+            i_12_ = Raster.topY;
             i_20_ += i_21_ * i_13_;
-            i_17_ += i_21_ * DrawingArea.width;
+            i_17_ += i_21_ * Raster.width;
         }
-        if (i_12_ + i_14_ > DrawingArea.bottomY) {
-            i_14_ -= i_12_ + i_14_ - DrawingArea.bottomY;
+        if (i_12_ + i_14_ > Raster.bottomY) {
+            i_14_ -= i_12_ + i_14_ - Raster.bottomY;
         }
-        if (i_11_ < DrawingArea.topX) {
-            int i_22_ = DrawingArea.topX - i_11_;
+        if (i_11_ < Raster.topX) {
+            int i_22_ = Raster.topX - i_11_;
             i_13_ -= i_22_;
-            i_11_ = DrawingArea.topX;
+            i_11_ = Raster.topX;
             i_20_ += i_22_;
             i_17_ += i_22_;
             i_19_ += i_22_;
             i_18_ += i_22_;
         }
-        if (i_11_ + i_13_ > DrawingArea.bottomX) {
-            int i_23_ = i_11_ + i_13_ - DrawingArea.bottomX;
+        if (i_11_ + i_13_ > Raster.bottomX) {
+            int i_23_ = i_11_ + i_13_ - Raster.bottomX;
             i_13_ -= i_23_;
             i_19_ += i_23_;
             i_18_ += i_23_;
         }
         if (i_13_ > 0 && i_14_ > 0) {
-            createTransparentCharacterPixels(DrawingArea.pixels, fontPixels[i], i_15_ ,i_20_, i_17_, i_13_, i_14_, i_18_, i_19_, i_16_);
+            createTransparentCharacterPixels(Raster.pixels, fontPixels[i], i_15_ ,i_20_, i_17_, i_13_, i_14_, i_18_, i_19_, i_16_);
         }
     }
 
@@ -751,37 +751,37 @@ public class RSFont extends DrawingArea {
 
     public void drawCharacter(int character, int i_35_, int i_36_, int i_37_, int i_38_,
             int i_39_, boolean bool) {
-        int i_40_ = i_35_ + i_36_ * DrawingArea.width;
-        int i_41_ = DrawingArea.width - i_37_;
+        int i_40_ = i_35_ + i_36_ * Raster.width;
+        int i_41_ = Raster.width - i_37_;
         int i_42_ = 0;
         int i_43_ = 0;
-        if (i_36_ < DrawingArea.topY) {
-            int i_44_ = DrawingArea.topY - i_36_;
+        if (i_36_ < Raster.topY) {
+            int i_44_ = Raster.topY - i_36_;
             i_38_ -= i_44_;
-            i_36_ = DrawingArea.topY;
+            i_36_ = Raster.topY;
             i_43_ += i_44_ * i_37_;
-            i_40_ += i_44_ * DrawingArea.width;
+            i_40_ += i_44_ * Raster.width;
         }
-        if (i_36_ + i_38_ > DrawingArea.bottomY) {
-            i_38_ -= i_36_ + i_38_ - DrawingArea.bottomY;
+        if (i_36_ + i_38_ > Raster.bottomY) {
+            i_38_ -= i_36_ + i_38_ - Raster.bottomY;
         }
-        if (i_35_ < DrawingArea.topX) {
-            int i_45_ = DrawingArea.topX - i_35_;
+        if (i_35_ < Raster.topX) {
+            int i_45_ = Raster.topX - i_35_;
             i_37_ -= i_45_;
-            i_35_ = DrawingArea.topX;
+            i_35_ = Raster.topX;
             i_43_ += i_45_;
             i_40_ += i_45_;
             i_42_ += i_45_;
             i_41_ += i_45_;
         }
-        if (i_35_ + i_37_ > DrawingArea.bottomX) {
-            int i_46_ = i_35_ + i_37_ - DrawingArea.bottomX;
+        if (i_35_ + i_37_ > Raster.bottomX) {
+            int i_46_ = i_35_ + i_37_ - Raster.bottomX;
             i_37_ -= i_46_;
             i_42_ += i_46_;
             i_41_ += i_46_;
         }
         if (i_37_ > 0 && i_38_ > 0) {
-            createCharacterPixels(DrawingArea.pixels, fontPixels[character],
+            createCharacterPixels(Raster.pixels, fontPixels[character],
                                   i_39_, i_43_, i_40_, i_37_, i_38_, i_41_, i_42_);
 
         }

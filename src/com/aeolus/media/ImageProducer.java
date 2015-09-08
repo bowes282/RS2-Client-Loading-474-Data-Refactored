@@ -25,6 +25,6 @@ public final class ImageProducer {
 	}
 
 	public void initDrawingArea() {
-		DrawingArea.initDrawingArea(canvasHeight, canvasWidth, canvasRaster, depthbuffer);
+		Raster.initDrawingArea(canvasHeight, canvasWidth, canvasRaster, depthbuffer);
 	}
 }
