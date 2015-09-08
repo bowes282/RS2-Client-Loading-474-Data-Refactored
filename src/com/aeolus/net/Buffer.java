@@ -4,11 +4,11 @@ import java.math.BigInteger;
 
 import com.aeolus.Configuration;
 import com.aeolus.collection.Deque;
-import com.aeolus.collection.QueueNode;
+import com.aeolus.collection.Cacheable;
 import com.aeolus.net.security.ISAACCipher;
 import com.aeolus.util.signlink.Signlink;
 
-public final class Buffer extends QueueNode {
+public final class Buffer extends Cacheable {
 
 	public static Buffer create() {
 		synchronized (nodeList) {

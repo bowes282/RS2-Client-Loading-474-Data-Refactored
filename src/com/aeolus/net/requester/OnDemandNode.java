@@ -1,8 +1,8 @@
 package com.aeolus.net.requester;
 
-import com.aeolus.collection.QueueNode;
+import com.aeolus.collection.Cacheable;
 
-public final class OnDemandNode extends QueueNode {
+public final class OnDemandNode extends Cacheable {
 
 	public OnDemandNode() {
 		incomplete = true;

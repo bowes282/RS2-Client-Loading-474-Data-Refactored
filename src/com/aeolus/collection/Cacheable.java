@@ -1,9 +1,9 @@
 package com.aeolus.collection;
 
-public class QueueNode extends Linkable {
+public class Cacheable extends Linkable {
 
-	public QueueNode prevNodeSub;
-	QueueNode nextNodeSub;
+	public Cacheable prevNodeSub;
+	Cacheable nextNodeSub;
 	public static int anInt1305;
 
 	public final void unlinkSub() {

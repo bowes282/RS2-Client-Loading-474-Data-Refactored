@@ -3,12 +3,12 @@ package com.aeolus.collection;
 public final class NodeSubList {
 
 	public NodeSubList() {
-		head = new QueueNode();
+		head = new Cacheable();
 		head.prevNodeSub = head;
 		head.nextNodeSub = head;
 	}
 
-	public void insertHead(QueueNode nodeSub) {
+	public void insertHead(Cacheable nodeSub) {
 		if (nodeSub.nextNodeSub != null)
 			nodeSub.unlinkSub();
 		nodeSub.nextNodeSub = head.nextNodeSub;
@@ -17,8 +17,8 @@ public final class NodeSubList {
 		nodeSub.prevNodeSub.nextNodeSub = nodeSub;
 	}
 
-	public QueueNode popTail() {
-		QueueNode nodeSub = head.prevNodeSub;
+	public Cacheable popTail() {
+		Cacheable nodeSub = head.prevNodeSub;
 		if (nodeSub == head) {
 			return null;
 		} else {
@@ -27,8 +27,8 @@ public final class NodeSubList {
 		}
 	}
 
-	public QueueNode reverseGetFirst() {
-		QueueNode nodeSub = head.prevNodeSub;
+	public Cacheable reverseGetFirst() {
+		Cacheable nodeSub = head.prevNodeSub;
 		if (nodeSub == head) {
 			current = null;
 			return null;
@@ -38,8 +38,8 @@ public final class NodeSubList {
 		}
 	}
 
-	public QueueNode reverseGetNext() {
-		QueueNode nodeSub = current;
+	public Cacheable reverseGetNext() {
+		Cacheable nodeSub = current;
 		if (nodeSub == head) {
 			current = null;
 			return null;
@@ -51,12 +51,12 @@ public final class NodeSubList {
 
 	public int getNodeCount() {
 		int i = 0;
-		for (QueueNode nodeSub = head.prevNodeSub; nodeSub != head; nodeSub = nodeSub.prevNodeSub)
+		for (Cacheable nodeSub = head.prevNodeSub; nodeSub != head; nodeSub = nodeSub.prevNodeSub)
 			i++;
 
 		return i;
 	}
 
-	private final QueueNode head;
-	private QueueNode current;
+	private final Cacheable head;
+	private Cacheable current;
 }

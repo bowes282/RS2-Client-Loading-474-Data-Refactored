@@ -1,7 +1,7 @@
 package com.aeolus.media;
-import com.aeolus.collection.QueueNode;
+import com.aeolus.collection.Cacheable;
 
-public class Raster extends QueueNode {
+public class Raster extends Cacheable {
 
 	public static int pixels[];
 	public static int width;
