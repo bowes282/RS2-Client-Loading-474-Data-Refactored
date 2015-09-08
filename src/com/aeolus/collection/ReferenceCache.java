@@ -1,9 +1,9 @@
 package com.aeolus.collection;
 import com.aeolus.util.signlink.Signlink;
 
-public final class Cache {
+public final class ReferenceCache {
 
-	public Cache(int i) {
+	public ReferenceCache(int i) {
 		emptyNodeSub = new QueueNode();
 		nodeSubList = new NodeSubList();
 		initialCount = i;
