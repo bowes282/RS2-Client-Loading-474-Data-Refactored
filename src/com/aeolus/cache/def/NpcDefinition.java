@@ -3,7 +3,7 @@ package com.aeolus.cache.def;
 import com.aeolus.Game;
 import com.aeolus.cache.config.VariableBits;
 import com.aeolus.cache.media.SequenceFrame;
-import com.aeolus.collection.Cache;
+import com.aeolus.collection.ReferenceCache;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
@@ -47,7 +47,7 @@ public final class NpcDefinition {
 	public int shadowModifier;
 	public boolean priorityRender;
 	public int[] modelId;
-	public static Cache modelCache = new Cache(30);
+	public static ReferenceCache modelCache = new ReferenceCache(30);
 
 	/**
 	 * Lookup an NpcDefinition by its id

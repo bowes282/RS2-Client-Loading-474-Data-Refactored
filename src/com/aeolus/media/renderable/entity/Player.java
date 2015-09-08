@@ -5,7 +5,7 @@ import com.aeolus.cache.def.IdentityKit;
 import com.aeolus.cache.def.ItemDefinition;
 import com.aeolus.cache.def.SpotAnimation;
 import com.aeolus.cache.media.SequenceFrame;
-import com.aeolus.collection.Cache;
+import com.aeolus.collection.ReferenceCache;
 import com.aeolus.media.Animation;
 import com.aeolus.media.font.TextClass;
 import com.aeolus.media.renderable.Model;
@@ -393,7 +393,7 @@ public final class Player extends Entity {
 	public int team;
 	private int anInt1702;
 	public String name;
-	public static Cache mruNodes = new Cache(260);
+	public static ReferenceCache mruNodes = new ReferenceCache(260);
 	public int combatLevel;
 	public int headIcon;
 	public int skullIcon;

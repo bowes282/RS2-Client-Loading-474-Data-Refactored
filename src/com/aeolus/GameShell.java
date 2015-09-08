@@ -3,7 +3,7 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
 
-import com.aeolus.cache.media.RSInterface;
+import com.aeolus.cache.media.Widget;
 import com.aeolus.media.ImageProducer;
 
 public class GameShell extends Applet implements Runnable, MouseListener, MouseMotionListener, MouseWheelListener, KeyListener, FocusListener, WindowListener {
@@ -319,39 +319,39 @@ public class GameShell extends Applet implements Runnable, MouseListener, MouseM
 		int childID = 0;
 		int tabInterfaceID = Game.tabInterfaceIDs[Game.tabID];
 		if (tabInterfaceID != -1) {
-			RSInterface tab = RSInterface.interfaceCache[tabInterfaceID];
+			Widget tab = Widget.interfaceCache[tabInterfaceID];
 			offsetX = Game.frameMode == Game.ScreenMode.FIXED ? Game.frameWidth - 218 : (Game.frameMode == Game.ScreenMode.FIXED ? 28 : Game.frameWidth - 197);
 			offsetY = Game.frameMode == Game.ScreenMode.FIXED ? Game.frameHeight - 298 : (Game.frameMode == Game.ScreenMode.FIXED ? 37 : Game.frameHeight - (Game.frameWidth >= 1000 ? 37 : 74) - 267);
 			for (int index = 0; index < tab.children.length; index++) {
-				if (RSInterface.interfaceCache[tab.children[index]].scrollMax > 0) {
+				if (Widget.interfaceCache[tab.children[index]].scrollMax > 0) {
 					childID = index;
 					positionX = tab.childX[index];
 					positionY = tab.childY[index];
-					width = RSInterface.interfaceCache[tab.children[index]].width;
-					height = RSInterface.interfaceCache[tab.children[index]].height;
+					width = Widget.interfaceCache[tab.children[index]].width;
+					height = Widget.interfaceCache[tab.children[index]].height;
 					break;
 				}
 			}
 			if (mouseX > offsetX + positionX && mouseY > offsetY + positionY && mouseX < offsetX + positionX + width && mouseY < offsetY + positionY + height) {
-				RSInterface.interfaceCache[tab.children[childID]].scrollPosition += rotation * 30;
+				Widget.interfaceCache[tab.children[childID]].scrollPosition += rotation * 30;
 			}
 		}
 		if (Game.openInterfaceId != -1) {
-			RSInterface rsi = RSInterface.interfaceCache[Game.openInterfaceId];
+			Widget rsi = Widget.interfaceCache[Game.openInterfaceId];
 			offsetX = Game.frameMode == Game.ScreenMode.FIXED ? 4 : (Game.frameWidth / 2) - 356;
 			offsetY = Game.frameMode == Game.ScreenMode.FIXED ? 4 : (Game.frameHeight / 2) - 230;
 			for (int index = 0; index < rsi.children.length; index++) {
-				if (RSInterface.interfaceCache[rsi.children[index]].scrollMax > 0) {
+				if (Widget.interfaceCache[rsi.children[index]].scrollMax > 0) {
 					childID = index;
 					positionX = rsi.childX[index];
 					positionY = rsi.childY[index];
-					width = RSInterface.interfaceCache[rsi.children[index]].width;
-					height = RSInterface.interfaceCache[rsi.children[index]].height;
+					width = Widget.interfaceCache[rsi.children[index]].width;
+					height = Widget.interfaceCache[rsi.children[index]].height;
 					break;
 				}
 			}
 			if (mouseX > offsetX + positionX && mouseY > offsetY + positionY && mouseX < offsetX + positionX + width && mouseY < offsetY + positionY + height) {
-				RSInterface.interfaceCache[rsi.children[childID]].scrollPosition += rotation * 30;
+				Widget.interfaceCache[rsi.children[childID]].scrollPosition += rotation * 30;
 			}
 		}
 	}

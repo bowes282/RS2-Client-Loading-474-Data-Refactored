@@ -19,7 +19,7 @@ import com.aeolus.cache.def.ItemDefinition;
 import com.aeolus.cache.def.ObjectDefinition;
 import com.aeolus.cache.def.SpotAnimation;
 import com.aeolus.cache.media.Background;
-import com.aeolus.cache.media.RSInterface;
+import com.aeolus.cache.media.Widget;
 import com.aeolus.cache.media.SequenceFrame;
 import com.aeolus.cache.media.Sprite;
 import com.aeolus.collection.Node;
@@ -647,10 +647,10 @@ public class Game extends GameShell {
 			newBoldFont.drawCenteredString("Click to continue", 259,
 					80 + yOffset, 128, -1);
 		} else if (backDialogueId != -1) {
-			drawInterface(0, 20, RSInterface.interfaceCache[backDialogueId],
+			drawInterface(0, 20, Widget.interfaceCache[backDialogueId],
 					20 + yOffset);
 		} else if (dialogueId != -1) {
-			drawInterface(0, 20, RSInterface.interfaceCache[dialogueId],
+			drawInterface(0, 20, Widget.interfaceCache[dialogueId],
 					20 + yOffset);
 		} else if (showChatComponents) {
 			int j77 = -3;
@@ -1025,7 +1025,7 @@ public class Game extends GameShell {
 						|| i1 == 847 || i1 == 447 || i1 == 1125) {
 					int l1 = menuActionCmd2[menuActionRow - 1];
 					int j2 = menuActionCmd3[menuActionRow - 1];
-					RSInterface class9 = RSInterface.interfaceCache[j2];
+					Widget class9 = Widget.interfaceCache[j2];
 					if (class9.aBoolean259 || class9.aBoolean235) {
 						aBoolean1242 = false;
 						anInt989 = 0;
@@ -1034,9 +1034,9 @@ public class Game extends GameShell {
 						activeInterfaceType = 2;
 						anInt1087 = super.saveClickX;
 						anInt1088 = super.saveClickY;
-						if (RSInterface.interfaceCache[j2].parentID == openInterfaceId)
+						if (Widget.interfaceCache[j2].parent == openInterfaceId)
 							activeInterfaceType = 1;
-						if (RSInterface.interfaceCache[j2].parentID == backDialogueId)
+						if (Widget.interfaceCache[j2].parent == backDialogueId)
 							activeInterfaceType = 3;
 						return;
 					}
@@ -1448,10 +1448,10 @@ public class Game extends GameShell {
 		}
 	}
 
-	private void buildInterfaceMenu(int i, RSInterface class9, int k, int l,
+	private void buildInterfaceMenu(int i, Widget class9, int k, int l,
 			int i1, int j1) {
 		if (class9 == null)
-			class9 = RSInterface.interfaceCache[21356];
+			class9 = Widget.interfaceCache[21356];
 		if (class9.type != 0 || class9.children == null || class9.hoverOnly)
 			return;
 		if (k < i || i1 < l || k > i + class9.width || i1 > l + class9.height)
@@ -1460,10 +1460,10 @@ public class Game extends GameShell {
 		for (int l1 = 0; l1 < k1; l1++) {
 			int i2 = class9.childX[l1] + i;
 			int j2 = (class9.childY[l1] + l) - j1;
-			RSInterface childInterface = RSInterface.interfaceCache[class9.children[l1]];
+			Widget childInterface = Widget.interfaceCache[class9.children[l1]];
 			i2 += childInterface.x;
 			j2 += childInterface.anInt265;
-			if ((childInterface.hoverType >= 0 || childInterface.colourDefaultHover != 0)
+			if ((childInterface.hoverType >= 0 || childInterface.defaultHoverColor != 0)
 					&& k >= i2
 					&& i1 >= j2
 					&& k < i2 + childInterface.width
@@ -1485,7 +1485,7 @@ public class Game extends GameShell {
 							k, i1, childInterface, j2, true,
 							childInterface.scrollMax);
 			} else {
-				if (childInterface.atActionType == 1 && k >= i2 && i1 >= j2
+				if (childInterface.optionType == 1 && k >= i2 && i1 >= j2
 						&& k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
 					boolean flag = false;
@@ -1498,7 +1498,7 @@ public class Game extends GameShell {
 						menuActionRow++;
 					}
 				}
-				if (childInterface.atActionType == 2 && spellSelected == 0
+				if (childInterface.optionType == 2 && spellSelected == 0
 						&& k >= i2 && i1 >= j2 && k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
 					String s = childInterface.selectedActionName;
@@ -1531,7 +1531,7 @@ public class Game extends GameShell {
 					menuActionCmd3[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
-				if (childInterface.atActionType == 3 && k >= i2 && i1 >= j2
+				if (childInterface.optionType == 3 && k >= i2 && i1 >= j2
 						&& k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
 					menuActionName[menuActionRow] = "Close";
@@ -1539,7 +1539,7 @@ public class Game extends GameShell {
 					menuActionCmd3[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
-				if (childInterface.atActionType == 4 && k >= i2 && i1 >= j2
+				if (childInterface.optionType == 4 && k >= i2 && i1 >= j2
 						&& k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
 					// System.out.println("2"+class9_1.tooltip + ", " +
@@ -1556,7 +1556,7 @@ public class Game extends GameShell {
 						// class9_1.hoverText);
 					}
 				}
-				if (childInterface.atActionType == 5 && k >= i2 && i1 >= j2
+				if (childInterface.optionType == 5 && k >= i2 && i1 >= j2
 						&& k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
 					// System.out.println("3"+class9_1.tooltip + ", " +
@@ -1568,7 +1568,7 @@ public class Game extends GameShell {
 					menuActionCmd3[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
-				if (childInterface.atActionType == 6 && !continuedDialogue
+				if (childInterface.optionType == 6 && !continuedDialogue
 						&& k >= i2 && i1 >= j2 && k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
 					// System.out.println("4"+class9_1.tooltip + ", " +
@@ -2066,12 +2066,12 @@ public class Game extends GameShell {
 					clearTopInterfaces();
 					reportAbuseInput = "";
 					canMute = false;
-					for (int i = 0; i < RSInterface.interfaceCache.length; i++) {
-						if (RSInterface.interfaceCache[i] == null
-								|| RSInterface.interfaceCache[i].contentType != 600) {
+					for (int i = 0; i < Widget.interfaceCache.length; i++) {
+						if (Widget.interfaceCache[i] == null
+								|| Widget.interfaceCache[i].contentType != 600) {
 							continue;
 						}
-						reportAbuseInterfaceID = openInterfaceId = RSInterface.interfaceCache[i].parentID;
+						reportAbuseInterfaceID = openInterfaceId = Widget.interfaceCache[i].parent;
 						break;
 					}
 				} else {
@@ -2431,15 +2431,15 @@ public class Game extends GameShell {
 					}
 				}
 			}
-			for (int message = 0; message < messageLength; message++) {
-				int k1 = anIntArray976[message];
-				int l1 = anIntArray977[message];
-				int j2 = anIntArray979[message];
-				int k2 = anIntArray978[message];
+			for (int defaultText = 0; defaultText < messageLength; defaultText++) {
+				int k1 = anIntArray976[defaultText];
+				int l1 = anIntArray977[defaultText];
+				int j2 = anIntArray979[defaultText];
+				int k2 = anIntArray978[defaultText];
 				boolean flag = true;
 				while (flag) {
 					flag = false;
-					for (int l2 = 0; l2 < message; l2++)
+					for (int l2 = 0; l2 < defaultText; l2++)
 						if (l1 + 2 > anIntArray977[l2] - anIntArray978[l2]
 								&& l1 - k2 < anIntArray977[l2] + 2
 								&& k1 - j2 < anIntArray976[l2]
@@ -2452,21 +2452,21 @@ public class Game extends GameShell {
 						}
 
 				}
-				spriteDrawX = anIntArray976[message];
-				spriteDrawY = anIntArray977[message] = l1;
-				String s = aStringArray983[message];
+				spriteDrawX = anIntArray976[defaultText];
+				spriteDrawY = anIntArray977[defaultText] = l1;
+				String s = aStringArray983[defaultText];
 				if (anInt1249 == 0) {
 					int i3 = 0xffff00;
-					if (textColourEffect[message] < 6)
-						i3 = anIntArray965[textColourEffect[message]];
-					if (textColourEffect[message] == 6)
+					if (textColourEffect[defaultText] < 6)
+						i3 = anIntArray965[textColourEffect[defaultText]];
+					if (textColourEffect[defaultText] == 6)
 						i3 = anInt1265 % 20 >= 10 ? 0xffff00 : 0xff0000;
-					if (textColourEffect[message] == 7)
+					if (textColourEffect[defaultText] == 7)
 						i3 = anInt1265 % 20 >= 10 ? 65535 : 255;
-					if (textColourEffect[message] == 8)
+					if (textColourEffect[defaultText] == 8)
 						i3 = anInt1265 % 20 >= 10 ? 0x80ff80 : 45056;
-					if (textColourEffect[message] == 9) {
-						int j3 = 150 - anIntArray982[message];
+					if (textColourEffect[defaultText] == 9) {
+						int j3 = 150 - anIntArray982[defaultText];
 						if (j3 < 50)
 							i3 = 0xff0000 + 1280 * j3;
 						else if (j3 < 100)
@@ -2474,8 +2474,8 @@ public class Game extends GameShell {
 						else if (j3 < 150)
 							i3 = 65280 + 5 * (j3 - 100);
 					}
-					if (textColourEffect[message] == 10) {
-						int k3 = 150 - anIntArray982[message];
+					if (textColourEffect[defaultText] == 10) {
+						int k3 = 150 - anIntArray982[defaultText];
 						if (k3 < 50)
 							i3 = 0xff0000 + 5 * k3;
 						else if (k3 < 100)
@@ -2483,8 +2483,8 @@ public class Game extends GameShell {
 						else if (k3 < 150)
 							i3 = (255 + 0x50000 * (k3 - 100)) - 5 * (k3 - 100);
 					}
-					if (textColourEffect[message] == 11) {
-						int l3 = 150 - anIntArray982[message];
+					if (textColourEffect[defaultText] == 11) {
+						int l3 = 150 - anIntArray982[defaultText];
 						if (l3 < 50)
 							i3 = 0xffffff - 0x50005 * l3;
 						else if (l3 < 100)
@@ -2492,31 +2492,31 @@ public class Game extends GameShell {
 						else if (l3 < 150)
 							i3 = 0xffffff - 0x50000 * (l3 - 100);
 					}
-					if (anIntArray981[message] == 0) {
+					if (anIntArray981[defaultText] == 0) {
 						boldText.drawText(0, s, spriteDrawY + 1, spriteDrawX);
 						boldText.drawText(i3, s, spriteDrawY, spriteDrawX);
 					}
-					if (anIntArray981[message] == 1) {
+					if (anIntArray981[defaultText] == 1) {
 						boldText.wave(0, s, spriteDrawX, anInt1265,
 								spriteDrawY + 1);
 						boldText.wave(i3, s, spriteDrawX, anInt1265,
 								spriteDrawY);
 					}
-					if (anIntArray981[message] == 2) {
+					if (anIntArray981[defaultText] == 2) {
 						boldText.wave2(spriteDrawX, s, anInt1265,
 								spriteDrawY + 1, 0);
 						boldText.wave2(spriteDrawX, s, anInt1265,
 								spriteDrawY, i3);
 					}
-					if (anIntArray981[message] == 3) {
-						boldText.shake(150 - anIntArray982[message], s,
+					if (anIntArray981[defaultText] == 3) {
+						boldText.shake(150 - anIntArray982[defaultText], s,
 								anInt1265, spriteDrawY + 1, spriteDrawX, 0);
-						boldText.shake(150 - anIntArray982[message], s,
+						boldText.shake(150 - anIntArray982[defaultText], s,
 								anInt1265, spriteDrawY, spriteDrawX, i3);
 					}
-					if (anIntArray981[message] == 4) {
+					if (anIntArray981[defaultText] == 4) {
 						int i4 = boldText.method384(s);
-						int k4 = ((150 - anIntArray982[message]) * (i4 + 100)) / 150;
+						int k4 = ((150 - anIntArray982[defaultText]) * (i4 + 100)) / 150;
 						Raster.setDrawingArea(334, spriteDrawX - 50,
 								spriteDrawX + 50, 0);
 						boldText.method385(0, s, spriteDrawY + 1,
@@ -2525,8 +2525,8 @@ public class Game extends GameShell {
 								(spriteDrawX + 50) - k4);
 						Raster.defaultDrawingAreaSize();
 					}
-					if (anIntArray981[message] == 5) {
-						int j4 = 150 - anIntArray982[message];
+					if (anIntArray981[defaultText] == 5) {
+						int j4 = 150 - anIntArray982[defaultText];
 						int l4 = 0;
 						if (j4 < 25)
 							l4 = j4 - 25;
@@ -2721,10 +2721,10 @@ public class Game extends GameShell {
 			}
 			if (overlayInterfaceId != -1) {
 				drawInterface(0, x,
-						RSInterface.interfaceCache[overlayInterfaceId], y);
+						Widget.interfaceCache[overlayInterfaceId], y);
 			} else if (tabInterfaceIDs[tabID] != -1) {
 				drawInterface(0, x,
-						RSInterface.interfaceCache[tabInterfaceIDs[tabID]], y);
+						Widget.interfaceCache[tabInterfaceIDs[tabID]], y);
 			}
 		}
 		if (menuOpen) {
@@ -3148,7 +3148,7 @@ public class Game extends GameShell {
 		}
 	}
 
-	private boolean promptUserForInput(RSInterface class9) {
+	private boolean promptUserForInput(Widget class9) {
 		int j = class9.contentType;
 		if (friendServerStatus == 2) {
 			if (j == 201) {
@@ -3780,11 +3780,11 @@ public class Game extends GameShell {
 	}
 
 	private void writeInterface(int i) {
-		RSInterface class9 = RSInterface.interfaceCache[i];
+		Widget class9 = Widget.interfaceCache[i];
 		for (int j = 0; j < class9.children.length; j++) {
 			if (class9.children[j] == -1)
 				break;
-			RSInterface class9_1 = RSInterface.interfaceCache[class9.children[j]];
+			Widget class9_1 = Widget.interfaceCache[class9.children[j]];
 			if (class9_1.type == 1)
 				writeInterface(class9_1.id);
 			class9_1.anInt246 = 0;
@@ -3973,7 +3973,7 @@ public class Game extends GameShell {
 					processRightClick();
 					if (lastActiveInvInterface == anInt1084
 							&& mouseInvInterfaceIndex != anInt1085) {
-						RSInterface childInterface = RSInterface.interfaceCache[anInt1084];
+						Widget childInterface = Widget.interfaceCache[anInt1084];
 						int j1 = 0;
 						if (anInt913 == 1 && childInterface.contentType == 206)
 							j1 = 1;
@@ -4173,7 +4173,7 @@ public class Game extends GameShell {
 		}
 	}
 
-	private void method65(int i, int j, int k, int l, RSInterface class9,
+	private void method65(int i, int j, int k, int l, Widget class9,
 			int i1, boolean flag, int j1) {
 		int anInt992;
 		if (aBoolean972)
@@ -4517,7 +4517,7 @@ public class Game extends GameShell {
 			Configuration.hpAboveHeads = !Configuration.hpAboveHeads;
 		}
 		if (l == 104) {
-			RSInterface class9_1 = RSInterface.interfaceCache[k];
+			Widget class9_1 = Widget.interfaceCache[k];
 			spellID = class9_1.id;
 			if (!autocast) {
 				autocast = true;
@@ -4603,13 +4603,13 @@ public class Game extends GameShell {
 			atInventoryInterface = k;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (RSInterface.interfaceCache[k].parentID == openInterfaceId)
+			if (Widget.interfaceCache[k].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (RSInterface.interfaceCache[k].parentID == backDialogueId)
+			if (Widget.interfaceCache[k].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 315) {
-			RSInterface class9 = RSInterface.interfaceCache[k];
+			Widget class9 = Widget.interfaceCache[k];
 			boolean flag8 = true;
 			if (class9.contentType > 0)
 				flag8 = promptUserForInput(class9);
@@ -4711,9 +4711,9 @@ public class Game extends GameShell {
 			atInventoryInterface = k;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (RSInterface.interfaceCache[k].parentID == openInterfaceId)
+			if (Widget.interfaceCache[k].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (RSInterface.interfaceCache[k].parentID == backDialogueId)
+			if (Widget.interfaceCache[k].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 337 || l == 42 || l == 792 || l == 322) {
@@ -4740,9 +4740,9 @@ public class Game extends GameShell {
 			atInventoryInterface = k;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (RSInterface.interfaceCache[k].parentID == openInterfaceId)
+			if (Widget.interfaceCache[k].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (RSInterface.interfaceCache[k].parentID == backDialogueId)
+			if (Widget.interfaceCache[k].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 539) {
@@ -4754,9 +4754,9 @@ public class Game extends GameShell {
 			atInventoryInterface = k;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (RSInterface.interfaceCache[k].parentID == openInterfaceId)
+			if (Widget.interfaceCache[k].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (RSInterface.interfaceCache[k].parentID == backDialogueId)
+			if (Widget.interfaceCache[k].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 484 || l == 6) {
@@ -4811,9 +4811,9 @@ public class Game extends GameShell {
 			atInventoryInterface = k;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (RSInterface.interfaceCache[k].parentID == openInterfaceId)
+			if (Widget.interfaceCache[k].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (RSInterface.interfaceCache[k].parentID == backDialogueId)
+			if (Widget.interfaceCache[k].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 847) {
@@ -4825,13 +4825,13 @@ public class Game extends GameShell {
 			atInventoryInterface = k;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (RSInterface.interfaceCache[k].parentID == openInterfaceId)
+			if (Widget.interfaceCache[k].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (RSInterface.interfaceCache[k].parentID == backDialogueId)
+			if (Widget.interfaceCache[k].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 626) {
-			RSInterface class9_1 = RSInterface.interfaceCache[k];
+			Widget class9_1 = Widget.interfaceCache[k];
 			spellSelected = 1;
 			spellID = class9_1.id;
 			anInt1137 = k;
@@ -4863,9 +4863,9 @@ public class Game extends GameShell {
 			atInventoryInterface = k;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (RSInterface.interfaceCache[k].parentID == openInterfaceId)
+			if (Widget.interfaceCache[k].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (RSInterface.interfaceCache[k].parentID == backDialogueId)
+			if (Widget.interfaceCache[k].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 27) {
@@ -4913,14 +4913,14 @@ public class Game extends GameShell {
 			atInventoryInterface = k;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (RSInterface.interfaceCache[k].parentID == openInterfaceId)
+			if (Widget.interfaceCache[k].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (RSInterface.interfaceCache[k].parentID == backDialogueId)
+			if (Widget.interfaceCache[k].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 1050) {
 			int currentHP = Integer
-					.parseInt(RSInterface.interfaceCache[4016].message);
+					.parseInt(Widget.interfaceCache[4016].defaultText);
 			if (!(currentHP <= 0)) {
 				runClicked = !runClicked;
 				sendFrame36(429, runClicked ? 1 : 0);
@@ -4930,7 +4930,7 @@ public class Game extends GameShell {
 		}
 		if (menuActionName[i].contains("Toggle Run")) {
 			int currentHP = Integer
-					.parseInt(RSInterface.interfaceCache[4016].message);
+					.parseInt(Widget.interfaceCache[4016].defaultText);
 			if (!(currentHP <= 0)) {
 				runClicked = !runClicked;
 				sendFrame36(429, runClicked ? 0 : 1);
@@ -5038,9 +5038,9 @@ public class Game extends GameShell {
 			atInventoryInterface = k;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (RSInterface.interfaceCache[k].parentID == openInterfaceId)
+			if (Widget.interfaceCache[k].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (RSInterface.interfaceCache[k].parentID == backDialogueId)
+			if (Widget.interfaceCache[k].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 652) {
@@ -5077,12 +5077,12 @@ public class Game extends GameShell {
 		if (l == 646) {
 			outgoing.createFrame(185);
 			outgoing.writeShort(k);
-			RSInterface class9_2 = RSInterface.interfaceCache[k];
-			if (class9_2.valueIndexArray != null
-					&& class9_2.valueIndexArray[0][0] == 5) {
-				int i2 = class9_2.valueIndexArray[0][1];
-				if (variousSettings[i2] != class9_2.anIntArray212[0]) {
-					variousSettings[i2] = class9_2.anIntArray212[0];
+			Widget class9_2 = Widget.interfaceCache[k];
+			if (class9_2.scripts != null
+					&& class9_2.scripts[0][0] == 5) {
+				int i2 = class9_2.scripts[0][1];
+				if (variousSettings[i2] != class9_2.scriptDefaults[0]) {
+					variousSettings[i2] = class9_2.scriptDefaults[0];
 					adjustVolume(i2);
 				}
 			}
@@ -5269,9 +5269,9 @@ public class Game extends GameShell {
 			atInventoryInterface = k;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (RSInterface.interfaceCache[k].parentID == openInterfaceId)
+			if (Widget.interfaceCache[k].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (RSInterface.interfaceCache[k].parentID == backDialogueId)
+			if (Widget.interfaceCache[k].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 543) {
@@ -5284,9 +5284,9 @@ public class Game extends GameShell {
 			atInventoryInterface = k;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (RSInterface.interfaceCache[k].parentID == openInterfaceId)
+			if (Widget.interfaceCache[k].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (RSInterface.interfaceCache[k].parentID == backDialogueId)
+			if (Widget.interfaceCache[k].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 606) {
@@ -5297,11 +5297,11 @@ public class Game extends GameShell {
 					clearTopInterfaces();
 					reportAbuseInput = s2.substring(j2 + 5).trim();
 					canMute = false;
-					for (int i3 = 0; i3 < RSInterface.interfaceCache.length; i3++) {
-						if (RSInterface.interfaceCache[i3] == null
-								|| RSInterface.interfaceCache[i3].contentType != 600)
+					for (int i3 = 0; i3 < Widget.interfaceCache.length; i3++) {
+						if (Widget.interfaceCache[i3] == null
+								|| Widget.interfaceCache[i3].contentType != 600)
 							continue;
-						reportAbuseInterfaceID = openInterfaceId = RSInterface.interfaceCache[i3].parentID;
+						reportAbuseInterfaceID = openInterfaceId = Widget.interfaceCache[i3].parent;
 						break;
 					}
 
@@ -5349,7 +5349,7 @@ public class Game extends GameShell {
 					promptInput = "";
 					friendsListAction = 3;
 					aLong953 = friendsListAsLongs[k3];
-					aString1121 = "Enter message to send to " + friendsList[k3];
+					aString1121 = "Enter defaultText to send to " + friendsList[k3];
 				}
 			}
 		}
@@ -5362,9 +5362,9 @@ public class Game extends GameShell {
 			atInventoryInterface = k;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (RSInterface.interfaceCache[k].parentID == openInterfaceId)
+			if (Widget.interfaceCache[k].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (RSInterface.interfaceCache[k].parentID == backDialogueId)
+			if (Widget.interfaceCache[k].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 478) {
@@ -5412,7 +5412,7 @@ public class Game extends GameShell {
 		}
 		if (l == 1125) {
 			ItemDefinition itemDef = ItemDefinition.lookup(i1);
-			RSInterface class9_4 = RSInterface.interfaceCache[k];
+			Widget class9_4 = Widget.interfaceCache[k];
 			String s5;
 			if (class9_4 != null && class9_4.invStackSizes[j] >= 0x186a0)
 				s5 = class9_4.invStackSizes[j] + " x " + itemDef.name;
@@ -5425,10 +5425,10 @@ public class Game extends GameShell {
 		if (l == 169) {
 			outgoing.createFrame(185);
 			outgoing.writeShort(k);
-			RSInterface class9_3 = RSInterface.interfaceCache[k];
-			if (class9_3.valueIndexArray != null
-					&& class9_3.valueIndexArray[0][0] == 5) {
-				int l2 = class9_3.valueIndexArray[0][1];
+			Widget class9_3 = Widget.interfaceCache[k];
+			if (class9_3.scripts != null
+					&& class9_3.scripts[0][0] == 5) {
+				int l2 = class9_3.scripts[0][1];
 				variousSettings[l2] = 1 - variousSettings[l2];
 				adjustVolume(l2);
 			}
@@ -5804,7 +5804,7 @@ public class Game extends GameShell {
 		ItemDefinition.clearCache();
 		Floor.cache = null;
 		IdentityKit.cache = null;
-		RSInterface.interfaceCache = null;
+		Widget.interfaceCache = null;
 		Animation.animations = null;
 		SpotAnimation.cache = null;
 		SpotAnimation.memCache = null;
@@ -6393,22 +6393,22 @@ public class Game extends GameShell {
 		return 0;
 	}
 
-	private void drawFriendsListOrWelcomeScreen(RSInterface class9) {
+	private void drawFriendsListOrWelcomeScreen(Widget class9) {
 		int j = class9.contentType;
 		if (j >= 1 && j <= 100 || j >= 701 && j <= 800) {
 			if (j == 1 && friendServerStatus == 0) {
-				class9.message = "Loading friend list";
-				class9.atActionType = 0;
+				class9.defaultText = "Loading friend list";
+				class9.optionType = 0;
 				return;
 			}
 			if (j == 1 && friendServerStatus == 1) {
-				class9.message = "Connecting to friendserver";
-				class9.atActionType = 0;
+				class9.defaultText = "Connecting to friendserver";
+				class9.optionType = 0;
 				return;
 			}
 			if (j == 2 && friendServerStatus != 2) {
-				class9.message = "Please wait...";
-				class9.atActionType = 0;
+				class9.defaultText = "Please wait...";
+				class9.optionType = 0;
 				return;
 			}
 			int k = friendsCount;
@@ -6419,12 +6419,12 @@ public class Game extends GameShell {
 			else
 				j--;
 			if (j >= k) {
-				class9.message = "";
-				class9.atActionType = 0;
+				class9.defaultText = "";
+				class9.optionType = 0;
 				return;
 			} else {
-				class9.message = friendsList[j];
-				class9.atActionType = 1;
+				class9.defaultText = friendsList[j];
+				class9.optionType = 1;
 				return;
 			}
 		}
@@ -6437,34 +6437,34 @@ public class Game extends GameShell {
 			else
 				j -= 101;
 			if (j >= l) {
-				class9.message = "";
-				class9.atActionType = 0;
+				class9.defaultText = "";
+				class9.optionType = 0;
 				return;
 			}
 			if (friendsNodeIDs[j] == 0)
-				class9.message = "@red@Offline";
+				class9.defaultText = "@red@Offline";
 			else if (friendsNodeIDs[j] == nodeID)
-				class9.message = "@gre@Online"/* + (friendsNodeIDs[j] - 9) */;
+				class9.defaultText = "@gre@Online"/* + (friendsNodeIDs[j] - 9) */;
 			else
-				class9.message = "@red@Offline"/* + (friendsNodeIDs[j] - 9) */;
-			class9.atActionType = 1;
+				class9.defaultText = "@red@Offline"/* + (friendsNodeIDs[j] - 9) */;
+			class9.optionType = 1;
 			return;
 		}
 
 		/** Skill Tab **/
 		if (j == 210) {
-			class9.message = "Total XP: "
+			class9.defaultText = "Total XP: "
 					+ NumberFormat.getIntegerInstance().format(xpCounter);
 			return;
 		}
 		if (j == 211) {
 			if (maxStats[0] == 99) {
-				class9.message = "Attack XP: "
+				class9.defaultText = "Attack XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[0]);
 				return;
 			} else {
-				class9.message = "Attack XP: "
+				class9.defaultText = "Attack XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[0])
 						+ "\\nNext Level at: "
@@ -6476,12 +6476,12 @@ public class Game extends GameShell {
 		}
 		if (j == 212) {
 			if (maxStats[2] == 99) {
-				class9.message = "Strength XP: "
+				class9.defaultText = "Strength XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[2]);
 				return;
 			} else {
-				class9.message = "Strength XP: "
+				class9.defaultText = "Strength XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[2])
 						+ "\\nNext Level at: "
@@ -6493,12 +6493,12 @@ public class Game extends GameShell {
 		}
 		if (j == 213) {
 			if (maxStats[3] == 99) {
-				class9.message = "Hitpoints XP: "
+				class9.defaultText = "Hitpoints XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[3]);
 				return;
 			} else {
-				class9.message = "Hitpoints XP: "
+				class9.defaultText = "Hitpoints XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[3])
 						+ "\\nNext Level at: "
@@ -6510,12 +6510,12 @@ public class Game extends GameShell {
 		}
 		if (j == 214) {
 			if (maxStats[1] == 99) {
-				class9.message = "Defence XP: "
+				class9.defaultText = "Defence XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[1]);
 				return;
 			} else {
-				class9.message = "Defence XP: "
+				class9.defaultText = "Defence XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[1])
 						+ "\\nNext Level at: "
@@ -6527,12 +6527,12 @@ public class Game extends GameShell {
 		}
 		if (j == 215) {
 			if (maxStats[4] == 99) {
-				class9.message = "Ranged XP: "
+				class9.defaultText = "Ranged XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[4]);
 				return;
 			} else {
-				class9.message = "Ranged XP: "
+				class9.defaultText = "Ranged XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[4])
 						+ "\\nNext Level at: "
@@ -6544,12 +6544,12 @@ public class Game extends GameShell {
 		}
 		if (j == 216) {
 			if (maxStats[5] == 99) {
-				class9.message = "Prayer XP: "
+				class9.defaultText = "Prayer XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[5]);
 				return;
 			} else {
-				class9.message = "Prayer XP: "
+				class9.defaultText = "Prayer XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[5])
 						+ "\\nNext Level at: "
@@ -6561,12 +6561,12 @@ public class Game extends GameShell {
 		}
 		if (j == 217) {
 			if (maxStats[6] == 99) {
-				class9.message = "Magic XP: "
+				class9.defaultText = "Magic XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[6]);
 				return;
 			} else {
-				class9.message = "Magic XP: "
+				class9.defaultText = "Magic XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[6])
 						+ "\\nNext Level at: "
@@ -6578,12 +6578,12 @@ public class Game extends GameShell {
 		}
 		if (j == 218) {
 			if (maxStats[7] == 99) {
-				class9.message = "Cooking XP: "
+				class9.defaultText = "Cooking XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[7]);
 				return;
 			} else {
-				class9.message = "Cooking XP: "
+				class9.defaultText = "Cooking XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[7])
 						+ "\\nNext Level at: "
@@ -6595,12 +6595,12 @@ public class Game extends GameShell {
 		}
 		if (j == 219) {
 			if (maxStats[8] == 99) {
-				class9.message = "Woodcutting XP: "
+				class9.defaultText = "Woodcutting XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[8]);
 				return;
 			} else {
-				class9.message = "Woodcutting XP: "
+				class9.defaultText = "Woodcutting XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[8])
 						+ "\\nNext Level at: "
@@ -6612,12 +6612,12 @@ public class Game extends GameShell {
 		}
 		if (j == 220) {
 			if (maxStats[9] == 99) {
-				class9.message = "Fletching XP: "
+				class9.defaultText = "Fletching XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[9]);
 				return;
 			} else {
-				class9.message = "Fletching XP: "
+				class9.defaultText = "Fletching XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[9])
 						+ "\\nNext Level at: "
@@ -6629,12 +6629,12 @@ public class Game extends GameShell {
 		}
 		if (j == 221) {
 			if (maxStats[10] == 99) {
-				class9.message = "Fishing XP: "
+				class9.defaultText = "Fishing XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[10]);
 				return;
 			} else {
-				class9.message = "Fishing XP: "
+				class9.defaultText = "Fishing XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[10])
 						+ "\\nNext Level at: "
@@ -6646,12 +6646,12 @@ public class Game extends GameShell {
 		}
 		if (j == 222) {
 			if (maxStats[11] == 99) {
-				class9.message = "Firemaking XP: "
+				class9.defaultText = "Firemaking XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[11]);
 				return;
 			} else {
-				class9.message = "Firemaking XP: "
+				class9.defaultText = "Firemaking XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[11])
 						+ "\\nNext Level at: "
@@ -6663,12 +6663,12 @@ public class Game extends GameShell {
 		}
 		if (j == 223) {
 			if (maxStats[12] == 99) {
-				class9.message = "Crafting XP: "
+				class9.defaultText = "Crafting XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[12]);
 				return;
 			} else {
-				class9.message = "Crafting XP: "
+				class9.defaultText = "Crafting XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[12])
 						+ "\\nNext Level at: "
@@ -6680,12 +6680,12 @@ public class Game extends GameShell {
 		}
 		if (j == 224) {
 			if (maxStats[13] == 99) {
-				class9.message = "Smithing XP: "
+				class9.defaultText = "Smithing XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[13]);
 				return;
 			} else {
-				class9.message = "Smithing XP: "
+				class9.defaultText = "Smithing XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[13])
 						+ "\\nNext Level at: "
@@ -6697,12 +6697,12 @@ public class Game extends GameShell {
 		}
 		if (j == 225) {
 			if (maxStats[14] == 99) {
-				class9.message = "Mining XP: "
+				class9.defaultText = "Mining XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[14]);
 				return;
 			} else {
-				class9.message = "Mining XP: "
+				class9.defaultText = "Mining XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[14])
 						+ "\\nNext Level at: "
@@ -6714,12 +6714,12 @@ public class Game extends GameShell {
 		}
 		if (j == 226) {
 			if (maxStats[15] == 99) {
-				class9.message = "Herblore XP: "
+				class9.defaultText = "Herblore XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[15]);
 				return;
 			} else {
-				class9.message = "Herblore XP: "
+				class9.defaultText = "Herblore XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[15])
 						+ "\\nNext Level at: "
@@ -6731,12 +6731,12 @@ public class Game extends GameShell {
 		}
 		if (j == 227) {
 			if (maxStats[16] == 99) {
-				class9.message = "Agility XP: "
+				class9.defaultText = "Agility XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[16]);
 				return;
 			} else {
-				class9.message = "Agility XP: "
+				class9.defaultText = "Agility XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[16])
 						+ "\\nNext Level at: "
@@ -6748,12 +6748,12 @@ public class Game extends GameShell {
 		}
 		if (j == 228) {
 			if (maxStats[17] == 99) {
-				class9.message = "Thieving XP: "
+				class9.defaultText = "Thieving XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[17]);
 				return;
 			} else {
-				class9.message = "Thieving XP: "
+				class9.defaultText = "Thieving XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[17])
 						+ "\\nNext Level at: "
@@ -6765,12 +6765,12 @@ public class Game extends GameShell {
 		}
 		if (j == 229) {
 			if (maxStats[18] == 99) {
-				class9.message = "Slayer XP: "
+				class9.defaultText = "Slayer XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[18]);
 				return;
 			} else {
-				class9.message = "Slayer XP: "
+				class9.defaultText = "Slayer XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[18])
 						+ "\\nNext Level at: "
@@ -6782,12 +6782,12 @@ public class Game extends GameShell {
 		}
 		if (j == 230) {
 			if (maxStats[19] == 99) {
-				class9.message = "Farming XP: "
+				class9.defaultText = "Farming XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[19]);
 				return;
 			} else {
-				class9.message = "Farming XP: "
+				class9.defaultText = "Farming XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[19])
 						+ "\\nNext Level at: "
@@ -6799,12 +6799,12 @@ public class Game extends GameShell {
 		}
 		if (j == 231) {
 			if (maxStats[20] == 99) {
-				class9.message = "Runecrafting XP: "
+				class9.defaultText = "Runecrafting XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[20]);
 				return;
 			} else {
-				class9.message = "Runecrafting XP: "
+				class9.defaultText = "Runecrafting XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[20])
 						+ "\\nNext Level at: "
@@ -6816,12 +6816,12 @@ public class Game extends GameShell {
 		}
 		if (j == 232) {
 			if (maxStats[21] == 99) {
-				class9.message = "Hunter XP: "
+				class9.defaultText = "Hunter XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[21]);
 				return;
 			} else {
-				class9.message = "Hunter XP: "
+				class9.defaultText = "Hunter XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[21])
 						+ "\\nNext Level at: "
@@ -6833,12 +6833,12 @@ public class Game extends GameShell {
 		}
 		if (j == 233) {
 			if (maxStats[22] == 99) {
-				class9.message = "Construction XP: "
+				class9.defaultText = "Construction XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[22]);
 				return;
 			} else {
-				class9.message = "Construction XP: "
+				class9.defaultText = "Construction XP: "
 						+ NumberFormat.getIntegerInstance().format(
 								currentExp[22])
 						+ "\\nNext Level at: "
@@ -6860,26 +6860,26 @@ public class Game extends GameShell {
 		}
 		if (j >= 401 && j <= 500) {
 			if ((j -= 401) == 0 && friendServerStatus == 0) {
-				class9.message = "Loading ignore list";
-				class9.atActionType = 0;
+				class9.defaultText = "Loading ignore list";
+				class9.optionType = 0;
 				return;
 			}
 			if (j == 1 && friendServerStatus == 0) {
-				class9.message = "Please wait...";
-				class9.atActionType = 0;
+				class9.defaultText = "Please wait...";
+				class9.optionType = 0;
 				return;
 			}
 			int j1 = ignoreCount;
 			if (friendServerStatus == 0)
 				j1 = 0;
 			if (j >= j1) {
-				class9.message = "";
-				class9.atActionType = 0;
+				class9.defaultText = "";
+				class9.optionType = 0;
 				return;
 			} else {
-				class9.message = TextClass.fixName(TextClass
+				class9.defaultText = TextClass.fixName(TextClass
 						.nameForLong(ignoreListAsLongs[j]));
-				class9.atActionType = 1;
+				class9.optionType = 1;
 				return;
 			}
 		}
@@ -6922,14 +6922,14 @@ public class Game extends GameShell {
 				model.skin();
 				model.apply(Animation.animations[localPlayer.standAnimIndex].anIntArray353[0]);
 				model.light(64, 850, -30, -50, -30, true);
-				class9.anInt233 = 5;
-				class9.mediaID = 0;
-				RSInterface.method208(aBoolean994, model);
+				class9.defaultMediaType = 5;
+				class9.defaultMedia = 0;
+				Widget.method208(aBoolean994, model);
 			}
 			return;
 		}
 		if (j == 328) {
-			RSInterface rsInterface = class9;
+			Widget rsInterface = class9;
 			int verticleTilt = 150;
 			int animationSpeed = (int) (Math.sin((double) loopCycle / 40D) * 256D) & 0x7ff;
 			rsInterface.modelRotation1 = verticleTilt;
@@ -6949,9 +6949,9 @@ public class Game extends GameShell {
 				characterDisplay
 						.apply(Animation.animations[staticFrame].anIntArray353[0]);
 				// characterDisplay.method479(64, 850, -30, -50, -30, true);
-				rsInterface.anInt233 = 5;
-				rsInterface.mediaID = 0;
-				RSInterface.method208(aBoolean994, characterDisplay);
+				rsInterface.defaultMediaType = 5;
+				rsInterface.defaultMedia = 0;
+				Widget.method208(aBoolean994, characterDisplay);
 			}
 			return;
 		}
@@ -6982,12 +6982,12 @@ public class Game extends GameShell {
 			}
 		}
 		if (j == 600) {
-			class9.message = reportAbuseInput;
+			class9.defaultText = reportAbuseInput;
 			if (loopCycle % 20 < 10) {
-				class9.message += "|";
+				class9.defaultText += "|";
 				return;
 			} else {
-				class9.message += " ";
+				class9.defaultText += " ";
 				return;
 			}
 		}
@@ -6995,13 +6995,13 @@ public class Game extends GameShell {
 			if (myPrivilege >= 1) {
 				if (canMute) {
 					class9.textColor = 0xff0000;
-					class9.message = "Moderator option: Mute player for 48 hours: <ON>";
+					class9.defaultText = "Moderator option: Mute player for 48 hours: <ON>";
 				} else {
 					class9.textColor = 0xffffff;
-					class9.message = "Moderator option: Mute player for 48 hours: <OFF>";
+					class9.defaultText = "Moderator option: Mute player for 48 hours: <OFF>";
 				}
 			} else {
-				class9.message = "";
+				class9.defaultText = "";
 			}
 		if (j == 650 || j == 655)
 			if (anInt1193 != 0) {
@@ -7012,33 +7012,33 @@ public class Game extends GameShell {
 					s = "yesterday";
 				else
 					s = daysSinceLastLogin + " days ago";
-				class9.message = "You last logged in " + s + " from: "
+				class9.defaultText = "You last logged in " + s + " from: "
 						+ Signlink.dns;
 			} else {
-				class9.message = "";
+				class9.defaultText = "";
 			}
 		if (j == 651) {
 			if (unreadMessages == 0) {
-				class9.message = "0 unread messages";
+				class9.defaultText = "0 unread messages";
 				class9.textColor = 0xffff00;
 			}
 			if (unreadMessages == 1) {
-				class9.message = "1 unread message";
+				class9.defaultText = "1 unread defaultText";
 				class9.textColor = 65280;
 			}
 			if (unreadMessages > 1) {
-				class9.message = unreadMessages + " unread messages";
+				class9.defaultText = unreadMessages + " unread messages";
 				class9.textColor = 65280;
 			}
 		}
 		if (j == 652)
 			if (daysSinceRecovChange == 201) {
 				if (membersInt == 1)
-					class9.message = "@yel@This is a non-members world: @whi@Since you are a member we";
+					class9.defaultText = "@yel@This is a non-members world: @whi@Since you are a member we";
 				else
-					class9.message = "";
+					class9.defaultText = "";
 			} else if (daysSinceRecovChange == 200) {
-				class9.message = "You have not yet set any password recovery questions.";
+				class9.defaultText = "You have not yet set any password recovery questions.";
 			} else {
 				String s1;
 				if (daysSinceRecovChange == 0)
@@ -7047,32 +7047,32 @@ public class Game extends GameShell {
 					s1 = "Yesterday";
 				else
 					s1 = daysSinceRecovChange + " days ago";
-				class9.message = s1 + " you changed your recovery questions";
+				class9.defaultText = s1 + " you changed your recovery questions";
 			}
 		if (j == 653)
 			if (daysSinceRecovChange == 201) {
 				if (membersInt == 1)
-					class9.message = "@whi@recommend you use a members world instead. You may use";
+					class9.defaultText = "@whi@recommend you use a members world instead. You may use";
 				else
-					class9.message = "";
+					class9.defaultText = "";
 			} else if (daysSinceRecovChange == 200)
-				class9.message = "We strongly recommend you do so now to secure your account.";
+				class9.defaultText = "We strongly recommend you do so now to secure your account.";
 			else
-				class9.message = "If you do not remember making this change then cancel it immediately";
+				class9.defaultText = "If you do not remember making this change then cancel it immediately";
 		if (j == 654) {
 			if (daysSinceRecovChange == 201)
 				if (membersInt == 1) {
-					class9.message = "@whi@this world but member benefits are unavailable whilst here.";
+					class9.defaultText = "@whi@this world but member benefits are unavailable whilst here.";
 					return;
 				} else {
-					class9.message = "";
+					class9.defaultText = "";
 					return;
 				}
 			if (daysSinceRecovChange == 200) {
-				class9.message = "Do this from the 'account management' area on our front webpage";
+				class9.defaultText = "Do this from the 'account management' area on our front webpage";
 				return;
 			}
-			class9.message = "Do this from the 'account management' area on our front webpage";
+			class9.defaultText = "Do this from the 'account management' area on our front webpage";
 		}
 	}
 
@@ -7675,7 +7675,7 @@ public class Game extends GameShell {
 					&& super.mouseY < 338) {
 				if (openInterfaceId != -1) {
 					buildInterfaceMenu(4,
-							RSInterface.interfaceCache[openInterfaceId],
+							Widget.interfaceCache[openInterfaceId],
 							super.mouseX, 4, super.mouseY, 0);
 				} else {
 					build3dScreenMenu();
@@ -7689,7 +7689,7 @@ public class Game extends GameShell {
 						&& super.mouseY < (frameHeight / 2) + 230
 						&& openInterfaceId != -1) {
 					buildInterfaceMenu((frameWidth / 2) - 356,
-							RSInterface.interfaceCache[openInterfaceId],
+							Widget.interfaceCache[openInterfaceId],
 							super.mouseX, (frameHeight / 2) - 230,
 							super.mouseY, 0);
 				} else {
@@ -7715,11 +7715,11 @@ public class Game extends GameShell {
 					&& super.mouseY < 468 + yOffset) {
 				if (overlayInterfaceId != -1) {
 					buildInterfaceMenu(548 + xOffset,
-							RSInterface.interfaceCache[overlayInterfaceId],
+							Widget.interfaceCache[overlayInterfaceId],
 							super.mouseX, 207 + yOffset, super.mouseY, 0);
 				} else if (tabInterfaceIDs[tabID] != -1) {
 					buildInterfaceMenu(548 + xOffset,
-							RSInterface.interfaceCache[tabInterfaceIDs[tabID]],
+							Widget.interfaceCache[tabInterfaceIDs[tabID]],
 							super.mouseX, 207 + yOffset, super.mouseY, 0);
 				}
 			}
@@ -7732,12 +7732,12 @@ public class Game extends GameShell {
 					&& showTabComponents) {
 				if (overlayInterfaceId != -1) {
 					buildInterfaceMenu(frameWidth - 197,
-							RSInterface.interfaceCache[overlayInterfaceId],
+							Widget.interfaceCache[overlayInterfaceId],
 							super.mouseX, frameHeight - yOffset - 267,
 							super.mouseY, 0);
 				} else if (tabInterfaceIDs[tabID] != -1) {
 					buildInterfaceMenu(frameWidth - 197,
-							RSInterface.interfaceCache[tabInterfaceIDs[tabID]],
+							Widget.interfaceCache[tabInterfaceIDs[tabID]],
 							super.mouseX, frameHeight - yOffset - 267,
 							super.mouseY, 0);
 				}
@@ -7761,7 +7761,7 @@ public class Game extends GameShell {
 						: frameHeight - 40) && showChatComponents) {
 			if (backDialogueId != -1) {
 				buildInterfaceMenu(20,
-						RSInterface.interfaceCache[backDialogueId], super.mouseX,
+						Widget.interfaceCache[backDialogueId], super.mouseX,
 						(frameMode == ScreenMode.FIXED ? 358
 								: frameHeight - 145), super.mouseY, 0);
 			} else if (super.mouseY < (frameMode == ScreenMode.FIXED ? 463
@@ -7984,7 +7984,7 @@ public class Game extends GameShell {
 			}
 			if (response == 4) {
 				firstLoginMessage = "Your account has been disabled.";
-				secondLoginMessage = "Please check your message-center for details.";
+				secondLoginMessage = "Please check your defaultText-center for details.";
 				return;
 			}
 			if (response == 5) {
@@ -8793,7 +8793,7 @@ public class Game extends GameShell {
 			drawLoadingText(95, "Unpacking interfaces");
 			GameFont aclass30_sub2_sub1_sub4s[] = { smallText,
 					regularText, boldText, aTextDrawingArea_1273 };
-			RSInterface.unpack(streamLoader_1, aclass30_sub2_sub1_sub4s,
+			Widget.load(streamLoader_1, aclass30_sub2_sub1_sub4s,
 					streamLoader_2);
 			drawLoadingText(100, "Preparing game engine");
 			for (int j6 = 0; j6 < 33; j6++) {
@@ -9379,7 +9379,7 @@ public class Game extends GameShell {
 				Raster.clear();
 				welcomeScreenRaised = true;
 				if (openInterfaceId != -1) {
-					RSInterface rsInterface_1 = RSInterface.interfaceCache[openInterfaceId];
+					Widget rsInterface_1 = Widget.interfaceCache[openInterfaceId];
 					if (rsInterface_1.width == 512
 							&& rsInterface_1.height == 334
 							&& rsInterface_1.type == 0) {
@@ -9388,7 +9388,7 @@ public class Game extends GameShell {
 					}
 					drawInterface(0, 0, rsInterface_1, 8);
 				}
-				RSInterface rsInterface = RSInterface.interfaceCache[fullscreenInterfaceID];
+				Widget rsInterface = Widget.interfaceCache[fullscreenInterfaceID];
 				if (rsInterface.width == 512 && rsInterface.height == 334
 						&& rsInterface.type == 0) {
 					rsInterface.width = 765;
@@ -9495,7 +9495,7 @@ public class Game extends GameShell {
 		anInt945 = 0;
 	}
 
-	private boolean buildFriendsListMenu(RSInterface class9) {
+	private boolean buildFriendsListMenu(Widget class9) {
 		int i = class9.contentType;
 		if (i >= 1 && i <= 200 || i >= 701 && i <= 900) {
 			if (i >= 801)
@@ -9515,7 +9515,7 @@ public class Game extends GameShell {
 			return true;
 		}
 		if (i >= 401 && i <= 500) {
-			menuActionName[menuActionRow] = "Remove @whi@" + class9.message;
+			menuActionName[menuActionRow] = "Remove @whi@" + class9.defaultText;
 			menuActionID[menuActionRow] = 322;
 			menuActionRow++;
 			return true;
@@ -9558,9 +9558,9 @@ public class Game extends GameShell {
 		Raster.method335(0, yPos, 174, 68, 220, xPos);
 	}
 
-	private void drawInterface(int j, int x, RSInterface rsInterface, int y) {
+	private void drawInterface(int j, int x, Widget rsInterface, int y) {
 		if (rsInterface == null)
-			rsInterface = RSInterface.interfaceCache[21356];
+			rsInterface = Widget.interfaceCache[21356];
 		if (rsInterface.type != 0 || rsInterface.children == null)
 			return;
 		if (rsInterface.hoverOnly && anInt1026 != rsInterface.id
@@ -9577,7 +9577,7 @@ public class Game extends GameShell {
 		for (int childId = 0; childId < childCount; childId++) {
 			int _x = rsInterface.childX[childId] + x;
 			int _y = (rsInterface.childY[childId] + y) - j;
-			RSInterface childInterface = RSInterface.interfaceCache[rsInterface.children[childId]];
+			Widget childInterface = Widget.interfaceCache[rsInterface.children[childId]];
 			_x += childInterface.x;
 			_y += childInterface.anInt265;
 			if (childInterface.contentType > 0)
@@ -9769,13 +9769,13 @@ public class Game extends GameShell {
 						hover = true;
 					int colour;
 					if (interfaceIsSelected(childInterface)) {
-						colour = childInterface.anInt219;
-						if (hover && childInterface.anInt239 != 0)
-							colour = childInterface.anInt239;
+						colour = childInterface.secondaryColor;
+						if (hover && childInterface.secondaryHoverColor != 0)
+							colour = childInterface.secondaryHoverColor;
 					} else {
 						colour = childInterface.textColor;
-						if (hover && childInterface.colourDefaultHover != 0)
-							colour = childInterface.colourDefaultHover;
+						if (hover && childInterface.defaultHoverColor != 0)
+							colour = childInterface.defaultHoverColor;
 					}
 					if (childInterface.opacity == 0) {
 						if (childInterface.filled)
@@ -9794,7 +9794,7 @@ public class Game extends GameShell {
 								childInterface.width, _x);
 				} else if (childInterface.type == 4) {
 					GameFont textDrawingArea = childInterface.textDrawingAreas;
-					String text = childInterface.message;
+					String text = childInterface.defaultText;
 					boolean flag1 = false;
 					if (anInt1039 == childInterface.id
 							|| anInt1048 == childInterface.id
@@ -9802,17 +9802,17 @@ public class Game extends GameShell {
 						flag1 = true;
 					int colour;
 					if (interfaceIsSelected(childInterface)) {
-						colour = childInterface.anInt219;
-						if (flag1 && childInterface.anInt239 != 0)
-							colour = childInterface.anInt239;
-						if (childInterface.aString228.length() > 0)
-							text = childInterface.aString228;
+						colour = childInterface.secondaryColor;
+						if (flag1 && childInterface.secondaryHoverColor != 0)
+							colour = childInterface.secondaryHoverColor;
+						if (childInterface.secondaryText.length() > 0)
+							text = childInterface.secondaryText;
 					} else {
 						colour = childInterface.textColor;
-						if (flag1 && childInterface.colourDefaultHover != 0)
-							colour = childInterface.colourDefaultHover;
+						if (flag1 && childInterface.defaultHoverColor != 0)
+							colour = childInterface.defaultHoverColor;
 					}
-					if (childInterface.atActionType == 6 && continuedDialogue) {
+					if (childInterface.optionType == 6 && continuedDialogue) {
 						text = "Please wait...";
 						colour = childInterface.textColor;
 					}
@@ -9823,7 +9823,7 @@ public class Game extends GameShell {
 							colour = 0xffffff;
 					}
 					if (frameMode != ScreenMode.FIXED) {
-						if ((backDialogueId != -1 || dialogueId != -1 || childInterface.message
+						if ((backDialogueId != -1 || dialogueId != -1 || childInterface.defaultText
 								.contains("Click here to continue"))
 								&& (rsInterface.id == backDialogueId || rsInterface.id == dialogueId)) {
 							if (colour == 0xffff00) {
@@ -9834,8 +9834,8 @@ public class Game extends GameShell {
 							}
 						}
 					}
-					if ((childInterface.parentID == 1151)
-							|| (childInterface.parentID == 12855)) {
+					if ((childInterface.parent == 1151)
+							|| (childInterface.parent == 12855)) {
 						switch (colour) {
 						case 16773120:
 							colour = 0xFE981F;
@@ -10020,7 +10020,7 @@ public class Game extends GameShell {
 					int boxWidth = 0;
 					int boxHeight = 0;
 					GameFont font = regularText;
-					for (String s1 = childInterface.message; s1.length() > 0;) {
+					for (String s1 = childInterface.defaultText; s1.length() > 0;) {
 						if (s1.indexOf("%") != -1) {
 							do {
 								int k7 = s1.indexOf("%1");
@@ -10099,7 +10099,7 @@ public class Game extends GameShell {
 					Raster.drawPixels(boxHeight, yPos, xPos, 0xFFFFA0,
 							boxWidth);
 					Raster.fillPixels(xPos, boxWidth, boxHeight, 0, yPos);
-					String s2 = childInterface.message;
+					String s2 = childInterface.defaultText;
 					for (int j11 = yPos + font.anInt1497 + 2; s2.length() > 0; j11 += font.anInt1497 + 1) {// anInt1497
 						if (s2.indexOf("%") != -1) {
 							do {
@@ -10517,17 +10517,17 @@ public class Game extends GameShell {
 			animateRSInterface(anInt945, openWalkableInterface);
 			if (openWalkableInterface == 197 && frameMode != ScreenMode.FIXED) {
 				skullIcons[0].drawSprite(frameWidth - 157, 168);
-				String text = RSInterface.interfaceCache[199].message.replace(
+				String text = Widget.interfaceCache[199].defaultText.replace(
 						"@yel@", "");
 				regularText.drawChatInput(0xE1981D, frameWidth - 165, text,
 						207, true);
 			} else if (openWalkableInterface == 201 && frameMode != ScreenMode.FIXED) {
 				drawInterface(0, frameWidth - 560,
-						RSInterface.interfaceCache[openWalkableInterface], -109);
+						Widget.interfaceCache[openWalkableInterface], -109);
 			} else {
 				drawInterface(0, frameMode == ScreenMode.FIXED ? 0
 						: (frameWidth / 2) - 356,
-						RSInterface.interfaceCache[openWalkableInterface],
+						Widget.interfaceCache[openWalkableInterface],
 						frameMode == ScreenMode.FIXED ? 0
 								: (frameHeight / 2) - 230);
 			}
@@ -10536,7 +10536,7 @@ public class Game extends GameShell {
 			animateRSInterface(anInt945, openInterfaceId);
 			drawInterface(0, frameMode == ScreenMode.FIXED ? 0
 					: (frameWidth / 2) - 356,
-					RSInterface.interfaceCache[openInterfaceId],
+					Widget.interfaceCache[openInterfaceId],
 					frameMode == ScreenMode.FIXED ? 0 : (frameHeight / 2) - 230);
 		}
 		if (!menuOpen) {
@@ -10798,11 +10798,11 @@ public class Game extends GameShell {
 
 	private boolean animateRSInterface(int i, int j) {
 		boolean flag1 = false;
-		RSInterface class9 = RSInterface.interfaceCache[j];
+		Widget class9 = Widget.interfaceCache[j];
 		for (int k = 0; k < class9.children.length; k++) {
 			if (class9.children[k] == -1)
 				break;
-			RSInterface class9_1 = RSInterface.interfaceCache[class9.children[k]];
+			Widget class9_1 = Widget.interfaceCache[class9.children[k]];
 			if (class9_1.type == 1)
 				flag1 |= animateRSInterface(i, class9_1.id);
 			if (class9_1.type == 6
@@ -10960,12 +10960,12 @@ public class Game extends GameShell {
 			return super.getParameter(s);
 	}
 
-	private int parseInterfaceOpcode(RSInterface class9, int j) {
-		if (class9.valueIndexArray == null
-				|| j >= class9.valueIndexArray.length)
+	private int parseInterfaceOpcode(Widget class9, int j) {
+		if (class9.scripts == null
+				|| j >= class9.scripts.length)
 			return -2;
 		try {
-			int ai[] = class9.valueIndexArray[j];
+			int ai[] = class9.scripts[j];
 			int k = 0;
 			int l = 0;
 			int i1 = 0;
@@ -10982,7 +10982,7 @@ public class Game extends GameShell {
 				if (j1 == 3)
 					k1 = currentExp[ai[l++]];
 				if (j1 == 4) {
-					RSInterface class9_1 = RSInterface.interfaceCache[ai[l++]];
+					Widget class9_1 = Widget.interfaceCache[ai[l++]];
 					int k2 = ai[l++];
 					if (k2 >= 0 && k2 < ItemDefinition.item_count
 							&& (!ItemDefinition.lookup(k2).is_members_only || isMembers)) {
@@ -11007,7 +11007,7 @@ public class Game extends GameShell {
 
 				}
 				if (j1 == 10) {
-					RSInterface class9_2 = RSInterface.interfaceCache[ai[l++]];
+					Widget class9_2 = Widget.interfaceCache[ai[l++]];
 					int l2 = ai[l++] + 1;
 					if (l2 >= 0 && l2 < ItemDefinition.item_count && isMembers) {
 						for (int k3 = 0; k3 < class9_2.inventoryItemId.length; k3++) {
@@ -11432,19 +11432,19 @@ public class Game extends GameShell {
 		class30_sub1.anInt1294 = j;
 	}
 
-	private boolean interfaceIsSelected(RSInterface class9) {
-		if (class9.anIntArray245 == null)
+	private boolean interfaceIsSelected(Widget class9) {
+		if (class9.scriptOperators == null)
 			return false;
-		for (int i = 0; i < class9.anIntArray245.length; i++) {
+		for (int i = 0; i < class9.scriptOperators.length; i++) {
 			int j = parseInterfaceOpcode(class9, i);
-			int k = class9.anIntArray212[i];
-			if (class9.anIntArray245[i] == 2) {
+			int k = class9.scriptDefaults[i];
+			if (class9.scriptOperators[i] == 2) {
 				if (j >= k)
 					return false;
-			} else if (class9.anIntArray245[i] == 3) {
+			} else if (class9.scriptOperators[i] == 3) {
 				if (j <= k)
 					return false;
-			} else if (class9.anIntArray245[i] == 4) {
+			} else if (class9.scriptOperators[i] == 4) {
 				if (j == k)
 					return false;
 			} else if (j != k)
@@ -12397,15 +12397,15 @@ public class Game extends GameShell {
 	}
 
 	public void sendFrame126(String str, int i) {
-		RSInterface.interfaceCache[i].message = str;
-		if (RSInterface.interfaceCache[i].parentID == tabInterfaceIDs[tabID]) {
+		Widget.interfaceCache[i].defaultText = str;
+		if (Widget.interfaceCache[i].parent == tabInterfaceIDs[tabID]) {
 		}
 	}
 
 	public void sendPacket185(int button, int toggle, int type) {
 		switch (type) {
 		case 135:
-			RSInterface class9 = RSInterface.interfaceCache[button];
+			Widget class9 = Widget.interfaceCache[button];
 			boolean flag8 = true;
 			if (class9.contentType > 0)
 				flag8 = promptUserForInput(class9);
@@ -12417,11 +12417,11 @@ public class Game extends GameShell {
 		case 646:
 			outgoing.createFrame(185);
 			outgoing.writeShort(button);
-			RSInterface class9_2 = RSInterface.interfaceCache[button];
-			if (class9_2.valueIndexArray != null
-					&& class9_2.valueIndexArray[0][0] == 5) {
-				if (variousSettings[toggle] != class9_2.anIntArray212[0]) {
-					variousSettings[toggle] = class9_2.anIntArray212[0];
+			Widget class9_2 = Widget.interfaceCache[button];
+			if (class9_2.scripts != null
+					&& class9_2.scripts[0][0] == 5) {
+				if (variousSettings[toggle] != class9_2.scriptDefaults[0]) {
+					variousSettings[toggle] = class9_2.scriptDefaults[0];
 					adjustVolume(toggle);
 				}
 			}
@@ -12429,9 +12429,9 @@ public class Game extends GameShell {
 		case 169:
 			outgoing.createFrame(185);
 			outgoing.writeShort(button);
-			RSInterface class9_3 = RSInterface.interfaceCache[button];
-			if (class9_3.valueIndexArray != null
-					&& class9_3.valueIndexArray[0][0] == 5) {
+			Widget class9_3 = Widget.interfaceCache[button];
+			if (class9_3.scripts != null
+					&& class9_3.scripts[0][0] == 5) {
 				variousSettings[toggle] = 1 - variousSettings[toggle];
 				adjustVolume(toggle);
 			}
@@ -12558,11 +12558,11 @@ public class Game extends GameShell {
 						c = '\u028F';
 					reportAbuseInput = "";
 					canMute = false;
-					for (int k9 = 0; k9 < RSInterface.interfaceCache.length; k9++) {
-						if (RSInterface.interfaceCache[k9] == null
-								|| RSInterface.interfaceCache[k9].contentType != c)
+					for (int k9 = 0; k9 < Widget.interfaceCache.length; k9++) {
+						if (Widget.interfaceCache[k9] == null
+								|| Widget.interfaceCache[k9].contentType != c)
 							continue;
-						openInterfaceId = RSInterface.interfaceCache[k9].parentID;
+						openInterfaceId = Widget.interfaceCache[k9].parent;
 
 					}
 				}
@@ -12593,29 +12593,29 @@ public class Game extends GameShell {
 
 			case PacketConstants.SHOW_PLAYER_HEAD_ON_INTERFACE:
 				int k = incoming.readLEUShortA();
-				RSInterface.interfaceCache[k].anInt233 = 3;
+				Widget.interfaceCache[k].defaultMediaType = 3;
 				if (localPlayer.desc == null)
-					RSInterface.interfaceCache[k].mediaID = (localPlayer.anIntArray1700[0] << 25)
+					Widget.interfaceCache[k].defaultMedia = (localPlayer.anIntArray1700[0] << 25)
 							+ (localPlayer.anIntArray1700[4] << 20)
 							+ (localPlayer.equipment[0] << 15)
 							+ (localPlayer.equipment[8] << 10)
 							+ (localPlayer.equipment[11] << 5)
 							+ localPlayer.equipment[1];
 				else
-					RSInterface.interfaceCache[k].mediaID = (int) (0x12345678L + localPlayer.desc.interfaceType);
+					Widget.interfaceCache[k].defaultMedia = (int) (0x12345678L + localPlayer.desc.interfaceType);
 				opCode = -1;
 				return true;
 
 			case PacketConstants.CLAN_CHAT:
 				try {
 					name = incoming.readString();
-					message = incoming.readString();
+					defaultText = incoming.readString();
 					clanname = incoming.readString();
 					rights = incoming.readUShort();
-					// message = TextInput.processText(message);
-					// message = Censor.doCensor(message);
+					// defaultText = TextInput.processText(defaultText);
+					// defaultText = Censor.doCensor(defaultText);
 					System.out.println(clanname);
-					pushMessage(message, 16, name);
+					pushMessage(defaultText, 16, name);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -12632,7 +12632,7 @@ public class Game extends GameShell {
 
 			case PacketConstants.CLEAN_ITEMS_OF_INTERFACE:
 				int i1 = incoming.readLEUShort();
-				RSInterface class9 = RSInterface.interfaceCache[i1];
+				Widget class9 = Widget.interfaceCache[i1];
 				for (int k15 = 0; k15 < class9.inventoryItemId.length; k15++) {
 					class9.inventoryItemId[k15] = -1;
 					class9.inventoryItemId[k15] = 0;
@@ -12726,7 +12726,7 @@ public class Game extends GameShell {
 				int x = incoming.readShort();
 				int y = incoming.readLEShort();
 				int compId = incoming.readLEUShort();
-				RSInterface childInterface = RSInterface.interfaceCache[compId];
+				Widget childInterface = Widget.interfaceCache[compId];
 				childInterface.x = x;
 				childInterface.anInt265 = y;
 				opCode = -1;
@@ -12947,8 +12947,8 @@ public class Game extends GameShell {
 			case 75:
 				int j3 = incoming.readLEUShortA();
 				int j11 = incoming.readLEUShortA();
-				RSInterface.interfaceCache[j11].anInt233 = 2;
-				RSInterface.interfaceCache[j11].mediaID = j3;
+				Widget.interfaceCache[j11].defaultMediaType = 2;
+				Widget.interfaceCache[j11].defaultMedia = j3;
 				opCode = -1;
 				return true;
 
@@ -13190,7 +13190,7 @@ public class Game extends GameShell {
 			case 79:
 				int j5 = incoming.readLEUShort();
 				int l12 = incoming.readUShortA();
-				RSInterface class9_3 = RSInterface.interfaceCache[j5];
+				Widget class9_3 = Widget.interfaceCache[j5];
 				if (class9_3 != null && class9_3.type == 0) {
 					if (l12 < 0)
 						l12 = 0;
@@ -13281,16 +13281,16 @@ public class Game extends GameShell {
 				int i13 = incoming.readUShort();
 				int k18 = incoming.readUShort();
 				if (k18 == 65535) {
-					RSInterface.interfaceCache[i6].anInt233 = 0;
+					Widget.interfaceCache[i6].defaultMediaType = 0;
 					opCode = -1;
 					return true;
 				} else {
 					ItemDefinition itemDef = ItemDefinition.lookup(k18);
-					RSInterface.interfaceCache[i6].anInt233 = 4;
-					RSInterface.interfaceCache[i6].mediaID = k18;
-					RSInterface.interfaceCache[i6].modelRotation1 = itemDef.rotation_y;
-					RSInterface.interfaceCache[i6].modelRotation2 = itemDef.rotation_y;
-					RSInterface.interfaceCache[i6].modelZoom = (itemDef.model_zoom * 100)
+					Widget.interfaceCache[i6].defaultMediaType = 4;
+					Widget.interfaceCache[i6].defaultMedia = k18;
+					Widget.interfaceCache[i6].modelRotation1 = itemDef.rotation_y;
+					Widget.interfaceCache[i6].modelRotation2 = itemDef.rotation_y;
+					Widget.interfaceCache[i6].modelZoom = (itemDef.model_zoom * 100)
 							/ i13;
 					opCode = -1;
 					return true;
@@ -13299,7 +13299,7 @@ public class Game extends GameShell {
 			case 171:
 				boolean flag1 = incoming.readUnsignedByte() == 1;
 				int j13 = incoming.readUShort();
-				RSInterface.interfaceCache[j13].hoverOnly = flag1;
+				Widget.interfaceCache[j13].hoverOnly = flag1;
 				opCode = -1;
 				return true;
 
@@ -13361,8 +13361,8 @@ public class Game extends GameShell {
 			case 8:
 				int k6 = incoming.readLEUShortA();
 				int l13 = incoming.readUShort();
-				RSInterface.interfaceCache[k6].anInt233 = 1;
-				RSInterface.interfaceCache[k6].mediaID = l13;
+				Widget.interfaceCache[k6].defaultMediaType = 1;
+				Widget.interfaceCache[k6].defaultMedia = l13;
 				opCode = -1;
 				return true;
 
@@ -13372,14 +13372,14 @@ public class Game extends GameShell {
 				int i19 = i14 >> 10 & 0x1f;
 				int i22 = i14 >> 5 & 0x1f;
 				int l24 = i14 & 0x1f;
-				RSInterface.interfaceCache[l6].textColor = (i19 << 19)
+				Widget.interfaceCache[l6].textColor = (i19 << 19)
 						+ (i22 << 11) + (l24 << 3);
 				opCode = -1;
 				return true;
 
 			case 53:
 				int i7 = incoming.readUShort();
-				RSInterface class9_1 = RSInterface.interfaceCache[i7];
+				Widget class9_1 = Widget.interfaceCache[i7];
 				int j19 = incoming.readUShort();
 				for (int j22 = 0; j22 < j19; j22++) {
 					int i25 = incoming.readUnsignedByte();
@@ -13400,9 +13400,9 @@ public class Game extends GameShell {
 				int j14 = incoming.readUShort();
 				int k19 = incoming.readUShort();
 				int k22 = incoming.readLEUShortA();
-				RSInterface.interfaceCache[j14].modelRotation1 = k19;
-				RSInterface.interfaceCache[j14].modelRotation2 = k22;
-				RSInterface.interfaceCache[j14].modelZoom = j7;
+				Widget.interfaceCache[j14].modelRotation1 = k19;
+				Widget.interfaceCache[j14].modelRotation2 = k22;
+				Widget.interfaceCache[j14].modelZoom = j7;
 				opCode = -1;
 				return true;
 
@@ -13529,7 +13529,7 @@ public class Game extends GameShell {
 			case 200:
 				int l8 = incoming.readUShort();
 				int i15 = incoming.readShort();
-				RSInterface class9_4 = RSInterface.interfaceCache[l8];
+				Widget class9_4 = Widget.interfaceCache[l8];
 				class9_4.anInt257 = i15;
 				opCode = -1;
 				return true;
@@ -13554,7 +13554,7 @@ public class Game extends GameShell {
 
 			case 34:
 				int i9 = incoming.readUShort();
-				RSInterface childInterface2 = RSInterface.interfaceCache[i9];
+				Widget childInterface2 = Widget.interfaceCache[i9];
 				while (incoming.currentPosition < packetSize) {
 					int j20 = incoming.readUSmart();
 					int i23 = incoming.readUShort();
@@ -13778,7 +13778,7 @@ public class Game extends GameShell {
 	}
 
 	private void drawSpecialOrb() {
-		String value = RSInterface.interfaceCache[155].message;
+		String value = Widget.interfaceCache[155].defaultText;
 		int spec = Integer.parseInt(value);
 		if (specialHover) {
 			cacheSprite[56].drawSprite(frameMode == ScreenMode.FIXED ? 153 : frameWidth - 63, frameMode == ScreenMode.FIXED ? 131 : 150);
@@ -13813,15 +13813,15 @@ public class Game extends GameShell {
 					clickedQuickPrayers ? 2 : 1, runClicked ? 4 : 3,
 					sumActive ? 6 : 5 }, orbSprite = { 9, 10,
 					(runClicked ? 12 : 11), 13 };
-			String cEnergy = RSInterface.interfaceCache[149].message
+			String cEnergy = Widget.interfaceCache[149].defaultText
 					.replaceAll("%", "");
-			String hp = RSInterface.interfaceCache[4016].message.replaceAll(
+			String hp = Widget.interfaceCache[4016].defaultText.replaceAll(
 					"%", "");
 			int currentHP = Integer.parseInt(hp), currentEnergy = Integer
 					.parseInt(cEnergy);
 			for (int i = 0; i < 3; i++) {
-				String currentStats = RSInterface.interfaceCache[currentInterface[i]].message
-						.replaceAll("%", ""), maxStats = RSInterface.interfaceCache[maximumInterface[i]].message
+				String currentStats = Widget.interfaceCache[currentInterface[i]].defaultText
+						.replaceAll("%", ""), maxStats = Widget.interfaceCache[maximumInterface[i]].defaultText
 						.replaceAll("%", "");
 				int currentLevel = Integer.parseInt(currentStats), maxLevel = Integer
 						.parseInt(maxStats), level = (int) (((double) currentLevel / (double) maxLevel) * 100D);
@@ -13853,7 +13853,7 @@ public class Game extends GameShell {
 													: 100
 													: i == 0
 															&& Configuration.newDamage ? currentHP * 10
-															: RSInterface.interfaceCache[currentInterface[i]].message
+															: Widget.interfaceCache[currentInterface[i]].defaultText
 																	.replaceAll(
 																			"%",
 																			"")),
@@ -13870,7 +13870,7 @@ public class Game extends GameShell {
 													: 100
 													: i == 0
 															&& Configuration.newDamage ? currentHP * 1
-															: RSInterface.interfaceCache[currentInterface[i]].message
+															: Widget.interfaceCache[currentInterface[i]].defaultText
 																	.replaceAll(
 																			"%",
 																			"")),
@@ -14121,7 +14121,7 @@ public class Game extends GameShell {
 		flashingSidebarId = -1;
 		incompleteAnimables = new Deque();
 		anIntArray1057 = new int[33];
-		aClass9_1059 = new RSInterface();
+		aClass9_1059 = new Widget();
 		mapScenes = new Background[100];
 		barFillColor = 0x4d4233;
 		anIntArray1065 = new int[7];
@@ -14190,7 +14190,7 @@ public class Game extends GameShell {
 
 	public int rights;
 	public String name;
-	public String message;
+	public String defaultText;
 	public String clanname;
 	private final int[] chatRights;
 	public int chatTypeView;
@@ -14396,7 +14396,7 @@ public class Game extends GameShell {
 	private int multicombat;
 	private Deque incompleteAnimables;
 	private final int[] anIntArray1057;
-	public final RSInterface aClass9_1059;
+	public final Widget aClass9_1059;
 	private Background[] mapScenes;
 	private int trackCount;
 	private final int barFillColor;

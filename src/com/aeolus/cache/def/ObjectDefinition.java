@@ -3,7 +3,7 @@ package com.aeolus.cache.def;
 import com.aeolus.Game;
 import com.aeolus.cache.config.VariableBits;
 import com.aeolus.cache.media.SequenceFrame;
-import com.aeolus.collection.Cache;
+import com.aeolus.collection.ReferenceCache;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
@@ -50,12 +50,12 @@ public final class ObjectDefinition {
 	public byte description[];
 	public boolean isInteractive;
 	public boolean castsShadow;
-	public static Cache mruNodes2 = new Cache(30);
+	public static ReferenceCache mruNodes2 = new ReferenceCache(30);
 	public int animation;
 	public static ObjectDefinition[] cache;
 	public int translateZ;
 	public int[] modifiedModelColors;
-	public static Cache mruNodes1 = new Cache(500);
+	public static ReferenceCache mruNodes1 = new ReferenceCache(500);
 	public String interactions[];
 	
 	public ObjectDefinition() {

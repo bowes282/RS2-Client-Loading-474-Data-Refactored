@@ -1,7 +1,7 @@
 package com.aeolus.cache.def;
 
 import com.aeolus.cache.media.Sprite;
-import com.aeolus.collection.Cache;
+import com.aeolus.collection.ReferenceCache;
 import com.aeolus.media.Raster;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
@@ -529,8 +529,8 @@ public final class ItemDefinition {
 	public int value;
 	public int[] modified_model_colors;
 	public int id;
-	public static Cache image_cache = new Cache(100);
-	public static Cache model_cache = new Cache(50);
+	public static ReferenceCache image_cache = new ReferenceCache(100);
+	public static ReferenceCache model_cache = new ReferenceCache(50);
 	public int[] original_model_colors;
 	public boolean is_members_only;
 	private int equipped_model_female_3;

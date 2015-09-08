@@ -1,5 +1,5 @@
 package com.aeolus.cache.def;
-import com.aeolus.collection.Cache;
+import com.aeolus.collection.ReferenceCache;
 import com.aeolus.media.Animation;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
@@ -92,5 +92,5 @@ public final class SpotAnimation {
 	public int rotation;
 	public int modelBrightness;
 	public int modelShadow;
-	public static Cache memCache = new Cache(30);
+	public static ReferenceCache memCache = new ReferenceCache(30);
 }
