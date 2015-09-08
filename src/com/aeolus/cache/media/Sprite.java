@@ -21,9 +21,9 @@ public final class Sprite extends Raster {
 
 	public String location = Signlink.findcachedir() + "Sprites/";
 
-	public Sprite(byte abyte0[], Component component) {
+	public Sprite(byte data[], Component component) {
 		try {
-			Image image = Toolkit.getDefaultToolkit().createImage(abyte0);
+			Image image = Toolkit.getDefaultToolkit().createImage(data);
 			MediaTracker mediatracker = new MediaTracker(component);
 			mediatracker.addImage(image, 0);
 			mediatracker.waitForAll();
@@ -377,46 +377,46 @@ public final class Sprite extends Raster {
 		}
 	}
 
-	public void drawSprite(int i, int k)
+	public void drawSprite(int x, int y)
 	{
-		i += drawOffsetX;
-		k += drawOffsetY;
-		int l = i + k * Raster.width;
-		int i1 = 0;
-		int j1 = myHeight;
-		int k1 = myWidth;
-		int l1 = Raster.width - k1;
-		int i2 = 0;
-		if(k < Raster.topY)
+		x += drawOffsetX;
+		y += drawOffsetY;
+		int rasterClip = x + y * Raster.width;
+		int imageClip = 0;
+		int height = myHeight;
+		int width = myWidth;
+		int rasterOffset = Raster.width - width;
+		int imageOffset = 0;
+		if(y < Raster.topY)
 		{
-			int j2 = Raster.topY - k;
-			j1 -= j2;
-			k = Raster.topY;
-			i1 += j2 * k1;
-			l += j2 * Raster.width;
+			int dy = Raster.topY - y;
+			height -= dy;
+			y = Raster.topY;
+			imageClip += dy * width;
+			rasterClip += dy * Raster.width;
 		}
-		if(k + j1 > Raster.bottomY)
-			j1 -= (k + j1) - Raster.bottomY;
-		if(i < Raster.topX)
+		if(y + height > Raster.bottomY)
+			height -= (y + height) - Raster.bottomY;
+		if(x < Raster.topX)
 		{
-			int k2 = Raster.topX - i;
-			k1 -= k2;
-			i = Raster.topX;
-			i1 += k2;
-			l += k2;
-			i2 += k2;
-			l1 += k2;
+			int dx = Raster.topX - x;
+			width -= dx;
+			x = Raster.topX;
+			imageClip += dx;
+			rasterClip += dx;
+			imageOffset += dx;
+			rasterOffset += dx;
 		}
-		if(i + k1 > Raster.bottomX)
+		if(x + width > Raster.bottomX)
 		{
-			int l2 = (i + k1) - Raster.bottomX;
-			k1 -= l2;
-			i2 += l2;
-			l1 += l2;
+			int dx = (x + width) - Raster.bottomX;
+			width -= dx;
+			imageOffset += dx;
+			rasterOffset += dx;
 		}
-		if(!(k1 <= 0 || j1 <= 0))
+		if(!(width <= 0 || height <= 0))
 		{
-			method349(Raster.pixels, myPixels, i1, l, k1, j1, l1, i2);
+			method349(Raster.pixels, myPixels, imageClip, rasterClip, width, height, rasterOffset, imageOffset);
 		}
 	}
 
