@@ -322,7 +322,7 @@ public final class OnDemandRequester extends Requester implements Runnable {
 		if (onDemandData == null)
 			return null;
 		synchronized (nodeSubList) {
-			onDemandData.unlinkSub();
+			onDemandData.unlinkCacheable();
 		}
 		if (onDemandData.buffer == null)
 			return onDemandData;

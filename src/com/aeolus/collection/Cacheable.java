@@ -2,17 +2,16 @@ package com.aeolus.collection;
 
 public class Cacheable extends Linkable {
 
-	public Cacheable prevNodeSub;
-	Cacheable nextNodeSub;
-	public static int anInt1305;
+	public Cacheable nextCacheable;
+	public Cacheable previousCacheable;
 
-	public final void unlinkSub() {
-		if (nextNodeSub == null) {
+	public final void unlinkCacheable() {
+		if (previousCacheable == null) {
 		} else {
-			nextNodeSub.prevNodeSub = prevNodeSub;
-			prevNodeSub.nextNodeSub = nextNodeSub;
-			prevNodeSub = null;
-			nextNodeSub = null;
+			previousCacheable.nextCacheable = nextCacheable;
+			nextCacheable.previousCacheable = previousCacheable;
+			nextCacheable = null;
+			previousCacheable = null;
 		}
 	}
 }

@@ -24,11 +24,11 @@ public final class ReferenceCache {
 			if (spaceLeft == 0) {
 				Cacheable nodeSub_1 = nodeSubList.popTail();
 				nodeSub_1.unlink();
-				nodeSub_1.unlinkSub();
+				nodeSub_1.unlinkCacheable();
 				if (nodeSub_1 == emptyNodeSub) {
 					Cacheable nodeSub_2 = nodeSubList.popTail();
 					nodeSub_2.unlink();
-					nodeSub_2.unlinkSub();
+					nodeSub_2.unlinkCacheable();
 				}
 			} else {
 				spaceLeft--;
@@ -47,7 +47,7 @@ public final class ReferenceCache {
 			Cacheable nodeSub = nodeSubList.popTail();
 			if (nodeSub != null) {
 				nodeSub.unlink();
-				nodeSub.unlinkSub();
+				nodeSub.unlinkCacheable();
 			} else {
 				spaceLeft = initialCount;
 				return;

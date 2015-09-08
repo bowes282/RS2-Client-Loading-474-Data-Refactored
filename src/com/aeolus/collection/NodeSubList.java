@@ -4,36 +4,36 @@ public final class NodeSubList {
 
 	public NodeSubList() {
 		head = new Cacheable();
-		head.prevNodeSub = head;
-		head.nextNodeSub = head;
+		head.nextCacheable = head;
+		head.previousCacheable = head;
 	}
 
 	public void insertHead(Cacheable nodeSub) {
-		if (nodeSub.nextNodeSub != null)
-			nodeSub.unlinkSub();
-		nodeSub.nextNodeSub = head.nextNodeSub;
-		nodeSub.prevNodeSub = head;
-		nodeSub.nextNodeSub.prevNodeSub = nodeSub;
-		nodeSub.prevNodeSub.nextNodeSub = nodeSub;
+		if (nodeSub.previousCacheable != null)
+			nodeSub.unlinkCacheable();
+		nodeSub.previousCacheable = head.previousCacheable;
+		nodeSub.nextCacheable = head;
+		nodeSub.previousCacheable.nextCacheable = nodeSub;
+		nodeSub.nextCacheable.previousCacheable = nodeSub;
 	}
 
 	public Cacheable popTail() {
-		Cacheable nodeSub = head.prevNodeSub;
+		Cacheable nodeSub = head.nextCacheable;
 		if (nodeSub == head) {
 			return null;
 		} else {
-			nodeSub.unlinkSub();
+			nodeSub.unlinkCacheable();
 			return nodeSub;
 		}
 	}
 
 	public Cacheable reverseGetFirst() {
-		Cacheable nodeSub = head.prevNodeSub;
+		Cacheable nodeSub = head.nextCacheable;
 		if (nodeSub == head) {
 			current = null;
 			return null;
 		} else {
-			current = nodeSub.prevNodeSub;
+			current = nodeSub.nextCacheable;
 			return nodeSub;
 		}
 	}
@@ -44,14 +44,14 @@ public final class NodeSubList {
 			current = null;
 			return null;
 		} else {
-			current = nodeSub.prevNodeSub;
+			current = nodeSub.nextCacheable;
 			return nodeSub;
 		}
 	}
 
 	public int getNodeCount() {
 		int i = 0;
-		for (Cacheable nodeSub = head.prevNodeSub; nodeSub != head; nodeSub = nodeSub.prevNodeSub)
+		for (Cacheable nodeSub = head.nextCacheable; nodeSub != head; nodeSub = nodeSub.nextCacheable)
 			i++;
 
 		return i;
