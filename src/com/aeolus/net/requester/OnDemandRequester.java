@@ -5,7 +5,7 @@ import java.util.zip.GZIPInputStream;
 
 import com.aeolus.Game;
 import com.aeolus.collection.Deque;
-import com.aeolus.collection.NodeSubList;
+import com.aeolus.collection.Queue;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 import com.aeolus.util.signlink.Signlink;
@@ -514,7 +514,7 @@ public final class OnDemandRequester extends Requester implements Runnable {
 		waiting = false;
 		aClass19_1358 = new Deque();
 		gzipInputBuffer = new byte[0x71868];
-		nodeSubList = new NodeSubList();
+		nodeSubList = new Queue();
 		versions = new int[4][];
 		aClass19_1368 = new Deque();
 		aClass19_1370 = new Deque();
@@ -545,7 +545,7 @@ public final class OnDemandRequester extends Requester implements Runnable {
 	private final Deque aClass19_1358;
 	private final byte[] gzipInputBuffer;
 	private int[] anIntArray1360;
-	private final NodeSubList nodeSubList;
+	private final Queue nodeSubList;
 	private InputStream inputStream;
 	private Socket socket;
 	private final int[][] versions;

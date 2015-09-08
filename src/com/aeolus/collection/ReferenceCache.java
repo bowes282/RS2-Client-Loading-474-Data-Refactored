@@ -5,7 +5,7 @@ public final class ReferenceCache {
 
 	public ReferenceCache(int i) {
 		emptyNodeSub = new Cacheable();
-		nodeSubList = new NodeSubList();
+		nodeSubList = new Queue();
 		initialCount = i;
 		spaceLeft = i;
 		nodeCache = new HashTable();
@@ -59,5 +59,5 @@ public final class ReferenceCache {
 	private final int initialCount;
 	private int spaceLeft;
 	private final HashTable nodeCache;
-	private final NodeSubList nodeSubList;
+	private final Queue nodeSubList;
 }
