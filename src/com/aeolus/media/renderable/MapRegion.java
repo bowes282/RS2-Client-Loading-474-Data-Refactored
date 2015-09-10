@@ -1,7 +1,7 @@
 package com.aeolus.media.renderable;
 import com.aeolus.cache.def.ObjectDefinition;
 import com.aeolus.net.Buffer;
-import com.aeolus.net.requester.OnDemandRequester;
+import com.aeolus.net.requester.ResourceProvider;
 import com.aeolus.scene.SceneObject;
 import com.aeolus.scene.graphic.Rasterizer;
 import com.aeolus.scene.map.CollisionMap;
@@ -405,7 +405,7 @@ public final class MapRegion {
 		return k;
 	}
 
-	public static void method173(Buffer stream, OnDemandRequester class42_sub1) {
+	public static void method173(Buffer stream, ResourceProvider class42_sub1) {
 		label0: {
 			int i = -1;
 			do {

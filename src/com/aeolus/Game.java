@@ -45,7 +45,7 @@ import com.aeolus.net.RSSocket;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 import com.aeolus.net.requester.OnDemandNode;
-import com.aeolus.net.requester.OnDemandRequester;
+import com.aeolus.net.requester.ResourceProvider;
 import com.aeolus.net.security.ISAACCipher;
 import com.aeolus.net.security.UserIdentification;
 import com.aeolus.scene.SceneObject;
@@ -8694,7 +8694,7 @@ public class Game extends GameShell {
 			CacheArchive streamLoader_6 = streamLoaderForName(5, "update list",
 					"versionlist", archiveCRCs[5], 60);
 			drawLoadingText(60, "Connecting to update server");
-			onDemandFetcher = new OnDemandRequester();
+			onDemandFetcher = new ResourceProvider();
 			onDemandFetcher.start(streamLoader_6, this);
 			Model.method459(onDemandFetcher.getModelCount(), onDemandFetcher);
 			drawLoadingText(80, "Unpacking media");
@@ -14469,7 +14469,7 @@ public class Game extends GameShell {
 	private final int[] anIntArray1065;
 	private int mouseInvInterfaceIndex;
 	private int lastActiveInvInterface;
-	public OnDemandRequester onDemandFetcher;
+	public ResourceProvider onDemandFetcher;
 	private int anInt1069;
 	private int anInt1070;
 	private int anInt1071;

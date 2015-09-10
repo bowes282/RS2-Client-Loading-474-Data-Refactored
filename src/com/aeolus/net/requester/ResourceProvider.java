@@ -10,7 +10,7 @@ import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 import com.aeolus.util.signlink.Signlink;
 
-public final class OnDemandRequester extends Requester implements Runnable {
+public final class ResourceProvider extends Requester implements Runnable {
 
 	private void readData() {
 		try {
@@ -504,7 +504,7 @@ public final class OnDemandRequester extends Requester implements Runnable {
 		return anIntArray1348[i] == 1;
 	}
 
-	public OnDemandRequester() {
+	public ResourceProvider() {
 		requested = new Deque();
 		statusString = "";
 		ioBuffer = new byte[500];

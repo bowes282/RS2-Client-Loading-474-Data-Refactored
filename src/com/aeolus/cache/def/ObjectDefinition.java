@@ -7,7 +7,7 @@ import com.aeolus.collection.ReferenceCache;
 import com.aeolus.media.renderable.Model;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
-import com.aeolus.net.requester.OnDemandRequester;
+import com.aeolus.net.requester.ResourceProvider;
 
 public final class ObjectDefinition {
 	
@@ -175,7 +175,7 @@ public final class ObjectDefinition {
 		childrenIDs = null;
 	}
 
-	public void loadModels(OnDemandRequester archive) {
+	public void loadModels(ResourceProvider archive) {
 		if (modelIds == null)
 			return;
 		for (int index = 0; index < modelIds.length; index++)
