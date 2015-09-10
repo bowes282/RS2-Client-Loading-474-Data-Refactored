@@ -6,6 +6,11 @@ package com.aeolus;
 public class Configuration {
 	
 	/**
+	 * Sends client-related debug messages to the client output stream
+	 */
+	public static boolean client_debug = true;
+	
+	/**
 	 * The address of the server that the client will be connecting to
 	 */
 	public static String server_address = "localhost";

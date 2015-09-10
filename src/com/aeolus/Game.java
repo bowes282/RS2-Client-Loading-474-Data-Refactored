@@ -62,6 +62,7 @@ import com.aeolus.scene.tile.WallLock;
 import com.aeolus.sound.SoundConstants;
 import com.aeolus.sound.SoundPlayer;
 import com.aeolus.sound.SoundTrack;
+import com.aeolus.util.GameConstants;
 import com.aeolus.util.MouseDetection;
 import com.aeolus.util.PacketConstants;
 import com.aeolus.util.SkillConstants;
@@ -4483,9 +4484,9 @@ public class Game extends GameShell {
 	}
 
 	public void setNorth() {
-		anInt1278 = 0;
-		anInt1131 = 0;
-		anInt896 = 0;
+		cameraX = 0;
+		cameraY = 0;
+		cameraRotation = 0;
 		cameraHorizontal = 0;
 		minimapRotation = 0;
 		minimapZoom = 0;
@@ -4854,24 +4855,26 @@ public class Game extends GameShell {
 			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
+		// useable spells
 		if (action == 626) {
-			Widget class9_1 = Widget.interfaceCache[second];
+			Widget widget = Widget.interfaceCache[second];
 			spellSelected = 1;
-			spellId = class9_1.id;
+			spellId = widget.id;
 			anInt1137 = second;
-			spellUsableOn = class9_1.spellUsableOn;
+			spellUsableOn = widget.spellUsableOn;
 			itemSelected = 0;
-			String s4 = class9_1.selectedActionName;
+			String s4 = widget.selectedActionName;
 			if (s4.indexOf(" ") != -1)
 				s4 = s4.substring(0, s4.indexOf(" "));
-			String s8 = class9_1.selectedActionName;
+			String s8 = widget.selectedActionName;
 			if (s8.indexOf(" ") != -1)
 				s8 = s8.substring(s8.indexOf(" ") + 1);
-			spellTooltip = s4 + " " + class9_1.spellName + " " + s8;
+			spellTooltip = s4 + " " + widget.spellName + " " + s8;
 			// class9_1.sprite1.drawSprite(class9_1.x, class9_1.anInt265,
 			// 0xffffff);
 			// class9_1.sprite1.drawSprite(200,200);
-			// System.out.println("Sprite: " + class9_1.sprite1.toString());
+			if (Configuration.client_debug)
+			 System.out.println("spellId: " + spellId + " - spellSelected: " + spellSelected);
 			if (spellUsableOn == 16) {
 				tabID = 3;
 				tabAreaAltered = true;
@@ -5528,11 +5531,12 @@ public class Game extends GameShell {
 	private void createMenu() {
 		if (itemSelected == 0 && spellSelected == 0) {
 			menuActionText[menuActionRow] = "Walk here";
-			menuActionTypes[menuActionRow] = 519;
+			menuActionTypes[menuActionRow] = GameConstants.HOVER_MENU_TOOLTIP;
 			firstMenuAction[menuActionRow] = super.mouseX;
 			secondMenuAction[menuActionRow] = super.mouseY;
 			menuActionRow++;
-		}
+		}		
+		
 		int j = -1;
 		for (int k = 0; k < Model.anInt1687; k++) {
 			int l = Model.anIntArray1688[k];
@@ -5569,19 +5573,19 @@ public class Game extends GameShell {
 					}
 				} else {
 					if (objectDef.interactions != null) {
-						for (int i2 = 4; i2 >= 0; i2--)
-							if (objectDef.interactions[i2] != null) {
-								menuActionText[menuActionRow] = objectDef.interactions[i2]
+						for (int type = 4; type >= 0; type--)
+							if (objectDef.interactions[type] != null) {
+								menuActionText[menuActionRow] = objectDef.interactions[type]
 										+ " @cya@" + objectDef.name;
-								if (i2 == 0)
+								if (type == 0)
 									menuActionTypes[menuActionRow] = 502;
-								if (i2 == 1)
+								if (type == 1)
 									menuActionTypes[menuActionRow] = 900;
-								if (i2 == 2)
+								if (type == 2)
 									menuActionTypes[menuActionRow] = 113;
-								if (i2 == 3)
+								if (type == 3)
 									menuActionTypes[menuActionRow] = 872;
-								if (i2 == 4)
+								if (type == 4)
 									menuActionTypes[menuActionRow] = 1062;
 								selectedMenuActions[menuActionRow] = l;
 								firstMenuAction[menuActionRow] = i1;
@@ -5600,7 +5604,7 @@ public class Game extends GameShell {
 						menuActionText[menuActionRow] = "Examine @cya@"
 								+ objectDef.name;
 					}
-					menuActionTypes[menuActionRow] = 1226;
+					menuActionTypes[menuActionRow] = GameConstants.RIGHT_CLICK_MENU_TOOLTIP;
 					selectedMenuActions[menuActionRow] = objectDef.type << 14;
 					firstMenuAction[menuActionRow] = i1;
 					secondMenuAction[menuActionRow] = j1;
@@ -9965,12 +9969,14 @@ public class Game extends GameShell {
 						sprite = childInterface.disabledSprite;
 					if (spellSelected == 1 && childInterface.id == spellId
 							&& spellId != 0 && sprite != null) {
+						//draws clicked spells
 						sprite.drawSprite(_x, _y, 0xffffff);
 					} else {
 						if (sprite != null)
 							if (childInterface.drawsTransparent) {
 								sprite.drawTransparentSprite(_x, _y, alpha);
 							} else {
+								//draws all interfaced sprites
 								sprite.drawSprite(_x, _y);
 							}
 					}
@@ -10390,8 +10396,8 @@ public class Game extends GameShell {
 
 	private void checkForGameUsages() {
 		try {
-			int j = localPlayer.x + anInt1278;
-			int k = localPlayer.y + anInt1131;
+			int j = localPlayer.x + cameraX;
+			int k = localPlayer.y + cameraY;
 			if (anInt1014 - j < -500 || anInt1014 - j > 500
 					|| anInt1015 - k < -500 || anInt1015 - k > 500) {
 				anInt1014 = j;
@@ -13685,7 +13691,7 @@ public class Game extends GameShell {
 				i = anInt984 / 256;
 			if (aBooleanArray876[4] && anIntArray1203[4] + 128 > i)
 				i = anIntArray1203[4] + 128;
-			int k = cameraHorizontal + anInt896 & 0x7ff;
+			int k = cameraHorizontal + cameraRotation & 0x7ff;
 			setCameraPos(cameraZoom
 					+ i
 					* ((SceneGraph.viewDistance == 9)
@@ -14318,7 +14324,7 @@ public class Game extends GameShell {
 	private int anInt893;
 	private int[] anIntArray894;
 	private Buffer[] playerSynchronizationBuffers;
-	private int anInt896;
+	private int cameraRotation;
 	public int anInt897;
 	private int friendsCount;
 	private int friendServerStatus;
@@ -14524,7 +14530,7 @@ public class Game extends GameShell {
 	private final int[][][] anIntArrayArrayArray1129;
 	public static final int[] tabInterfaceIDs = { -1, -1, -1, -1, -1, -1, -1,
 			-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-	private int anInt1131;
+	private int cameraY;
 	public int anInt1132;
 	private int menuActionRow;
 	private static int anInt1134;
@@ -14651,7 +14657,7 @@ public class Game extends GameShell {
 	public RSFont newFancyFont;
 	private int anInt1275;
 	private int backDialogueId;
-	private int anInt1278;
+	private int cameraX;
 	public int anInt1279;
 	private int[] bigX;
 	private int[] bigY;
