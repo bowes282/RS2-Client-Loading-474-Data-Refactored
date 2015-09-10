@@ -44,7 +44,7 @@ import com.aeolus.net.NetworkConstants;
 import com.aeolus.net.RSSocket;
 import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
-import com.aeolus.net.requester.OnDemandNode;
+import com.aeolus.net.requester.Resource;
 import com.aeolus.net.requester.ResourceProvider;
 import com.aeolus.net.security.ISAACCipher;
 import com.aeolus.net.security.UserIdentification;
@@ -3703,7 +3703,7 @@ public class Game extends GameShell {
 
 	private void processOnDemandQueue() {
 		do {
-			OnDemandNode onDemandData;
+			Resource onDemandData;
 			do {
 				onDemandData = onDemandFetcher.getNextNode();
 				if (onDemandData == null)

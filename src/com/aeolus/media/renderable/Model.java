@@ -5,7 +5,7 @@ import com.aeolus.media.Raster;
 import com.aeolus.media.SkinList;
 import com.aeolus.media.Vertex;
 import com.aeolus.net.Buffer;
-import com.aeolus.net.requester.Requester;
+import com.aeolus.net.requester.Provider;
 import com.aeolus.scene.graphic.Rasterizer;
 import com.aeolus.scene.map.SceneGraph;
 
@@ -988,35 +988,35 @@ public class Model extends Renderable {
 	public static boolean newmodel[];
 
 	public static void method459(int i,
-			Requester onDemandFetcherParent) {
+			Provider onDemandFetcherParent) {
 		aClass21Array1661 = new ModelHeader[80000];
 		newmodel = new boolean[100000];
-		aOnDemandFetcherParent_1662 = onDemandFetcherParent;
+		resourceProvider = onDemandFetcherParent;
 	}
 
 	public static void method461(int j) {
 		aClass21Array1661[j] = null;
 	}
 
-	public static Model getModel(int j) {
+	public static Model getModel(int file) {
 		if (aClass21Array1661 == null)
 			return null;
-		ModelHeader class21 = aClass21Array1661[j];
+		ModelHeader class21 = aClass21Array1661[file];
 		if (class21 == null) {
-			aOnDemandFetcherParent_1662.method548(j);
+			resourceProvider.provide(file);
 			return null;
 		} else {
-			return new Model(j);
+			return new Model(file);
 		}
 	}
 
-	public static boolean isCached(int i) {
+	public static boolean isCached(int file) {
 		if (aClass21Array1661 == null)
 			return false;
 
-		ModelHeader class21 = aClass21Array1661[i];
+		ModelHeader class21 = aClass21Array1661[file];
 		if (class21 == null) {
-			aOnDemandFetcherParent_1662.method548(i);
+			resourceProvider.provide(file);
 			return false;
 		} else {
 			return true;
@@ -2816,7 +2816,7 @@ public class Model extends Renderable {
 	public boolean fits_on_single_square;
 	public Vertex aClass33Array1660[];
 	static ModelHeader aClass21Array1661[];
-	static Requester aOnDemandFetcherParent_1662;
+	static Provider resourceProvider;
 	static boolean aBooleanArray1663[] = new boolean[8000];
 	static boolean aBooleanArray1664[] = new boolean[8000];
 	static int anIntArray1665[] = new int[8000];

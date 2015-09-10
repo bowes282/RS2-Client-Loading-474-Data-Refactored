@@ -2,9 +2,9 @@ package com.aeolus.net.requester;
 
 import com.aeolus.collection.Cacheable;
 
-public final class OnDemandNode extends Cacheable {
+public final class Resource extends Cacheable {
 
-	public OnDemandNode() {
+	public Resource() {
 		incomplete = true;
 	}
 

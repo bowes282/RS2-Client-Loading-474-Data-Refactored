@@ -10,7 +10,7 @@ import com.aeolus.net.Buffer;
 import com.aeolus.net.CacheArchive;
 import com.aeolus.util.signlink.Signlink;
 
-public final class ResourceProvider extends Requester implements Runnable {
+public final class ResourceProvider extends Provider implements Runnable {
 
 	private void readData() {
 		try {
@@ -24,7 +24,7 @@ public final class ResourceProvider extends Requester implements Runnable {
 				int l1 = ((ioBuffer[3] & 0xff) << 8) + (ioBuffer[4] & 0xff);
 				int i2 = ioBuffer[5] & 0xff;
 				current = null;
-				for (OnDemandNode onDemandData = (OnDemandNode) requested.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandNode) requested.reverseGetNext()) {
+				for (Resource onDemandData = (Resource) requested.reverseGetFirst(); onDemandData != null; onDemandData = (Resource) requested.reverseGetNext()) {
 					if (onDemandData.dataType == l && onDemandData.ID == j1)
 						current = onDemandData;
 					if (current != null)
@@ -145,7 +145,7 @@ public final class ResourceProvider extends Requester implements Runnable {
 		return versions[j].length;
 	}
 
-	private void closeRequest(OnDemandNode onDemandData) {
+	private void closeRequest(Resource onDemandData) {
 		try {
 			if (socket == null) {
 				long l = System.currentTimeMillis();
@@ -194,14 +194,19 @@ public final class ResourceProvider extends Requester implements Runnable {
 	public int getModelCount() {
 		return 29191;
 	}
+	
+	@Override
+	public final void provide(int file) {
+		provide(0, file);
+	}
 
 	public void provide(int i, int j) {
 		synchronized (nodeSubList) {
-			for (OnDemandNode onDemandData = (OnDemandNode) nodeSubList.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandNode) nodeSubList.reverseGetNext())
+			for (Resource onDemandData = (Resource) nodeSubList.reverseGetFirst(); onDemandData != null; onDemandData = (Resource) nodeSubList.reverseGetNext())
 				if (onDemandData.dataType == i && onDemandData.ID == j)
 					return;
 
-			OnDemandNode onDemandData_1 = new OnDemandNode();
+			Resource onDemandData_1 = new Resource();
 			onDemandData_1.dataType = i;
 			onDemandData_1.ID = j;
 			onDemandData_1.incomplete = true;
@@ -242,7 +247,7 @@ public final class ResourceProvider extends Requester implements Runnable {
 				}
 
 				boolean flag = false;
-				for (OnDemandNode onDemandData = (OnDemandNode) requested.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandNode) requested.reverseGetNext())
+				for (Resource onDemandData = (Resource) requested.reverseGetFirst(); onDemandData != null; onDemandData = (Resource) requested.reverseGetNext())
 					if (onDemandData.incomplete) {
 						flag = true;
 						onDemandData.loopCycle++;
@@ -253,7 +258,7 @@ public final class ResourceProvider extends Requester implements Runnable {
 					}
 
 				if (!flag) {
-					for (OnDemandNode onDemandData_1 = (OnDemandNode) requested.reverseGetFirst(); onDemandData_1 != null; onDemandData_1 = (OnDemandNode) requested.reverseGetNext()) {
+					for (Resource onDemandData_1 = (Resource) requested.reverseGetFirst(); onDemandData_1 != null; onDemandData_1 = (Resource) requested.reverseGetNext()) {
 						flag = true;
 						onDemandData_1.loopCycle++;
 						if (onDemandData_1.loopCycle > 50) {
@@ -305,7 +310,7 @@ public final class ResourceProvider extends Requester implements Runnable {
 			return;
 		if (anInt1332 == 0)
 			return;
-		OnDemandNode onDemandData = new OnDemandNode();
+		Resource onDemandData = new Resource();
 		onDemandData.dataType = j;
 		onDemandData.ID = i;
 		onDemandData.incomplete = false;
@@ -314,10 +319,10 @@ public final class ResourceProvider extends Requester implements Runnable {
 		}
 	}
 
-	public OnDemandNode getNextNode() {
-		OnDemandNode onDemandData;
+	public Resource getNextNode() {
+		Resource onDemandData;
 		synchronized (aClass19_1358) {
-			onDemandData = (OnDemandNode) aClass19_1358.popHead();
+			onDemandData = (Resource) aClass19_1358.popHead();
 		}
 		if (onDemandData == null)
 			return null;
@@ -393,7 +398,7 @@ public final class ResourceProvider extends Requester implements Runnable {
 	private void handleFailed() {
 		uncompletedCount = 0;
 		completedCount = 0;
-		for (OnDemandNode onDemandData = (OnDemandNode) requested.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandNode) requested.reverseGetNext())
+		for (Resource onDemandData = (Resource) requested.reverseGetFirst(); onDemandData != null; onDemandData = (Resource) requested.reverseGetNext())
 			if (onDemandData.incomplete) {
 				uncompletedCount++;
 				System.out.println("Error: model is incomplete or missing  [ type = " + onDemandData.dataType + "]  [id = " + onDemandData.ID + "]");
@@ -402,7 +407,7 @@ public final class ResourceProvider extends Requester implements Runnable {
 
 		while (uncompletedCount < 10) {
 			try {
-				OnDemandNode onDemandData_1 = (OnDemandNode) aClass19_1368.popHead();
+				Resource onDemandData_1 = (Resource) aClass19_1368.popHead();
 				if (onDemandData_1 == null)
 					break;
 				if (fileStatus[onDemandData_1.dataType][onDemandData_1.ID] != 0)
@@ -425,9 +430,9 @@ public final class ResourceProvider extends Requester implements Runnable {
 	}
 
 	private void checkReceived() {
-		OnDemandNode onDemandData;
+		Resource onDemandData;
 		synchronized (aClass19_1370) {
-			onDemandData = (OnDemandNode) aClass19_1370.popHead();
+			onDemandData = (Resource) aClass19_1370.popHead();
 		}
 		while (onDemandData != null) {
 			waiting = true;
@@ -443,7 +448,7 @@ public final class ResourceProvider extends Requester implements Runnable {
 						aClass19_1358.insertHead(onDemandData);
 					}
 				}
-				onDemandData = (OnDemandNode) aClass19_1370.popHead();
+				onDemandData = (Resource) aClass19_1370.popHead();
 			}
 		}
 	}
@@ -452,9 +457,9 @@ public final class ResourceProvider extends Requester implements Runnable {
 		while (uncompletedCount == 0 && completedCount < 10) {
 			if (anInt1332 == 0)
 				break;
-			OnDemandNode onDemandData;
+			Resource onDemandData;
 			synchronized (aClass19_1344) {
-				onDemandData = (OnDemandNode) aClass19_1344.popHead();
+				onDemandData = (Resource) aClass19_1344.popHead();
 			}
 			while (onDemandData != null) {
 				if (fileStatus[onDemandData.dataType][onDemandData.ID] != 0) {
@@ -470,7 +475,7 @@ public final class ResourceProvider extends Requester implements Runnable {
 						return;
 				}
 				synchronized (aClass19_1344) {
-					onDemandData = (OnDemandNode) aClass19_1344.popHead();
+					onDemandData = (Resource) aClass19_1344.popHead();
 				}
 			}
 			for (int j = 0; j < 4; j++) {
@@ -479,7 +484,7 @@ public final class ResourceProvider extends Requester implements Runnable {
 				for (int l = 0; l < k; l++)
 					if (abyte0[l] == anInt1332) {
 						abyte0[l] = 0;
-						OnDemandNode onDemandData_1 = new OnDemandNode();
+						Resource onDemandData_1 = new Resource();
 						onDemandData_1.dataType = j;
 						onDemandData_1.ID = l;
 						onDemandData_1.incomplete = false;
@@ -552,7 +557,7 @@ public final class ResourceProvider extends Requester implements Runnable {
 	private int uncompletedCount;
 	private int completedCount;
 	private final Deque aClass19_1368;
-	private OnDemandNode current;
+	private Resource current;
 	private final Deque aClass19_1370;
 	private int[] mapIndices1;
 	private byte[] modelIndices;
