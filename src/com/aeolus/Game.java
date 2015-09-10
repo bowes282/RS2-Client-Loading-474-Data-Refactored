@@ -1457,13 +1457,13 @@ public class Game extends GameShell {
 	private void buildInterfaceMenu(int i, Widget widget, int k, int l, int i1,
 			int j1) {
 		if (widget == null)
-			widget = Widget.interfaceCache[21356];
+			widget = Widget.interfaceCache[21356]; // newer prayer
 		if (widget.type != 0 || widget.children == null || widget.hoverOnly)
 			return;
 		if (k < i || i1 < l || k > i + widget.width || i1 > l + widget.height)
 			return;
-		int k1 = widget.children.length;
-		for (int l1 = 0; l1 < k1; l1++) {
+		int size = widget.children.length;
+		for (int l1 = 0; l1 < size; l1++) {
 			int i2 = widget.childX[l1] + i;
 			int j2 = (widget.childY[l1] + l) - j1;
 			Widget childInterface = Widget.interfaceCache[widget.children[l1]];
@@ -1686,20 +1686,20 @@ public class Game extends GameShell {
 
 										}
 										if (childInterface.actions != null) {
-											for (int j4 = 4; j4 >= 0; j4--)
-												if (childInterface.actions[j4] != null) {
-													menuActionText[menuActionRow] = childInterface.actions[j4]
+											for (int type = 4; type >= 0; type--)
+												if (childInterface.actions[type] != null) {
+													menuActionText[menuActionRow] = childInterface.actions[type]
 															+ " @lre@"
 															+ itemDef.name;
-													if (j4 == 0)
+													if (type == 0)
 														menuActionTypes[menuActionRow] = 632;
-													if (j4 == 1)
+													if (type == 1)
 														menuActionTypes[menuActionRow] = 78;
-													if (j4 == 2)
+													if (type == 2)
 														menuActionTypes[menuActionRow] = 867;
-													if (j4 == 3)
+													if (type == 3)
 														menuActionTypes[menuActionRow] = 431;
-													if (j4 == 4)
+													if (type == 4)
 														menuActionTypes[menuActionRow] = 53;
 													selectedMenuActions[menuActionRow] = itemDef.id;
 													firstMenuAction[menuActionRow] = k2;
@@ -3641,8 +3641,8 @@ public class Game extends GameShell {
 	}
 
 	private void drawLogo() {
-		byte abyte0[] = titleStreamLoader.getDataForName("title.dat");
-		Sprite sprite = new Sprite(abyte0, this);
+		byte sprites[] = titleStreamLoader.getDataForName("title.dat");
+		Sprite sprite = new Sprite(sprites, this);
 		flameLeftBackground.initDrawingArea();
 		sprite.method346(0, 0);
 		flameRightBackground.initDrawingArea();
@@ -3703,42 +3703,42 @@ public class Game extends GameShell {
 
 	private void processOnDemandQueue() {
 		do {
-			Resource onDemandData;
+			Resource resource;
 			do {
-				onDemandData = resourceProvider.next();
-				if (onDemandData == null)
+				resource = resourceProvider.next();
+				if (resource == null)
 					return;
-				if (onDemandData.dataType == 0) {
-					Model.method460(onDemandData.buffer, onDemandData.ID);
+				if (resource.dataType == 0) {
+					Model.method460(resource.buffer, resource.ID);
 					if (backDialogueId != -1)
 						inputTaken = true;
 				}
-				if (onDemandData.dataType == 1) {
-					SequenceFrame.load(onDemandData.buffer, onDemandData.ID);
+				if (resource.dataType == 1) {
+					SequenceFrame.load(resource.buffer, resource.ID);
 				}
-				if (onDemandData.dataType == 2 && onDemandData.ID == nextSong
-						&& onDemandData.buffer != null)
-					saveMidi(songChanging, onDemandData.buffer);
-				if (onDemandData.dataType == 3 && loadingStage == 1) {
+				if (resource.dataType == 2 && resource.ID == nextSong
+						&& resource.buffer != null)
+					saveMidi(songChanging, resource.buffer);
+				if (resource.dataType == 3 && loadingStage == 1) {
 					for (int i = 0; i < aByteArrayArray1183.length; i++) {
-						if (anIntArray1235[i] == onDemandData.ID) {
-							aByteArrayArray1183[i] = onDemandData.buffer;
-							if (onDemandData.buffer == null)
+						if (anIntArray1235[i] == resource.ID) {
+							aByteArrayArray1183[i] = resource.buffer;
+							if (resource.buffer == null)
 								anIntArray1235[i] = -1;
 							break;
 						}
-						if (anIntArray1236[i] != onDemandData.ID)
+						if (anIntArray1236[i] != resource.ID)
 							continue;
-						aByteArrayArray1247[i] = onDemandData.buffer;
-						if (onDemandData.buffer == null)
+						aByteArrayArray1247[i] = resource.buffer;
+						if (resource.buffer == null)
 							anIntArray1236[i] = -1;
 						break;
 					}
 
 				}
-			} while (onDemandData.dataType != 93
-					|| !resourceProvider.landscapePresent(onDemandData.ID));
-			MapRegion.method173(new Buffer(onDemandData.buffer),
+			} while (resource.dataType != 93
+					|| !resourceProvider.landscapePresent(resource.ID));
+			MapRegion.method173(new Buffer(resource.buffer),
 					resourceProvider);
 		} while (true);
 	}
@@ -4493,6 +4493,12 @@ public class Game extends GameShell {
 	}
 
 	private void processMenuActions(int id) {
+		
+		//TODO
+//		if (welcomeScreenOpened) {
+//			return;
+//		}
+		
 		if (id < 0)
 			return;
 		if (inputDialogState != 0) {
@@ -4863,18 +4869,19 @@ public class Game extends GameShell {
 			anInt1137 = second;
 			spellUsableOn = widget.spellUsableOn;
 			itemSelected = 0;
-			String s4 = widget.selectedActionName;
-			if (s4.indexOf(" ") != -1)
-				s4 = s4.substring(0, s4.indexOf(" "));
+			String actionName = widget.selectedActionName;
+			if (actionName.indexOf(" ") != -1)
+				actionName = actionName.substring(0, actionName.indexOf(" "));
 			String s8 = widget.selectedActionName;
 			if (s8.indexOf(" ") != -1)
 				s8 = s8.substring(s8.indexOf(" ") + 1);
-			spellTooltip = s4 + " " + widget.spellName + " " + s8;
+			spellTooltip = actionName + " " + widget.spellName + " " + s8;
 			// class9_1.sprite1.drawSprite(class9_1.x, class9_1.anInt265,
 			// 0xffffff);
 			// class9_1.sprite1.drawSprite(200,200);
 			if (Configuration.client_debug)
-			 System.out.println("spellId: " + spellId + " - spellSelected: " + spellSelected);
+				System.out.println("spellId: " + spellId + " - spellSelected: " + spellSelected);
+				System.out.println(second + " " + widget.selectedActionName + " " + anInt1137);
 			if (spellUsableOn == 16) {
 				tabID = 3;
 				tabAreaAltered = true;
@@ -5156,12 +5163,12 @@ public class Game extends GameShell {
 			}
 		}
 		if (action == 413) {
-			Npc class30_sub2_sub4_sub1_sub1_4 = npcs[clicked];
-			if (class30_sub2_sub4_sub1_sub1_4 != null) {
+			Npc npc = npcs[clicked];
+			if (npc != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
-						class30_sub2_sub4_sub1_sub1_4.pathY[0],
+						npc.pathY[0],
 						localPlayer.pathX[0], false,
-						class30_sub2_sub4_sub1_sub1_4.pathX[0]);
+						npc.pathX[0]);
 				crossX = super.saveClickX;
 				crossY = super.saveClickY;
 				crossType = 2;
@@ -5212,12 +5219,12 @@ public class Game extends GameShell {
 			}
 		}
 		if (action == 365) {
-			Player class30_sub2_sub4_sub1_sub2_3 = players[clicked];
-			if (class30_sub2_sub4_sub1_sub2_3 != null) {
+			Player player = players[clicked];
+			if (player != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
-						class30_sub2_sub4_sub1_sub2_3.pathY[0],
+						player.pathY[0],
 						localPlayer.pathX[0], false,
-						class30_sub2_sub4_sub1_sub2_3.pathX[0]);
+						player.pathX[0]);
 				crossX = super.saveClickX;
 				crossY = super.saveClickY;
 				crossType = 2;
@@ -5323,11 +5330,11 @@ public class Game extends GameShell {
 					clearTopInterfaces();
 					reportAbuseInput = s2.substring(j2 + 5).trim();
 					canMute = false;
-					for (int i3 = 0; i3 < Widget.interfaceCache.length; i3++) {
-						if (Widget.interfaceCache[i3] == null
-								|| Widget.interfaceCache[i3].contentType != 600)
+					for (int index = 0; index < Widget.interfaceCache.length; index++) {
+						if (Widget.interfaceCache[index] == null
+								|| Widget.interfaceCache[index].contentType != 600)
 							continue;
-						reportAbuseInterfaceID = openInterfaceId = Widget.interfaceCache[i3].parent;
+						reportAbuseInterfaceID = openInterfaceId = Widget.interfaceCache[index].parent;
 						break;
 					}
 
@@ -5439,10 +5446,10 @@ public class Game extends GameShell {
 		}
 		if (action == 1125) {
 			ItemDefinition itemDef = ItemDefinition.lookup(clicked);
-			Widget class9_4 = Widget.interfaceCache[second];
+			Widget widget = Widget.interfaceCache[second];
 			String s5;
-			if (class9_4 != null && class9_4.invStackSizes[first] >= 0x186a0)
-				s5 = class9_4.invStackSizes[first] + " x " + itemDef.name;
+			if (widget != null && widget.invStackSizes[first] >= 0x186a0)
+				s5 = widget.invStackSizes[first] + " x " + itemDef.name;
 			else if (itemDef.description != null)
 				s5 = new String(itemDef.description);
 			else
@@ -6425,505 +6432,107 @@ public class Game extends GameShell {
 		return 0;
 	}
 
-	private void drawFriendsListOrWelcomeScreen(Widget class9) {
-		int j = class9.contentType;
-		if (j >= 1 && j <= 100 || j >= 701 && j <= 800) {
-			if (j == 1 && friendServerStatus == 0) {
-				class9.defaultText = "Loading friend list";
-				class9.optionType = 0;
+	private void drawFriendsListOrWelcomeScreen(Widget widget) {
+		int index = widget.contentType;
+		if (index >= 1 && index <= 100 || index >= 701 && index <= 800) {
+			if (index == 1 && friendServerStatus == 0) {
+				widget.defaultText = "Loading friend list";
+				widget.optionType = 0;
 				return;
 			}
-			if (j == 1 && friendServerStatus == 1) {
-				class9.defaultText = "Connecting to friendserver";
-				class9.optionType = 0;
+			if (index == 1 && friendServerStatus == 1) {
+				widget.defaultText = "Connecting to friendserver";
+				widget.optionType = 0;
 				return;
 			}
-			if (j == 2 && friendServerStatus != 2) {
-				class9.defaultText = "Please wait...";
-				class9.optionType = 0;
+			if (index == 2 && friendServerStatus != 2) {
+				widget.defaultText = "Please wait...";
+				widget.optionType = 0;
 				return;
 			}
 			int k = friendsCount;
 			if (friendServerStatus != 2)
 				k = 0;
-			if (j > 700)
-				j -= 601;
+			if (index > 700)
+				index -= 601;
 			else
-				j--;
-			if (j >= k) {
-				class9.defaultText = "";
-				class9.optionType = 0;
+				index--;
+			if (index >= k) {
+				widget.defaultText = "";
+				widget.optionType = 0;
 				return;
 			} else {
-				class9.defaultText = friendsList[j];
-				class9.optionType = 1;
+				widget.defaultText = friendsList[index];
+				widget.optionType = 1;
 				return;
 			}
 		}
-		if (j >= 101 && j <= 200 || j >= 801 && j <= 900) {
+		if (index >= 101 && index <= 200 || index >= 801 && index <= 900) {
 			int l = friendsCount;
 			if (friendServerStatus != 2)
 				l = 0;
-			if (j > 800)
-				j -= 701;
+			if (index > 800)
+				index -= 701;
 			else
-				j -= 101;
-			if (j >= l) {
-				class9.defaultText = "";
-				class9.optionType = 0;
+				index -= 101;
+			if (index >= l) {
+				widget.defaultText = "";
+				widget.optionType = 0;
 				return;
 			}
-			if (friendsNodeIDs[j] == 0)
-				class9.defaultText = "@red@Offline";
-			else if (friendsNodeIDs[j] == nodeID)
-				class9.defaultText = "@gre@Online"/* + (friendsNodeIDs[j] - 9) */;
+			if (friendsNodeIDs[index] == 0)
+				widget.defaultText = "@red@Offline";
+			else if (friendsNodeIDs[index] == nodeID)
+				widget.defaultText = "@gre@Online"/* + (friendsNodeIDs[j] - 9) */;
 			else
-				class9.defaultText = "@red@Offline"/* + (friendsNodeIDs[j] - 9) */;
-			class9.optionType = 1;
+				widget.defaultText = "@red@Offline"/* + (friendsNodeIDs[j] - 9) */;
+			widget.optionType = 1;
 			return;
 		}
 
-		/** Skill Tab **/
-		if (j == 210) {
-			class9.defaultText = "Total XP: "
-					+ NumberFormat.getIntegerInstance().format(xpCounter);
-			return;
-		}
-		if (j == 211) {
-			if (maxStats[0] == 99) {
-				class9.defaultText = "Attack XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[0]);
-				return;
-			} else {
-				class9.defaultText = "Attack XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[0])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[0] + 1));
-
-			}
-			return;
-		}
-		if (j == 212) {
-			if (maxStats[2] == 99) {
-				class9.defaultText = "Strength XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[2]);
-				return;
-			} else {
-				class9.defaultText = "Strength XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[2])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[2] + 1));
-
-			}
-			return;
-		}
-		if (j == 213) {
-			if (maxStats[3] == 99) {
-				class9.defaultText = "Hitpoints XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[3]);
-				return;
-			} else {
-				class9.defaultText = "Hitpoints XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[3])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[3] + 1));
-
-			}
-			return;
-		}
-		if (j == 214) {
-			if (maxStats[1] == 99) {
-				class9.defaultText = "Defence XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[1]);
-				return;
-			} else {
-				class9.defaultText = "Defence XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[1])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[1] + 1));
-
-			}
-			return;
-		}
-		if (j == 215) {
-			if (maxStats[4] == 99) {
-				class9.defaultText = "Ranged XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[4]);
-				return;
-			} else {
-				class9.defaultText = "Ranged XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[4])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[4] + 1));
-
-			}
-			return;
-		}
-		if (j == 216) {
-			if (maxStats[5] == 99) {
-				class9.defaultText = "Prayer XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[5]);
-				return;
-			} else {
-				class9.defaultText = "Prayer XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[5])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[5] + 1));
-
-			}
-			return;
-		}
-		if (j == 217) {
-			if (maxStats[6] == 99) {
-				class9.defaultText = "Magic XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[6]);
-				return;
-			} else {
-				class9.defaultText = "Magic XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[6])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[6] + 1));
-
-			}
-			return;
-		}
-		if (j == 218) {
-			if (maxStats[7] == 99) {
-				class9.defaultText = "Cooking XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[7]);
-				return;
-			} else {
-				class9.defaultText = "Cooking XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[7])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[7] + 1));
-
-			}
-			return;
-		}
-		if (j == 219) {
-			if (maxStats[8] == 99) {
-				class9.defaultText = "Woodcutting XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[8]);
-				return;
-			} else {
-				class9.defaultText = "Woodcutting XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[8])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[8] + 1));
-
-			}
-			return;
-		}
-		if (j == 220) {
-			if (maxStats[9] == 99) {
-				class9.defaultText = "Fletching XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[9]);
-				return;
-			} else {
-				class9.defaultText = "Fletching XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[9])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[9] + 1));
-
-			}
-			return;
-		}
-		if (j == 221) {
-			if (maxStats[10] == 99) {
-				class9.defaultText = "Fishing XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[10]);
-				return;
-			} else {
-				class9.defaultText = "Fishing XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[10])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[10] + 1));
-
-			}
-			return;
-		}
-		if (j == 222) {
-			if (maxStats[11] == 99) {
-				class9.defaultText = "Firemaking XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[11]);
-				return;
-			} else {
-				class9.defaultText = "Firemaking XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[11])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[11] + 1));
-
-			}
-			return;
-		}
-		if (j == 223) {
-			if (maxStats[12] == 99) {
-				class9.defaultText = "Crafting XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[12]);
-				return;
-			} else {
-				class9.defaultText = "Crafting XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[12])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[12] + 1));
-
-			}
-			return;
-		}
-		if (j == 224) {
-			if (maxStats[13] == 99) {
-				class9.defaultText = "Smithing XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[13]);
-				return;
-			} else {
-				class9.defaultText = "Smithing XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[13])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[13] + 1));
-
-			}
-			return;
-		}
-		if (j == 225) {
-			if (maxStats[14] == 99) {
-				class9.defaultText = "Mining XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[14]);
-				return;
-			} else {
-				class9.defaultText = "Mining XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[14])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[14] + 1));
-
-			}
-			return;
-		}
-		if (j == 226) {
-			if (maxStats[15] == 99) {
-				class9.defaultText = "Herblore XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[15]);
-				return;
-			} else {
-				class9.defaultText = "Herblore XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[15])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[15] + 1));
-
-			}
-			return;
-		}
-		if (j == 227) {
-			if (maxStats[16] == 99) {
-				class9.defaultText = "Agility XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[16]);
-				return;
-			} else {
-				class9.defaultText = "Agility XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[16])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[16] + 1));
-
-			}
-			return;
-		}
-		if (j == 228) {
-			if (maxStats[17] == 99) {
-				class9.defaultText = "Thieving XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[17]);
-				return;
-			} else {
-				class9.defaultText = "Thieving XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[17])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[17] + 1));
-
-			}
-			return;
-		}
-		if (j == 229) {
-			if (maxStats[18] == 99) {
-				class9.defaultText = "Slayer XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[18]);
-				return;
-			} else {
-				class9.defaultText = "Slayer XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[18])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[18] + 1));
-
-			}
-			return;
-		}
-		if (j == 230) {
-			if (maxStats[19] == 99) {
-				class9.defaultText = "Farming XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[19]);
-				return;
-			} else {
-				class9.defaultText = "Farming XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[19])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[19] + 1));
-
-			}
-			return;
-		}
-		if (j == 231) {
-			if (maxStats[20] == 99) {
-				class9.defaultText = "Runecrafting XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[20]);
-				return;
-			} else {
-				class9.defaultText = "Runecrafting XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[20])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[20] + 1));
-
-			}
-			return;
-		}
-		if (j == 232) {
-			if (maxStats[21] == 99) {
-				class9.defaultText = "Hunter XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[21]);
-				return;
-			} else {
-				class9.defaultText = "Hunter XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[21])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[21] + 1));
-
-			}
-			return;
-		}
-		if (j == 233) {
-			if (maxStats[22] == 99) {
-				class9.defaultText = "Construction XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[22]);
-				return;
-			} else {
-				class9.defaultText = "Construction XP: "
-						+ NumberFormat.getIntegerInstance().format(
-								currentExp[22])
-						+ "\\nNext Level at: "
-						+ NumberFormat.getIntegerInstance().format(
-								getXPForLevel(maxStats[22] + 1));
-
-			}
-			return;
-		}
-
-		if (j == 203) {
+		if (index == 203) {
 			int i1 = friendsCount;
 			if (friendServerStatus != 2)
 				i1 = 0;
-			class9.scrollMax = i1 * 15 + 20;
-			if (class9.scrollMax <= class9.height)
-				class9.scrollMax = class9.height + 1;
+			widget.scrollMax = i1 * 15 + 20;
+			if (widget.scrollMax <= widget.height)
+				widget.scrollMax = widget.height + 1;
 			return;
 		}
-		if (j >= 401 && j <= 500) {
-			if ((j -= 401) == 0 && friendServerStatus == 0) {
-				class9.defaultText = "Loading ignore list";
-				class9.optionType = 0;
+		if (index >= 401 && index <= 500) {
+			if ((index -= 401) == 0 && friendServerStatus == 0) {
+				widget.defaultText = "Loading ignore list";
+				widget.optionType = 0;
 				return;
 			}
-			if (j == 1 && friendServerStatus == 0) {
-				class9.defaultText = "Please wait...";
-				class9.optionType = 0;
+			if (index == 1 && friendServerStatus == 0) {
+				widget.defaultText = "Please wait...";
+				widget.optionType = 0;
 				return;
 			}
 			int j1 = ignoreCount;
 			if (friendServerStatus == 0)
 				j1 = 0;
-			if (j >= j1) {
-				class9.defaultText = "";
-				class9.optionType = 0;
+			if (index >= j1) {
+				widget.defaultText = "";
+				widget.optionType = 0;
 				return;
 			} else {
-				class9.defaultText = TextClass.fixName(TextClass
-						.nameForLong(ignoreListAsLongs[j]));
-				class9.optionType = 1;
+				widget.defaultText = TextClass.fixName(TextClass
+						.nameForLong(ignoreListAsLongs[index]));
+				widget.optionType = 1;
 				return;
 			}
 		}
-		if (j == 503) {
-			class9.scrollMax = ignoreCount * 15 + 20;
-			if (class9.scrollMax <= class9.height)
-				class9.scrollMax = class9.height + 1;
+		if (index == 503) {
+			widget.scrollMax = ignoreCount * 15 + 20;
+			if (widget.scrollMax <= widget.height)
+				widget.scrollMax = widget.height + 1;
 			return;
 		}
-		if (j == 327) {
-			class9.modelRotation1 = 150;
-			class9.modelRotation2 = (int) (Math.sin((double) loopCycle / 40D) * 256D) & 0x7ff;
+		if (index == 327) {
+			widget.modelRotation1 = 150;
+			widget.modelRotation2 = (int) (Math.sin((double) loopCycle / 40D) * 256D) & 0x7ff;
 			if (aBoolean1031) {
 				for (int k1 = 0; k1 < 7; k1++) {
 					int l1 = anIntArray1065[k1];
@@ -6955,14 +6564,14 @@ public class Game extends GameShell {
 				model.skin();
 				model.apply(Animation.animations[localPlayer.standAnimIndex].anIntArray353[0]);
 				model.light(64, 850, -30, -50, -30, true);
-				class9.defaultMediaType = 5;
-				class9.defaultMedia = 0;
+				widget.defaultMediaType = 5;
+				widget.defaultMedia = 0;
 				Widget.method208(aBoolean994, model);
 			}
 			return;
 		}
-		if (j == 328) {
-			Widget rsInterface = class9;
+		if (index == 328) {
+			Widget rsInterface = widget;
 			int verticleTilt = 150;
 			int animationSpeed = (int) (Math.sin((double) loopCycle / 40D) * 256D) & 0x7ff;
 			rsInterface.modelRotation1 = verticleTilt;
@@ -6990,55 +6599,55 @@ public class Game extends GameShell {
 			}
 			return;
 		}
-		if (j == 324) {
+		if (index == 324) {
 			if (aClass30_Sub2_Sub1_Sub1_931 == null) {
-				aClass30_Sub2_Sub1_Sub1_931 = class9.disabledSprite;
-				aClass30_Sub2_Sub1_Sub1_932 = class9.enabledSprite;
+				aClass30_Sub2_Sub1_Sub1_931 = widget.disabledSprite;
+				aClass30_Sub2_Sub1_Sub1_932 = widget.enabledSprite;
 			}
 			if (maleCharacter) {
-				class9.disabledSprite = aClass30_Sub2_Sub1_Sub1_932;
+				widget.disabledSprite = aClass30_Sub2_Sub1_Sub1_932;
 				return;
 			} else {
-				class9.disabledSprite = aClass30_Sub2_Sub1_Sub1_931;
+				widget.disabledSprite = aClass30_Sub2_Sub1_Sub1_931;
 				return;
 			}
 		}
-		if (j == 325) {
+		if (index == 325) {
 			if (aClass30_Sub2_Sub1_Sub1_931 == null) {
-				aClass30_Sub2_Sub1_Sub1_931 = class9.disabledSprite;
-				aClass30_Sub2_Sub1_Sub1_932 = class9.enabledSprite;
+				aClass30_Sub2_Sub1_Sub1_931 = widget.disabledSprite;
+				aClass30_Sub2_Sub1_Sub1_932 = widget.enabledSprite;
 			}
 			if (maleCharacter) {
-				class9.disabledSprite = aClass30_Sub2_Sub1_Sub1_931;
+				widget.disabledSprite = aClass30_Sub2_Sub1_Sub1_931;
 				return;
 			} else {
-				class9.disabledSprite = aClass30_Sub2_Sub1_Sub1_932;
+				widget.disabledSprite = aClass30_Sub2_Sub1_Sub1_932;
 				return;
 			}
 		}
-		if (j == 600) {
-			class9.defaultText = reportAbuseInput;
+		if (index == 600) {
+			widget.defaultText = reportAbuseInput;
 			if (loopCycle % 20 < 10) {
-				class9.defaultText += "|";
+				widget.defaultText += "|";
 				return;
 			} else {
-				class9.defaultText += " ";
+				widget.defaultText += " ";
 				return;
 			}
 		}
-		if (j == 613)
+		if (index == 613)
 			if (myPrivilege >= 1) {
 				if (canMute) {
-					class9.textColor = 0xff0000;
-					class9.defaultText = "Moderator option: Mute player for 48 hours: <ON>";
+					widget.textColor = 0xff0000;
+					widget.defaultText = "Moderator option: Mute player for 48 hours: <ON>";
 				} else {
-					class9.textColor = 0xffffff;
-					class9.defaultText = "Moderator option: Mute player for 48 hours: <OFF>";
+					widget.textColor = 0xffffff;
+					widget.defaultText = "Moderator option: Mute player for 48 hours: <OFF>";
 				}
 			} else {
-				class9.defaultText = "";
+				widget.defaultText = "";
 			}
-		if (j == 650 || j == 655)
+		if (index == 650 || index == 655)
 			if (anInt1193 != 0) {
 				String s;
 				if (daysSinceLastLogin == 0)
@@ -7047,33 +6656,33 @@ public class Game extends GameShell {
 					s = "yesterday";
 				else
 					s = daysSinceLastLogin + " days ago";
-				class9.defaultText = "You last logged in " + s + " from: "
+				widget.defaultText = "You last logged in " + s + " from: "
 						+ Signlink.dns;
 			} else {
-				class9.defaultText = "";
+				widget.defaultText = "";
 			}
-		if (j == 651) {
+		if (index == 651) {
 			if (unreadMessages == 0) {
-				class9.defaultText = "0 unread messages";
-				class9.textColor = 0xffff00;
+				widget.defaultText = "0 unread messages";
+				widget.textColor = 0xffff00;
 			}
 			if (unreadMessages == 1) {
-				class9.defaultText = "1 unread defaultText";
-				class9.textColor = 65280;
+				widget.defaultText = "1 unread defaultText";
+				widget.textColor = 65280;
 			}
 			if (unreadMessages > 1) {
-				class9.defaultText = unreadMessages + " unread messages";
-				class9.textColor = 65280;
+				widget.defaultText = unreadMessages + " unread messages";
+				widget.textColor = 65280;
 			}
 		}
-		if (j == 652)
+		if (index == 652)
 			if (daysSinceRecovChange == 201) {
 				if (membersInt == 1)
-					class9.defaultText = "@yel@This is a non-members world: @whi@Since you are a member we";
+					widget.defaultText = "@yel@This is a non-members world: @whi@Since you are a member we";
 				else
-					class9.defaultText = "";
+					widget.defaultText = "";
 			} else if (daysSinceRecovChange == 200) {
-				class9.defaultText = "You have not yet set any password recovery questions.";
+				widget.defaultText = "You have not yet set any password recovery questions.";
 			} else {
 				String s1;
 				if (daysSinceRecovChange == 0)
@@ -7082,33 +6691,33 @@ public class Game extends GameShell {
 					s1 = "Yesterday";
 				else
 					s1 = daysSinceRecovChange + " days ago";
-				class9.defaultText = s1
+				widget.defaultText = s1
 						+ " you changed your recovery questions";
 			}
-		if (j == 653)
+		if (index == 653)
 			if (daysSinceRecovChange == 201) {
 				if (membersInt == 1)
-					class9.defaultText = "@whi@recommend you use a members world instead. You may use";
+					widget.defaultText = "@whi@recommend you use a members world instead. You may use";
 				else
-					class9.defaultText = "";
+					widget.defaultText = "";
 			} else if (daysSinceRecovChange == 200)
-				class9.defaultText = "We strongly recommend you do so now to secure your account.";
+				widget.defaultText = "We strongly recommend you do so now to secure your account.";
 			else
-				class9.defaultText = "If you do not remember making this change then cancel it immediately";
-		if (j == 654) {
+				widget.defaultText = "If you do not remember making this change then cancel it immediately";
+		if (index == 654) {
 			if (daysSinceRecovChange == 201)
 				if (membersInt == 1) {
-					class9.defaultText = "@whi@this world but member benefits are unavailable whilst here.";
+					widget.defaultText = "@whi@this world but member benefits are unavailable whilst here.";
 					return;
 				} else {
-					class9.defaultText = "";
+					widget.defaultText = "";
 					return;
 				}
 			if (daysSinceRecovChange == 200) {
-				class9.defaultText = "Do this from the 'account management' area on our front webpage";
+				widget.defaultText = "Do this from the 'account management' area on our front webpage";
 				return;
 			}
-			class9.defaultText = "Do this from the 'account management' area on our front webpage";
+			widget.defaultText = "Do this from the 'account management' area on our front webpage";
 		}
 	}
 
@@ -9977,6 +9586,7 @@ public class Game extends GameShell {
 								sprite.drawTransparentSprite(_x, _y, alpha);
 							} else {
 								//draws all interfaced sprites
+								//TODO
 								sprite.drawSprite(_x, _y);
 							}
 					}
@@ -12448,12 +12058,12 @@ public class Game extends GameShell {
 	}
 
 	public void sendButtonClick(int button, int toggle, int type) {
+		Widget widget = Widget.interfaceCache[button];
 		switch (type) {
 		case 135:
-			Widget class9 = Widget.interfaceCache[button];
 			boolean flag8 = true;
-			if (class9.contentType > 0)
-				flag8 = promptUserForInput(class9);
+			if (widget.contentType > 0)
+				flag8 = promptUserForInput(widget);
 			if (flag8) {
 				outgoing.writeOpCode(185);
 				outgoing.writeShort(button);
@@ -12462,7 +12072,7 @@ public class Game extends GameShell {
 		case 646:
 			outgoing.writeOpCode(185);
 			outgoing.writeShort(button);
-			Widget widget = Widget.interfaceCache[button];
+
 			if (widget.scripts != null && widget.scripts[0][0] == 5) {
 				if (variousSettings[toggle] != widget.scriptDefaults[0]) {
 					variousSettings[toggle] = widget.scriptDefaults[0];
@@ -12473,8 +12083,7 @@ public class Game extends GameShell {
 		case 169:
 			outgoing.writeOpCode(185);
 			outgoing.writeShort(button);
-			Widget class9_3 = Widget.interfaceCache[button];
-			if (class9_3.scripts != null && class9_3.scripts[0][0] == 5) {
+			if (widget.scripts != null && widget.scripts[0][0] == 5) {
 				variousSettings[toggle] = 1 - variousSettings[toggle];
 				adjustVolume(toggle);
 			}
@@ -12488,6 +12097,10 @@ public class Game extends GameShell {
 				break;
 			}
 			break;
+			
+		default:
+			System.out.println("button: " + button + " - toggle: " + toggle + " - type: " + type);
+			break;			
 		}
 	}
 
@@ -12605,16 +12218,16 @@ public class Game extends GameShell {
 				if (anInt1193 != 0 && openInterfaceId == -1) {
 					Signlink.dnslookup(TextClass.method586(anInt1193));
 					clearTopInterfaces();
-					char c = '\u028A';
+					char character = '\u028A';
 					if (daysSinceRecovChange != 201 || membersInt == 1)
-						c = '\u028F';
+						character = '\u028F';
 					reportAbuseInput = "";
 					canMute = false;
-					for (int k9 = 0; k9 < Widget.interfaceCache.length; k9++) {
-						if (Widget.interfaceCache[k9] == null
-								|| Widget.interfaceCache[k9].contentType != c)
+					for (int interfaceId = 0; interfaceId < Widget.interfaceCache.length; interfaceId++) {
+						if (Widget.interfaceCache[interfaceId] == null
+								|| Widget.interfaceCache[interfaceId].contentType != character)
 							continue;
-						openInterfaceId = Widget.interfaceCache[k9].parent;
+						openInterfaceId = Widget.interfaceCache[interfaceId].parent;
 
 					}
 				}

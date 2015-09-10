@@ -127,36 +127,36 @@ public final class Sprite extends Raster {
 		}
 	}
 
-	public void drawTransparentSprite(int i, int j, int opacity) {
+	public void drawTransparentSprite(int x, int y, int opacity) {
 		int k = opacity;// was parameter
-		i += drawOffsetX;
-		j += drawOffsetY;
-		int i1 = i + j * Raster.width;
+		x += drawOffsetX;
+		y += drawOffsetY;
+		int i1 = x + y * Raster.width;
 		int j1 = 0;
 		int k1 = myHeight;
 		int l1 = myWidth;
 		int i2 = Raster.width - l1;
 		int j2 = 0;
-		if (j < Raster.topY) {
-			int k2 = Raster.topY - j;
+		if (y < Raster.topY) {
+			int k2 = Raster.topY - y;
 			k1 -= k2;
-			j = Raster.topY;
+			y = Raster.topY;
 			j1 += k2 * l1;
 			i1 += k2 * Raster.width;
 		}
-		if (j + k1 > Raster.bottomY)
-			k1 -= (j + k1) - Raster.bottomY;
-		if (i < Raster.topX) {
-			int l2 = Raster.topX - i;
+		if (y + k1 > Raster.bottomY)
+			k1 -= (y + k1) - Raster.bottomY;
+		if (x < Raster.topX) {
+			int l2 = Raster.topX - x;
 			l1 -= l2;
-			i = Raster.topX;
+			x = Raster.topX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
 			i2 += l2;
 		}
-		if (i + l1 > Raster.bottomX) {
-			int i3 = (i + l1) - Raster.bottomX;
+		if (x + l1 > Raster.bottomX) {
+			int i3 = (x + l1) - Raster.bottomX;
 			l1 -= i3;
 			j2 += i3;
 			i2 += i3;
@@ -280,42 +280,42 @@ public final class Sprite extends Raster {
 		drawOffsetY = 0;
 	}
 
-	public void method346(int i, int j) {
-		i += drawOffsetX;
-		j += drawOffsetY;
-		int l = i + j * Raster.width;
+	public void method346(int x, int y) {
+		x += drawOffsetX;
+		y += drawOffsetY;
+		int l = x + y * Raster.width;
 		int i1 = 0;
-		int j1 = myHeight;
-		int k1 = myWidth;
-		int l1 = Raster.width - k1;
+		int height = myHeight;
+		int width = myWidth;
+		int l1 = Raster.width - width;
 		int i2 = 0;
-		if (j < Raster.topY) {
-			int j2 = Raster.topY - j;
-			j1 -= j2;
-			j = Raster.topY;
-			i1 += j2 * k1;
+		if (y < Raster.topY) {
+			int j2 = Raster.topY - y;
+			height -= j2;
+			y = Raster.topY;
+			i1 += j2 * width;
 			l += j2 * Raster.width;
 		}
-		if (j + j1 > Raster.bottomY)
-			j1 -= (j + j1) - Raster.bottomY;
-		if (i < Raster.topX) {
-			int k2 = Raster.topX - i;
-			k1 -= k2;
-			i = Raster.topX;
+		if (y + height > Raster.bottomY)
+			height -= (y + height) - Raster.bottomY;
+		if (x < Raster.topX) {
+			int k2 = Raster.topX - x;
+			width -= k2;
+			x = Raster.topX;
 			i1 += k2;
 			l += k2;
 			i2 += k2;
 			l1 += k2;
 		}
-		if (i + k1 > Raster.bottomX) {
-			int l2 = (i + k1) - Raster.bottomX;
-			k1 -= l2;
+		if (x + width > Raster.bottomX) {
+			int l2 = (x + width) - Raster.bottomX;
+			width -= l2;
 			i2 += l2;
 			l1 += l2;
 		}
-		if (k1 <= 0 || j1 <= 0) {
+		if (width <= 0 || height <= 0) {
 		} else {
-			method347(l, k1, j1, i2, i1, l1, myPixels, Raster.pixels);
+			method347(l, width, height, i2, i1, l1, myPixels, Raster.pixels);
 		}
 	}
 
