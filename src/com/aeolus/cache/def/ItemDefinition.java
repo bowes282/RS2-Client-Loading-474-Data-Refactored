@@ -287,7 +287,7 @@ public final class ItemDefinition {
 		if (outlineColor > 0)
 			k3 = (int) ((double) k3 * 1.04D);
 		int l3 = Rasterizer.anIntArray1470[itemDef.rotation_y] * k3 >> 16;
-		int i4 = Rasterizer.anIntArray1471[itemDef.rotation_y] * k3 >> 16;
+		int i4 = Rasterizer.COSINE[itemDef.rotation_y] * k3 >> 16;
 		model.method482(itemDef.rotation_x, itemDef.rotation_z,
 				itemDef.rotation_y, itemDef.translate_x, l3 + model.modelHeight
 						/ 2 + itemDef.translate_yz, i4 + itemDef.translate_yz);

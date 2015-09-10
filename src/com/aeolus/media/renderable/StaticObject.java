@@ -1,15 +1,8 @@
 package com.aeolus.media.renderable;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
+public final class StaticObject {
 
-
-public final class StaticObject
-{
-
-	public StaticObject()
-	{
+	public StaticObject() {
 	}
 
 	public int anInt517;

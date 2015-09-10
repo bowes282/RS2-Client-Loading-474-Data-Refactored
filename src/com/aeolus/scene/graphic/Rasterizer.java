@@ -11,7 +11,7 @@ public final class Rasterizer extends Raster {
 		anIntArray1468 = null;
 		anIntArray1468 = null;
 		anIntArray1470 = null;
-		anIntArray1471 = null;
+		COSINE = null;
 		anIntArray1472 = null;
 		aBackgroundArray1474s = null;
 		aBooleanArray1475 = null;
@@ -2743,7 +2743,7 @@ public final class Rasterizer extends Raster {
 	private static int[] anIntArray1468;
 	public static final int[] anIntArray1469;
 	public static int anIntArray1470[];
-	public static int anIntArray1471[];
+	public static int COSINE[];
 	public static int anIntArray1472[];
 	private static int anInt1473;
 	public static Background aBackgroundArray1474s[] = new Background[51];
@@ -2761,7 +2761,7 @@ public final class Rasterizer extends Raster {
 		anIntArray1468 = new int[512];
 		anIntArray1469 = new int[2048];
 		anIntArray1470 = new int[2048];
-		anIntArray1471 = new int[2048];
+		COSINE = new int[2048];
 		for(int i = 1; i < 512; i++) {
 			anIntArray1468[i] = 32768 / i;
 		}
@@ -2770,7 +2770,7 @@ public final class Rasterizer extends Raster {
 		}
 		for(int k = 0; k < 2048; k++) {
 			anIntArray1470[k] = (int)(65536D * Math.sin((double)k * 0.0030679614999999999D));
-			anIntArray1471[k] = (int)(65536D * Math.cos((double)k * 0.0030679614999999999D));
+			COSINE[k] = (int)(65536D * Math.cos((double)k * 0.0030679614999999999D));
 		}
 	}
 }

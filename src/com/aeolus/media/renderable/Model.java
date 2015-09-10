@@ -2851,7 +2851,7 @@ public class Model extends Renderable {
 
 	static {
 		SINE = Rasterizer.anIntArray1470;
-		COSINE = Rasterizer.anIntArray1471;
+		COSINE = Rasterizer.COSINE;
 		modelIntArray3 = Rasterizer.anIntArray1482;
 		modelIntArray4 = Rasterizer.anIntArray1469;
 	}

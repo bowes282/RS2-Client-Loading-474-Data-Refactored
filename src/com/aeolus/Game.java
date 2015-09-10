@@ -34,7 +34,7 @@ import com.aeolus.media.font.TextInput;
 import com.aeolus.media.renderable.Renderable;
 import com.aeolus.media.renderable.Item;
 import com.aeolus.media.renderable.Model;
-import com.aeolus.media.renderable.ObjectManager;
+import com.aeolus.media.renderable.MapRegion;
 import com.aeolus.media.renderable.StaticObject;
 import com.aeolus.media.renderable.TemporaryObject;
 import com.aeolus.media.renderable.entity.Entity;
@@ -491,33 +491,33 @@ public class Game extends GameShell {
 		return " " + s;
 	}
 
-	public final String methodR(int j) {
-		if (j >= 0 && j < 10000)
-			return String.valueOf(j);
-		if (j >= 10000 && j < 10000000)
-			return j / 1000 + "K";
-		if (j >= 10000000 && j < 999999999)
-			return j / 1000000 + "M";
-		if (j >= 999999999)
+	public final String formatCoins(int coins) {
+		if (coins >= 0 && coins < 10000)
+			return String.valueOf(coins);
+		if (coins >= 10000 && coins < 10000000)
+			return coins / 1000 + "K";
+		if (coins >= 10000000 && coins < 999999999)
+			return coins / 1000000 + "M";
+		if (coins >= 999999999)
 			return "*";
 		else
 			return "?";
 	}
 
-	public static final byte[] ReadFile(String s) {
+	public static final byte[] ReadFile(String fileName) {
 		try {
 			byte abyte0[];
-			File file = new File(s);
+			File file = new File(fileName);
 			int i = (int) file.length();
 			abyte0 = new byte[i];
 			DataInputStream datainputstream = new DataInputStream(
-					new BufferedInputStream(new FileInputStream(s)));
+					new BufferedInputStream(new FileInputStream(fileName)));
 			datainputstream.readFully(abyte0, 0, i);
 			datainputstream.close();
 			return abyte0;
 		} catch (Exception e) {
 			System.out.println((new StringBuilder()).append("Read Error: ")
-					.append(s).toString());
+					.append(fileName).toString());
 			return null;
 		}
 	}
@@ -525,7 +525,7 @@ public class Game extends GameShell {
 	private boolean menuHasAddFriend(int j) {
 		if (j < 0)
 			return false;
-		int k = menuActionID[j];
+		int k = menuActionTypes[j];
 		if (k >= 2000)
 			k -= 2000;
 		return k == 337;
@@ -914,7 +914,10 @@ public class Game extends GameShell {
 		return s;
 	}
 
-	public void init() {
+	/**
+	 * Initializes the client for startup
+	 */
+	public void initialize() {
 		try {
 			nodeID = 10;
 			portOff = 0;
@@ -929,13 +932,13 @@ public class Game extends GameShell {
 		}
 	}
 
-	public void startRunnable(Runnable runnable, int i) {
-		if (i > 10)
-			i = 10;
+	public void startRunnable(Runnable runnable, int priority) {
+		if (priority > 10)
+			priority = 10;
 		if (Signlink.mainapp != null) {
-			Signlink.startthread(runnable, i);
+			Signlink.startthread(runnable, priority);
 		} else {
-			super.startRunnable(runnable, i);
+			super.startRunnable(runnable, priority);
 		}
 	}
 
@@ -1012,7 +1015,7 @@ public class Game extends GameShell {
 						i3 = j3;
 				}
 				if (i3 != -1)
-					doAction(i3);
+					processMenuActions(i3);
 				menuOpen = false;
 				if (menuScreenArea == 1) {
 				}
@@ -1022,12 +1025,12 @@ public class Game extends GameShell {
 			}
 		} else {
 			if (j == 1 && menuActionRow > 0) {
-				int i1 = menuActionID[menuActionRow - 1];
+				int i1 = menuActionTypes[menuActionRow - 1];
 				if (i1 == 632 || i1 == 78 || i1 == 867 || i1 == 431 || i1 == 53
 						|| i1 == 74 || i1 == 454 || i1 == 539 || i1 == 493
 						|| i1 == 847 || i1 == 447 || i1 == 1125) {
-					int l1 = menuActionCmd2[menuActionRow - 1];
-					int j2 = menuActionCmd3[menuActionRow - 1];
+					int l1 = firstMenuAction[menuActionRow - 1];
+					int j2 = secondMenuAction[menuActionRow - 1];
 					Widget class9 = Widget.interfaceCache[j2];
 					if (class9.aBoolean259 || class9.replaceItems) {
 						aBoolean1242 = false;
@@ -1050,7 +1053,7 @@ public class Game extends GameShell {
 					&& menuActionRow > 2)
 				j = 2;
 			if (j == 1 && menuActionRow > 0)
-				doAction(menuActionRow - 1);
+				processMenuActions(menuActionRow - 1);
 			if (j == 2 && menuActionRow > 0)
 				determineMenuSize();
 			processMainScreenClick();
@@ -1104,14 +1107,14 @@ public class Game extends GameShell {
 				}
 			}
 
-			ObjectManager objectManager = new ObjectManager(byteGroundArray,
+			MapRegion objectManager = new MapRegion(byteGroundArray,
 					intGroundArray);
 			int k2 = aByteArrayArray1183.length;
 			outgoing.writeOpCode(0);
 			if (!aBoolean1159) {
 				for (int i3 = 0; i3 < k2; i3++) {
-					int i4 = (anIntArray1234[i3] >> 8) * 64 - baseX;
-					int k5 = (anIntArray1234[i3] & 0xff) * 64 - baseY;
+					int i4 = (anIntArray1234[i3] >> 8) * 64 - regionBaseX;
+					int k5 = (anIntArray1234[i3] & 0xff) * 64 - regionBaseY;
 					byte abyte0[] = aByteArrayArray1183[i3];
 					if (abyte0 != null)
 						objectManager.method180(abyte0, k5, i4,
@@ -1119,8 +1122,8 @@ public class Game extends GameShell {
 								aClass11Array1230);
 				}
 				for (int j4 = 0; j4 < k2; j4++) {
-					int l5 = (anIntArray1234[j4] >> 8) * 64 - baseX;
-					int k7 = (anIntArray1234[j4] & 0xff) * 64 - baseY;
+					int l5 = (anIntArray1234[j4] >> 8) * 64 - regionBaseX;
+					int k7 = (anIntArray1234[j4] & 0xff) * 64 - regionBaseY;
 					byte abyte2[] = aByteArrayArray1183[j4];
 					if (abyte2 == null && anInt1070 < 800)
 						objectManager.method174(k7, 64, 64, l5);
@@ -1135,8 +1138,8 @@ public class Game extends GameShell {
 				for (int i6 = 0; i6 < k2; i6++) {
 					byte abyte1[] = aByteArrayArray1247[i6];
 					if (abyte1 != null) {
-						int l8 = (anIntArray1234[i6] >> 8) * 64 - baseX;
-						int k9 = (anIntArray1234[i6] & 0xff) * 64 - baseY;
+						int l8 = (anIntArray1234[i6] >> 8) * 64 - regionBaseX;
+						int k9 = (anIntArray1234[i6] & 0xff) * 64 - regionBaseY;
 						objectManager.method190(l8, aClass11Array1230, k9,
 								worldController, abyte1);
 					}
@@ -1213,13 +1216,13 @@ public class Game extends GameShell {
 			objectManager.method171(aClass11Array1230, worldController);
 			gameScreenImageProducer.initDrawingArea();
 			outgoing.writeOpCode(0);
-			int k3 = ObjectManager.anInt145;
+			int k3 = MapRegion.anInt145;
 			if (k3 > plane)
 				k3 = plane;
 			if (k3 < plane - 1)
 				k3 = plane - 1;
 			if (lowMem)
-				worldController.method275(ObjectManager.anInt145);
+				worldController.method275(MapRegion.anInt145);
 			else
 				worldController.method275(0);
 			for (int i5 = 0; i5 < 104; i5++) {
@@ -1494,9 +1497,9 @@ public class Game extends GameShell {
 					if (childInterface.contentType != 0)
 						flag = buildFriendsListMenu(childInterface);
 					if (!flag) {
-						menuActionName[menuActionRow] = childInterface.tooltip;
-						menuActionID[menuActionRow] = 315;
-						menuActionCmd3[menuActionRow] = childInterface.id;
+						menuActionText[menuActionRow] = childInterface.tooltip;
+						menuActionTypes[menuActionRow] = 315;
+						secondMenuAction[menuActionRow] = childInterface.id;
 						menuActionRow++;
 					}
 				}
@@ -1521,24 +1524,24 @@ public class Game extends GameShell {
 							|| childInterface.spellName
 									.equals("Flames of Zamorak")
 							|| childInterface.spellName.equals("Magic Dart")) {
-						menuActionName[menuActionRow] = "Autocast @gre@"
+						menuActionText[menuActionRow] = "Autocast @gre@"
 								+ childInterface.spellName;
-						menuActionID[menuActionRow] = 104;
-						menuActionCmd3[menuActionRow] = childInterface.id;
+						menuActionTypes[menuActionRow] = 104;
+						secondMenuAction[menuActionRow] = childInterface.id;
 						menuActionRow++;
 					}
-					menuActionName[menuActionRow] = s + " @gre@"
+					menuActionText[menuActionRow] = s + " @gre@"
 							+ childInterface.spellName;
-					menuActionID[menuActionRow] = 626;
-					menuActionCmd3[menuActionRow] = childInterface.id;
+					menuActionTypes[menuActionRow] = 626;
+					secondMenuAction[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
 				if (childInterface.optionType == Widget.OPTION_CLOSE && k >= i2 && i1 >= j2
 						&& k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
-					menuActionName[menuActionRow] = "Close";
-					menuActionID[menuActionRow] = 200;
-					menuActionCmd3[menuActionRow] = childInterface.id;
+					menuActionText[menuActionRow] = "Close";
+					menuActionTypes[menuActionRow] = 200;
+					secondMenuAction[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
 				if (childInterface.optionType == Widget.OPTION_TOGGLE_SETTING && k >= i2 && i1 >= j2
@@ -1548,9 +1551,9 @@ public class Game extends GameShell {
 					// class9_1.interfaceID);
 					// menuActionName[menuActionRow] = class9_1.tooltip + ", " +
 					// class9_1.id;
-					menuActionName[menuActionRow] = childInterface.tooltip;
-					menuActionID[menuActionRow] = 169;
-					menuActionCmd3[menuActionRow] = childInterface.id;
+					menuActionText[menuActionRow] = childInterface.tooltip;
+					menuActionTypes[menuActionRow] = 169;
+					secondMenuAction[menuActionRow] = childInterface.id;
 					menuActionRow++;
 					if (childInterface.hoverText != null) {
 						// drawHoverBox(k, l, class9_1.hoverText);
@@ -1565,9 +1568,9 @@ public class Game extends GameShell {
 					// class9_1.interfaceID);
 					// menuActionName[menuActionRow] = class9_1.tooltip + ", " +
 					// class9_1.id;
-					menuActionName[menuActionRow] = childInterface.tooltip;
-					menuActionID[menuActionRow] = 646;
-					menuActionCmd3[menuActionRow] = childInterface.id;
+					menuActionText[menuActionRow] = childInterface.tooltip;
+					menuActionTypes[menuActionRow] = 646;
+					secondMenuAction[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
 				if (childInterface.optionType == Widget.OPTION_CONTINUE && !continuedDialogue
@@ -1577,9 +1580,9 @@ public class Game extends GameShell {
 					// class9_1.interfaceID);
 					// menuActionName[menuActionRow] = class9_1.tooltip + ", " +
 					// class9_1.id;
-					menuActionName[menuActionRow] = childInterface.tooltip;
-					menuActionID[menuActionRow] = 679;
-					menuActionCmd3[menuActionRow] = childInterface.id;
+					menuActionText[menuActionRow] = childInterface.tooltip;
+					menuActionTypes[menuActionRow] = 679;
+					secondMenuAction[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
 				if (childInterface.type == Widget.TYPE_INVENTORY) {
@@ -1605,25 +1608,25 @@ public class Game extends GameShell {
 											&& childInterface.hasActions) {
 										if (childInterface.id != anInt1284
 												|| k2 != anInt1283) {
-											menuActionName[menuActionRow] = "Use "
+											menuActionText[menuActionRow] = "Use "
 													+ selectedItemName
 													+ " with @lre@"
 													+ itemDef.name;
-											menuActionID[menuActionRow] = 870;
-											menuActionCmd1[menuActionRow] = itemDef.id;
-											menuActionCmd2[menuActionRow] = k2;
-											menuActionCmd3[menuActionRow] = childInterface.id;
+											menuActionTypes[menuActionRow] = 870;
+											selectedMenuActions[menuActionRow] = itemDef.id;
+											firstMenuAction[menuActionRow] = k2;
+											secondMenuAction[menuActionRow] = childInterface.id;
 											menuActionRow++;
 										}
 									} else if (spellSelected == 1
 											&& childInterface.hasActions) {
 										if ((spellUsableOn & 0x10) == 16) {
-											menuActionName[menuActionRow] = spellTooltip
+											menuActionText[menuActionRow] = spellTooltip
 													+ " @lre@" + itemDef.name;
-											menuActionID[menuActionRow] = 543;
-											menuActionCmd1[menuActionRow] = itemDef.id;
-											menuActionCmd2[menuActionRow] = k2;
-											menuActionCmd3[menuActionRow] = childInterface.id;
+											menuActionTypes[menuActionRow] = 543;
+											selectedMenuActions[menuActionRow] = itemDef.id;
+											firstMenuAction[menuActionRow] = k2;
+											secondMenuAction[menuActionRow] = childInterface.id;
 											menuActionRow++;
 										}
 									} else {
@@ -1631,52 +1634,52 @@ public class Game extends GameShell {
 											for (int l3 = 4; l3 >= 3; l3--)
 												if (itemDef.actions != null
 														&& itemDef.actions[l3] != null) {
-													menuActionName[menuActionRow] = itemDef.actions[l3]
+													menuActionText[menuActionRow] = itemDef.actions[l3]
 															+ " @lre@"
 															+ itemDef.name;
 													if (l3 == 3)
-														menuActionID[menuActionRow] = 493;
+														menuActionTypes[menuActionRow] = 493;
 													if (l3 == 4)
-														menuActionID[menuActionRow] = 847;
-													menuActionCmd1[menuActionRow] = itemDef.id;
-													menuActionCmd2[menuActionRow] = k2;
-													menuActionCmd3[menuActionRow] = childInterface.id;
+														menuActionTypes[menuActionRow] = 847;
+													selectedMenuActions[menuActionRow] = itemDef.id;
+													firstMenuAction[menuActionRow] = k2;
+													secondMenuAction[menuActionRow] = childInterface.id;
 													menuActionRow++;
 												} else if (l3 == 4) {
-													menuActionName[menuActionRow] = "Drop @lre@"
+													menuActionText[menuActionRow] = "Drop @lre@"
 															+ itemDef.name;
-													menuActionID[menuActionRow] = 847;
-													menuActionCmd1[menuActionRow] = itemDef.id;
-													menuActionCmd2[menuActionRow] = k2;
-													menuActionCmd3[menuActionRow] = childInterface.id;
+													menuActionTypes[menuActionRow] = 847;
+													selectedMenuActions[menuActionRow] = itemDef.id;
+													firstMenuAction[menuActionRow] = k2;
+													secondMenuAction[menuActionRow] = childInterface.id;
 													menuActionRow++;
 												}
 										}
 										if (childInterface.usableItems) {
-											menuActionName[menuActionRow] = "Use @lre@"
+											menuActionText[menuActionRow] = "Use @lre@"
 													+ itemDef.name;
-											menuActionID[menuActionRow] = 447;
-											menuActionCmd1[menuActionRow] = itemDef.id;
-											menuActionCmd2[menuActionRow] = k2;
-											menuActionCmd3[menuActionRow] = childInterface.id;
+											menuActionTypes[menuActionRow] = 447;
+											selectedMenuActions[menuActionRow] = itemDef.id;
+											firstMenuAction[menuActionRow] = k2;
+											secondMenuAction[menuActionRow] = childInterface.id;
 											menuActionRow++;
 										}
 										if (childInterface.hasActions
 												&& itemDef.actions != null) {
 											for (int i4 = 2; i4 >= 0; i4--)
 												if (itemDef.actions[i4] != null) {
-													menuActionName[menuActionRow] = itemDef.actions[i4]
+													menuActionText[menuActionRow] = itemDef.actions[i4]
 															+ " @lre@"
 															+ itemDef.name;
 													if (i4 == 0)
-														menuActionID[menuActionRow] = 74;
+														menuActionTypes[menuActionRow] = 74;
 													if (i4 == 1)
-														menuActionID[menuActionRow] = 454;
+														menuActionTypes[menuActionRow] = 454;
 													if (i4 == 2)
-														menuActionID[menuActionRow] = 539;
-													menuActionCmd1[menuActionRow] = itemDef.id;
-													menuActionCmd2[menuActionRow] = k2;
-													menuActionCmd3[menuActionRow] = childInterface.id;
+														menuActionTypes[menuActionRow] = 539;
+													selectedMenuActions[menuActionRow] = itemDef.id;
+													firstMenuAction[menuActionRow] = k2;
+													secondMenuAction[menuActionRow] = childInterface.id;
 													menuActionRow++;
 												}
 
@@ -1684,41 +1687,41 @@ public class Game extends GameShell {
 										if (childInterface.actions != null) {
 											for (int j4 = 4; j4 >= 0; j4--)
 												if (childInterface.actions[j4] != null) {
-													menuActionName[menuActionRow] = childInterface.actions[j4]
+													menuActionText[menuActionRow] = childInterface.actions[j4]
 															+ " @lre@"
 															+ itemDef.name;
 													if (j4 == 0)
-														menuActionID[menuActionRow] = 632;
+														menuActionTypes[menuActionRow] = 632;
 													if (j4 == 1)
-														menuActionID[menuActionRow] = 78;
+														menuActionTypes[menuActionRow] = 78;
 													if (j4 == 2)
-														menuActionID[menuActionRow] = 867;
+														menuActionTypes[menuActionRow] = 867;
 													if (j4 == 3)
-														menuActionID[menuActionRow] = 431;
+														menuActionTypes[menuActionRow] = 431;
 													if (j4 == 4)
-														menuActionID[menuActionRow] = 53;
-													menuActionCmd1[menuActionRow] = itemDef.id;
-													menuActionCmd2[menuActionRow] = k2;
-													menuActionCmd3[menuActionRow] = childInterface.id;
+														menuActionTypes[menuActionRow] = 53;
+													selectedMenuActions[menuActionRow] = itemDef.id;
+													firstMenuAction[menuActionRow] = k2;
+													secondMenuAction[menuActionRow] = childInterface.id;
 													menuActionRow++;
 												}
 
 										}
 										if (Configuration.enableIds
 												&& (myPrivilege >= 2 && myPrivilege <= 3)) {
-											menuActionName[menuActionRow] = "Examine @lre@"
+											menuActionText[menuActionRow] = "Examine @lre@"
 													+ itemDef.name
 													+ " @gre@(@whi@"
 													+ (childInterface.inventoryItemId[k2] - 1)
 													+ "@gre@)";
 										} else {
-											menuActionName[menuActionRow] = "Examine @lre@"
+											menuActionText[menuActionRow] = "Examine @lre@"
 													+ itemDef.name;
 										}
-										menuActionID[menuActionRow] = 1125;
-										menuActionCmd1[menuActionRow] = itemDef.id;
-										menuActionCmd2[menuActionRow] = k2;
-										menuActionCmd3[menuActionRow] = childInterface.id;
+										menuActionTypes[menuActionRow] = 1125;
+										selectedMenuActions[menuActionRow] = itemDef.id;
+										firstMenuAction[menuActionRow] = k2;
+										secondMenuAction[menuActionRow] = childInterface.id;
 										menuActionRow++;
 									}
 								}
@@ -2959,7 +2962,7 @@ public class Game extends GameShell {
 				textColor = 0xffff00;
 			}
 			boldText.drawTextWithPotentialShadow(true, xPos + 3, textColor,
-					menuActionName[i], textY);
+					menuActionText[i], textY);
 		}
 	}
 
@@ -3500,7 +3503,7 @@ public class Game extends GameShell {
 		SceneGraph.lowMem = false;
 		Rasterizer.lowMem = false;
 		lowMem = false;
-		ObjectManager.lowMem = false;
+		MapRegion.lowMem = false;
 		ObjectDefinition.lowMemory = false;
 	}
 
@@ -3523,7 +3526,7 @@ public class Game extends GameShell {
 	public static Game instance;
 
 	private void loadingStages() {
-		if (lowMem && loadingStage == 2 && ObjectManager.anInt131 != plane) {
+		if (lowMem && loadingStage == 2 && MapRegion.anInt131 != plane) {
 			gameScreenImageProducer.initDrawingArea();
 			drawLoadingMessages(1, "Loading - please wait.", null);
 			gameScreenImageProducer.drawGraphics(
@@ -3559,13 +3562,13 @@ public class Game extends GameShell {
 		for (int j = 0; j < aByteArrayArray1183.length; j++) {
 			byte abyte0[] = aByteArrayArray1247[j];
 			if (abyte0 != null) {
-				int k = (anIntArray1234[j] >> 8) * 64 - baseX;
-				int l = (anIntArray1234[j] & 0xff) * 64 - baseY;
+				int k = (anIntArray1234[j] >> 8) * 64 - regionBaseX;
+				int l = (anIntArray1234[j] & 0xff) * 64 - regionBaseY;
 				if (aBoolean1159) {
 					k = 10;
 					l = 10;
 				}
-				flag &= ObjectManager.method189(k, abyte0, l);
+				flag &= MapRegion.method189(k, abyte0, l);
 			}
 		}
 		if (!flag)
@@ -3574,7 +3577,7 @@ public class Game extends GameShell {
 			return -4;
 		} else {
 			loadingStage = 2;
-			ObjectManager.anInt131 = plane;
+			MapRegion.anInt131 = plane;
 			updateWorldObjects();
 			outgoing.writeOpCode(121);
 			return 0;
@@ -3734,7 +3737,7 @@ public class Game extends GameShell {
 				}
 			} while (onDemandData.dataType != 93
 					|| !onDemandFetcher.method564(onDemandData.ID));
-			ObjectManager.method173(new Buffer(onDemandData.buffer),
+			MapRegion.method173(new Buffer(onDemandData.buffer),
 					onDemandFetcher);
 		} while (true);
 	}
@@ -3815,8 +3818,8 @@ public class Game extends GameShell {
 	private void drawHeadIcon() {
 		if (hintIconDrawType != 2)
 			return;
-		calcEntityScreenPos((hintIconX - baseX << 7) + anInt937, anInt936 * 2,
-				(hintIconY - baseY << 7) + anInt938);
+		calcEntityScreenPos((hintIconX - regionBaseX << 7) + anInt937, anInt936 * 2,
+				(hintIconY - regionBaseY << 7) + anInt938);
 		if (spriteDrawX > -1 && loopCycle % 20 < 10)
 			headIconsHint[0].drawSprite(spriteDrawX - 12, spriteDrawY - 28);
 	}
@@ -4033,7 +4036,7 @@ public class Game extends GameShell {
 						&& menuActionRow > 2)
 					determineMenuSize();
 				else if (menuActionRow > 0)
-					doAction(menuActionRow - 1);
+					processMenuActions(menuActionRow - 1);
 				atInventoryLoopCycle = 10;
 				super.clickMode3 = 0;
 			}
@@ -4109,7 +4112,7 @@ public class Game extends GameShell {
 				.reverseGetFirst();
 		for (; class30_sub1 != null; class30_sub1 = (TemporaryObject) spawns
 				.reverseGetNext())
-			if (class30_sub1.anInt1294 == -1) {
+			if (class30_sub1.getLongetivity == -1) {
 				class30_sub1.anInt1302 = 0;
 				method89(class30_sub1);
 			} else {
@@ -4488,27 +4491,27 @@ public class Game extends GameShell {
 		minimapZoom = 0;
 	}
 
-	private void doAction(int i) {
-		if (i < 0)
+	private void processMenuActions(int id) {
+		if (id < 0)
 			return;
 		if (inputDialogState != 0) {
 			inputDialogState = 0;
 			inputTaken = true;
 		}
-		int j = menuActionCmd2[i];
-		int index = menuActionCmd3[i];
-		int l = menuActionID[i];
-		int i1 = menuActionCmd1[i];
-		if (l >= 2000)
-			l -= 2000;
-		if (l == 851) {
+		int first = firstMenuAction[id];
+		int second = secondMenuAction[id];
+		int action = menuActionTypes[id];
+		int clicked = selectedMenuActions[id];
+		if (action >= 2000)
+			action -= 2000;
+		if (action == 851) {
 			outgoing.writeOpCode(185);
 			outgoing.writeShort(155);
 		}
-		if (l == 474) {
+		if (action == 474) {
 			counterOn = !counterOn;
 		}
-		if (l == 700) {
+		if (action == 700) {
 			if (tabInterfaceIDs[10] != -1) {
 				if (tabID == 10) {
 					showTabComponents = !showTabComponents;
@@ -4519,46 +4522,46 @@ public class Game extends GameShell {
 				tabAreaAltered = true;
 			}
 		}
-		if (l == 475) {
+		if (action == 475) {
 			xpCounter = 0;
 		}
-		if (l == 696) {
+		if (action == 696) {
 			setNorth();
 		}
-		if (l == 1506) { // Select quick prayers
+		if (action == 1506) { // Select quick prayers
 			outgoing.writeOpCode(185);
 			outgoing.writeShort(5001);
 		}
-		if (l == 1500) { // Toggle quick prayers
+		if (action == 1500) { // Toggle quick prayers
 			prayClicked = !prayClicked;
 			outgoing.writeOpCode(185);
 			outgoing.writeShort(5000);
 		}
-		if (l == 1508) { // Toggle HP above heads
+		if (action == 1508) { // Toggle HP above heads
 			Configuration.hpAboveHeads = !Configuration.hpAboveHeads;
 		}
-		if (l == 104) {
-			Widget class9_1 = Widget.interfaceCache[index];
-			spellID = class9_1.id;
+		if (action == 104) {
+			Widget widget = Widget.interfaceCache[second];
+			spellId = widget.id;
 			if (!autocast) {
 				autocast = true;
-				autoCastId = class9_1.id;
+				autoCastId = widget.id;
 				outgoing.writeOpCode(185);
-				outgoing.writeShort(class9_1.id);
-			} else if (autoCastId == class9_1.id) {
+				outgoing.writeShort(widget.id);
+			} else if (autoCastId == widget.id) {
 				autocast = false;
 				autoCastId = 0;
 				outgoing.writeOpCode(185);
-				outgoing.writeShort(class9_1.id);
-			} else if (autoCastId != class9_1.id) {
+				outgoing.writeShort(widget.id);
+			} else if (autoCastId != widget.id) {
 				autocast = true;
-				autoCastId = class9_1.id;
+				autoCastId = widget.id;
 				outgoing.writeOpCode(185);
-				outgoing.writeShort(class9_1.id);
+				outgoing.writeShort(widget.id);
 			}
 		}
-		if (l == 582) {
-			Npc npc = npcs[i1];
+		if (action == 582) {
+			Npc npc = npcs[clicked];
 			if (npc != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, npc.pathY[0],
 						localPlayer.pathX[0], false, npc.pathX[0]);
@@ -4568,41 +4571,41 @@ public class Game extends GameShell {
 				crossIndex = 0;
 				outgoing.writeOpCode(57);
 				outgoing.writeShortA(anInt1285);
-				outgoing.writeShortA(i1);
+				outgoing.writeShortA(clicked);
 				outgoing.writeLEShort(anInt1283);
 				outgoing.writeShortA(anInt1284);
 			}
 		}
-		if (l == 234) {
-			boolean flag1 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, index,
-					localPlayer.pathX[0], false, j);
+		if (action == 234) {
+			boolean flag1 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, second,
+					localPlayer.pathX[0], false, first);
 			if (!flag1)
-				flag1 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, index,
-						localPlayer.pathX[0], false, j);
+				flag1 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, second,
+						localPlayer.pathX[0], false, first);
 			crossX = super.saveClickX;
 			crossY = super.saveClickY;
 			crossType = 2;
 			crossIndex = 0;
 			outgoing.writeOpCode(236);
-			outgoing.writeLEShort(index + baseY);
-			outgoing.writeShort(i1);
-			outgoing.writeLEShort(j + baseX);
+			outgoing.writeLEShort(second + regionBaseY);
+			outgoing.writeShort(clicked);
+			outgoing.writeLEShort(first + regionBaseX);
 		}
-		if (l == 62 && clickObject(i1, index, j)) {
+		if (action == 62 && clickObject(clicked, second, first)) {
 			outgoing.writeOpCode(192);
 			outgoing.writeShort(anInt1284);
-			outgoing.writeLEShort(i1 >> 14 & 0x7fff);
-			outgoing.writeLEShortA(index + baseY);
+			outgoing.writeLEShort(clicked >> 14 & 0x7fff);
+			outgoing.writeLEShortA(second + regionBaseY);
 			outgoing.writeLEShort(anInt1283);
-			outgoing.writeLEShortA(j + baseX);
+			outgoing.writeLEShortA(first + regionBaseX);
 			outgoing.writeShort(anInt1285);
 		}
-		if (l == 511) {
-			boolean flag2 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, index,
-					localPlayer.pathX[0], false, j);
+		if (action == 511) {
+			boolean flag2 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, second,
+					localPlayer.pathX[0], false, first);
 			if (!flag2)
-				flag2 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, index,
-						localPlayer.pathX[0], false, j);
+				flag2 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, second,
+						localPlayer.pathX[0], false, first);
 			crossX = super.saveClickX;
 			crossY = super.saveClickY;
 			crossType = 2;
@@ -4610,33 +4613,33 @@ public class Game extends GameShell {
 			outgoing.writeOpCode(25);
 			outgoing.writeLEShort(anInt1284);
 			outgoing.writeShortA(anInt1285);
-			outgoing.writeShort(i1);
-			outgoing.writeShortA(index + baseY);
+			outgoing.writeShort(clicked);
+			outgoing.writeShortA(second + regionBaseY);
 			outgoing.writeLEShortA(anInt1283);
-			outgoing.writeShort(j + baseX);
+			outgoing.writeShort(first + regionBaseX);
 		}
-		if (l == 74) {
+		if (action == 74) {
 			outgoing.writeOpCode(122);
-			outgoing.writeLEShortA(index);
-			outgoing.writeShortA(j);
-			outgoing.writeLEShort(i1);
+			outgoing.writeLEShortA(second);
+			outgoing.writeShortA(first);
+			outgoing.writeLEShort(clicked);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = index;
-			atInventoryIndex = j;
+			atInventoryInterface = second;
+			atInventoryIndex = first;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[index].parent == openInterfaceId)
+			if (Widget.interfaceCache[second].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[index].parent == backDialogueId)
+			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
-		if (l == 315) {
-			Widget widget = Widget.interfaceCache[index];
+		if (action == 315) {
+			Widget widget = Widget.interfaceCache[second];
 			boolean flag8 = true;
 			if (widget.contentType > 0)
 				flag8 = promptUserForInput(widget);
 			if (flag8) {
 
-				switch (index) {
+				switch (second) {
 				case 19144:
 					inventoryOverlay(15106, 3213);
 					writeInterface(15106);
@@ -4644,14 +4647,14 @@ public class Game extends GameShell {
 					break;
 				default:
 					outgoing.writeOpCode(185);
-					outgoing.writeShort(index);
+					outgoing.writeShort(second);
 					break;
 
 				}
 			}
 		}
-		if (l == 561) {
-			Player player = players[i1];
+		if (action == 561) {
+			Player player = players[clicked];
 			if (player != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
 						player.pathY[0], localPlayer.pathX[0], false,
@@ -4660,17 +4663,17 @@ public class Game extends GameShell {
 				crossY = super.saveClickY;
 				crossType = 2;
 				crossIndex = 0;
-				anInt1188 += i1;
+				anInt1188 += clicked;
 				if (anInt1188 >= 90) {
 					outgoing.writeOpCode(136);
 					anInt1188 = 0;
 				}
 				outgoing.writeOpCode(128);
-				outgoing.writeShort(i1);
+				outgoing.writeShort(clicked);
 			}
 		}
-		if (l == 20) {
-			Npc class30_sub2_sub4_sub1_sub1_1 = npcs[i1];
+		if (action == 20) {
+			Npc class30_sub2_sub4_sub1_sub1_1 = npcs[clicked];
 			if (class30_sub2_sub4_sub1_sub1_1 != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub1_1.pathY[0],
@@ -4681,11 +4684,11 @@ public class Game extends GameShell {
 				crossType = 2;
 				crossIndex = 0;
 				outgoing.writeOpCode(155);
-				outgoing.writeLEShort(i1);
+				outgoing.writeLEShort(clicked);
 			}
 		}
-		if (l == 779) {
-			Player class30_sub2_sub4_sub1_sub2_1 = players[i1];
+		if (action == 779) {
+			Player class30_sub2_sub4_sub1_sub2_1 = players[clicked];
 			if (class30_sub2_sub4_sub1_sub2_1 != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub2_1.pathY[0],
@@ -4696,92 +4699,92 @@ public class Game extends GameShell {
 				crossType = 2;
 				crossIndex = 0;
 				outgoing.writeOpCode(153);
-				outgoing.writeLEShort(i1);
+				outgoing.writeLEShort(clicked);
 			}
 		}
-		if (l == 519)
+		if (action == 519)
 			if (!menuOpen)
 				worldController.method312(super.saveClickY - 4,
 						super.saveClickX - 4);
 			else
-				worldController.method312(index - 4, j - 4);
-		if (l == 1062) {
-			anInt924 += baseX;
+				worldController.method312(second - 4, first - 4);
+		if (action == 1062) {
+			anInt924 += regionBaseX;
 			if (anInt924 >= 113) {
 				outgoing.writeOpCode(183);
 				outgoing.writeTriByte(0xe63271);
 				anInt924 = 0;
 			}
-			clickObject(i1, index, j);
+			clickObject(clicked, second, first);
 			outgoing.writeOpCode(228);
-			outgoing.writeShortA(i1 >> 14 & 0x7fff);
-			outgoing.writeShortA(index + baseY);
-			outgoing.writeShort(j + baseX);
+			outgoing.writeShortA(clicked >> 14 & 0x7fff);
+			outgoing.writeShortA(second + regionBaseY);
+			outgoing.writeShort(first + regionBaseX);
 		}
-		if (l == 679 && !continuedDialogue) {
+		if (action == 679 && !continuedDialogue) {
 			outgoing.writeOpCode(40);
-			outgoing.writeShort(index);
+			outgoing.writeShort(second);
 			continuedDialogue = true;
 		}
-		if (l == 431) {
+		if (action == 431) {
 			outgoing.writeOpCode(129);
-			outgoing.writeShortA(j);
-			outgoing.writeShort(index);
-			outgoing.writeShortA(i1);
+			outgoing.writeShortA(first);
+			outgoing.writeShort(second);
+			outgoing.writeShortA(clicked);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = index;
-			atInventoryIndex = j;
+			atInventoryInterface = second;
+			atInventoryIndex = first;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[index].parent == openInterfaceId)
+			if (Widget.interfaceCache[second].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[index].parent == backDialogueId)
+			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
-		if (l == 337 || l == 42 || l == 792 || l == 322) {
-			String s = menuActionName[i];
+		if (action == 337 || action == 42 || action == 792 || action == 322) {
+			String s = menuActionText[id];
 			int k1 = s.indexOf("@whi@");
 			if (k1 != -1) {
 				long l3 = TextClass.longForName(s.substring(k1 + 5).trim());
-				if (l == 337)
+				if (action == 337)
 					addFriend(l3);
-				if (l == 42)
+				if (action == 42)
 					addIgnore(l3);
-				if (l == 792)
+				if (action == 792)
 					delFriend(l3);
-				if (l == 322)
+				if (action == 322)
 					delIgnore(l3);
 			}
 		}
-		if (l == 53) {
+		if (action == 53) {
 			outgoing.writeOpCode(135);
-			outgoing.writeLEShort(j);
-			outgoing.writeShortA(index);
-			outgoing.writeLEShort(i1);
+			outgoing.writeLEShort(first);
+			outgoing.writeShortA(second);
+			outgoing.writeLEShort(clicked);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = index;
-			atInventoryIndex = j;
+			atInventoryInterface = second;
+			atInventoryIndex = first;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[index].parent == openInterfaceId)
+			if (Widget.interfaceCache[second].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[index].parent == backDialogueId)
+			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
-		if (l == 539) {
+		if (action == 539) {
 			outgoing.writeOpCode(16);
-			outgoing.writeShortA(i1);
-			outgoing.writeLEShortA(j);
-			outgoing.writeLEShortA(index);
+			outgoing.writeShortA(clicked);
+			outgoing.writeLEShortA(first);
+			outgoing.writeLEShortA(second);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = index;
-			atInventoryIndex = j;
+			atInventoryInterface = second;
+			atInventoryIndex = first;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[index].parent == openInterfaceId)
+			if (Widget.interfaceCache[second].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[index].parent == backDialogueId)
+			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
-		if (l == 484 || l == 6) {
-			String s1 = menuActionName[i];
+		if (action == 484 || action == 6) {
+			String s1 = menuActionText[id];
 			int l1 = s1.indexOf("@whi@");
 			if (l1 != -1) {
 				s1 = s1.substring(l1 + 5).trim();
@@ -4799,12 +4802,12 @@ public class Game extends GameShell {
 							class30_sub2_sub4_sub1_sub2_7.pathY[0],
 							localPlayer.pathX[0], false,
 							class30_sub2_sub4_sub1_sub2_7.pathX[0]);
-					if (l == 484) {
+					if (action == 484) {
 						outgoing.writeOpCode(139);
 						outgoing.writeLEShort(playerIndices[j3]);
 					}
-					if (l == 6) {
-						anInt1188 += i1;
+					if (action == 6) {
+						anInt1188 += clicked;
 						if (anInt1188 >= 90) {
 							outgoing.writeOpCode(136);
 							anInt1188 = 0;
@@ -4820,42 +4823,42 @@ public class Game extends GameShell {
 					pushMessage("Unable to find " + s7, 0, "");
 			}
 		}
-		if (l == 870) {
+		if (action == 870) {
 			outgoing.writeOpCode(53);
-			outgoing.writeShort(j);
+			outgoing.writeShort(first);
 			outgoing.writeShortA(anInt1283);
-			outgoing.writeLEShortA(i1);
+			outgoing.writeLEShortA(clicked);
 			outgoing.writeShort(anInt1284);
 			outgoing.writeLEShort(anInt1285);
-			outgoing.writeShort(index);
+			outgoing.writeShort(second);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = index;
-			atInventoryIndex = j;
+			atInventoryInterface = second;
+			atInventoryIndex = first;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[index].parent == openInterfaceId)
+			if (Widget.interfaceCache[second].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[index].parent == backDialogueId)
+			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
-		if (l == 847) {
+		if (action == 847) {
 			outgoing.writeOpCode(87);
-			outgoing.writeShortA(i1);
-			outgoing.writeShort(index);
-			outgoing.writeShortA(j);
+			outgoing.writeShortA(clicked);
+			outgoing.writeShort(second);
+			outgoing.writeShortA(first);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = index;
-			atInventoryIndex = j;
+			atInventoryInterface = second;
+			atInventoryIndex = first;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[index].parent == openInterfaceId)
+			if (Widget.interfaceCache[second].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[index].parent == backDialogueId)
+			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
-		if (l == 626) {
-			Widget class9_1 = Widget.interfaceCache[index];
+		if (action == 626) {
+			Widget class9_1 = Widget.interfaceCache[second];
 			spellSelected = 1;
-			spellID = class9_1.id;
-			anInt1137 = index;
+			spellId = class9_1.id;
+			anInt1137 = second;
 			spellUsableOn = class9_1.spellUsableOn;
 			itemSelected = 0;
 			String s4 = class9_1.selectedActionName;
@@ -4875,22 +4878,22 @@ public class Game extends GameShell {
 			}
 			return;
 		}
-		if (l == 78) {
+		if (action == 78) {
 			outgoing.writeOpCode(117);
-			outgoing.writeLEShortA(index);
-			outgoing.writeLEShortA(i1);
-			outgoing.writeLEShort(j);
+			outgoing.writeLEShortA(second);
+			outgoing.writeLEShortA(clicked);
+			outgoing.writeLEShort(first);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = index;
-			atInventoryIndex = j;
+			atInventoryInterface = second;
+			atInventoryIndex = first;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[index].parent == openInterfaceId)
+			if (Widget.interfaceCache[second].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[index].parent == backDialogueId)
+			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
-		if (l == 27) {
-			Player class30_sub2_sub4_sub1_sub2_2 = players[i1];
+		if (action == 27) {
+			Player class30_sub2_sub4_sub1_sub2_2 = players[clicked];
 			if (class30_sub2_sub4_sub1_sub2_2 != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub2_2.pathY[0],
@@ -4900,46 +4903,46 @@ public class Game extends GameShell {
 				crossY = super.saveClickY;
 				crossType = 2;
 				crossIndex = 0;
-				anInt986 += i1;
+				anInt986 += clicked;
 				if (anInt986 >= 54) {
 					outgoing.writeOpCode(189);
 					outgoing.writeByte(234);
 					anInt986 = 0;
 				}
 				outgoing.writeOpCode(73);
-				outgoing.writeLEShort(i1);
+				outgoing.writeLEShort(clicked);
 			}
 		}
-		if (l == 213) {
-			boolean flag3 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, index,
-					localPlayer.pathX[0], false, j);
+		if (action == 213) {
+			boolean flag3 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, second,
+					localPlayer.pathX[0], false, first);
 			if (!flag3)
-				flag3 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, index,
-						localPlayer.pathX[0], false, j);
+				flag3 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, second,
+						localPlayer.pathX[0], false, first);
 			crossX = super.saveClickX;
 			crossY = super.saveClickY;
 			crossType = 2;
 			crossIndex = 0;
 			outgoing.writeOpCode(79);
-			outgoing.writeLEShort(index + baseY);
-			outgoing.writeShort(i1);
-			outgoing.writeShortA(j + baseX);
+			outgoing.writeLEShort(second + regionBaseY);
+			outgoing.writeShort(clicked);
+			outgoing.writeShortA(first + regionBaseX);
 		}
-		if (l == 632) {
+		if (action == 632) {
 			outgoing.writeOpCode(145);
-			outgoing.writeShortA(index);
-			outgoing.writeShortA(j);
-			outgoing.writeShortA(i1);
+			outgoing.writeShortA(second);
+			outgoing.writeShortA(first);
+			outgoing.writeShortA(clicked);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = index;
-			atInventoryIndex = j;
+			atInventoryInterface = second;
+			atInventoryIndex = first;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[index].parent == openInterfaceId)
+			if (Widget.interfaceCache[second].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[index].parent == backDialogueId)
+			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
-		if (l == 1050) {
+		if (action == 1050) {
 			int currentHP = Integer
 					.parseInt(Widget.interfaceCache[4016].defaultText);
 			if (!(currentHP <= 0)) {
@@ -4949,7 +4952,7 @@ public class Game extends GameShell {
 				outgoing.writeShort(152);
 			}
 		}
-		if (menuActionName[i].contains("Toggle Run")) {
+		if (menuActionText[id].contains("Toggle Run")) {
 			int currentHP = Integer
 					.parseInt(Widget.interfaceCache[4016].defaultText);
 			if (!(currentHP <= 0)) {
@@ -4957,148 +4960,148 @@ public class Game extends GameShell {
 				sendConfiguration(429, runClicked ? 0 : 1);
 			}
 		}
-		if (l == 1004) {
+		if (action == 1004) {
 			if (tabInterfaceIDs[10] != -1) {
 				tabID = 10;
 				tabAreaAltered = true;
 			}
 		}
-		if (l == 1003) {
+		if (action == 1003) {
 			clanChatMode = 2;
 			inputTaken = true;
 		}
-		if (l == 1002) {
+		if (action == 1002) {
 			clanChatMode = 1;
 			inputTaken = true;
 		}
-		if (l == 1001) {
+		if (action == 1001) {
 			clanChatMode = 0;
 			inputTaken = true;
 		}
-		if (l == 1000) {
+		if (action == 1000) {
 			cButtonCPos = 4;
 			chatTypeView = 11;
 			inputTaken = true;
 		}
-		if (l == 999) {
+		if (action == 999) {
 			cButtonCPos = 0;
 			chatTypeView = 0;
 			inputTaken = true;
 		}
-		if (l == 998) {
+		if (action == 998) {
 			cButtonCPos = 1;
 			chatTypeView = 5;
 			inputTaken = true;
 		}
-		if (l == 997) {
+		if (action == 997) {
 			publicChatMode = 3;
 			inputTaken = true;
 		}
-		if (l == 996) {
+		if (action == 996) {
 			publicChatMode = 2;
 			inputTaken = true;
 		}
-		if (l == 995) {
+		if (action == 995) {
 			publicChatMode = 1;
 			inputTaken = true;
 		}
-		if (l == 994) {
+		if (action == 994) {
 			publicChatMode = 0;
 			inputTaken = true;
 		}
-		if (l == 993) {
+		if (action == 993) {
 			cButtonCPos = 2;
 			chatTypeView = 1;
 			inputTaken = true;
 		}
-		if (l == 992) {
+		if (action == 992) {
 			privateChatMode = 2;
 			inputTaken = true;
 		}
-		if (l == 991) {
+		if (action == 991) {
 			privateChatMode = 1;
 			inputTaken = true;
 		}
-		if (l == 990) {
+		if (action == 990) {
 			privateChatMode = 0;
 			inputTaken = true;
 		}
-		if (l == 989) {
+		if (action == 989) {
 			cButtonCPos = 3;
 			chatTypeView = 2;
 			inputTaken = true;
 		}
-		if (l == 987) {
+		if (action == 987) {
 			tradeMode = 2;
 			inputTaken = true;
 		}
-		if (l == 986) {
+		if (action == 986) {
 			tradeMode = 1;
 			inputTaken = true;
 		}
-		if (l == 985) {
+		if (action == 985) {
 			tradeMode = 0;
 			inputTaken = true;
 		}
-		if (l == 984) {
+		if (action == 984) {
 			cButtonCPos = 5;
 			chatTypeView = 3;
 			inputTaken = true;
 		}
-		if (l == 980) {
+		if (action == 980) {
 			cButtonCPos = 6;
 			chatTypeView = 4;
 			inputTaken = true;
 		}
-		if (l == 493) {
+		if (action == 493) {
 			outgoing.writeOpCode(75);
-			outgoing.writeLEShortA(index);
-			outgoing.writeLEShort(j);
-			outgoing.writeShortA(i1);
+			outgoing.writeLEShortA(second);
+			outgoing.writeLEShort(first);
+			outgoing.writeShortA(clicked);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = index;
-			atInventoryIndex = j;
+			atInventoryInterface = second;
+			atInventoryIndex = first;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[index].parent == openInterfaceId)
+			if (Widget.interfaceCache[second].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[index].parent == backDialogueId)
+			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
-		if (l == 652) {
-			boolean flag4 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, index,
-					localPlayer.pathX[0], false, j);
+		if (action == 652) {
+			boolean flag4 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, second,
+					localPlayer.pathX[0], false, first);
 			if (!flag4)
-				flag4 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, index,
-						localPlayer.pathX[0], false, j);
+				flag4 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, second,
+						localPlayer.pathX[0], false, first);
 			crossX = super.saveClickX;
 			crossY = super.saveClickY;
 			crossType = 2;
 			crossIndex = 0;
 			outgoing.writeOpCode(156);
-			outgoing.writeShortA(j + baseX);
-			outgoing.writeLEShort(index + baseY);
-			outgoing.writeLEShortA(i1);
+			outgoing.writeShortA(first + regionBaseX);
+			outgoing.writeLEShort(second + regionBaseY);
+			outgoing.writeLEShortA(clicked);
 		}
-		if (l == 94) {
-			boolean flag5 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, index,
-					localPlayer.pathX[0], false, j);
+		if (action == 94) {
+			boolean flag5 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, second,
+					localPlayer.pathX[0], false, first);
 			if (!flag5)
-				flag5 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, index,
-						localPlayer.pathX[0], false, j);
+				flag5 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, second,
+						localPlayer.pathX[0], false, first);
 			crossX = super.saveClickX;
 			crossY = super.saveClickY;
 			crossType = 2;
 			crossIndex = 0;
 			outgoing.writeOpCode(181);
-			outgoing.writeLEShort(index + baseY);
-			outgoing.writeShort(i1);
-			outgoing.writeLEShort(j + baseX);
+			outgoing.writeLEShort(second + regionBaseY);
+			outgoing.writeShort(clicked);
+			outgoing.writeLEShort(first + regionBaseX);
 			outgoing.writeShortA(anInt1137);
 		}
-		if (l == 646) {
+		if (action == 646) {
 			outgoing.writeOpCode(185);
-			outgoing.writeShort(index);
-			Widget class9_2 = Widget.interfaceCache[index];
+			outgoing.writeShort(second);
+			Widget class9_2 = Widget.interfaceCache[second];
 			if (class9_2.scripts != null && class9_2.scripts[0][0] == 5) {
 				int i2 = class9_2.scripts[0][1];
 				if (variousSettings[i2] != class9_2.scriptDefaults[0]) {
@@ -5107,8 +5110,8 @@ public class Game extends GameShell {
 				}
 			}
 		}
-		if (l == 225) {
-			Npc class30_sub2_sub4_sub1_sub1_2 = npcs[i1];
+		if (action == 225) {
+			Npc class30_sub2_sub4_sub1_sub1_2 = npcs[clicked];
 			if (class30_sub2_sub4_sub1_sub1_2 != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub1_2.pathY[0],
@@ -5118,18 +5121,18 @@ public class Game extends GameShell {
 				crossY = super.saveClickY;
 				crossType = 2;
 				crossIndex = 0;
-				anInt1226 += i1;
+				anInt1226 += clicked;
 				if (anInt1226 >= 85) {
 					outgoing.writeOpCode(230);
 					outgoing.writeByte(239);
 					anInt1226 = 0;
 				}
 				outgoing.writeOpCode(17);
-				outgoing.writeLEShortA(i1);
+				outgoing.writeLEShortA(clicked);
 			}
 		}
-		if (l == 965) {
-			Npc class30_sub2_sub4_sub1_sub1_3 = npcs[i1];
+		if (action == 965) {
+			Npc class30_sub2_sub4_sub1_sub1_3 = npcs[clicked];
 			if (class30_sub2_sub4_sub1_sub1_3 != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub1_3.pathY[0],
@@ -5146,11 +5149,11 @@ public class Game extends GameShell {
 					anInt1134 = 0;
 				}
 				outgoing.writeOpCode(21);
-				outgoing.writeShort(i1);
+				outgoing.writeShort(clicked);
 			}
 		}
-		if (l == 413) {
-			Npc class30_sub2_sub4_sub1_sub1_4 = npcs[i1];
+		if (action == 413) {
+			Npc class30_sub2_sub4_sub1_sub1_4 = npcs[clicked];
 			if (class30_sub2_sub4_sub1_sub1_4 != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub1_4.pathY[0],
@@ -5161,14 +5164,14 @@ public class Game extends GameShell {
 				crossType = 2;
 				crossIndex = 0;
 				outgoing.writeOpCode(131);
-				outgoing.writeLEShortA(i1);
+				outgoing.writeLEShortA(clicked);
 				outgoing.writeShortA(anInt1137);
 			}
 		}
-		if (l == 200)
+		if (action == 200)
 			clearTopInterfaces();
-		if (l == 1025) {
-			Npc class30_sub2_sub4_sub1_sub1_5 = npcs[i1];
+		if (action == 1025) {
+			Npc class30_sub2_sub4_sub1_sub1_5 = npcs[clicked];
 			if (class30_sub2_sub4_sub1_sub1_5 != null) {
 				NpcDefinition entityDef = class30_sub2_sub4_sub1_sub1_5.desc;
 				if (entityDef.childrenIDs != null)
@@ -5183,15 +5186,15 @@ public class Game extends GameShell {
 				}
 			}
 		}
-		if (l == 900) {
-			clickObject(i1, index, j);
+		if (action == 900) {
+			clickObject(clicked, second, first);
 			outgoing.writeOpCode(252);
-			outgoing.writeLEShortA(i1 >> 14 & 0x7fff);
-			outgoing.writeLEShort(index + baseY);
-			outgoing.writeShortA(j + baseX);
+			outgoing.writeLEShortA(clicked >> 14 & 0x7fff);
+			outgoing.writeLEShort(second + regionBaseY);
+			outgoing.writeShortA(first + regionBaseX);
 		}
-		if (l == 412) {
-			Npc class30_sub2_sub4_sub1_sub1_6 = npcs[i1];
+		if (action == 412) {
+			Npc class30_sub2_sub4_sub1_sub1_6 = npcs[clicked];
 			if (class30_sub2_sub4_sub1_sub1_6 != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub1_6.pathY[0],
@@ -5202,11 +5205,11 @@ public class Game extends GameShell {
 				crossType = 2;
 				crossIndex = 0;
 				outgoing.writeOpCode(72);
-				outgoing.writeShortA(i1);
+				outgoing.writeShortA(clicked);
 			}
 		}
-		if (l == 365) {
-			Player class30_sub2_sub4_sub1_sub2_3 = players[i1];
+		if (action == 365) {
+			Player class30_sub2_sub4_sub1_sub2_3 = players[clicked];
 			if (class30_sub2_sub4_sub1_sub2_3 != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub2_3.pathY[0],
@@ -5217,12 +5220,12 @@ public class Game extends GameShell {
 				crossType = 2;
 				crossIndex = 0;
 				outgoing.writeOpCode(249);
-				outgoing.writeShortA(i1);
+				outgoing.writeShortA(clicked);
 				outgoing.writeLEShort(anInt1137);
 			}
 		}
-		if (l == 729) {
-			Player class30_sub2_sub4_sub1_sub2_4 = players[i1];
+		if (action == 729) {
+			Player class30_sub2_sub4_sub1_sub2_4 = players[clicked];
 			if (class30_sub2_sub4_sub1_sub2_4 != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub2_4.pathY[0],
@@ -5233,11 +5236,11 @@ public class Game extends GameShell {
 				crossType = 2;
 				crossIndex = 0;
 				outgoing.writeOpCode(39);
-				outgoing.writeLEShort(i1);
+				outgoing.writeLEShort(clicked);
 			}
 		}
-		if (l == 577) {
-			Player class30_sub2_sub4_sub1_sub2_5 = players[i1];
+		if (action == 577) {
+			Player class30_sub2_sub4_sub1_sub2_5 = players[clicked];
 			if (class30_sub2_sub4_sub1_sub2_5 != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub2_5.pathY[0],
@@ -5248,33 +5251,33 @@ public class Game extends GameShell {
 				crossType = 2;
 				crossIndex = 0;
 				outgoing.writeOpCode(139);
-				outgoing.writeLEShort(i1);
+				outgoing.writeLEShort(clicked);
 			}
 		}
-		if (l == 956 && clickObject(i1, index, j)) {
+		if (action == 956 && clickObject(clicked, second, first)) {
 			outgoing.writeOpCode(35);
-			outgoing.writeLEShort(j + baseX);
+			outgoing.writeLEShort(first + regionBaseX);
 			outgoing.writeShortA(anInt1137);
-			outgoing.writeShortA(index + baseY);
-			outgoing.writeLEShort(i1 >> 14 & 0x7fff);
+			outgoing.writeShortA(second + regionBaseY);
+			outgoing.writeLEShort(clicked >> 14 & 0x7fff);
 		}
-		if (l == 567) {
-			boolean flag6 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, index,
-					localPlayer.pathX[0], false, j);
+		if (action == 567) {
+			boolean flag6 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, second,
+					localPlayer.pathX[0], false, first);
 			if (!flag6)
-				flag6 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, index,
-						localPlayer.pathX[0], false, j);
+				flag6 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, second,
+						localPlayer.pathX[0], false, first);
 			crossX = super.saveClickX;
 			crossY = super.saveClickY;
 			crossType = 2;
 			crossIndex = 0;
 			outgoing.writeOpCode(23);
-			outgoing.writeLEShort(index + baseY);
-			outgoing.writeLEShort(i1);
-			outgoing.writeLEShort(j + baseX);
+			outgoing.writeLEShort(second + regionBaseY);
+			outgoing.writeLEShort(clicked);
+			outgoing.writeLEShort(first + regionBaseX);
 		}
-		if (l == 867) {
-			if ((i1 & 3) == 0)
+		if (action == 867) {
+			if ((clicked & 3) == 0)
 				anInt1175++;
 			if (anInt1175 >= 59) {
 				outgoing.writeOpCode(200);
@@ -5282,35 +5285,35 @@ public class Game extends GameShell {
 				anInt1175 = 0;
 			}
 			outgoing.writeOpCode(43);
-			outgoing.writeLEShort(index);
-			outgoing.writeShortA(i1);
-			outgoing.writeShortA(j);
+			outgoing.writeLEShort(second);
+			outgoing.writeShortA(clicked);
+			outgoing.writeShortA(first);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = index;
-			atInventoryIndex = j;
+			atInventoryInterface = second;
+			atInventoryIndex = first;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[index].parent == openInterfaceId)
+			if (Widget.interfaceCache[second].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[index].parent == backDialogueId)
+			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
-		if (l == 543) {
+		if (action == 543) {
 			outgoing.writeOpCode(237);
-			outgoing.writeShort(j);
-			outgoing.writeShortA(i1);
-			outgoing.writeShort(index);
+			outgoing.writeShort(first);
+			outgoing.writeShortA(clicked);
+			outgoing.writeShort(second);
 			outgoing.writeShortA(anInt1137);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = index;
-			atInventoryIndex = j;
+			atInventoryInterface = second;
+			atInventoryIndex = first;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[index].parent == openInterfaceId)
+			if (Widget.interfaceCache[second].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[index].parent == backDialogueId)
+			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
-		if (l == 606) {
-			String s2 = menuActionName[i];
+		if (action == 606) {
+			String s2 = menuActionText[id];
 			int j2 = s2.indexOf("@whi@");
 			if (j2 != -1)
 				if (openInterfaceId == -1) {
@@ -5331,8 +5334,8 @@ public class Game extends GameShell {
 							0, "");
 				}
 		}
-		if (l == 491) {
-			Player class30_sub2_sub4_sub1_sub2_6 = players[i1];
+		if (action == 491) {
+			Player class30_sub2_sub4_sub1_sub2_6 = players[clicked];
 			if (class30_sub2_sub4_sub1_sub2_6 != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub2_6.pathY[0],
@@ -5344,13 +5347,13 @@ public class Game extends GameShell {
 				crossIndex = 0;
 				outgoing.writeOpCode(14);
 				outgoing.writeShortA(anInt1284);
-				outgoing.writeShort(i1);
+				outgoing.writeShort(clicked);
 				outgoing.writeShort(anInt1285);
 				outgoing.writeLEShort(anInt1283);
 			}
 		}
-		if (l == 639) {
-			String s3 = menuActionName[i];
+		if (action == 639) {
+			String s3 = menuActionText[id];
 			int k2 = s3.indexOf("@whi@");
 			if (k2 != -1) {
 				long l4 = TextClass.longForName(s3.substring(k2 + 5).trim());
@@ -5374,22 +5377,22 @@ public class Game extends GameShell {
 				}
 			}
 		}
-		if (l == 454) {
+		if (action == 454) {
 			outgoing.writeOpCode(41);
-			outgoing.writeShort(i1);
-			outgoing.writeShortA(j);
-			outgoing.writeShortA(index);
+			outgoing.writeShort(clicked);
+			outgoing.writeShortA(first);
+			outgoing.writeShortA(second);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = index;
-			atInventoryIndex = j;
+			atInventoryInterface = second;
+			atInventoryIndex = first;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[index].parent == openInterfaceId)
+			if (Widget.interfaceCache[second].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[index].parent == backDialogueId)
+			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
-		if (l == 478) {
-			Npc class30_sub2_sub4_sub1_sub1_7 = npcs[i1];
+		if (action == 478) {
+			Npc class30_sub2_sub4_sub1_sub1_7 = npcs[clicked];
 			if (class30_sub2_sub4_sub1_sub1_7 != null) {
 				doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
 						class30_sub2_sub4_sub1_sub1_7.pathY[0],
@@ -5399,7 +5402,7 @@ public class Game extends GameShell {
 				crossY = super.saveClickY;
 				crossType = 2;
 				crossIndex = 0;
-				if ((i1 & 3) == 0)
+				if ((clicked & 3) == 0)
 					anInt1155++;
 				if (anInt1155 >= 53) {
 					outgoing.writeOpCode(85);
@@ -5407,63 +5410,63 @@ public class Game extends GameShell {
 					anInt1155 = 0;
 				}
 				outgoing.writeOpCode(18);
-				outgoing.writeLEShort(i1);
+				outgoing.writeLEShort(clicked);
 			}
 		}
-		if (l == 113) {
-			clickObject(i1, index, j);
+		if (action == 113) {
+			clickObject(clicked, second, first);
 			outgoing.writeOpCode(70);
-			outgoing.writeLEShort(j + baseX);
-			outgoing.writeShort(index + baseY);
-			outgoing.writeLEShortA(i1 >> 14 & 0x7fff);
+			outgoing.writeLEShort(first + regionBaseX);
+			outgoing.writeShort(second + regionBaseY);
+			outgoing.writeLEShortA(clicked >> 14 & 0x7fff);
 		}
-		if (l == 872) {
-			clickObject(i1, index, j);
+		if (action == 872) {
+			clickObject(clicked, second, first);
 			outgoing.writeOpCode(234);
-			outgoing.writeLEShortA(j + baseX);
-			outgoing.writeShortA(i1 >> 14 & 0x7fff);
-			outgoing.writeLEShortA(index + baseY);
+			outgoing.writeLEShortA(first + regionBaseX);
+			outgoing.writeShortA(clicked >> 14 & 0x7fff);
+			outgoing.writeLEShortA(second + regionBaseY);
 		}
-		if (l == 502) {
-			clickObject(i1, index, j);
+		if (action == 502) {
+			clickObject(clicked, second, first);
 			outgoing.writeOpCode(132);
-			outgoing.writeLEShortA(j + baseX);
-			outgoing.writeShort(i1 >> 14 & 0x7fff);
-			outgoing.writeShortA(index + baseY);
+			outgoing.writeLEShortA(first + regionBaseX);
+			outgoing.writeShort(clicked >> 14 & 0x7fff);
+			outgoing.writeShortA(second + regionBaseY);
 		}
-		if (l == 1125) {
-			ItemDefinition itemDef = ItemDefinition.lookup(i1);
-			Widget class9_4 = Widget.interfaceCache[index];
+		if (action == 1125) {
+			ItemDefinition itemDef = ItemDefinition.lookup(clicked);
+			Widget class9_4 = Widget.interfaceCache[second];
 			String s5;
-			if (class9_4 != null && class9_4.invStackSizes[j] >= 0x186a0)
-				s5 = class9_4.invStackSizes[j] + " x " + itemDef.name;
+			if (class9_4 != null && class9_4.invStackSizes[first] >= 0x186a0)
+				s5 = class9_4.invStackSizes[first] + " x " + itemDef.name;
 			else if (itemDef.description != null)
 				s5 = new String(itemDef.description);
 			else
 				s5 = "It's a " + itemDef.name + ".";
 			pushMessage(s5, 0, "");
 		}
-		if (l == 169) {
+		if (action == 169) {
 			outgoing.writeOpCode(185);
-			outgoing.writeShort(index);
-			Widget class9_3 = Widget.interfaceCache[index];
+			outgoing.writeShort(second);
+			Widget class9_3 = Widget.interfaceCache[second];
 			if (class9_3.scripts != null && class9_3.scripts[0][0] == 5) {
 				int l2 = class9_3.scripts[0][1];
 				variousSettings[l2] = 1 - variousSettings[l2];
 				adjustVolume(l2);
 			}
 		}
-		if (l == 447) {
+		if (action == 447) {
 			itemSelected = 1;
-			anInt1283 = j;
-			anInt1284 = index;
-			anInt1285 = i1;
-			selectedItemName = ItemDefinition.lookup(i1).name;
+			anInt1283 = first;
+			anInt1284 = second;
+			anInt1285 = clicked;
+			selectedItemName = ItemDefinition.lookup(clicked).name;
 			spellSelected = 0;
 			return;
 		}
-		if (l == 1226) {
-			int j1 = i1 >> 14 & 0x7fff;
+		if (action == 1226) {
+			int j1 = clicked >> 14 & 0x7fff;
 			ObjectDefinition class46 = ObjectDefinition.lookup(j1);
 			String s10;
 			if (class46.description != null)
@@ -5472,23 +5475,23 @@ public class Game extends GameShell {
 				s10 = "It's a " + class46.name + ".";
 			pushMessage(s10, 0, "");
 		}
-		if (l == 244) {
-			boolean flag7 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, index,
-					localPlayer.pathX[0], false, j);
+		if (action == 244) {
+			boolean flag7 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, second,
+					localPlayer.pathX[0], false, first);
 			if (!flag7)
-				flag7 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, index,
-						localPlayer.pathX[0], false, j);
+				flag7 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, second,
+						localPlayer.pathX[0], false, first);
 			crossX = super.saveClickX;
 			crossY = super.saveClickY;
 			crossType = 2;
 			crossIndex = 0;
 			outgoing.writeOpCode(253);
-			outgoing.writeLEShort(j + baseX);
-			outgoing.writeLEShortA(index + baseY);
-			outgoing.writeShortA(i1);
+			outgoing.writeLEShort(first + regionBaseX);
+			outgoing.writeLEShortA(second + regionBaseY);
+			outgoing.writeShortA(clicked);
 		}
-		if (l == 1448) {
-			ItemDefinition itemDef_1 = ItemDefinition.lookup(i1);
+		if (action == 1448) {
+			ItemDefinition itemDef_1 = ItemDefinition.lookup(clicked);
 			String s6;
 			if (itemDef_1.description != null)
 				s6 = new String(itemDef_1.description);
@@ -5504,8 +5507,8 @@ public class Game extends GameShell {
 	@SuppressWarnings("unused")
 	private void tutorialIslandAreas() {
 		anInt1251 = 0;
-		int j = (localPlayer.x >> 7) + baseX;
-		int k = (localPlayer.y >> 7) + baseY;
+		int j = (localPlayer.x >> 7) + regionBaseX;
+		int k = (localPlayer.y >> 7) + regionBaseY;
 		if (j >= 3053 && j <= 3156 && k >= 3056 && k <= 3136)
 			anInt1251 = 1;
 		if (j >= 3072 && j <= 3118 && k >= 9492 && k <= 9535)
@@ -5522,12 +5525,12 @@ public class Game extends GameShell {
 		}
 	}
 
-	private void build3dScreenMenu() {
+	private void createMenu() {
 		if (itemSelected == 0 && spellSelected == 0) {
-			menuActionName[menuActionRow] = "Walk here";
-			menuActionID[menuActionRow] = 519;
-			menuActionCmd2[menuActionRow] = super.mouseX;
-			menuActionCmd3[menuActionRow] = super.mouseY;
+			menuActionText[menuActionRow] = "Walk here";
+			menuActionTypes[menuActionRow] = 519;
+			firstMenuAction[menuActionRow] = super.mouseX;
+			secondMenuAction[menuActionRow] = super.mouseY;
 			menuActionRow++;
 		}
 		int j = -1;
@@ -5547,60 +5550,60 @@ public class Game extends GameShell {
 				if (objectDef == null)
 					continue;
 				if (itemSelected == 1) {
-					menuActionName[menuActionRow] = "Use " + selectedItemName
+					menuActionText[menuActionRow] = "Use " + selectedItemName
 							+ " with @cya@" + objectDef.name;
-					menuActionID[menuActionRow] = 62;
-					menuActionCmd1[menuActionRow] = l;
-					menuActionCmd2[menuActionRow] = i1;
-					menuActionCmd3[menuActionRow] = j1;
+					menuActionTypes[menuActionRow] = 62;
+					selectedMenuActions[menuActionRow] = l;
+					firstMenuAction[menuActionRow] = i1;
+					secondMenuAction[menuActionRow] = j1;
 					menuActionRow++;
 				} else if (spellSelected == 1) {
 					if ((spellUsableOn & 4) == 4) {
-						menuActionName[menuActionRow] = spellTooltip + " @cya@"
+						menuActionText[menuActionRow] = spellTooltip + " @cya@"
 								+ objectDef.name;
-						menuActionID[menuActionRow] = 956;
-						menuActionCmd1[menuActionRow] = l;
-						menuActionCmd2[menuActionRow] = i1;
-						menuActionCmd3[menuActionRow] = j1;
+						menuActionTypes[menuActionRow] = 956;
+						selectedMenuActions[menuActionRow] = l;
+						firstMenuAction[menuActionRow] = i1;
+						secondMenuAction[menuActionRow] = j1;
 						menuActionRow++;
 					}
 				} else {
 					if (objectDef.interactions != null) {
 						for (int i2 = 4; i2 >= 0; i2--)
 							if (objectDef.interactions[i2] != null) {
-								menuActionName[menuActionRow] = objectDef.interactions[i2]
+								menuActionText[menuActionRow] = objectDef.interactions[i2]
 										+ " @cya@" + objectDef.name;
 								if (i2 == 0)
-									menuActionID[menuActionRow] = 502;
+									menuActionTypes[menuActionRow] = 502;
 								if (i2 == 1)
-									menuActionID[menuActionRow] = 900;
+									menuActionTypes[menuActionRow] = 900;
 								if (i2 == 2)
-									menuActionID[menuActionRow] = 113;
+									menuActionTypes[menuActionRow] = 113;
 								if (i2 == 3)
-									menuActionID[menuActionRow] = 872;
+									menuActionTypes[menuActionRow] = 872;
 								if (i2 == 4)
-									menuActionID[menuActionRow] = 1062;
-								menuActionCmd1[menuActionRow] = l;
-								menuActionCmd2[menuActionRow] = i1;
-								menuActionCmd3[menuActionRow] = j1;
+									menuActionTypes[menuActionRow] = 1062;
+								selectedMenuActions[menuActionRow] = l;
+								firstMenuAction[menuActionRow] = i1;
+								secondMenuAction[menuActionRow] = j1;
 								menuActionRow++;
 							}
 
 					}
 					if (Configuration.enableIds
 							&& (myPrivilege >= 2 || myPrivilege <= 3)) {
-						menuActionName[menuActionRow] = "Examine @cya@"
+						menuActionText[menuActionRow] = "Examine @cya@"
 								+ objectDef.name + " @gre@(@whi@" + l1
-								+ "@gre@) (@whi@" + (i1 + baseX) + ","
-								+ (j1 + baseY) + "@gre@)";
+								+ "@gre@) (@whi@" + (i1 + regionBaseX) + ","
+								+ (j1 + regionBaseY) + "@gre@)";
 					} else {
-						menuActionName[menuActionRow] = "Examine @cya@"
+						menuActionText[menuActionRow] = "Examine @cya@"
 								+ objectDef.name;
 					}
-					menuActionID[menuActionRow] = 1226;
-					menuActionCmd1[menuActionRow] = objectDef.type << 14;
-					menuActionCmd2[menuActionRow] = i1;
-					menuActionCmd3[menuActionRow] = j1;
+					menuActionTypes[menuActionRow] = 1226;
+					selectedMenuActions[menuActionRow] = objectDef.type << 14;
+					firstMenuAction[menuActionRow] = i1;
+					secondMenuAction[menuActionRow] = j1;
 					menuActionRow++;
 				}
 			}
@@ -5662,65 +5665,65 @@ public class Game extends GameShell {
 							.getNext()) {
 						ItemDefinition itemDef = ItemDefinition.lookup(item.ID);
 						if (itemSelected == 1) {
-							menuActionName[menuActionRow] = "Use "
+							menuActionText[menuActionRow] = "Use "
 									+ selectedItemName + " with @lre@"
 									+ itemDef.name;
-							menuActionID[menuActionRow] = 511;
-							menuActionCmd1[menuActionRow] = item.ID;
-							menuActionCmd2[menuActionRow] = i1;
-							menuActionCmd3[menuActionRow] = j1;
+							menuActionTypes[menuActionRow] = 511;
+							selectedMenuActions[menuActionRow] = item.ID;
+							firstMenuAction[menuActionRow] = i1;
+							secondMenuAction[menuActionRow] = j1;
 							menuActionRow++;
 						} else if (spellSelected == 1) {
 							if ((spellUsableOn & 1) == 1) {
-								menuActionName[menuActionRow] = spellTooltip
+								menuActionText[menuActionRow] = spellTooltip
 										+ " @lre@" + itemDef.name;
-								menuActionID[menuActionRow] = 94;
-								menuActionCmd1[menuActionRow] = item.ID;
-								menuActionCmd2[menuActionRow] = i1;
-								menuActionCmd3[menuActionRow] = j1;
+								menuActionTypes[menuActionRow] = 94;
+								selectedMenuActions[menuActionRow] = item.ID;
+								firstMenuAction[menuActionRow] = i1;
+								secondMenuAction[menuActionRow] = j1;
 								menuActionRow++;
 							}
 						} else {
 							for (int j3 = 4; j3 >= 0; j3--)
 								if (itemDef.groundActions != null
 										&& itemDef.groundActions[j3] != null) {
-									menuActionName[menuActionRow] = itemDef.groundActions[j3]
+									menuActionText[menuActionRow] = itemDef.groundActions[j3]
 											+ " @lre@" + itemDef.name;
 									if (j3 == 0)
-										menuActionID[menuActionRow] = 652;
+										menuActionTypes[menuActionRow] = 652;
 									if (j3 == 1)
-										menuActionID[menuActionRow] = 567;
+										menuActionTypes[menuActionRow] = 567;
 									if (j3 == 2)
-										menuActionID[menuActionRow] = 234;
+										menuActionTypes[menuActionRow] = 234;
 									if (j3 == 3)
-										menuActionID[menuActionRow] = 244;
+										menuActionTypes[menuActionRow] = 244;
 									if (j3 == 4)
-										menuActionID[menuActionRow] = 213;
-									menuActionCmd1[menuActionRow] = item.ID;
-									menuActionCmd2[menuActionRow] = i1;
-									menuActionCmd3[menuActionRow] = j1;
+										menuActionTypes[menuActionRow] = 213;
+									selectedMenuActions[menuActionRow] = item.ID;
+									firstMenuAction[menuActionRow] = i1;
+									secondMenuAction[menuActionRow] = j1;
 									menuActionRow++;
 								} else if (j3 == 2) {
-									menuActionName[menuActionRow] = "Take @lre@"
+									menuActionText[menuActionRow] = "Take @lre@"
 											+ itemDef.name;
 								}
-							menuActionID[menuActionRow] = 234;
-							menuActionCmd1[menuActionRow] = item.ID;
-							menuActionCmd2[menuActionRow] = i1;
-							menuActionCmd3[menuActionRow] = j1;
+							menuActionTypes[menuActionRow] = 234;
+							selectedMenuActions[menuActionRow] = item.ID;
+							firstMenuAction[menuActionRow] = i1;
+							secondMenuAction[menuActionRow] = j1;
 							menuActionRow++;
 						}
 						if (Configuration.enableIds && (myPrivilege >= 2 && myPrivilege <= 3)) {
-							menuActionName[menuActionRow] = "Examine @lre@"
+							menuActionText[menuActionRow] = "Examine @lre@"
 									+ itemDef.name + " @gre@ (@whi@" + item.ID + "@gre@)";
 						} else {
-							menuActionName[menuActionRow] = "Examine @lre@"
+							menuActionText[menuActionRow] = "Examine @lre@"
 									+ itemDef.name;
 						}
-						menuActionID[menuActionRow] = 1448;
-						menuActionCmd1[menuActionRow] = item.ID;
-						menuActionCmd2[menuActionRow] = i1;
-						menuActionCmd3[menuActionRow] = j1;
+						menuActionTypes[menuActionRow] = 1448;
+						selectedMenuActions[menuActionRow] = item.ID;
+						firstMenuAction[menuActionRow] = i1;
+						secondMenuAction[menuActionRow] = j1;
 						menuActionRow++;
 					}
 				}
@@ -5797,11 +5800,11 @@ public class Game extends GameShell {
 		spawns = null;
 		projectiles = null;
 		incompleteAnimables = null;
-		menuActionCmd2 = null;
-		menuActionCmd3 = null;
-		menuActionID = null;
-		menuActionCmd1 = null;
-		menuActionName = null;
+		firstMenuAction = null;
+		secondMenuAction = null;
+		menuActionTypes = null;
+		selectedMenuActions = null;
+		menuActionText = null;
 		variousSettings = null;
 		minimapHintX = null;
 		minimapHintY = null;
@@ -6196,16 +6199,16 @@ public class Game extends GameShell {
 							&& isFriendOrSelf(s))) {
 				if (j > k1 - 14 && j <= k1 && !s.equals(localPlayer.name)) {
 					if (myPrivilege >= 1) {
-						menuActionName[menuActionRow] = "Report abuse @whi@"
+						menuActionText[menuActionRow] = "Report abuse @whi@"
 								+ s;
-						menuActionID[menuActionRow] = 606;
+						menuActionTypes[menuActionRow] = 606;
 						menuActionRow++;
 					}
-					menuActionName[menuActionRow] = "Add ignore @whi@" + s;
-					menuActionID[menuActionRow] = 42;
+					menuActionText[menuActionRow] = "Add ignore @whi@" + s;
+					menuActionTypes[menuActionRow] = 42;
 					menuActionRow++;
-					menuActionName[menuActionRow] = "Add friend @whi@" + s;
-					menuActionID[menuActionRow] = 337;
+					menuActionText[menuActionRow] = "Add friend @whi@" + s;
+					menuActionTypes[menuActionRow] = 337;
 					menuActionRow++;
 				}
 				l++;
@@ -6242,16 +6245,16 @@ public class Game extends GameShell {
 							&& isFriendOrSelf(s))) {
 				if (j > k1 - 14 && j <= k1) {
 					if (myPrivilege >= 1) {
-						menuActionName[menuActionRow] = "Report abuse @whi@"
+						menuActionText[menuActionRow] = "Report abuse @whi@"
 								+ s;
-						menuActionID[menuActionRow] = 606;
+						menuActionTypes[menuActionRow] = 606;
 						menuActionRow++;
 					}
-					menuActionName[menuActionRow] = "Add ignore @whi@" + s;
-					menuActionID[menuActionRow] = 42;
+					menuActionText[menuActionRow] = "Add ignore @whi@" + s;
+					menuActionTypes[menuActionRow] = 42;
 					menuActionRow++;
-					menuActionName[menuActionRow] = "Add friend @whi@" + s;
-					menuActionID[menuActionRow] = 337;
+					menuActionText[menuActionRow] = "Add friend @whi@" + s;
+					menuActionTypes[menuActionRow] = 337;
 					menuActionRow++;
 				}
 				l++;
@@ -6280,8 +6283,8 @@ public class Game extends GameShell {
 			if (chatTypeView == 3 && j1 == 4
 					&& (tradeMode == 0 || tradeMode == 1 && isFriendOrSelf(s))) {
 				if (j > k1 - 14 && j <= k1) {
-					menuActionName[menuActionRow] = "Accept trade @whi@" + s;
-					menuActionID[menuActionRow] = 484;
+					menuActionText[menuActionRow] = "Accept trade @whi@" + s;
+					menuActionTypes[menuActionRow] = 484;
 					menuActionRow++;
 				}
 				l++;
@@ -6289,17 +6292,17 @@ public class Game extends GameShell {
 			if (chatTypeView == 4 && j1 == 8
 					&& (tradeMode == 0 || tradeMode == 1 && isFriendOrSelf(s))) {
 				if (j > k1 - 14 && j <= k1) {
-					menuActionName[menuActionRow] = "Accept challenge @whi@"
+					menuActionText[menuActionRow] = "Accept challenge @whi@"
 							+ s;
-					menuActionID[menuActionRow] = 6;
+					menuActionTypes[menuActionRow] = 6;
 					menuActionRow++;
 				}
 				l++;
 			}
 			if (j1 == 12) {
 				if (j > k1 - 14 && j <= k1) {
-					menuActionName[menuActionRow] = "Go-to @blu@" + s;
-					menuActionID[menuActionRow] = 915;
+					menuActionText[menuActionRow] = "Go-to @blu@" + s;
+					menuActionTypes[menuActionRow] = 915;
 					menuActionRow++;
 				}
 				l++;
@@ -6346,16 +6349,16 @@ public class Game extends GameShell {
 							&& isFriendOrSelf(s))) {
 				if (j > k1 - 14 && j <= k1 && !s.equals(localPlayer.name)) {
 					if (myPrivilege >= 1) {
-						menuActionName[menuActionRow] = "Report abuse @whi@"
+						menuActionText[menuActionRow] = "Report abuse @whi@"
 								+ s;
-						menuActionID[menuActionRow] = 606;
+						menuActionTypes[menuActionRow] = 606;
 						menuActionRow++;
 					}
-					menuActionName[menuActionRow] = "Add ignore @whi@" + s;
-					menuActionID[menuActionRow] = 42;
+					menuActionText[menuActionRow] = "Add ignore @whi@" + s;
+					menuActionTypes[menuActionRow] = 42;
 					menuActionRow++;
-					menuActionName[menuActionRow] = "Add friend @whi@" + s;
-					menuActionID[menuActionRow] = 337;
+					menuActionText[menuActionRow] = "Add friend @whi@" + s;
+					menuActionTypes[menuActionRow] = 337;
 					menuActionRow++;
 				}
 				l++;
@@ -6366,16 +6369,16 @@ public class Game extends GameShell {
 							&& isFriendOrSelf(s))) {
 				if (j > k1 - 14 && j <= k1) {
 					if (myPrivilege >= 1) {
-						menuActionName[menuActionRow] = "Report abuse @whi@"
+						menuActionText[menuActionRow] = "Report abuse @whi@"
 								+ s;
-						menuActionID[menuActionRow] = 606;
+						menuActionTypes[menuActionRow] = 606;
 						menuActionRow++;
 					}
-					menuActionName[menuActionRow] = "Add ignore @whi@" + s;
-					menuActionID[menuActionRow] = 42;
+					menuActionText[menuActionRow] = "Add ignore @whi@" + s;
+					menuActionTypes[menuActionRow] = 42;
 					menuActionRow++;
-					menuActionName[menuActionRow] = "Add friend @whi@" + s;
-					menuActionID[menuActionRow] = 337;
+					menuActionText[menuActionRow] = "Add friend @whi@" + s;
+					menuActionTypes[menuActionRow] = 337;
 					menuActionRow++;
 				}
 				l++;
@@ -6383,8 +6386,8 @@ public class Game extends GameShell {
 			if (j1 == 4
 					&& (tradeMode == 0 || tradeMode == 1 && isFriendOrSelf(s))) {
 				if (j > k1 - 14 && j <= k1) {
-					menuActionName[menuActionRow] = "Accept trade @whi@" + s;
-					menuActionID[menuActionRow] = 484;
+					menuActionText[menuActionRow] = "Accept trade @whi@" + s;
+					menuActionTypes[menuActionRow] = 484;
 					menuActionRow++;
 				}
 				l++;
@@ -6395,9 +6398,9 @@ public class Game extends GameShell {
 			if (j1 == 8
 					&& (tradeMode == 0 || tradeMode == 1 && isFriendOrSelf(s))) {
 				if (j > k1 - 14 && j <= k1) {
-					menuActionName[menuActionRow] = "Accept challenge @whi@"
+					menuActionText[menuActionRow] = "Accept challenge @whi@"
 							+ s;
-					menuActionID[menuActionRow] = 6;
+					menuActionTypes[menuActionRow] = 6;
 					menuActionRow++;
 				}
 				l++;
@@ -7630,58 +7633,58 @@ public class Game extends GameShell {
 	public void rightClickChatButtons() {
 		if (mouseY >= frameHeight - 22 && mouseY <= frameHeight) {
 			if (super.mouseX >= 5 && super.mouseX <= 61) {
-				menuActionName[1] = "View All";
-				menuActionID[1] = 999;
+				menuActionText[1] = "View All";
+				menuActionTypes[1] = 999;
 				menuActionRow = 2;
 			} else if (super.mouseX >= 71 && super.mouseX <= 127) {
-				menuActionName[1] = "View Game";
-				menuActionID[1] = 998;
+				menuActionText[1] = "View Game";
+				menuActionTypes[1] = 998;
 				menuActionRow = 2;
 			} else if (super.mouseX >= 137 && super.mouseX <= 193) {
-				menuActionName[1] = "Hide public";
-				menuActionID[1] = 997;
-				menuActionName[2] = "Off public";
-				menuActionID[2] = 996;
-				menuActionName[3] = "Friends public";
-				menuActionID[3] = 995;
-				menuActionName[4] = "On public";
-				menuActionID[4] = 994;
-				menuActionName[5] = "View public";
-				menuActionID[5] = 993;
+				menuActionText[1] = "Hide public";
+				menuActionTypes[1] = 997;
+				menuActionText[2] = "Off public";
+				menuActionTypes[2] = 996;
+				menuActionText[3] = "Friends public";
+				menuActionTypes[3] = 995;
+				menuActionText[4] = "On public";
+				menuActionTypes[4] = 994;
+				menuActionText[5] = "View public";
+				menuActionTypes[5] = 993;
 				menuActionRow = 6;
 			} else if (super.mouseX >= 203 && super.mouseX <= 259) {
-				menuActionName[1] = "Off private";
-				menuActionID[1] = 992;
-				menuActionName[2] = "Friends private";
-				menuActionID[2] = 991;
-				menuActionName[3] = "On private";
-				menuActionID[3] = 990;
-				menuActionName[4] = "View private";
-				menuActionID[4] = 989;
+				menuActionText[1] = "Off private";
+				menuActionTypes[1] = 992;
+				menuActionText[2] = "Friends private";
+				menuActionTypes[2] = 991;
+				menuActionText[3] = "On private";
+				menuActionTypes[3] = 990;
+				menuActionText[4] = "View private";
+				menuActionTypes[4] = 989;
 				menuActionRow = 5;
 			} else if (super.mouseX >= 269 && super.mouseX <= 325) {
-				menuActionName[1] = "Off clan chat";
-				menuActionID[1] = 1003;
-				menuActionName[2] = "Friends clan chat";
-				menuActionID[2] = 1002;
-				menuActionName[3] = "On clan chat";
-				menuActionID[3] = 1001;
-				menuActionName[4] = "View clan chat";
-				menuActionID[4] = 1000;
+				menuActionText[1] = "Off clan chat";
+				menuActionTypes[1] = 1003;
+				menuActionText[2] = "Friends clan chat";
+				menuActionTypes[2] = 1002;
+				menuActionText[3] = "On clan chat";
+				menuActionTypes[3] = 1001;
+				menuActionText[4] = "View clan chat";
+				menuActionTypes[4] = 1000;
 				menuActionRow = 5;
 			} else if (super.mouseX >= 335 && super.mouseX <= 391) {
-				menuActionName[1] = "Off trade";
-				menuActionID[1] = 987;
-				menuActionName[2] = "Friends trade";
-				menuActionID[2] = 986;
-				menuActionName[3] = "On trade";
-				menuActionID[3] = 985;
-				menuActionName[4] = "View trade";
-				menuActionID[4] = 984;
+				menuActionText[1] = "Off trade";
+				menuActionTypes[1] = 987;
+				menuActionText[2] = "Friends trade";
+				menuActionTypes[2] = 986;
+				menuActionText[3] = "On trade";
+				menuActionTypes[3] = 985;
+				menuActionText[4] = "View trade";
+				menuActionTypes[4] = 984;
 				menuActionRow = 5;
 			} else if (super.mouseX >= 404 && super.mouseX <= 515) {
-				menuActionName[1] = "Report Abuse";
-				menuActionID[1] = 606;
+				menuActionText[1] = "Report Abuse";
+				menuActionTypes[1] = 606;
 				menuActionRow = 2;
 			}
 		}
@@ -7691,8 +7694,8 @@ public class Game extends GameShell {
 		if (activeInterfaceType != 0) {
 			return;
 		}
-		menuActionName[0] = "Cancel";
-		menuActionID[0] = 1107;
+		menuActionText[0] = "Cancel";
+		menuActionTypes[0] = 1107;
 		menuActionRow = 1;
 		if (showChatComponents) {
 			buildSplitPrivateChatMenu();
@@ -7707,7 +7710,7 @@ public class Game extends GameShell {
 							Widget.interfaceCache[openInterfaceId],
 							super.mouseX, 4, super.mouseY, 0);
 				} else {
-					build3dScreenMenu();
+					createMenu();
 				}
 			}
 		} else if (frameMode != ScreenMode.FIXED) {
@@ -7722,7 +7725,7 @@ public class Game extends GameShell {
 							super.mouseX, (frameHeight / 2) - 230,
 							super.mouseY, 0);
 				} else {
-					build3dScreenMenu();
+					createMenu();
 				}
 			}
 		}
@@ -7816,22 +7819,22 @@ public class Game extends GameShell {
 		while (!flag) {
 			flag = true;
 			for (int j = 0; j < menuActionRow - 1; j++) {
-				if (menuActionID[j] < 1000 && menuActionID[j + 1] > 1000) {
-					String s = menuActionName[j];
-					menuActionName[j] = menuActionName[j + 1];
-					menuActionName[j + 1] = s;
-					int k = menuActionID[j];
-					menuActionID[j] = menuActionID[j + 1];
-					menuActionID[j + 1] = k;
-					k = menuActionCmd2[j];
-					menuActionCmd2[j] = menuActionCmd2[j + 1];
-					menuActionCmd2[j + 1] = k;
-					k = menuActionCmd3[j];
-					menuActionCmd3[j] = menuActionCmd3[j + 1];
-					menuActionCmd3[j + 1] = k;
-					k = menuActionCmd1[j];
-					menuActionCmd1[j] = menuActionCmd1[j + 1];
-					menuActionCmd1[j + 1] = k;
+				if (menuActionTypes[j] < 1000 && menuActionTypes[j + 1] > 1000) {
+					String s = menuActionText[j];
+					menuActionText[j] = menuActionText[j + 1];
+					menuActionText[j + 1] = s;
+					int k = menuActionTypes[j];
+					menuActionTypes[j] = menuActionTypes[j + 1];
+					menuActionTypes[j + 1] = k;
+					k = firstMenuAction[j];
+					firstMenuAction[j] = firstMenuAction[j + 1];
+					firstMenuAction[j + 1] = k;
+					k = secondMenuAction[j];
+					secondMenuAction[j] = secondMenuAction[j + 1];
+					secondMenuAction[j + 1] = k;
+					k = selectedMenuActions[j];
+					selectedMenuActions[j] = selectedMenuActions[j + 1];
+					selectedMenuActions[j + 1] = k;
 					flag = false;
 				}
 			}
@@ -8345,7 +8348,7 @@ public class Game extends GameShell {
 				outgoing.writeOpCode(98);
 				outgoing.writeByte(k4 + k4 + 3);
 			}
-			outgoing.writeLEShortA(k6 + baseX);
+			outgoing.writeLEShortA(k6 + regionBaseX);
 			destinationX = bigX[0];
 			destY = bigY[0];
 			for (int j7 = 1; j7 < k4; j7++) {
@@ -8353,7 +8356,7 @@ public class Game extends GameShell {
 				outgoing.writeByte(bigX[i4] - k6);
 				outgoing.writeByte(bigY[i4] - i7);
 			}
-			outgoing.writeLEShort(i7 + baseY);
+			outgoing.writeLEShort(i7 + regionBaseY);
 			outgoing.writeNegatedByte(super.keyArray[5] != 1 ? 0 : 1);
 			return true;
 		}
@@ -8462,22 +8465,22 @@ public class Game extends GameShell {
 							entityDef.combatLevel) + " (level-"
 					+ entityDef.combatLevel + ")";
 		if (itemSelected == 1) {
-			menuActionName[menuActionRow] = "Use " + selectedItemName
+			menuActionText[menuActionRow] = "Use " + selectedItemName
 					+ " with @yel@" + s;
-			menuActionID[menuActionRow] = 582;
-			menuActionCmd1[menuActionRow] = i;
-			menuActionCmd2[menuActionRow] = k;
-			menuActionCmd3[menuActionRow] = j;
+			menuActionTypes[menuActionRow] = 582;
+			selectedMenuActions[menuActionRow] = i;
+			firstMenuAction[menuActionRow] = k;
+			secondMenuAction[menuActionRow] = j;
 			menuActionRow++;
 			return;
 		}
 		if (spellSelected == 1) {
 			if ((spellUsableOn & 2) == 2) {
-				menuActionName[menuActionRow] = spellTooltip + " @yel@" + s;
-				menuActionID[menuActionRow] = 413;
-				menuActionCmd1[menuActionRow] = i;
-				menuActionCmd2[menuActionRow] = k;
-				menuActionCmd3[menuActionRow] = j;
+				menuActionText[menuActionRow] = spellTooltip + " @yel@" + s;
+				menuActionTypes[menuActionRow] = 413;
+				selectedMenuActions[menuActionRow] = i;
+				firstMenuAction[menuActionRow] = k;
+				secondMenuAction[menuActionRow] = j;
 				menuActionRow++;
 			}
 		} else {
@@ -8485,21 +8488,21 @@ public class Game extends GameShell {
 				for (int l = 4; l >= 0; l--)
 					if (entityDef.actions[l] != null
 							&& !entityDef.actions[l].equalsIgnoreCase("attack")) {
-						menuActionName[menuActionRow] = entityDef.actions[l]
+						menuActionText[menuActionRow] = entityDef.actions[l]
 								+ " @yel@" + s;
 						if (l == 0)
-							menuActionID[menuActionRow] = 20;
+							menuActionTypes[menuActionRow] = 20;
 						if (l == 1)
-							menuActionID[menuActionRow] = 412;
+							menuActionTypes[menuActionRow] = 412;
 						if (l == 2)
-							menuActionID[menuActionRow] = 225;
+							menuActionTypes[menuActionRow] = 225;
 						if (l == 3)
-							menuActionID[menuActionRow] = 965;
+							menuActionTypes[menuActionRow] = 965;
 						if (l == 4)
-							menuActionID[menuActionRow] = 478;
-						menuActionCmd1[menuActionRow] = i;
-						menuActionCmd2[menuActionRow] = k;
-						menuActionCmd3[menuActionRow] = j;
+							menuActionTypes[menuActionRow] = 478;
+						selectedMenuActions[menuActionRow] = i;
+						firstMenuAction[menuActionRow] = k;
+						secondMenuAction[menuActionRow] = j;
 						menuActionRow++;
 					}
 
@@ -8511,35 +8514,35 @@ public class Game extends GameShell {
 						char c = '\0';
 						if (entityDef.combatLevel > localPlayer.combatLevel)
 							c = '\u07D0';
-						menuActionName[menuActionRow] = entityDef.actions[i1]
+						menuActionText[menuActionRow] = entityDef.actions[i1]
 								+ " @yel@" + s;
 						if (i1 == 0)
-							menuActionID[menuActionRow] = 20 + c;
+							menuActionTypes[menuActionRow] = 20 + c;
 						if (i1 == 1)
-							menuActionID[menuActionRow] = 412 + c;
+							menuActionTypes[menuActionRow] = 412 + c;
 						if (i1 == 2)
-							menuActionID[menuActionRow] = 225 + c;
+							menuActionTypes[menuActionRow] = 225 + c;
 						if (i1 == 3)
-							menuActionID[menuActionRow] = 965 + c;
+							menuActionTypes[menuActionRow] = 965 + c;
 						if (i1 == 4)
-							menuActionID[menuActionRow] = 478 + c;
-						menuActionCmd1[menuActionRow] = i;
-						menuActionCmd2[menuActionRow] = k;
-						menuActionCmd3[menuActionRow] = j;
+							menuActionTypes[menuActionRow] = 478 + c;
+						selectedMenuActions[menuActionRow] = i;
+						firstMenuAction[menuActionRow] = k;
+						secondMenuAction[menuActionRow] = j;
 						menuActionRow++;
 					}
 
 			}
 			if (Configuration.enableIds && (myPrivilege >= 2 && myPrivilege <= 3)) {
-				menuActionName[menuActionRow] = "Examine @yel@" + s
+				menuActionText[menuActionRow] = "Examine @yel@" + s
 						+ " @gre@(@whi@" + entityDef.interfaceType + "@gre@)";
 			} else {
-				menuActionName[menuActionRow] = "Examine @yel@" + s;
+				menuActionText[menuActionRow] = "Examine @yel@" + s;
 			}
-			menuActionID[menuActionRow] = 1025;
-			menuActionCmd1[menuActionRow] = i;
-			menuActionCmd2[menuActionRow] = k;
-			menuActionCmd3[menuActionRow] = j;
+			menuActionTypes[menuActionRow] = 1025;
+			selectedMenuActions[menuActionRow] = i;
+			firstMenuAction[menuActionRow] = k;
+			secondMenuAction[menuActionRow] = j;
 			menuActionRow++;
 		}
 	}
@@ -8558,26 +8561,26 @@ public class Game extends GameShell {
 		else
 			s = player.name + " (skill-" + player.skill + ")";
 		if (itemSelected == 1) {
-			menuActionName[menuActionRow] = "Use " + selectedItemName
+			menuActionText[menuActionRow] = "Use " + selectedItemName
 					+ " with @whi@" + s;
-			menuActionID[menuActionRow] = 491;
-			menuActionCmd1[menuActionRow] = j;
-			menuActionCmd2[menuActionRow] = i;
-			menuActionCmd3[menuActionRow] = k;
+			menuActionTypes[menuActionRow] = 491;
+			selectedMenuActions[menuActionRow] = j;
+			firstMenuAction[menuActionRow] = i;
+			secondMenuAction[menuActionRow] = k;
 			menuActionRow++;
 		} else if (spellSelected == 1) {
 			if ((spellUsableOn & 8) == 8) {
-				menuActionName[menuActionRow] = spellTooltip + " @whi@" + s;
-				menuActionID[menuActionRow] = 365;
-				menuActionCmd1[menuActionRow] = j;
-				menuActionCmd2[menuActionRow] = i;
-				menuActionCmd3[menuActionRow] = k;
+				menuActionText[menuActionRow] = spellTooltip + " @whi@" + s;
+				menuActionTypes[menuActionRow] = 365;
+				selectedMenuActions[menuActionRow] = j;
+				firstMenuAction[menuActionRow] = i;
+				secondMenuAction[menuActionRow] = k;
 				menuActionRow++;
 			}
 		} else {
 			for (int l = 4; l >= 0; l--)
 				if (atPlayerActions[l] != null) {
-					menuActionName[menuActionRow] = atPlayerActions[l]
+					menuActionText[menuActionRow] = atPlayerActions[l]
 							+ " @whi@" + s;
 					char c = '\0';
 					if (atPlayerActions[l].equalsIgnoreCase("attack")) {
@@ -8591,24 +8594,24 @@ public class Game extends GameShell {
 					} else if (atPlayerArray[l])
 						c = '\u07D0';
 					if (l == 0)
-						menuActionID[menuActionRow] = 561 + c;
+						menuActionTypes[menuActionRow] = 561 + c;
 					if (l == 1)
-						menuActionID[menuActionRow] = 779 + c;
+						menuActionTypes[menuActionRow] = 779 + c;
 					if (l == 2)
-						menuActionID[menuActionRow] = 27 + c;
+						menuActionTypes[menuActionRow] = 27 + c;
 					if (l == 3)
-						menuActionID[menuActionRow] = 577 + c;
+						menuActionTypes[menuActionRow] = 577 + c;
 					if (l == 4)
-						menuActionID[menuActionRow] = 729 + c;
-					menuActionCmd1[menuActionRow] = j;
-					menuActionCmd2[menuActionRow] = i;
-					menuActionCmd3[menuActionRow] = k;
+						menuActionTypes[menuActionRow] = 729 + c;
+					selectedMenuActions[menuActionRow] = j;
+					firstMenuAction[menuActionRow] = i;
+					secondMenuAction[menuActionRow] = k;
 					menuActionRow++;
 				}
 		}
 		for (int i1 = 0; i1 < menuActionRow; i1++) {
-			if (menuActionID[i1] == 519) {			
-				menuActionName[i1] = "Walk here @whi@" + s;
+			if (menuActionTypes[i1] == 519) {			
+				menuActionText[i1] = "Walk here @whi@" + s;
 				return;
 			}
 		}
@@ -8638,7 +8641,7 @@ public class Game extends GameShell {
 			k = i1 & 0x1f;
 			l = i1 >> 6;
 		}
-		class30_sub1.anInt1299 = j;
+		class30_sub1.getPreviousId = j;
 		class30_sub1.anInt1301 = k;
 		class30_sub1.anInt1300 = l;
 	}
@@ -8944,7 +8947,7 @@ public class Game extends GameShell {
 				j -= 75;
 				int k = cameraHorizontal + minimapRotation & 0x7ff;
 				int i1 = Rasterizer.anIntArray1470[k];
-				int j1 = Rasterizer.anIntArray1471[k];
+				int j1 = Rasterizer.COSINE[k];
 				i1 = i1 * (minimapZoom + 256) >> 8;
 				j1 = j1 * (minimapZoom + 256) >> 8;
 				int k1 = j * i1 + i * j1 >> 11;
@@ -9281,8 +9284,8 @@ public class Game extends GameShell {
 		}
 		if ((entity.anInt1538 != 0 || entity.anInt1539 != 0)
 				&& (entity.smallXYIndex == 0 || entity.anInt1503 > 0)) {
-			int k = entity.x - (entity.anInt1538 - baseX - baseX) * 64;
-			int j1 = entity.y - (entity.anInt1539 - baseY - baseY) * 64;
+			int k = entity.x - (entity.anInt1538 - regionBaseX - regionBaseX) * 64;
+			int j1 = entity.y - (entity.anInt1539 - regionBaseY - regionBaseY) * 64;
 			if (k != 0 || j1 != 0)
 				entity.turnDirection = (int) (Math.atan2(k, j1) * 325.94900000000001D) & 0x7ff;
 			entity.anInt1538 = 0;
@@ -9535,17 +9538,17 @@ public class Game extends GameShell {
 				i -= 101;
 			else
 				i--;
-			menuActionName[menuActionRow] = "Remove @whi@" + friendsList[i];
-			menuActionID[menuActionRow] = 792;
+			menuActionText[menuActionRow] = "Remove @whi@" + friendsList[i];
+			menuActionTypes[menuActionRow] = 792;
 			menuActionRow++;
-			menuActionName[menuActionRow] = "Message @whi@" + friendsList[i];
-			menuActionID[menuActionRow] = 639;
+			menuActionText[menuActionRow] = "Message @whi@" + friendsList[i];
+			menuActionTypes[menuActionRow] = 639;
 			menuActionRow++;
 			return true;
 		}
 		if (i >= 401 && i <= 500) {
-			menuActionName[menuActionRow] = "Remove @whi@" + class9.defaultText;
-			menuActionID[menuActionRow] = 322;
+			menuActionText[menuActionRow] = "Remove @whi@" + class9.defaultText;
+			menuActionTypes[menuActionRow] = 322;
 			menuActionRow++;
 			return true;
 		} else {
@@ -9890,7 +9893,7 @@ public class Game extends GameShell {
 										&& childInterface.id != 12171
 										&& childInterface.id != 12172)
 									text = text.substring(0, k7)
-											+ methodR(parseInterfaceOpcode(
+											+ formatCoins(parseInterfaceOpcode(
 													childInterface, 0))
 											+ text.substring(k7 + 2);
 								else
@@ -9960,8 +9963,8 @@ public class Game extends GameShell {
 						sprite = childInterface.enabledSprite;
 					else
 						sprite = childInterface.disabledSprite;
-					if (spellSelected == 1 && childInterface.id == spellID
-							&& spellID != 0 && sprite != null) {
+					if (spellSelected == 1 && childInterface.id == spellId
+							&& spellId != 0 && sprite != null) {
 						sprite.drawSprite(_x, _y, 0xffffff);
 					} else {
 						if (sprite != null)
@@ -9986,7 +9989,7 @@ public class Game extends GameShell {
 					Rasterizer.textureInt2 = _y + childInterface.height / 2;
 					int sine = Rasterizer.anIntArray1470[childInterface.modelRotation1]
 							* childInterface.modelZoom >> 16;
-					int cosine = Rasterizer.anIntArray1471[childInterface.modelRotation1]
+					int cosine = Rasterizer.COSINE[childInterface.modelRotation1]
 							* childInterface.modelZoom >> 16;
 					boolean selected = interfaceIsSelected(childInterface);
 					int emoteAnimation;
@@ -10468,7 +10471,7 @@ public class Game extends GameShell {
 		} catch (Exception _ex) {
 			Signlink.reporterror("glfc_ex " + localPlayer.x + ","
 					+ localPlayer.y + "," + anInt1014 + "," + anInt1015 + ","
-					+ anInt1069 + "," + anInt1070 + "," + baseX + "," + baseY);
+					+ anInt1069 + "," + anInt1070 + "," + regionBaseX + "," + regionBaseY);
 			throw new RuntimeException("eek");
 		}
 	}
@@ -10581,8 +10584,8 @@ public class Game extends GameShell {
 					: frameWidth - 85, frameMode == ScreenMode.FIXED ? 296
 					: 186);
 		}
-		int x = baseX + (localPlayer.x - 6 >> 7);
-		int y = baseY + (localPlayer.y - 6 >> 7);
+		int x = regionBaseX + (localPlayer.x - 6 >> 7);
+		int y = regionBaseY + (localPlayer.y - 6 >> 7);
 		final String screenMode = frameMode == ScreenMode.FIXED ? "Fixed"
 				: "Resizable";
 		if (Configuration.clientData) {
@@ -10683,44 +10686,44 @@ public class Game extends GameShell {
 
 	private void method115() {
 		if (loadingStage == 2) {
-			for (TemporaryObject class30_sub1 = (TemporaryObject) spawns
-					.reverseGetFirst(); class30_sub1 != null; class30_sub1 = (TemporaryObject) spawns
+			for (TemporaryObject tempObject = (TemporaryObject) spawns
+					.reverseGetFirst(); tempObject != null; tempObject = (TemporaryObject) spawns
 					.reverseGetNext()) {
-				if (class30_sub1.anInt1294 > 0)
-					class30_sub1.anInt1294--;
-				if (class30_sub1.anInt1294 == 0) {
-					if (class30_sub1.anInt1299 < 0
-							|| ObjectManager.method178(class30_sub1.anInt1299,
-									class30_sub1.anInt1301)) {
-						method142(class30_sub1.anInt1298,
-								class30_sub1.anInt1295, class30_sub1.anInt1300,
-								class30_sub1.anInt1301, class30_sub1.anInt1297,
-								class30_sub1.anInt1296, class30_sub1.anInt1299);
-						class30_sub1.unlink();
+				if (tempObject.getLongetivity > 0)
+					tempObject.getLongetivity--;
+				if (tempObject.getLongetivity == 0) {
+					if (tempObject.getPreviousId < 0
+							|| MapRegion.method178(tempObject.getPreviousId,
+									tempObject.anInt1301)) {
+						method142(tempObject.anInt1298,
+								tempObject.anInt1295, tempObject.anInt1300,
+								tempObject.anInt1301, tempObject.anInt1297,
+								tempObject.anInt1296, tempObject.getPreviousId);
+						tempObject.unlink();
 					}
 				} else {
-					if (class30_sub1.anInt1302 > 0)
-						class30_sub1.anInt1302--;
-					if (class30_sub1.anInt1302 == 0
-							&& class30_sub1.anInt1297 >= 1
-							&& class30_sub1.anInt1298 >= 1
-							&& class30_sub1.anInt1297 <= 102
-							&& class30_sub1.anInt1298 <= 102
-							&& (class30_sub1.anInt1291 < 0 || ObjectManager
-									.method178(class30_sub1.anInt1291,
-											class30_sub1.anInt1293))) {
-						method142(class30_sub1.anInt1298,
-								class30_sub1.anInt1295, class30_sub1.anInt1292,
-								class30_sub1.anInt1293, class30_sub1.anInt1297,
-								class30_sub1.anInt1296, class30_sub1.anInt1291);
-						class30_sub1.anInt1302 = -1;
-						if (class30_sub1.anInt1291 == class30_sub1.anInt1299
-								&& class30_sub1.anInt1299 == -1)
-							class30_sub1.unlink();
-						else if (class30_sub1.anInt1291 == class30_sub1.anInt1299
-								&& class30_sub1.anInt1292 == class30_sub1.anInt1300
-								&& class30_sub1.anInt1293 == class30_sub1.anInt1301)
-							class30_sub1.unlink();
+					if (tempObject.anInt1302 > 0)
+						tempObject.anInt1302--;
+					if (tempObject.anInt1302 == 0
+							&& tempObject.anInt1297 >= 1
+							&& tempObject.anInt1298 >= 1
+							&& tempObject.anInt1297 <= 102
+							&& tempObject.anInt1298 <= 102
+							&& (tempObject.anInt1291 < 0 || MapRegion
+									.method178(tempObject.anInt1291,
+											tempObject.anInt1293))) {
+						method142(tempObject.anInt1298,
+								tempObject.anInt1295, tempObject.anInt1292,
+								tempObject.anInt1293, tempObject.anInt1297,
+								tempObject.anInt1296, tempObject.anInt1291);
+						tempObject.anInt1302 = -1;
+						if (tempObject.anInt1291 == tempObject.getPreviousId
+								&& tempObject.getPreviousId == -1)
+							tempObject.unlink();
+						else if (tempObject.anInt1291 == tempObject.getPreviousId
+								&& tempObject.anInt1292 == tempObject.anInt1300
+								&& tempObject.anInt1293 == tempObject.anInt1301)
+							tempObject.unlink();
 					}
 				}
 			}
@@ -10731,7 +10734,7 @@ public class Game extends GameShell {
 	private void determineMenuSize() {
 		int boxLength = boldText.getTextWidth("Choose option");
 		for (int row = 0; row < menuActionRow; row++) {
-			int actionLength = boldText.getTextWidth(menuActionName[row]);
+			int actionLength = boldText.getTextWidth(menuActionText[row]);
 			if (actionLength > boxLength)
 				boxLength = actionLength;
 		}
@@ -11074,9 +11077,9 @@ public class Game extends GameShell {
 				if (j1 == 17)
 					byte0 = 3;
 				if (j1 == 18)
-					k1 = (localPlayer.x >> 7) + baseX;
+					k1 = (localPlayer.x >> 7) + regionBaseX;
 				if (j1 == 19)
-					k1 = (localPlayer.y >> 7) + baseY;
+					k1 = (localPlayer.y >> 7) + regionBaseY;
 				if (j1 == 20)
 					k1 = ai[l++];
 				if (byte0 == 0) {
@@ -11107,7 +11110,7 @@ public class Game extends GameShell {
 		else if (spellSelected == 1 && menuActionRow < 2)
 			s = spellTooltip + "...";
 		else
-			s = menuActionName[menuActionRow - 1];
+			s = menuActionText[menuActionRow - 1];
 		if (menuActionRow > 2)
 			s = s + "@whi@ / " + (menuActionRow - 2) + " more options";
 		boldText.method390(4, 0xffffff, s, loopCycle / 1000, 15);
@@ -11279,8 +11282,8 @@ public class Game extends GameShell {
 				}
 			}
 			if (hintIconDrawType == 2) {
-				int mapX = ((hintIconX - baseX) * 4 + 2) - localPlayer.x / 32;
-				int mapY = ((hintIconY - baseY) * 4 + 2) - localPlayer.y / 32;
+				int mapX = ((hintIconX - regionBaseX) * 4 + 2) - localPlayer.x / 32;
+				int mapY = ((hintIconY - regionBaseY) * 4 + 2) - localPlayer.y / 32;
 				refreshMinimap(mapMarker, mapY, mapX);
 			}
 			if (hintIconDrawType == 10 && hintIconPlayerId >= 0
@@ -11407,18 +11410,18 @@ public class Game extends GameShell {
 							i1 = 450;
 						if (super.mouseX < 4 + i1) {
 							if (myPrivilege >= 1) {
-								menuActionName[menuActionRow] = "Report abuse @whi@"
+								menuActionText[menuActionRow] = "Report abuse @whi@"
 										+ s;
-								menuActionID[menuActionRow] = 2606;
+								menuActionTypes[menuActionRow] = 2606;
 								menuActionRow++;
 							}
-							menuActionName[menuActionRow] = "Add ignore @whi@"
+							menuActionText[menuActionRow] = "Add ignore @whi@"
 									+ s;
-							menuActionID[menuActionRow] = 2042;
+							menuActionTypes[menuActionRow] = 2042;
 							menuActionRow++;
-							menuActionName[menuActionRow] = "Add friend @whi@"
+							menuActionText[menuActionRow] = "Add friend @whi@"
 									+ s;
-							menuActionID[menuActionRow] = 2337;
+							menuActionTypes[menuActionRow] = 2337;
 							menuActionRow++;
 						}
 					}
@@ -11459,7 +11462,7 @@ public class Game extends GameShell {
 		class30_sub1.anInt1293 = k1;
 		class30_sub1.anInt1292 = l;
 		class30_sub1.anInt1302 = j2;
-		class30_sub1.anInt1294 = j;
+		class30_sub1.getLongetivity = j;
 	}
 
 	private boolean interfaceIsSelected(Widget class9) {
@@ -12323,7 +12326,7 @@ public class Game extends GameShell {
 				int j3 = j;
 				if (j3 < 3 && (byteGroundArray[1][i1][i] & 2) == 2)
 					j3++;
-				ObjectManager.method188(worldController, k, i, l, j3,
+				MapRegion.method188(worldController, k, i, l, j3,
 						aClass11Array1230[j], intGroundArray, i1, k1, j);
 			}
 		}
@@ -12630,7 +12633,7 @@ public class Game extends GameShell {
 							&& class30_sub1.anInt1298 >= anInt1269
 							&& class30_sub1.anInt1298 < anInt1269 + 8
 							&& class30_sub1.anInt1295 == plane)
-						class30_sub1.anInt1294 = 0;
+						class30_sub1.getLongetivity = 0;
 				opCode = -1;
 				return true;
 
@@ -12810,8 +12813,8 @@ public class Game extends GameShell {
 				}
 				anInt1069 = regionX;
 				anInt1070 = regionY;
-				baseX = (anInt1069 - 6) * 8;
-				baseY = (anInt1070 - 6) * 8;
+				regionBaseX = (anInt1069 - 6) * 8;
+				regionBaseY = (anInt1070 - 6) * 8;
 				aBoolean1141 = (anInt1069 / 8 == 48 || anInt1069 / 8 == 49)
 						&& anInt1070 / 8 == 48;
 				if (anInt1069 / 8 == 48 && anInt1070 / 8 == 148)
@@ -12901,10 +12904,10 @@ public class Game extends GameShell {
 							onDemandFetcher.provide(3, i33);
 					}
 				}
-				int i17 = baseX - anInt1036;
-				int j21 = baseY - anInt1037;
-				anInt1036 = baseX;
-				anInt1037 = baseY;
+				int i17 = regionBaseX - anInt1036;
+				int j21 = regionBaseY - anInt1037;
+				anInt1036 = regionBaseX;
+				anInt1037 = regionBaseY;
 				for (int j24 = 0; j24 < 16384; j24++) {
 					Npc npc = npcs[j24];
 					if (npc != null) {
@@ -13657,8 +13660,8 @@ public class Game extends GameShell {
 		} catch (Exception exception) {
 			String s2 = "T2 - " + opCode + "," + secondLastOpcode + ","
 					+ thirdLastOpcode + " - " + packetSize + ","
-					+ (baseX + localPlayer.pathX[0]) + ","
-					+ (baseY + localPlayer.pathY[0]) + " - ";
+					+ (regionBaseX + localPlayer.pathX[0]) + ","
+					+ (regionBaseY + localPlayer.pathY[0]) + " - ";
 			for (int j15 = 0; j15 < packetSize && j15 < 50; j15++)
 				s2 = s2 + incoming.payload[j15] + ",";
 			Signlink.reporterror(s2);
@@ -13768,56 +13771,56 @@ public class Game extends GameShell {
 				: super.mouseX >= frameWidth - 180
 						&& super.mouseX <= frameWidth - 139
 						&& super.mouseY >= 0 && super.mouseY <= 40) {
-			menuActionName[1] = "Face North";
-			menuActionID[1] = 696;
+			menuActionText[1] = "Face North";
+			menuActionTypes[1] = 696;
 			menuActionRow = 2;
 		}
 		if (frameMode != ScreenMode.FIXED && changeTabArea) {
 			if (super.mouseX >= frameWidth - 26
 					&& super.mouseX <= frameWidth - 1 && super.mouseY >= 2
 					&& super.mouseY <= 24) {
-				menuActionName[1] = "Logout";
-				menuActionID[1] = 700;
+				menuActionText[1] = "Logout";
+				menuActionTypes[1] = 700;
 				menuActionRow = 2;
 			}
 		}
 		if (counterHover && Configuration.enableOrbs) {
-			menuActionName[2] = counterOn ? "Hide @or1@ XP Drops"
+			menuActionText[2] = counterOn ? "Hide @or1@ XP Drops"
 					: "Show @or1@ XP Drops";
-			menuActionID[2] = 474;
-			menuActionName[1] = "Reset XP Total";
-			menuActionID[1] = 475;
+			menuActionTypes[2] = 474;
+			menuActionText[1] = "Reset XP Total";
+			menuActionTypes[1] = 475;
 			menuActionRow = 3;
 		}
 		if (worldHover) {
-			menuActionName[1] = "World Map";
-			menuActionID[1] = 850;
+			menuActionText[1] = "World Map";
+			menuActionTypes[1] = 850;
 			menuActionRow = 2;
 		}
 		if (specialHover) {
-			menuActionName[1] = "Use Special Attack";
-			menuActionID[1] = 851;
+			menuActionText[1] = "Use Special Attack";
+			menuActionTypes[1] = 851;
 			menuActionRow = 2;
 		}
 		if (hpHover) {
-			menuActionName[1] = Configuration.hpAboveHeads ? "Turn HP Above Heads on"
+			menuActionText[1] = Configuration.hpAboveHeads ? "Turn HP Above Heads on"
 					: "Turn HP Above heads off";
-			menuActionID[1] = 1508;
+			menuActionTypes[1] = 1508;
 			menuActionRow = 2;
 		}
 		if (prayHover) {
-			menuActionName[2] = prayClicked ? "Turn quick-prayers off"
+			menuActionText[2] = prayClicked ? "Turn quick-prayers off"
 					: "Turn quick-prayers on";
-			menuActionID[2] = 1500;
+			menuActionTypes[2] = 1500;
 			menuActionRow = 2;
-			menuActionName[1] = "Select quick-prayers";
-			menuActionID[1] = 1506;
+			menuActionText[1] = "Select quick-prayers";
+			menuActionTypes[1] = 1506;
 			menuActionRow = 3;
 		}
 		if (runHover) {
-			menuActionName[1] = !runClicked ? "Turn run mode on"
+			menuActionText[1] = !runClicked ? "Turn run mode on"
 					: "Turn run mode off";
-			menuActionID[1] = 1050;
+			menuActionTypes[1] = 1050;
 			menuActionRow = 2;
 		}
 	}
@@ -14187,10 +14190,10 @@ public class Game extends GameShell {
 		friendsList = new String[200];
 		incoming = Buffer.create();
 		archiveCRCs = new int[9];
-		menuActionCmd2 = new int[500];
-		menuActionCmd3 = new int[500];
-		menuActionID = new int[500];
-		menuActionCmd1 = new int[500];
+		firstMenuAction = new int[500];
+		secondMenuAction = new int[500];
+		menuActionTypes = new int[500];
+		selectedMenuActions = new int[500];
 		headIcons = new Sprite[20];
 		skullIcons = new Sprite[20];
 		headIconsHint = new Sprite[20];
@@ -14218,7 +14221,7 @@ public class Game extends GameShell {
 		anInt1184 = 128;
 		overlayInterfaceId = -1;
 		outgoing = Buffer.create();
-		menuActionName = new String[500];
+		menuActionText = new String[500];
 		anIntArray1203 = new int[5];
 		tracks = new int[50];
 		anInt1210 = 2;
@@ -14430,8 +14433,8 @@ public class Game extends GameShell {
 	private final int[] anIntArray1030;
 	private boolean aBoolean1031;
 	private Sprite[] mapFunctions;
-	private int baseX;
-	private int baseY;
+	private int regionBaseX;
+	private int regionBaseY;
 	private int anInt1036;
 	private int anInt1037;
 	private int loginFailures;
@@ -14482,13 +14485,13 @@ public class Game extends GameShell {
 	private int anInt1087;
 	private int anInt1088;
 	public static int anInt1089;
-	public static int spellID = 0;
+	public static int spellId = 0;
 	public static int totalRead = 0;
 	private final int[] archiveCRCs;
-	private int[] menuActionCmd2;
-	private int[] menuActionCmd3;
-	private int[] menuActionID;
-	private int[] menuActionCmd1;
+	private int[] firstMenuAction;
+	private int[] secondMenuAction;
+	private int[] menuActionTypes;
+	private int[] selectedMenuActions;
 	private Sprite[] headIcons;
 	private Sprite[] skullIcons;
 	private Sprite[] headIconsHint;
@@ -14578,7 +14581,7 @@ public class Game extends GameShell {
 	private int anInt1193;
 	private int splitPrivateChat;
 	private Background mapBack;
-	private String[] menuActionName;
+	private String[] menuActionText;
 	private Sprite aClass30_Sub2_Sub1_Sub1_1201;
 	private Sprite aClass30_Sub2_Sub1_Sub1_1202;
 	private final int[] anIntArray1203;
