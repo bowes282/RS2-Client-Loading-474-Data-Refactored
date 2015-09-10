@@ -4496,7 +4496,7 @@ public class Game extends GameShell {
 			inputTaken = true;
 		}
 		int j = menuActionCmd2[i];
-		int k = menuActionCmd3[i];
+		int index = menuActionCmd3[i];
 		int l = menuActionID[i];
 		int i1 = menuActionCmd1[i];
 		if (l >= 2000)
@@ -4538,7 +4538,7 @@ public class Game extends GameShell {
 			Configuration.hpAboveHeads = !Configuration.hpAboveHeads;
 		}
 		if (l == 104) {
-			Widget class9_1 = Widget.interfaceCache[k];
+			Widget class9_1 = Widget.interfaceCache[index];
 			spellID = class9_1.id;
 			if (!autocast) {
 				autocast = true;
@@ -4574,34 +4574,34 @@ public class Game extends GameShell {
 			}
 		}
 		if (l == 234) {
-			boolean flag1 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, k,
+			boolean flag1 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, index,
 					localPlayer.pathX[0], false, j);
 			if (!flag1)
-				flag1 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, k,
+				flag1 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, index,
 						localPlayer.pathX[0], false, j);
 			crossX = super.saveClickX;
 			crossY = super.saveClickY;
 			crossType = 2;
 			crossIndex = 0;
 			outgoing.createFrame(236);
-			outgoing.writeLEShort(k + baseY);
+			outgoing.writeLEShort(index + baseY);
 			outgoing.writeShort(i1);
 			outgoing.writeLEShort(j + baseX);
 		}
-		if (l == 62 && clickObject(i1, k, j)) {
+		if (l == 62 && clickObject(i1, index, j)) {
 			outgoing.createFrame(192);
 			outgoing.writeShort(anInt1284);
 			outgoing.writeLEShort(i1 >> 14 & 0x7fff);
-			outgoing.writeLEShortA(k + baseY);
+			outgoing.writeLEShortA(index + baseY);
 			outgoing.writeLEShort(anInt1283);
 			outgoing.writeLEShortA(j + baseX);
 			outgoing.writeShort(anInt1285);
 		}
 		if (l == 511) {
-			boolean flag2 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, k,
+			boolean flag2 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, index,
 					localPlayer.pathX[0], false, j);
 			if (!flag2)
-				flag2 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, k,
+				flag2 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, index,
 						localPlayer.pathX[0], false, j);
 			crossX = super.saveClickX;
 			crossY = super.saveClickY;
@@ -4611,40 +4611,40 @@ public class Game extends GameShell {
 			outgoing.writeLEShort(anInt1284);
 			outgoing.writeShortA(anInt1285);
 			outgoing.writeShort(i1);
-			outgoing.writeShortA(k + baseY);
+			outgoing.writeShortA(index + baseY);
 			outgoing.writeLEShortA(anInt1283);
 			outgoing.writeShort(j + baseX);
 		}
 		if (l == 74) {
 			outgoing.createFrame(122);
-			outgoing.writeLEShortA(k);
+			outgoing.writeLEShortA(index);
 			outgoing.writeShortA(j);
 			outgoing.writeLEShort(i1);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = k;
+			atInventoryInterface = index;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[k].parent == openInterfaceId)
+			if (Widget.interfaceCache[index].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[k].parent == backDialogueId)
+			if (Widget.interfaceCache[index].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 315) {
-			Widget class9 = Widget.interfaceCache[k];
+			Widget widget = Widget.interfaceCache[index];
 			boolean flag8 = true;
-			if (class9.contentType > 0)
-				flag8 = promptUserForInput(class9);
+			if (widget.contentType > 0)
+				flag8 = promptUserForInput(widget);
 			if (flag8) {
 
-				switch (k) {
+				switch (index) {
 				case 19144:
-					sendFrame248(15106, 3213);
+					inventoryOverlay(15106, 3213);
 					writeInterface(15106);
 					inputTaken = true;
 					break;
 				default:
 					outgoing.createFrame(185);
-					outgoing.writeShort(k);
+					outgoing.writeShort(index);
 					break;
 
 				}
@@ -4704,7 +4704,7 @@ public class Game extends GameShell {
 				worldController.method312(super.saveClickY - 4,
 						super.saveClickX - 4);
 			else
-				worldController.method312(k - 4, j - 4);
+				worldController.method312(index - 4, j - 4);
 		if (l == 1062) {
 			anInt924 += baseX;
 			if (anInt924 >= 113) {
@@ -4712,29 +4712,29 @@ public class Game extends GameShell {
 				outgoing.writeTriByte(0xe63271);
 				anInt924 = 0;
 			}
-			clickObject(i1, k, j);
+			clickObject(i1, index, j);
 			outgoing.createFrame(228);
 			outgoing.writeShortA(i1 >> 14 & 0x7fff);
-			outgoing.writeShortA(k + baseY);
+			outgoing.writeShortA(index + baseY);
 			outgoing.writeShort(j + baseX);
 		}
 		if (l == 679 && !continuedDialogue) {
 			outgoing.createFrame(40);
-			outgoing.writeShort(k);
+			outgoing.writeShort(index);
 			continuedDialogue = true;
 		}
 		if (l == 431) {
 			outgoing.createFrame(129);
 			outgoing.writeShortA(j);
-			outgoing.writeShort(k);
+			outgoing.writeShort(index);
 			outgoing.writeShortA(i1);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = k;
+			atInventoryInterface = index;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[k].parent == openInterfaceId)
+			if (Widget.interfaceCache[index].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[k].parent == backDialogueId)
+			if (Widget.interfaceCache[index].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 337 || l == 42 || l == 792 || l == 322) {
@@ -4755,29 +4755,29 @@ public class Game extends GameShell {
 		if (l == 53) {
 			outgoing.createFrame(135);
 			outgoing.writeLEShort(j);
-			outgoing.writeShortA(k);
+			outgoing.writeShortA(index);
 			outgoing.writeLEShort(i1);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = k;
+			atInventoryInterface = index;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[k].parent == openInterfaceId)
+			if (Widget.interfaceCache[index].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[k].parent == backDialogueId)
+			if (Widget.interfaceCache[index].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 539) {
 			outgoing.createFrame(16);
 			outgoing.writeShortA(i1);
 			outgoing.writeLEShortA(j);
-			outgoing.writeLEShortA(k);
+			outgoing.writeLEShortA(index);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = k;
+			atInventoryInterface = index;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[k].parent == openInterfaceId)
+			if (Widget.interfaceCache[index].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[k].parent == backDialogueId)
+			if (Widget.interfaceCache[index].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 484 || l == 6) {
@@ -4827,35 +4827,35 @@ public class Game extends GameShell {
 			outgoing.writeLEShortA(i1);
 			outgoing.writeShort(anInt1284);
 			outgoing.writeLEShort(anInt1285);
-			outgoing.writeShort(k);
+			outgoing.writeShort(index);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = k;
+			atInventoryInterface = index;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[k].parent == openInterfaceId)
+			if (Widget.interfaceCache[index].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[k].parent == backDialogueId)
+			if (Widget.interfaceCache[index].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 847) {
 			outgoing.createFrame(87);
 			outgoing.writeShortA(i1);
-			outgoing.writeShort(k);
+			outgoing.writeShort(index);
 			outgoing.writeShortA(j);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = k;
+			atInventoryInterface = index;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[k].parent == openInterfaceId)
+			if (Widget.interfaceCache[index].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[k].parent == backDialogueId)
+			if (Widget.interfaceCache[index].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 626) {
-			Widget class9_1 = Widget.interfaceCache[k];
+			Widget class9_1 = Widget.interfaceCache[index];
 			spellSelected = 1;
 			spellID = class9_1.id;
-			anInt1137 = k;
+			anInt1137 = index;
 			spellUsableOn = class9_1.spellUsableOn;
 			itemSelected = 0;
 			String s4 = class9_1.selectedActionName;
@@ -4877,16 +4877,16 @@ public class Game extends GameShell {
 		}
 		if (l == 78) {
 			outgoing.createFrame(117);
-			outgoing.writeLEShortA(k);
+			outgoing.writeLEShortA(index);
 			outgoing.writeLEShortA(i1);
 			outgoing.writeLEShort(j);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = k;
+			atInventoryInterface = index;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[k].parent == openInterfaceId)
+			if (Widget.interfaceCache[index].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[k].parent == backDialogueId)
+			if (Widget.interfaceCache[index].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 27) {
@@ -4911,32 +4911,32 @@ public class Game extends GameShell {
 			}
 		}
 		if (l == 213) {
-			boolean flag3 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, k,
+			boolean flag3 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, index,
 					localPlayer.pathX[0], false, j);
 			if (!flag3)
-				flag3 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, k,
+				flag3 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, index,
 						localPlayer.pathX[0], false, j);
 			crossX = super.saveClickX;
 			crossY = super.saveClickY;
 			crossType = 2;
 			crossIndex = 0;
 			outgoing.createFrame(79);
-			outgoing.writeLEShort(k + baseY);
+			outgoing.writeLEShort(index + baseY);
 			outgoing.writeShort(i1);
 			outgoing.writeShortA(j + baseX);
 		}
 		if (l == 632) {
 			outgoing.createFrame(145);
-			outgoing.writeShortA(k);
+			outgoing.writeShortA(index);
 			outgoing.writeShortA(j);
 			outgoing.writeShortA(i1);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = k;
+			atInventoryInterface = index;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[k].parent == openInterfaceId)
+			if (Widget.interfaceCache[index].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[k].parent == backDialogueId)
+			if (Widget.interfaceCache[index].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 1050) {
@@ -4944,7 +4944,7 @@ public class Game extends GameShell {
 					.parseInt(Widget.interfaceCache[4016].defaultText);
 			if (!(currentHP <= 0)) {
 				runClicked = !runClicked;
-				sendFrame36(429, runClicked ? 1 : 0);
+				sendConfiguration(429, runClicked ? 1 : 0);
 				outgoing.createFrame(185);
 				outgoing.writeShort(152);
 			}
@@ -4954,7 +4954,7 @@ public class Game extends GameShell {
 					.parseInt(Widget.interfaceCache[4016].defaultText);
 			if (!(currentHP <= 0)) {
 				runClicked = !runClicked;
-				sendFrame36(429, runClicked ? 0 : 1);
+				sendConfiguration(429, runClicked ? 0 : 1);
 			}
 		}
 		if (l == 1004) {
@@ -5052,23 +5052,23 @@ public class Game extends GameShell {
 		}
 		if (l == 493) {
 			outgoing.createFrame(75);
-			outgoing.writeLEShortA(k);
+			outgoing.writeLEShortA(index);
 			outgoing.writeLEShort(j);
 			outgoing.writeShortA(i1);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = k;
+			atInventoryInterface = index;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[k].parent == openInterfaceId)
+			if (Widget.interfaceCache[index].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[k].parent == backDialogueId)
+			if (Widget.interfaceCache[index].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 652) {
-			boolean flag4 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, k,
+			boolean flag4 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, index,
 					localPlayer.pathX[0], false, j);
 			if (!flag4)
-				flag4 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, k,
+				flag4 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, index,
 						localPlayer.pathX[0], false, j);
 			crossX = super.saveClickX;
 			crossY = super.saveClickY;
@@ -5076,29 +5076,29 @@ public class Game extends GameShell {
 			crossIndex = 0;
 			outgoing.createFrame(156);
 			outgoing.writeShortA(j + baseX);
-			outgoing.writeLEShort(k + baseY);
+			outgoing.writeLEShort(index + baseY);
 			outgoing.writeLEShortA(i1);
 		}
 		if (l == 94) {
-			boolean flag5 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, k,
+			boolean flag5 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, index,
 					localPlayer.pathX[0], false, j);
 			if (!flag5)
-				flag5 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, k,
+				flag5 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, index,
 						localPlayer.pathX[0], false, j);
 			crossX = super.saveClickX;
 			crossY = super.saveClickY;
 			crossType = 2;
 			crossIndex = 0;
 			outgoing.createFrame(181);
-			outgoing.writeLEShort(k + baseY);
+			outgoing.writeLEShort(index + baseY);
 			outgoing.writeShort(i1);
 			outgoing.writeLEShort(j + baseX);
 			outgoing.writeShortA(anInt1137);
 		}
 		if (l == 646) {
 			outgoing.createFrame(185);
-			outgoing.writeShort(k);
-			Widget class9_2 = Widget.interfaceCache[k];
+			outgoing.writeShort(index);
+			Widget class9_2 = Widget.interfaceCache[index];
 			if (class9_2.scripts != null && class9_2.scripts[0][0] == 5) {
 				int i2 = class9_2.scripts[0][1];
 				if (variousSettings[i2] != class9_2.scriptDefaults[0]) {
@@ -5184,10 +5184,10 @@ public class Game extends GameShell {
 			}
 		}
 		if (l == 900) {
-			clickObject(i1, k, j);
+			clickObject(i1, index, j);
 			outgoing.createFrame(252);
 			outgoing.writeLEShortA(i1 >> 14 & 0x7fff);
-			outgoing.writeLEShort(k + baseY);
+			outgoing.writeLEShort(index + baseY);
 			outgoing.writeShortA(j + baseX);
 		}
 		if (l == 412) {
@@ -5251,25 +5251,25 @@ public class Game extends GameShell {
 				outgoing.writeLEShort(i1);
 			}
 		}
-		if (l == 956 && clickObject(i1, k, j)) {
+		if (l == 956 && clickObject(i1, index, j)) {
 			outgoing.createFrame(35);
 			outgoing.writeLEShort(j + baseX);
 			outgoing.writeShortA(anInt1137);
-			outgoing.writeShortA(k + baseY);
+			outgoing.writeShortA(index + baseY);
 			outgoing.writeLEShort(i1 >> 14 & 0x7fff);
 		}
 		if (l == 567) {
-			boolean flag6 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, k,
+			boolean flag6 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, index,
 					localPlayer.pathX[0], false, j);
 			if (!flag6)
-				flag6 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, k,
+				flag6 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, index,
 						localPlayer.pathX[0], false, j);
 			crossX = super.saveClickX;
 			crossY = super.saveClickY;
 			crossType = 2;
 			crossIndex = 0;
 			outgoing.createFrame(23);
-			outgoing.writeLEShort(k + baseY);
+			outgoing.writeLEShort(index + baseY);
 			outgoing.writeLEShort(i1);
 			outgoing.writeLEShort(j + baseX);
 		}
@@ -5282,31 +5282,31 @@ public class Game extends GameShell {
 				anInt1175 = 0;
 			}
 			outgoing.createFrame(43);
-			outgoing.writeLEShort(k);
+			outgoing.writeLEShort(index);
 			outgoing.writeShortA(i1);
 			outgoing.writeShortA(j);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = k;
+			atInventoryInterface = index;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[k].parent == openInterfaceId)
+			if (Widget.interfaceCache[index].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[k].parent == backDialogueId)
+			if (Widget.interfaceCache[index].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 543) {
 			outgoing.createFrame(237);
 			outgoing.writeShort(j);
 			outgoing.writeShortA(i1);
-			outgoing.writeShort(k);
+			outgoing.writeShort(index);
 			outgoing.writeShortA(anInt1137);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = k;
+			atInventoryInterface = index;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[k].parent == openInterfaceId)
+			if (Widget.interfaceCache[index].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[k].parent == backDialogueId)
+			if (Widget.interfaceCache[index].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 606) {
@@ -5378,14 +5378,14 @@ public class Game extends GameShell {
 			outgoing.createFrame(41);
 			outgoing.writeShort(i1);
 			outgoing.writeShortA(j);
-			outgoing.writeShortA(k);
+			outgoing.writeShortA(index);
 			atInventoryLoopCycle = 0;
-			atInventoryInterface = k;
+			atInventoryInterface = index;
 			atInventoryIndex = j;
 			atInventoryInterfaceType = 2;
-			if (Widget.interfaceCache[k].parent == openInterfaceId)
+			if (Widget.interfaceCache[index].parent == openInterfaceId)
 				atInventoryInterfaceType = 1;
-			if (Widget.interfaceCache[k].parent == backDialogueId)
+			if (Widget.interfaceCache[index].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
 		if (l == 478) {
@@ -5411,29 +5411,29 @@ public class Game extends GameShell {
 			}
 		}
 		if (l == 113) {
-			clickObject(i1, k, j);
+			clickObject(i1, index, j);
 			outgoing.createFrame(70);
 			outgoing.writeLEShort(j + baseX);
-			outgoing.writeShort(k + baseY);
+			outgoing.writeShort(index + baseY);
 			outgoing.writeLEShortA(i1 >> 14 & 0x7fff);
 		}
 		if (l == 872) {
-			clickObject(i1, k, j);
+			clickObject(i1, index, j);
 			outgoing.createFrame(234);
 			outgoing.writeLEShortA(j + baseX);
 			outgoing.writeShortA(i1 >> 14 & 0x7fff);
-			outgoing.writeLEShortA(k + baseY);
+			outgoing.writeLEShortA(index + baseY);
 		}
 		if (l == 502) {
-			clickObject(i1, k, j);
+			clickObject(i1, index, j);
 			outgoing.createFrame(132);
 			outgoing.writeLEShortA(j + baseX);
 			outgoing.writeShort(i1 >> 14 & 0x7fff);
-			outgoing.writeShortA(k + baseY);
+			outgoing.writeShortA(index + baseY);
 		}
 		if (l == 1125) {
 			ItemDefinition itemDef = ItemDefinition.lookup(i1);
-			Widget class9_4 = Widget.interfaceCache[k];
+			Widget class9_4 = Widget.interfaceCache[index];
 			String s5;
 			if (class9_4 != null && class9_4.invStackSizes[j] >= 0x186a0)
 				s5 = class9_4.invStackSizes[j] + " x " + itemDef.name;
@@ -5445,8 +5445,8 @@ public class Game extends GameShell {
 		}
 		if (l == 169) {
 			outgoing.createFrame(185);
-			outgoing.writeShort(k);
-			Widget class9_3 = Widget.interfaceCache[k];
+			outgoing.writeShort(index);
+			Widget class9_3 = Widget.interfaceCache[index];
 			if (class9_3.scripts != null && class9_3.scripts[0][0] == 5) {
 				int l2 = class9_3.scripts[0][1];
 				variousSettings[l2] = 1 - variousSettings[l2];
@@ -5456,7 +5456,7 @@ public class Game extends GameShell {
 		if (l == 447) {
 			itemSelected = 1;
 			anInt1283 = j;
-			anInt1284 = k;
+			anInt1284 = index;
 			anInt1285 = i1;
 			selectedItemName = ItemDefinition.lookup(i1).name;
 			spellSelected = 0;
@@ -5473,10 +5473,10 @@ public class Game extends GameShell {
 			pushMessage(s10, 0, "");
 		}
 		if (l == 244) {
-			boolean flag7 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, k,
+			boolean flag7 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, index,
 					localPlayer.pathX[0], false, j);
 			if (!flag7)
-				flag7 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, k,
+				flag7 = doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0, index,
 						localPlayer.pathX[0], false, j);
 			crossX = super.saveClickX;
 			crossY = super.saveClickY;
@@ -5484,7 +5484,7 @@ public class Game extends GameShell {
 			crossIndex = 0;
 			outgoing.createFrame(253);
 			outgoing.writeLEShort(j + baseX);
-			outgoing.writeLEShortA(k + baseY);
+			outgoing.writeLEShortA(index + baseY);
 			outgoing.writeShortA(i1);
 		}
 		if (l == 1448) {
@@ -7999,7 +7999,7 @@ public class Game extends GameShell {
 				anInt1188 = 0;
 				anInt1155 = 0;
 				anInt1226 = 0;
-				sendFrame36(429, 1);
+				sendConfiguration(429, 1);
 				this.stopMidi();
 				setupGameplayScreen();
 				return;
@@ -12384,54 +12384,61 @@ public class Game extends GameShell {
 		xCameraCurve = j1;
 	}
 
-	public void updateStrings(String str, int i) {
-		switch (i) {
+	/**
+	 * This method updates default messages upon login to the
+	 * desired text of the interface text.
+	 */
+	public void updateStrings(String message, int index) {
+		switch (index) {
 		case 1675:
-			sendFrame126(str, 17508);
+			sendString(message, 17508);
 			break;// Stab
 		case 1676:
-			sendFrame126(str, 17509);
+			sendString(message, 17509);
 			break;// Slash
 		case 1677:
-			sendFrame126(str, 17510);
-			break;// Cursh
+			sendString(message, 17510);
+			break;// Crush
 		case 1678:
-			sendFrame126(str, 17511);
+			sendString(message, 17511);
 			break;// Magic
 		case 1679:
-			sendFrame126(str, 17512);
+			sendString(message, 17512);
 			break;// Range
 		case 1680:
-			sendFrame126(str, 17513);
+			//sendString(message, 17513);
 			break;// Stab
 		case 1681:
-			sendFrame126(str, 17514);
+			//sendString(message, 17514);
 			break;// Slash
 		case 1682:
-			sendFrame126(str, 17515);
+			//sendString(message, 17515);
 			break;// Crush
 		case 1683:
-			sendFrame126(str, 17516);
+			sendString(message, 17516);
 			break;// Magic
 		case 1684:
-			sendFrame126(str, 17517);
+			sendString(message, 17517);
 			break;// Range
 		case 1686:
-			sendFrame126(str, 17518);
+			sendString(message, 17518);
 			break;// Strength
 		case 1687:
-			sendFrame126(str, 17519);
+			sendString(message, 17519);
 			break;// Prayer
 		}
 	}
 
-	public void sendFrame126(String str, int i) {
-		Widget.interfaceCache[i].defaultText = str;
-		if (Widget.interfaceCache[i].parent == tabInterfaceIDs[tabID]) {
+	/**
+	 * Sends a string
+	 */
+	public void sendString(String text, int index) {
+		Widget.interfaceCache[index].defaultText = text;
+		if (Widget.interfaceCache[index].parent == tabInterfaceIDs[tabID]) {
 		}
 	}
 
-	public void sendPacket185(int button, int toggle, int type) {
+	public void sendButtonClick(int button, int toggle, int type) {
 		switch (type) {
 		case 135:
 			Widget class9 = Widget.interfaceCache[button];
@@ -12446,10 +12453,10 @@ public class Game extends GameShell {
 		case 646:
 			outgoing.createFrame(185);
 			outgoing.writeShort(button);
-			Widget class9_2 = Widget.interfaceCache[button];
-			if (class9_2.scripts != null && class9_2.scripts[0][0] == 5) {
-				if (variousSettings[toggle] != class9_2.scriptDefaults[0]) {
-					variousSettings[toggle] = class9_2.scriptDefaults[0];
+			Widget widget = Widget.interfaceCache[button];
+			if (widget.scripts != null && widget.scripts[0][0] == 5) {
+				if (variousSettings[toggle] != widget.scriptDefaults[0]) {
+					variousSettings[toggle] = widget.scriptDefaults[0];
 					adjustVolume(toggle);
 				}
 			}
@@ -12466,16 +12473,19 @@ public class Game extends GameShell {
 			case 74214:
 				System.out.println("toggle = " + toggle);
 				if (toggle == 0)
-					sendFrame36(173, toggle);
+					sendConfiguration(173, toggle);
 				if (toggle == 1)
-					sendPacket185(153, 173, 646);
+					sendButtonClick(153, 173, 646);
 				break;
 			}
 			break;
 		}
 	}
 
-	public void sendFrame36(int id, int state) {
+	/**
+	 * Sets button configurations on interfaces.
+	 */
+	public void sendConfiguration(int id, int state) {
 		anIntArray1045[id] = state;
 		if (variousSettings[id] != state) {
 			variousSettings[id] = state;
@@ -12485,7 +12495,10 @@ public class Game extends GameShell {
 		}
 	}
 
-	public void sendFrame219() {
+	/**
+	 * Clears the screen of all open interfaces.
+	 */
+	public void clearScreen() {
 		if (overlayInterfaceId != -1) {
 			overlayInterfaceId = -1;
 			tabAreaAltered = true;
@@ -12502,7 +12515,10 @@ public class Game extends GameShell {
 		continuedDialogue = false;
 	}
 
-	public void sendFrame248(int interfaceID, int sideInterfaceID) {
+	/**
+	 * Displays an interface over the sidebar area.
+	 */
+	public void inventoryOverlay(int interfaceId, int sideInterfaceId) {
 		if (backDialogueId != -1) {
 			backDialogueId = -1;
 			inputTaken = true;
@@ -12511,8 +12527,8 @@ public class Game extends GameShell {
 			inputDialogState = 0;
 			inputTaken = true;
 		}
-		openInterfaceId = interfaceID;
-		overlayInterfaceId = sideInterfaceID;
+		openInterfaceId = interfaceId;
+		overlayInterfaceId = sideInterfaceId;
 		tabAreaAltered = true;
 		continuedDialogue = false;
 	}
@@ -13361,7 +13377,7 @@ public class Game extends GameShell {
 					if (text.startsWith(":prayer:"))
 						prayerBook = text.substring(8);
 					updateStrings(text, frame);
-					sendFrame126(text, frame);
+					sendString(text, frame);
 					if (frame >= 18144 && frame <= 18244) {
 						clanList[frame - 18144] = text;
 					}
@@ -13931,7 +13947,7 @@ public class Game extends GameShell {
 		RSFont xp_font = newBoldFont;
 		int font_height = 24;
 		int x = frameMode == ScreenMode.FIXED ? 500 : frameWidth - 200;
-		int y = frameMode == ScreenMode.FIXED ? 25 : 50;
+		int y = frameMode == ScreenMode.FIXED ? 46 : 50;
 		digits = xpCounter == 0 ? 1 : 1 + (int) Math.floor(Math
 				.log10(xpCounter));
 		int lengthToRemove = Integer.toString(xpCounter).length();

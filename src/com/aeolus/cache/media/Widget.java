@@ -262,6 +262,7 @@ public final class Widget {
 		itemsOnDeathDATA(textDrawingAreas);
 		itemsKeptOnDeath(textDrawingAreas);
 		itemsOnDeath(textDrawingAreas);
+		
 		spriteCache = null;
 	}
 	
