@@ -69,9 +69,9 @@ public final class Buffer extends Cacheable {
 		return new String(payload, i, currentPosition - i - 1);
 	}
 
-	public void createFrame(int value) {
+	public void writeOpCode(int opCode) {
 		// System.out.println("Frame: " + i);
-		payload[currentPosition++] = (byte) (value + encryption.getNextKey());
+		payload[currentPosition++] = (byte) (opCode + encryption.getNextKey());
 	}
 
 	public void writeByte(int value) {
