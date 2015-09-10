@@ -179,7 +179,7 @@ public final class ObjectDefinition {
 		if (modelIds == null)
 			return;
 		for (int index = 0; index < modelIds.length; index++)
-			archive.method560(modelIds[index] & 0xffff, 0);
+			archive.loadExtra(modelIds[index] & 0xffff, 0);
 	}
 
 	public static void nullLoader() {

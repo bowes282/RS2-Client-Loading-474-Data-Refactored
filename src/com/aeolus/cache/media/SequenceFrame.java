@@ -101,7 +101,7 @@ public final class SequenceFrame {
 			int fileId = j >> 16;
 			SequenceFrame class36 = (SequenceFrame) frameList.get(new Integer(j));
 			if (class36 == null) {
-				Game.instance.onDemandFetcher.provide(1, fileId);
+				Game.instance.resourceProvider.provide(1, fileId);
 				return null;
 			} else
 				return class36;

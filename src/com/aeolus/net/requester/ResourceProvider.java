@@ -12,17 +12,17 @@ import com.aeolus.util.signlink.Signlink;
 
 public final class ResourceProvider extends Provider implements Runnable {
 
-	private void readData() {
+	private void respond() {
 		try {
 			int j = inputStream.available();
-			if (expectedSize == 0 && j >= 6) {
-				waiting = true;
-				for (int k = 0; k < 6; k += inputStream.read(ioBuffer, k, 6 - k))
+			if (remainingData == 0 && j >= 6) {
+				expectingData = true;
+				for (int k = 0; k < 6; k += inputStream.read(payload, k, 6 - k))
 					;
-				int l = ioBuffer[0] & 0xff;
-				int j1 = ((ioBuffer[1] & 0xff) << 8) + (ioBuffer[2] & 0xff);
-				int l1 = ((ioBuffer[3] & 0xff) << 8) + (ioBuffer[4] & 0xff);
-				int i2 = ioBuffer[5] & 0xff;
+				int l = payload[0] & 0xff;
+				int j1 = ((payload[1] & 0xff) << 8) + (payload[2] & 0xff);
+				int l1 = ((payload[3] & 0xff) << 8) + (payload[4] & 0xff);
+				int i2 = payload[5] & 0xff;
 				current = null;
 				for (Resource onDemandData = (Resource) requested.reverseGetFirst(); onDemandData != null; onDemandData = (Resource) requested.reverseGetNext()) {
 					if (onDemandData.dataType == l && onDemandData.ID == j1)
@@ -32,13 +32,13 @@ public final class ResourceProvider extends Provider implements Runnable {
 				}
 
 				if (current != null) {
-					loopCycle = 0;
+					idleTime = 0;
 					if (l1 == 0) {
 						Signlink.reporterror("Rej: " + l + "," + j1);
 						current.buffer = null;
 						if (current.incomplete)
-							synchronized (aClass19_1358) {
-								aClass19_1358.insertHead(current);
+							synchronized (complete) {
+								complete.insertHead(current);
 							}
 						else
 							current.unlink();
@@ -51,35 +51,35 @@ public final class ResourceProvider extends Provider implements Runnable {
 					}
 				}
 				completedSize = i2 * 500;
-				expectedSize = 500;
-				if (expectedSize > l1 - i2 * 500)
-					expectedSize = l1 - i2 * 500;
+				remainingData = 500;
+				if (remainingData > l1 - i2 * 500)
+					remainingData = l1 - i2 * 500;
 			}
-			if (expectedSize > 0 && j >= expectedSize) {
-				waiting = true;
-				byte abyte0[] = ioBuffer;
+			if (remainingData > 0 && j >= remainingData) {
+				expectingData = true;
+				byte abyte0[] = payload;
 				int i1 = 0;
 				if (current != null) {
 					abyte0 = current.buffer;
 					i1 = completedSize;
 				}
-				for (int k1 = 0; k1 < expectedSize; k1 += inputStream.read(abyte0, k1 + i1, expectedSize - k1))
+				for (int k1 = 0; k1 < remainingData; k1 += inputStream.read(abyte0, k1 + i1, remainingData - k1))
 					;
-				if (expectedSize + completedSize >= abyte0.length && current != null) {
-					if (clientInstance.decompressors[0] != null)
-						clientInstance.decompressors[current.dataType + 1].method234(abyte0.length, abyte0, current.ID);
+				if (remainingData + completedSize >= abyte0.length && current != null) {
+					if (clientInstance.indices[0] != null)
+						clientInstance.indices[current.dataType + 1].method234(abyte0.length, abyte0, current.ID);
 					if (!current.incomplete && current.dataType == 3) {
 						current.incomplete = true;
 						current.dataType = 93;
 					}
 					if (current.incomplete)
-						synchronized (aClass19_1358) {
-							aClass19_1358.insertHead(current);
+						synchronized (complete) {
+							complete.insertHead(current);
 						}
 					else
 						current.unlink();
 				}
-				expectedSize = 0;
+				remainingData = 0;
 			}
 		} catch (IOException ioexception) {
 			try {
@@ -89,41 +89,41 @@ public final class ResourceProvider extends Provider implements Runnable {
 			socket = null;
 			inputStream = null;
 			outputStream = null;
-			expectedSize = 0;
+			remainingData = 0;
 		}
 	}
 
 	public int mapAmount = 0;
 
-	public void start(CacheArchive streamLoader, Game client1) {
-		byte[] abyte2 = streamLoader.getDataForName("map_index");
-		Buffer stream2 = new Buffer(abyte2);
-		int j1 = abyte2.length / 6;
-		mapIndices1 = new int[j1];
-		mapIndices2 = new int[j1];
-		mapIndices3 = new int[j1];
+	public void initialize(CacheArchive archive, Game client) {
+		byte[] mapData = archive.getDataForName("map_index");
+		Buffer stream2 = new Buffer(mapData);
+		int j1 = mapData.length / 6;
+		areas = new int[j1];
+		mapFiles = new int[j1];
+		landscapes = new int[j1];
 		for (int i2 = 0; i2 < j1; i2++) {
-			mapIndices1[i2] = stream2.readUShort();
-			mapIndices2[i2] = stream2.readUShort();
-			mapIndices3[i2] = stream2.readUShort();
+			areas[i2] = stream2.readUShort();
+			mapFiles[i2] = stream2.readUShort();
+			landscapes[i2] = stream2.readUShort();
 			mapAmount++;
 		}
 		System.out.println("Map Amount: " + mapAmount + "");
-		abyte2 = streamLoader.getDataForName("midi_index");
-		stream2 = new Buffer(abyte2);
-		j1 = abyte2.length;
+		mapData = archive.getDataForName("midi_index");
+		stream2 = new Buffer(mapData);
+		j1 = mapData.length;
 		anIntArray1348 = new int[j1];
 		for (int k2 = 0; k2 < j1; k2++)
 			anIntArray1348[k2] = stream2.readUnsignedByte();
 
-		clientInstance = client1;
+		clientInstance = client;
 		running = true;
 		clientInstance.startRunnable(this, 2);
 	}
 
-	public int getNodeCount() {
-		synchronized (nodeSubList) {
-			return nodeSubList.getNodeCount();
+	public int remaining() {
+		synchronized (requests) {
+			return requests.size();
 		}
 	}
 
@@ -131,21 +131,20 @@ public final class ResourceProvider extends Provider implements Runnable {
 		running = false;
 	}
 
-	public void method554(boolean flag) {
-		int j = mapIndices1.length;
-		for (int k = 0; k < j; k++)
-			if (flag || mapIndices4[k] != 0) {
-				method563((byte) 2, 3, mapIndices3[k]);
-				method563((byte) 2, 3, mapIndices2[k]);
+	public void preloadMaps(boolean members) {
+		for (int area = 0; area < areas.length; area++) {
+			if (members || membersArea[area] != 0) {
+				requestExtra((byte) 2, 3, landscapes[area]);
+				requestExtra((byte) 2, 3, mapFiles[area]);
 			}
-
+		}
 	}
 
 	public int getVersionCount(int j) {
 		return versions[j].length;
 	}
 
-	private void closeRequest(Resource onDemandData) {
+	private void request(Resource resource) {
 		try {
 			if (socket == null) {
 				long l = System.currentTimeMillis();
@@ -159,19 +158,19 @@ public final class ResourceProvider extends Provider implements Runnable {
 				for (int j = 0; j < 8; j++)
 					inputStream.read();
 
-				loopCycle = 0;
+				idleTime = 0;
 			}
-			ioBuffer[0] = (byte) onDemandData.dataType;
-			ioBuffer[1] = (byte) (onDemandData.ID >> 8);
-			ioBuffer[2] = (byte) onDemandData.ID;
-			if (onDemandData.incomplete)
-				ioBuffer[3] = 2;
+			payload[0] = (byte) resource.dataType;
+			payload[1] = (byte) (resource.ID >> 8);
+			payload[2] = (byte) resource.ID;
+			if (resource.incomplete)
+				payload[3] = 2;
 			else if (!Game.loggedIn)
-				ioBuffer[3] = 1;
+				payload[3] = 1;
 			else
-				ioBuffer[3] = 0;
-			outputStream.write(ioBuffer, 0, 4);
-			writeLoopCycle = 0;
+				payload[3] = 0;
+			outputStream.write(payload, 0, 4);
+			deadTime = 0;
 			anInt1349 = -10000;
 			return;
 		} catch (IOException ioexception) {
@@ -183,7 +182,7 @@ public final class ResourceProvider extends Provider implements Runnable {
 		socket = null;
 		inputStream = null;
 		outputStream = null;
-		expectedSize = 0;
+		remainingData = 0;
 		anInt1349++;
 	}
 
@@ -200,20 +199,20 @@ public final class ResourceProvider extends Provider implements Runnable {
 		provide(0, file);
 	}
 
-	public void provide(int i, int j) {
-		synchronized (nodeSubList) {
-			for (Resource onDemandData = (Resource) nodeSubList.reverseGetFirst(); onDemandData != null; onDemandData = (Resource) nodeSubList.reverseGetNext())
-				if (onDemandData.dataType == i && onDemandData.ID == j)
+	public void provide(int type, int file) {
+		synchronized (requests) {
+			for (Resource resource = (Resource) requests.reverseGetFirst(); resource != null; resource = (Resource) requests.reverseGetNext())
+				if (resource.dataType == type && resource.ID == file)
 					return;
 
-			Resource onDemandData_1 = new Resource();
-			onDemandData_1.dataType = i;
-			onDemandData_1.ID = j;
-			onDemandData_1.incomplete = true;
-			synchronized (aClass19_1370) {
-				aClass19_1370.insertHead(onDemandData_1);
+			Resource resource = new Resource();
+			resource.dataType = type;
+			resource.ID = file;
+			resource.incomplete = true;
+			synchronized (mandatoryRequests) {
+				mandatoryRequests.insertHead(resource);
 			}
-			nodeSubList.insertHead(onDemandData_1);
+			requests.insertHead(resource);
 		}
 	}
 
@@ -224,53 +223,53 @@ public final class ResourceProvider extends Provider implements Runnable {
 	public void run() {
 		try {
 			while (running) {
-				onDemandCycle++;
+				tick++;
 				int i = 20;
-				if (anInt1332 == 0 && clientInstance.decompressors[0] != null)
+				if (maximumPriority == 0 && clientInstance.indices[0] != null)
 					i = 50;
 				try {
 					Thread.sleep(i);
 				} catch (Exception _ex) {
 				}
-				waiting = true;
+				expectingData = true;
 				for (int j = 0; j < 100; j++) {
-					if (!waiting)
+					if (!expectingData)
 						break;
-					waiting = false;
-					checkReceived();
-					handleFailed();
+					expectingData = false;
+					loadMandatory();
+					requestMandatory();
 					if (uncompletedCount == 0 && j >= 5)
 						break;
-					method568();
+					loadExtra();
 					if (inputStream != null)
-						readData();
+						respond();
 				}
 
-				boolean flag = false;
-				for (Resource onDemandData = (Resource) requested.reverseGetFirst(); onDemandData != null; onDemandData = (Resource) requested.reverseGetNext())
-					if (onDemandData.incomplete) {
-						flag = true;
-						onDemandData.loopCycle++;
-						if (onDemandData.loopCycle > 50) {
-							onDemandData.loopCycle = 0;
-							closeRequest(onDemandData);
+				boolean idle = false;
+				for (Resource resource = (Resource) requested.reverseGetFirst(); resource != null; resource = (Resource) requested.reverseGetNext())
+					if (resource.incomplete) {
+						idle = true;
+						resource.loopCycle++;
+						if (resource.loopCycle > 50) {
+							resource.loopCycle = 0;
+							request(resource);
 						}
 					}
 
-				if (!flag) {
-					for (Resource onDemandData_1 = (Resource) requested.reverseGetFirst(); onDemandData_1 != null; onDemandData_1 = (Resource) requested.reverseGetNext()) {
-						flag = true;
-						onDemandData_1.loopCycle++;
-						if (onDemandData_1.loopCycle > 50) {
-							onDemandData_1.loopCycle = 0;
-							closeRequest(onDemandData_1);
+				if (!idle) {
+					for (Resource resource = (Resource) requested.reverseGetFirst(); resource != null; resource = (Resource) requested.reverseGetNext()) {
+						idle = true;
+						resource.loopCycle++;
+						if (resource.loopCycle > 50) {
+							resource.loopCycle = 0;
+							request(resource);
 						}
 					}
 
 				}
-				if (flag) {
-					loopCycle++;
-					if (loopCycle > 750) {
+				if (idle) {
+					idleTime++;
+					if (idleTime > 750) {
 						try {
 							socket.close();
 						} catch (Exception _ex) {
@@ -278,24 +277,24 @@ public final class ResourceProvider extends Provider implements Runnable {
 						socket = null;
 						inputStream = null;
 						outputStream = null;
-						expectedSize = 0;
+						remainingData = 0;
 					}
 				} else {
-					loopCycle = 0;
-					statusString = "";
+					idleTime = 0;
+					loadingMessage = "";
 				}
-				if (Game.loggedIn && socket != null && outputStream != null && (anInt1332 > 0 || clientInstance.decompressors[0] == null)) {
-					writeLoopCycle++;
-					if (writeLoopCycle > 500) {
-						writeLoopCycle = 0;
-						ioBuffer[0] = 0;
-						ioBuffer[1] = 0;
-						ioBuffer[2] = 0;
-						ioBuffer[3] = 10;
+				if (Game.loggedIn && socket != null && outputStream != null && (maximumPriority > 0 || clientInstance.indices[0] == null)) {
+					deadTime++;
+					if (deadTime > 500) {
+						deadTime = 0;
+						payload[0] = 0;
+						payload[1] = 0;
+						payload[2] = 0;
+						payload[3] = 10;
 						try {
-							outputStream.write(ioBuffer, 0, 4);
+							outputStream.write(payload, 0, 4);
 						} catch (IOException _ex) {
-							loopCycle = 5000;
+							idleTime = 5000;
 						}
 					}
 				}
@@ -305,66 +304,65 @@ public final class ResourceProvider extends Provider implements Runnable {
 		}
 	}
 
-	public void method560(int i, int j) {
-		if (clientInstance.decompressors[0] == null)
+	public void loadExtra(int type, int file) {
+		if (clientInstance.indices[0] == null)
 			return;
-		if (anInt1332 == 0)
+		if (maximumPriority == 0)
 			return;
-		Resource onDemandData = new Resource();
-		onDemandData.dataType = j;
-		onDemandData.ID = i;
-		onDemandData.incomplete = false;
-		synchronized (aClass19_1344) {
-			aClass19_1344.insertHead(onDemandData);
+		Resource resource = new Resource();
+		resource.dataType = file;
+		resource.ID = type;
+		resource.incomplete = false;
+		synchronized (extras) {
+			extras.insertHead(resource);
 		}
 	}
 
-	public Resource getNextNode() {
-		Resource onDemandData;
-		synchronized (aClass19_1358) {
-			onDemandData = (Resource) aClass19_1358.popHead();
+	public Resource next() {
+		Resource resource;
+		synchronized (complete) {
+			resource = (Resource) complete.popHead();
 		}
-		if (onDemandData == null)
+		if (resource == null)
 			return null;
-		synchronized (nodeSubList) {
-			onDemandData.unlinkCacheable();
+		synchronized (requests) {
+			resource.unlinkCacheable();
 		}
-		if (onDemandData.buffer == null)
-			return onDemandData;
+		if (resource.buffer == null)
+			return resource;
 		int i = 0;
 		try {
-			GZIPInputStream gzipinputstream = new GZIPInputStream(new ByteArrayInputStream(onDemandData.buffer));
+			GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(resource.buffer));
 			do {
 				if (i == gzipInputBuffer.length)
 					throw new RuntimeException("buffer overflow!");
-				int k = gzipinputstream.read(gzipInputBuffer, i, gzipInputBuffer.length - i);
+				int k = gis.read(gzipInputBuffer, i, gzipInputBuffer.length - i);
 				if (k == -1)
 					break;
 				i += k;
 			} while (true);
 		} catch (IOException _ex) {
-			// RuntimeException("error unzipping");
-			System.out.println("Failed to unzip model [" + onDemandData.ID + "] type = " + onDemandData.dataType);
+			System.out.println("Failed to unzip model [" + resource.ID + "] type = " + resource.dataType);
 			_ex.printStackTrace();
 			return null;
 		}
-		onDemandData.buffer = new byte[i];
-		System.arraycopy(gzipInputBuffer, 0, onDemandData.buffer, 0, i);
+		resource.buffer = new byte[i];
+		System.arraycopy(gzipInputBuffer, 0, resource.buffer, 0, i);
 
-		return onDemandData;
+		return resource;
 	}
 
-	public int method562(int i, int k, int l) {
-		int i1 = (l << 8) + k;
+	public int method562(int regionX, int regionY, int type) {
+		int i1 = (type << 8) + regionY;
 		int mapNigga2;
 		int mapNigga3;
-		for (int j1 = 0; j1 < mapIndices1.length; j1++) {
-			if (mapIndices1[j1] == i1) {
-				if (i == 0) {
-					mapNigga2 = mapIndices2[j1] > 3535 ? -1 : mapIndices2[j1];
+		for (int j1 = 0; j1 < areas.length; j1++) {
+			if (areas[j1] == i1) {
+				if (regionX == 0) {
+					mapNigga2 = mapFiles[j1] > 3535 ? -1 : mapFiles[j1];
 					return mapNigga2;
 				} else {
-					mapNigga3 = mapIndices3[j1] > 3535 ? -1 : mapIndices3[j1];
+					mapNigga3 = landscapes[j1] > 3535 ? -1 : landscapes[j1];
 					return mapNigga3;
 				}
 			}
@@ -372,30 +370,26 @@ public final class ResourceProvider extends Provider implements Runnable {
 		return -1;
 	}
 
-	public void method548(int i) {
-		provide(0, i);
-	}
-
-	public void method563(byte byte0, int i, int j) {
-		if (clientInstance.decompressors[0] == null)
+	public void requestExtra(byte byte0, int i, int j) {
+		if (clientInstance.indices[0] == null)
 			return;
 		if (versions[i][j] == 0)
 			return;
-		clientInstance.decompressors[i + 1].decompress(j);
+		clientInstance.indices[i + 1].decompress(j);
 		fileStatus[i][j] = byte0;
-		if (byte0 > anInt1332)
-			anInt1332 = byte0;
+		if (byte0 > maximumPriority)
+			maximumPriority = byte0;
 		totalFiles++;
 	}
 
-	public boolean method564(int i) {
-		for (int k = 0; k < mapIndices1.length; k++)
-			if (mapIndices3[k] == i)
+	public boolean landscapePresent(int landscape) {
+		for (int index = 0; index < areas.length; index++)
+			if (landscapes[index] == landscape)
 				return true;
 		return false;
 	}
 
-	private void handleFailed() {
+	private void requestMandatory() {
 		uncompletedCount = 0;
 		completedCount = 0;
 		for (Resource onDemandData = (Resource) requested.reverseGetFirst(); onDemandData != null; onDemandData = (Resource) requested.reverseGetNext())
@@ -415,8 +409,8 @@ public final class ResourceProvider extends Provider implements Runnable {
 				fileStatus[onDemandData_1.dataType][onDemandData_1.ID] = 0;
 				requested.insertHead(onDemandData_1);
 				uncompletedCount++;
-				closeRequest(onDemandData_1);
-				waiting = true;
+				request(onDemandData_1);
+				expectingData = true;
 				System.out.println("Error: file is missing  [ type = " + onDemandData_1.dataType + "]  [id = " + onDemandData_1.ID + "]");
 			} catch (Exception _ex) {
 			}
@@ -424,76 +418,76 @@ public final class ResourceProvider extends Provider implements Runnable {
 	}
 
 	public void method566() {
-		synchronized (aClass19_1344) {
-			aClass19_1344.clear();
+		synchronized (extras) {
+			extras.clear();
 		}
 	}
 
-	private void checkReceived() {
-		Resource onDemandData;
-		synchronized (aClass19_1370) {
-			onDemandData = (Resource) aClass19_1370.popHead();
+	private void loadMandatory() {
+		Resource resource;
+		synchronized (mandatoryRequests) {
+			resource = (Resource) mandatoryRequests.popHead();
 		}
-		while (onDemandData != null) {
-			waiting = true;
+		while (resource != null) {
+			expectingData = true;
 			byte abyte0[] = null;
-			if (clientInstance.decompressors[0] != null)
-				abyte0 = clientInstance.decompressors[onDemandData.dataType + 1].decompress(onDemandData.ID);
-			synchronized (aClass19_1370) {
+			if (clientInstance.indices[0] != null)
+				abyte0 = clientInstance.indices[resource.dataType + 1].decompress(resource.ID);
+			synchronized (mandatoryRequests) {
 				if (abyte0 == null) {
-					aClass19_1368.insertHead(onDemandData);
+					aClass19_1368.insertHead(resource);
 				} else {
-					onDemandData.buffer = abyte0;
-					synchronized (aClass19_1358) {
-						aClass19_1358.insertHead(onDemandData);
+					resource.buffer = abyte0;
+					synchronized (complete) {
+						complete.insertHead(resource);
 					}
 				}
-				onDemandData = (Resource) aClass19_1370.popHead();
+				resource = (Resource) mandatoryRequests.popHead();
 			}
 		}
 	}
 
-	private void method568() {
+	private void loadExtra() {
 		while (uncompletedCount == 0 && completedCount < 10) {
-			if (anInt1332 == 0)
+			if (maximumPriority == 0)
 				break;
 			Resource onDemandData;
-			synchronized (aClass19_1344) {
-				onDemandData = (Resource) aClass19_1344.popHead();
+			synchronized (extras) {
+				onDemandData = (Resource) extras.popHead();
 			}
 			while (onDemandData != null) {
 				if (fileStatus[onDemandData.dataType][onDemandData.ID] != 0) {
 					fileStatus[onDemandData.dataType][onDemandData.ID] = 0;
 					requested.insertHead(onDemandData);
-					closeRequest(onDemandData);
-					waiting = true;
+					request(onDemandData);
+					expectingData = true;
 					if (filesLoaded < totalFiles)
 						filesLoaded++;
-					statusString = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
+					loadingMessage = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
 					completedCount++;
 					if (completedCount == 10)
 						return;
 				}
-				synchronized (aClass19_1344) {
-					onDemandData = (Resource) aClass19_1344.popHead();
+				synchronized (extras) {
+					onDemandData = (Resource) extras.popHead();
 				}
 			}
 			for (int j = 0; j < 4; j++) {
 				byte abyte0[] = fileStatus[j];
 				int k = abyte0.length;
 				for (int l = 0; l < k; l++)
-					if (abyte0[l] == anInt1332) {
+					if (abyte0[l] == maximumPriority) {
 						abyte0[l] = 0;
 						Resource onDemandData_1 = new Resource();
 						onDemandData_1.dataType = j;
 						onDemandData_1.ID = l;
 						onDemandData_1.incomplete = false;
 						requested.insertHead(onDemandData_1);
-						closeRequest(onDemandData_1);
-						waiting = true;
+						request(onDemandData_1);
+						expectingData = true;
 						if (filesLoaded < totalFiles)
 							filesLoaded++;
-						statusString = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
+						loadingMessage = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
 						completedCount++;
 						if (completedCount == 10)
 							return;
@@ -501,7 +495,7 @@ public final class ResourceProvider extends Provider implements Runnable {
 
 			}
 
-			anInt1332--;
+			maximumPriority--;
 		}
 	}
 
@@ -511,46 +505,46 @@ public final class ResourceProvider extends Provider implements Runnable {
 
 	public ResourceProvider() {
 		requested = new Deque();
-		statusString = "";
-		ioBuffer = new byte[500];
+		loadingMessage = "";
+		payload = new byte[500];
 		fileStatus = new byte[4][];
-		aClass19_1344 = new Deque();
+		extras = new Deque();
 		running = true;
-		waiting = false;
-		aClass19_1358 = new Deque();
+		expectingData = false;
+		complete = new Deque();
 		gzipInputBuffer = new byte[0x71868];
-		nodeSubList = new Queue();
+		requests = new Queue();
 		versions = new int[4][];
 		aClass19_1368 = new Deque();
-		aClass19_1370 = new Deque();
+		mandatoryRequests = new Deque();
 	}
 
 	private int totalFiles;
 	private final Deque requested;
-	private int anInt1332;
-	public String statusString;
-	private int writeLoopCycle;
+	private int maximumPriority;
+	public String loadingMessage;
+	private int deadTime;
 	private long openSocketTime;
-	private int[] mapIndices3;
-	private final byte[] ioBuffer;
-	public int onDemandCycle;
+	private int[] landscapes;
+	private final byte[] payload;
+	public int tick;
 	private final byte[][] fileStatus;
 	private Game clientInstance;
-	private final Deque aClass19_1344;
+	private final Deque extras;
 	private int completedSize;
-	private int expectedSize;
+	private int remainingData;
 	private int[] anIntArray1348;
 	public int anInt1349;
-	private int[] mapIndices2;
+	private int[] mapFiles;
 	private int filesLoaded;
 	private boolean running;
 	private OutputStream outputStream;
-	private int[] mapIndices4;
-	private boolean waiting;
-	private final Deque aClass19_1358;
+	private int[] membersArea;
+	private boolean expectingData;
+	private final Deque complete;
 	private final byte[] gzipInputBuffer;
 	private int[] anIntArray1360;
-	private final Queue nodeSubList;
+	private final Queue requests;
 	private InputStream inputStream;
 	private Socket socket;
 	private final int[][] versions;
@@ -558,8 +552,8 @@ public final class ResourceProvider extends Provider implements Runnable {
 	private int completedCount;
 	private final Deque aClass19_1368;
 	private Resource current;
-	private final Deque aClass19_1370;
-	private int[] mapIndices1;
+	private final Deque mandatoryRequests;
+	private int[] areas;
 	private byte[] modelIndices;
-	private int loopCycle;
+	private int idleTime;
 }

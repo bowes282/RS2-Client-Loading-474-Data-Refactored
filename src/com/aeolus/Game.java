@@ -133,7 +133,7 @@ public class Game extends GameShell {
 		for (int MusicIndex = 0; MusicIndex < 3536; MusicIndex++) {
 			byte[] song = GetMusic(MusicIndex);
 			if (song != null && song.length > 0) {
-				decompressors[3].method234(song.length, song, MusicIndex);
+				indices[3].method234(song.length, song, MusicIndex);
 			}
 		}
 	}
@@ -171,7 +171,7 @@ public class Game extends GameShell {
 		try {
 			for (int i = 0;; i++) {
 				try {
-					byte[] indexByteArray = decompressors[cacheIndex]
+					byte[] indexByteArray = indices[cacheIndex]
 							.decompress(i);
 					if (indexByteArray == null) {
 						System.out.println("Finished dumping index "
@@ -218,7 +218,7 @@ public class Game extends GameShell {
 								.toString()));
 				byte[] data = fileToByteArray(cacheIndex, fileIndex);
 				if (data != null && data.length > 0) {
-					decompressors[cacheIndex].method234(data.length, data,
+					indices[cacheIndex].method234(data.length, data,
 							fileIndex);
 					System.out.println("Repacked " + fileIndex + ".");
 				} else {
@@ -1246,9 +1246,9 @@ public class Game extends GameShell {
 			outgoing.writeInt(0x3f008edd);
 		}
 		if (lowMem && Signlink.cache_dat != null) {
-			int j = onDemandFetcher.getVersionCount(0);
+			int j = resourceProvider.getVersionCount(0);
 			for (int i1 = 0; i1 < j; i1++) {
-				int l1 = onDemandFetcher.getModelIndex(i1);
+				int l1 = resourceProvider.getModelIndex(i1);
 				if ((l1 & 0x79) == 0)
 					Model.method461(i1);
 			}
@@ -1256,7 +1256,7 @@ public class Game extends GameShell {
 		}
 		System.gc();
 		Rasterizer.method367();
-		onDemandFetcher.method566();
+		resourceProvider.method566();
 		int k = (anInt1069 - 6) / 8 - 1;
 		int j1 = (anInt1069 + 6) / 8 + 1;
 		int i2 = (anInt1070 - 6) / 8 - 1;
@@ -1270,12 +1270,12 @@ public class Game extends GameShell {
 		for (int l3 = k; l3 <= j1; l3++) {
 			for (int j5 = i2; j5 <= l2; j5++)
 				if (l3 == k || l3 == j1 || j5 == i2 || j5 == l2) {
-					int j7 = onDemandFetcher.method562(0, j5, l3);
+					int j7 = resourceProvider.method562(0, j5, l3);
 					if (j7 != -1)
-						onDemandFetcher.method560(j7, 3);
-					int k8 = onDemandFetcher.method562(1, j5, l3);
+						resourceProvider.loadExtra(j7, 3);
+					int k8 = resourceProvider.method562(1, j5, l3);
 					if (k8 != -1)
-						onDemandFetcher.method560(k8, 3);
+						resourceProvider.loadExtra(k8, 3);
 				}
 
 		}
@@ -2133,7 +2133,7 @@ public class Game extends GameShell {
 				if (Configuration.enableMusic) {
 					nextSong = currentSong;
 					songChanging = true;
-					onDemandFetcher.provide(2, nextSong);
+					resourceProvider.provide(2, nextSong);
 				} else {
 					stopMidi();
 				}
@@ -3540,8 +3540,8 @@ public class Game extends GameShell {
 			int j = method54();
 			if (j != 0 && System.currentTimeMillis() - aLong824 > 0x57e40L) {
 				Signlink.reporterror(myUsername + " glcfb " + serverSeed + ","
-						+ j + "," + lowMem + "," + decompressors[0] + ","
-						+ onDemandFetcher.getNodeCount() + "," + plane + ","
+						+ j + "," + lowMem + "," + indices[0] + ","
+						+ resourceProvider.remaining() + "," + plane + ","
 						+ anInt1069 + "," + anInt1070);
 				aLong824 = System.currentTimeMillis();
 			}
@@ -3705,7 +3705,7 @@ public class Game extends GameShell {
 		do {
 			Resource onDemandData;
 			do {
-				onDemandData = onDemandFetcher.getNextNode();
+				onDemandData = resourceProvider.next();
 				if (onDemandData == null)
 					return;
 				if (onDemandData.dataType == 0) {
@@ -3737,9 +3737,9 @@ public class Game extends GameShell {
 
 				}
 			} while (onDemandData.dataType != 93
-					|| !onDemandFetcher.method564(onDemandData.ID));
+					|| !resourceProvider.landscapePresent(onDemandData.ID));
 			MapRegion.method173(new Buffer(onDemandData.buffer),
-					onDemandFetcher);
+					resourceProvider);
 		} while (true);
 	}
 
@@ -4266,7 +4266,7 @@ public class Game extends GameShell {
 				&& prevSong == 0) {
 			nextSong = id;
 			songChanging = true;
-			onDemandFetcher.provide(2, nextSong);
+			resourceProvider.provide(2, nextSong);
 			currentSong = id;
 		}
 	}
@@ -4340,7 +4340,7 @@ public class Game extends GameShell {
 			if (prevSong == 0 && Configuration.enableMusic && !lowMem) {
 				nextSong = currentSong;
 				songChanging = true;
-				onDemandFetcher.provide(2, nextSong);
+				resourceProvider.provide(2, nextSong);
 			}
 		}
 	}
@@ -4350,8 +4350,8 @@ public class Game extends GameShell {
 		byte abyte0[] = null;
 		int l = 5;
 		try {
-			if (decompressors[0] != null)
-				abyte0 = decompressors[0].decompress(i);
+			if (indices[0] != null)
+				abyte0 = indices[0].decompress(i);
 		} catch (Exception _ex) {
 		}
 		if (abyte0 != null) {
@@ -4397,10 +4397,10 @@ public class Game extends GameShell {
 				}
 				datainputstream.close();
 				try {
-					if (decompressors[0] != null)
-						decompressors[0].method234(abyte0.length, abyte0, i);
+					if (indices[0] != null)
+						indices[0].method234(abyte0.length, abyte0, i);
 				} catch (Exception _ex) {
-					decompressors[0] = null;
+					indices[0] = null;
 				}
 				/*
 				 * if(abyte0 != null) { aCRC32_930.reset();
@@ -5748,8 +5748,8 @@ public class Game extends GameShell {
 		if (mouseDetection != null)
 			mouseDetection.running = false;
 		mouseDetection = null;
-		onDemandFetcher.disable();
-		onDemandFetcher = null;
+		resourceProvider.disable();
+		resourceProvider = null;
 		aStream_834 = null;
 		outgoing = null;
 		login = null;
@@ -8654,7 +8654,7 @@ public class Game extends GameShell {
 		drawLoadingText(20, "Starting up");
 		if (Signlink.cache_dat != null) {
 			for (int i = 0; i < 5; i++)
-				decompressors[i] = new Index(Signlink.cache_dat,
+				indices[i] = new Index(Signlink.cache_dat,
 						Signlink.cache_idx[i], i + 1);
 		}
 		try {
@@ -8694,9 +8694,9 @@ public class Game extends GameShell {
 			CacheArchive streamLoader_6 = streamLoaderForName(5, "update list",
 					"versionlist", archiveCRCs[5], 60);
 			drawLoadingText(60, "Connecting to update server");
-			onDemandFetcher = new ResourceProvider();
-			onDemandFetcher.start(streamLoader_6, this);
-			Model.method459(onDemandFetcher.getModelCount(), onDemandFetcher);
+			resourceProvider = new ResourceProvider();
+			resourceProvider.initialize(streamLoader_6, this);
+			Model.method459(resourceProvider.getModelCount(), resourceProvider);
 			drawLoadingText(80, "Unpacking media");
 			CacheArchive streamLoader_5 = streamLoaderForName(8,
 					"sound effects", "sounds", archiveCRCs[8], 55);
@@ -11715,7 +11715,7 @@ public class Game extends GameShell {
 		}
 		if (loginScreenState == 0) {
 			int i = c1 / 2 + 80;
-			smallText.method382(0x75a9a9, c / 2, onDemandFetcher.statusString,
+			smallText.method382(0x75a9a9, c / 2, resourceProvider.loadingMessage,
 					i, true);
 			i = c1 / 2 - 20;
 			boldText.method382(0xffff00, c / 2, "Welcome to "
@@ -12751,7 +12751,7 @@ public class Game extends GameShell {
 						&& prevSong == 0) {
 					nextSong = id;
 					songChanging = true;
-					onDemandFetcher.provide(2, nextSong);
+					resourceProvider.provide(2, nextSong);
 				}
 				currentSong = id;
 				opCode = -1;
@@ -12763,7 +12763,7 @@ public class Game extends GameShell {
 				if (Configuration.enableMusic && !lowMem) {
 					nextSong = next;
 					songChanging = false;
-					onDemandFetcher.provide(2, nextSong);
+					resourceProvider.provide(2, nextSong);
 					prevSong = previous;
 				}
 				opCode = -1;
@@ -12855,14 +12855,14 @@ public class Game extends GameShell {
 								anIntArray1236[k16] = -1;
 								k16++;
 							} else {
-								int k28 = anIntArray1235[k16] = onDemandFetcher
+								int k28 = anIntArray1235[k16] = resourceProvider
 										.method562(0, j26, l23);
 								if (k28 != -1)
-									onDemandFetcher.provide(3, k28);
-								int j30 = anIntArray1236[k16] = onDemandFetcher
+									resourceProvider.provide(3, k28);
+								int j30 = anIntArray1236[k16] = resourceProvider
 										.method562(1, j26, l23);
 								if (j30 != -1)
-									onDemandFetcher.provide(3, j30);
+									resourceProvider.provide(3, j30);
 								k16++;
 							}
 						}
@@ -12900,14 +12900,14 @@ public class Game extends GameShell {
 						int i29 = anIntArray1234[l26] = ai[l26];
 						int l30 = i29 >> 8 & 0xff;
 						int l31 = i29 & 0xff;
-						int j32 = anIntArray1235[l26] = onDemandFetcher
+						int j32 = anIntArray1235[l26] = resourceProvider
 								.method562(0, l31, l30);
 						if (j32 != -1)
-							onDemandFetcher.provide(3, j32);
-						int i33 = anIntArray1236[l26] = onDemandFetcher
+							resourceProvider.provide(3, j32);
+						int i33 = anIntArray1236[l26] = resourceProvider
 								.method562(1, l31, l30);
 						if (i33 != -1)
-							onDemandFetcher.provide(3, i33);
+							resourceProvider.provide(3, i33);
 					}
 				}
 				int i17 = regionBaseX - anInt1036;
@@ -14154,7 +14154,7 @@ public class Game extends GameShell {
 		spriteDrawY = -1;
 		anIntArray968 = new int[33];
 		anIntArray969 = new int[256];
-		decompressors = new Index[5];
+		indices = new Index[5];
 		variousSettings = new int[2000];
 		aBoolean972 = false;
 		anInt975 = 50;
@@ -14379,7 +14379,7 @@ public class Game extends GameShell {
 	private Background aBackground_967;
 	private final int[] anIntArray968;
 	private final int[] anIntArray969;
-	public final Index[] decompressors;
+	public final Index[] indices;
 	public int variousSettings[];
 	private boolean aBoolean972;
 	private final int anInt975;
@@ -14469,7 +14469,7 @@ public class Game extends GameShell {
 	private final int[] anIntArray1065;
 	private int mouseInvInterfaceIndex;
 	private int lastActiveInvInterface;
-	public ResourceProvider onDemandFetcher;
+	public ResourceProvider resourceProvider;
 	private int anInt1069;
 	private int anInt1070;
 	private int anInt1071;

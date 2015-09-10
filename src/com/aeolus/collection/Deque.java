@@ -11,22 +11,22 @@ public final class Deque {
 		head.next = head;
 	}
 
-	public void insertHead(Linkable node) {
-		if (node.next != null)
-			node.unlink();
-		node.next = head.next;
-		node.previous = head;
-		node.next.previous = node;
-		node.previous.next = node;
+	public void insertHead(Linkable linkable) {
+		if (linkable.next != null)
+			linkable.unlink();
+		linkable.next = head.next;
+		linkable.previous = head;
+		linkable.next.previous = linkable;
+		linkable.previous.next = linkable;
 	}
 
-	public void insertTail(Linkable node) {
-		if (node.next != null)
-			node.unlink();
-		node.next = head;
-		node.previous = head.previous;
-		node.next.previous = node;
-		node.previous.next = node;
+	public void insertTail(Linkable linkable) {
+		if (linkable.next != null)
+			linkable.unlink();
+		linkable.next = head;
+		linkable.previous = head.previous;
+		linkable.next.previous = linkable;
+		linkable.previous.next = linkable;
 	}
 
 	public Linkable popHead() {
