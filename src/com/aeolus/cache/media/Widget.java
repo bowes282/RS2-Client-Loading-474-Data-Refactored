@@ -1,4 +1,6 @@
 package com.aeolus.cache.media;
+import java.util.Arrays;
+
 import com.aeolus.Game;
 import com.aeolus.cache.def.NpcDefinition;
 import com.aeolus.cache.def.ItemDefinition;
@@ -274,18 +276,21 @@ public final class Widget {
 	public static void debugInterface() {
 		Widget widget = Widget.interfaceCache[12424];
 		for (int i = 0; i < widget.children.length; i++) {
-			System.out.println("index: " + i + " spellId: " + widget.children[i] + " childX: " + widget.childX[i] + " childY: " + widget.childY[i]);
+			System.out.println("childX: " + widget.childX[i] + " childY: " + widget.childY[i] + " index: " + i + " spellId: " + widget.children[i]);
 		}
 	}
 	
 	public static void repositionModernSpells() {
 
 		Widget widget = Widget.interfaceCache[12424];
-		for (int i = 0; i < widget.children.length; i++) {
+		for (int index = 0; index < widget.children.length; index++) {
 			
-			switch(widget.children[i]) {
+			switch(widget.children[index]) {
 			
-			//case 1592: // entangle
+			case 1183: //wind wave
+				widget.childX[31] = 75;
+				widget.childY[31] = 150;
+				break;
 			
 			case 1188: // earth wave
 				widget.childX[36] = 71;
@@ -313,7 +318,7 @@ public final class Widget {
 				break;
 				
 			case 6003: // lvl 6 enchant
-				widget.childX[57] = 123;
+				widget.childX[57] = 122;
 				widget.childY[57] = 198;
 				break;
 				
