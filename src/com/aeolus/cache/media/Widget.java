@@ -262,23 +262,68 @@ public final class Widget {
 		itemsOnDeathDATA(textDrawingAreas);
 		itemsKeptOnDeath(textDrawingAreas);
 		itemsOnDeath(textDrawingAreas);
-		//repositionModernSpells();
+			
+		repositionModernSpells();
+		
+		debugInterface();
 		
 		spriteCache = null;
 		
+	}
+	
+	public static void debugInterface() {
+		Widget widget = Widget.interfaceCache[12424];
+		for (int i = 0; i < widget.children.length; i++) {
+			System.out.println("index: " + i + " spellId: " + widget.children[i] + " childX: " + widget.childX[i] + " childY: " + widget.childY[i]);
+		}
 	}
 	
 	public static void repositionModernSpells() {
 
 		Widget widget = Widget.interfaceCache[12424];
 		for (int i = 0; i < widget.children.length; i++) {
-			switch (widget.children[i]) {
-			case 18470:
-				widget.childX[i] = 100;
-				widget.childY[i] = 100;
-				break;
-			}
 			
+			switch(widget.children[i]) {
+			
+			//case 1592: // entangle
+			
+			case 1188: // earth wave
+				widget.childX[36] = 71;
+				widget.childY[36] = 172;
+				break;
+				
+			case 1543:
+				widget.childX[46] = 96;
+				widget.childY[46] = 173;
+				break;
+			
+			case 1193: // charge
+				widget.childX[41] = 49;
+				widget.childY[41] = 198;
+				break;
+			
+			case 12435: // tele other falador
+				widget.childX[54] = 74;
+				widget.childY[54] = 198;
+				break;
+				
+			case 12445: //teleblock
+				widget.childX[55] = 99;
+				widget.childY[55] = 198;
+				break;
+				
+			case 6003: // lvl 6 enchant
+				widget.childX[57] = 123;
+				widget.childY[57] = 198;
+				break;
+				
+				// 150 x is end of the line
+				
+			case 12455: // tele other camelot
+				widget.childX[56] = 147;
+				widget.childY[56] = 198;
+				break;				
+			}			
 		}
 	}
 	
