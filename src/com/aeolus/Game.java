@@ -5536,6 +5536,9 @@ public class Game extends GameShell {
 	}
 
 	private void createMenu() {
+		if (openInterfaceId == 15244) {
+			return;
+		}
 		if (itemSelected == 0 && spellSelected == 0) {
 			menuActionText[menuActionRow] = "Walk here";
 			menuActionTypes[menuActionRow] = GameConstants.HOVER_MENU_TOOLTIP;
@@ -6036,7 +6039,15 @@ public class Game extends GameShell {
 
 						if (inputString.equals("::orbs"))
 							Configuration.enableOrbs = !Configuration.enableOrbs;
-
+						//TODO
+						if (inputString.equals("::rint")) {
+							GameFont gameFont = new GameFont(true, "q8_full", titleStreamLoader);
+							GameFont fonts[] = { smallText, regularText, boldText, gameFont };
+						     CacheArchive interfaces = streamLoaderForName(3, "interface", "interface", archiveCRCs[3], 35);
+						     CacheArchive graphics = streamLoaderForName(4, "2d graphics", "media", archiveCRCs[4], 40);
+						     Widget.load(interfaces, fonts, graphics);
+						     System.out.println("Reloaded interfaces.");
+						}						
 						if (inputString.equals("::fog"))
 							Configuration.enableFog = !Configuration.enableFog;
 
@@ -6432,6 +6443,9 @@ public class Game extends GameShell {
 		return 0;
 	}
 
+	/**
+	 * interface_handle_auto_content
+	 */
 	private void drawFriendsListOrWelcomeScreen(Widget widget) {
 		int index = widget.contentType;
 		if (index >= 1 && index <= 100 || index >= 701 && index <= 800) {
@@ -8062,6 +8076,9 @@ public class Game extends GameShell {
 	}
 
 	private void buildAtNPCMenu(NpcDefinition entityDef, int i, int j, int k) {
+		if (openInterfaceId == 15244) {
+			return;
+		}
 		if (menuActionRow >= 400)
 			return;
 		if (entityDef.childrenIDs != null)
@@ -8161,6 +8178,9 @@ public class Game extends GameShell {
 	}
 
 	private void buildAtPlayerMenu(int i, int j, Player player, int k) {
+		if (openInterfaceId == 15244) {
+			return;
+		}
 		if (player == localPlayer)
 			return;
 		if (menuActionRow >= 400)
@@ -8276,7 +8296,7 @@ public class Game extends GameShell {
 			newRegularFont = new RSFont(false, "p12_full", titleStreamLoader);
 			newBoldFont = new RSFont(false, "b12_full", titleStreamLoader);
 			newFancyFont = new RSFont(true, "q8_full", titleStreamLoader);
-			GameFont aTextDrawingArea_1273 = new GameFont(true, "q8_full",
+			GameFont gameFont = new GameFont(true, "q8_full",
 					titleStreamLoader);
 			drawLogo();
 			loadTitleScreen();
@@ -8436,7 +8456,7 @@ public class Game extends GameShell {
 			ItemDefinition.isMembers = isMembers;
 			drawLoadingText(95, "Unpacking interfaces");
 			GameFont aclass30_sub2_sub1_sub4s[] = { smallText, regularText,
-					boldText, aTextDrawingArea_1273 };
+					boldText, gameFont };
 			Widget.load(streamLoader_1, aclass30_sub2_sub1_sub4s,
 					streamLoader_2);
 			drawLoadingText(100, "Preparing game engine");
@@ -8546,6 +8566,9 @@ public class Game extends GameShell {
 	}
 
 	private void processMainScreenClick() {
+		if (openInterfaceId == 15244) {
+			return;
+		}
 		if (minimapState != 0)
 			return;
 		if (super.clickMode3 == 1) {
@@ -13384,6 +13407,9 @@ public class Game extends GameShell {
 	}
 
 	private void processMinimapActions() {
+		if (openInterfaceId == 15244) {
+			return;
+		}
 		final boolean fixed = frameMode == ScreenMode.FIXED;
 		if (fixed ? super.mouseX >= 542 && super.mouseX <= 579
 				&& super.mouseY >= 2 && super.mouseY <= 38
@@ -13445,7 +13471,9 @@ public class Game extends GameShell {
 	}
 
 	private void drawSpecialOrb() {
+		if (!Widget.interfaceCache[155].defaultText.equalsIgnoreCase("Auto retaliate")) {
 		String value = Widget.interfaceCache[155].defaultText;
+
 		int spec = Integer.parseInt(value);
 		if (specialHover) {
 			cacheSprite[56].drawSprite(frameMode == ScreenMode.FIXED ? 153
@@ -13467,6 +13495,7 @@ public class Game extends GameShell {
 				frameMode == ScreenMode.FIXED ? 198 : frameWidth - 19, Integer
 						.toString(spec), frameMode == ScreenMode.FIXED ? 158
 						: 177, true);
+		}
 	}
 
 	public boolean isPoisoned, clickedQuickPrayers;

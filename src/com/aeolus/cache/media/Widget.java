@@ -262,8 +262,24 @@ public final class Widget {
 		itemsOnDeathDATA(textDrawingAreas);
 		itemsKeptOnDeath(textDrawingAreas);
 		itemsOnDeath(textDrawingAreas);
+		//repositionModernSpells();
 		
 		spriteCache = null;
+		
+	}
+	
+	public static void repositionModernSpells() {
+
+		Widget widget = Widget.interfaceCache[12424];
+		for (int i = 0; i < widget.children.length; i++) {
+			switch (widget.children[i]) {
+			case 18470:
+				widget.childX[i] = 100;
+				widget.childY[i] = 100;
+				break;
+			}
+			
+		}
 	}
 	
 	public static void itemsKeptOnDeath(GameFont[] tda) {
