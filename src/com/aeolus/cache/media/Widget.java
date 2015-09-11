@@ -287,9 +287,14 @@ public final class Widget {
 			
 			switch(widget.children[index]) {
 			
+			case 1185:
+				widget.childX[33] = 148;
+				widget.childY[33] = 150;
+				break;
+			
 			case 1183: //wind wave
-				widget.childX[31] = 75;
-				widget.childY[31] = 150;
+				widget.childX[31] = 76;
+				widget.childY[31] = 149;
 				break;
 			
 			case 1188: // earth wave
