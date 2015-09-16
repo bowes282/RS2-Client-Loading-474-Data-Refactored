@@ -1270,10 +1270,10 @@ public class Game extends GameShell {
 		for (int l3 = k; l3 <= j1; l3++) {
 			for (int j5 = i2; j5 <= l2; j5++)
 				if (l3 == k || l3 == j1 || j5 == i2 || j5 == l2) {
-					int j7 = resourceProvider.method562(0, j5, l3);
+					int j7 = resourceProvider.resolve(0, j5, l3);
 					if (j7 != -1)
 						resourceProvider.loadExtra(j7, 3);
-					int k8 = resourceProvider.method562(1, j5, l3);
+					int k8 = resourceProvider.resolve(1, j5, l3);
 					if (k8 != -1)
 						resourceProvider.loadExtra(k8, 3);
 				}
@@ -12486,11 +12486,11 @@ public class Game extends GameShell {
 								k16++;
 							} else {
 								int k28 = anIntArray1235[k16] = resourceProvider
-										.method562(0, j26, l23);
+										.resolve(0, j26, l23);
 								if (k28 != -1)
 									resourceProvider.provide(3, k28);
 								int j30 = anIntArray1236[k16] = resourceProvider
-										.method562(1, j26, l23);
+										.resolve(1, j26, l23);
 								if (j30 != -1)
 									resourceProvider.provide(3, j30);
 								k16++;
@@ -12531,11 +12531,11 @@ public class Game extends GameShell {
 						int l30 = i29 >> 8 & 0xff;
 						int l31 = i29 & 0xff;
 						int j32 = anIntArray1235[l26] = resourceProvider
-								.method562(0, l31, l30);
+								.resolve(0, l31, l30);
 						if (j32 != -1)
 							resourceProvider.provide(3, j32);
 						int i33 = anIntArray1236[l26] = resourceProvider
-								.method562(1, l31, l30);
+								.resolve(1, l31, l30);
 						if (i33 != -1)
 							resourceProvider.provide(3, i33);
 					}

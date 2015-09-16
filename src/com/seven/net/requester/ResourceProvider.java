@@ -194,8 +194,8 @@ public final class ResourceProvider extends Provider implements Runnable {
 		}
 	}
 
-	public int getVersionCount(int j) {
-		return versions[j].length;
+	public int getVersionCount(int index) {
+		return versions[index].length;
 	}
 
 	private void request(Resource resource) {
@@ -410,18 +410,14 @@ public final class ResourceProvider extends Provider implements Runnable {
 		return resource;
 	}
 
-	public int method562(int regionX, int regionY, int type) {
-		int i1 = (type << 8) + regionY;
-		int map2;
-		int map3;
-		for (int j1 = 0; j1 < areas.length; j1++) {
-			if (areas[j1] == i1) {
+	public int resolve(int regionX, int regionY, int type) {
+		int code = (type << 8) + regionY;
+		for (int area = 0; area < areas.length; area++) {			
+			if (areas[area] == code) {
 				if (regionX == 0) {
-					map2 = mapFiles[j1] > 3535 ? -1 : mapFiles[j1];
-					return map2;
+					return mapFiles[area] > 3535 ? -1 : mapFiles[area];
 				} else {
-					map3 = landscapes[j1] > 3535 ? -1 : landscapes[j1];
-					return map3;
+					return landscapes[area] > 3535 ? -1 : landscapes[area];
 				}
 			}
 		}
