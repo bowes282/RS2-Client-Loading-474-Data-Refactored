@@ -7,7 +7,7 @@ public final class IdentityKit {
 
 	public static void unpackConfig(CacheArchive streamLoader)
 	{
-		Buffer stream = new Buffer(streamLoader.getDataForName("idk.dat"));
+		Buffer stream = new Buffer(streamLoader.getEntry("idk.dat"));
 		length = stream.readUShort();
 		if(cache == null)
 			cache = new IdentityKit[length];

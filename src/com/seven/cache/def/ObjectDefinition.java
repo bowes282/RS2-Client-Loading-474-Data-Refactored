@@ -191,8 +191,8 @@ public final class ObjectDefinition {
 	}
 
 	public static void unpackConfig(CacheArchive streamLoader) {
-		stream = new Buffer(streamLoader.getDataForName("loc.dat"));
-		Buffer stream = new Buffer(streamLoader.getDataForName("loc.idx"));
+		stream = new Buffer(streamLoader.getEntry("loc.dat"));
+		Buffer stream = new Buffer(streamLoader.getEntry("loc.idx"));
 		int totalObjects = stream.readUShort();
 		streamIndices = new int[totalObjects];
 		int offset = 2;

@@ -1,8 +1,8 @@
 package com.seven.cache.bzip;
 
-public final class BZip2 {
+public final class BZip2Decompressor {
 
-	public static int method225(byte abyte0[], int i, byte abyte1[], int j, int k) {
+	public static int decompress(byte abyte0[], int i, byte abyte1[], int j, int k) {
 		synchronized (aClass32_305) {
 			aClass32_305.aByteArray563 = abyte1;
 			aClass32_305.anInt564 = k;

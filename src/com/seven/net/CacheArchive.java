@@ -1,110 +1,126 @@
 package com.seven.net;
+
 import java.io.InputStream;
 
-import com.seven.cache.bzip.BZip2;
+import com.seven.cache.bzip.BZip2Decompressor;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.File;
 
 public final class CacheArchive {
+	
+	/**
+	 * The buffer containing the decompressed data in this Archive.
+	 */
+	private final byte[] buffer;
+	/**
+	 * The amount of entries in this Archive.
+	 */
+	private final int entries;
+	/**
+	 * The identifiers (i.e. hashed names) of each of the entries in this Archive.
+	 */
+	private final int[] identifiers;
+	/**
+	 * The raw (i.e. decompressed) sizes of each of the entries in this Archive.
+	 */
+	private final int[] extractedSizes;
+	/**
+	 * The compressed sizes of each of the entries in this Archive.
+	 */
+	private final int[] sizes;
+	private final int[] indices;
+	/**
+	 * Whether or not this Archive was compressed as a whole: if false, decompression will be performed on each of the
+	 * individual entries.
+	 */
+	private final boolean extracted;
 
-	public CacheArchive(byte abyte0[])
-	{
-		Buffer stream = new Buffer(abyte0);
-		int i = stream.read3Bytes();
-		int j = stream.read3Bytes();
-		if(j != i)
-		{
-			byte abyte1[] = new byte[i];
-			BZip2.method225(abyte1, i, abyte0, j, 6);
-			aByteArray726 = abyte1;
-			stream = new Buffer(aByteArray726);
-			aBoolean732 = true;
-		} else
-		{
-			aByteArray726 = abyte0;
-			aBoolean732 = false;
+	public CacheArchive(byte data[]) {
+		Buffer buffer = new Buffer(data);
+		int length = buffer.readTriByte();
+		int decompressedLength = buffer.readTriByte();
+		if (decompressedLength != length) {
+			byte output[] = new byte[length];
+			BZip2Decompressor.decompress(output, length, data, decompressedLength, 6);
+			this.buffer = output;
+			buffer = new Buffer(this.buffer);
+			extracted = true;
+		} else {
+			this.buffer = data;
+			extracted = false;
 		}
-		dataSize = stream.readUShort();
-		anIntArray728 = new int[dataSize];
-		anIntArray729 = new int[dataSize];
-		anIntArray730 = new int[dataSize];
-		anIntArray731 = new int[dataSize];
-		int k = stream.currentPosition + dataSize * 10;
-		for(int l = 0; l < dataSize; l++)
-		{
-			anIntArray728[l] = stream.readInt();
-			anIntArray729[l] = stream.read3Bytes();
-			anIntArray730[l] = stream.read3Bytes();
-			anIntArray731[l] = k;
-			k += anIntArray730[l];
+		entries = buffer.readUShort();
+		identifiers = new int[entries];
+		extractedSizes = new int[entries];
+		sizes = new int[entries];
+		indices = new int[entries];
+		int offset = buffer.currentPosition + entries * 10;
+		for (int file = 0; file < entries; file++) {
+			identifiers[file] = buffer.readInt();
+			extractedSizes[file] = buffer.readTriByte();
+			sizes[file] = buffer.readTriByte();
+			indices[file] = offset;
+			offset += sizes[file];
 		}
 	}
 
-	public byte[] getDataForName(String s)
-	{
-		byte abyte0[] = null; //was a parameter
-		int i = 0;
-		s = s.toUpperCase();
-		for(int j = 0; j < s.length(); j++)
-			i = (i * 61 + s.charAt(j)) - 32;
+	public byte[] getEntry(String name) {
+		byte output[] = null;
+		int hash = 0;
+		name = name.toUpperCase();
+		for (int index = 0; index < name.length(); index++) {
+			hash = (hash * 61 + name.charAt(index)) - 32;
+		}
 
-		for(int k = 0; k < dataSize; k++)
-			if(anIntArray728[k] == i)
-			{
-				if(abyte0 == null)
-					abyte0 = new byte[anIntArray729[k]];
-				if(!aBoolean732)
-				{
-					BZip2.method225(abyte0, anIntArray729[k], aByteArray726, anIntArray730[k], anIntArray731[k]);
-				} else
-				{
-					System.arraycopy(aByteArray726, anIntArray731[k], abyte0, 0, anIntArray729[k]);
+		for (int file = 0; file < entries; file++) {
+			if (identifiers[file] == hash) {
+				if (output == null)
+					output = new byte[extractedSizes[file]];
+				if (!extracted) {
+					BZip2Decompressor.decompress(output, extractedSizes[file], this.buffer,
+							sizes[file], indices[file]);
+				} else {
+					System.arraycopy(this.buffer, indices[file], output,
+							0, extractedSizes[file]);
 				}
-				return abyte0;
+				return output;
 			}
-
+		}
 		return null;
 	}
-	
+
 	@SuppressWarnings("resource")
 	public byte[] getBytesFromFile(File file) throws IOException {
-        InputStream is = new FileInputStream(file);
-    
-        // Get the size of the file
-        long length = file.length();
-    
-        if (length > Integer.MAX_VALUE) {
-            // File is too large
-        }
-    
-        // Create the byte array to hold the data
-        byte[] bytes = new byte[(int)length];
-    
-        // Read in the bytes
-        int offset = 0;
-        int numRead = 0;
-        while (offset < bytes.length
-               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-            offset += numRead;
-        }
-    
-        // Ensure all the bytes have been read in
-        if (offset < bytes.length) {
-            throw new IOException("Could not completely read file "+file.getName());
-        }
-    
-        // Close the input stream and return bytes
-        is.close();
-        return bytes;
-    }
-	
-	private final byte[] aByteArray726;
-	private final int dataSize;
-	private final int[] anIntArray728;
-	private final int[] anIntArray729;
-	private final int[] anIntArray730;
-	private final int[] anIntArray731;
-	private final boolean aBoolean732;
+		InputStream is = new FileInputStream(file);
+
+		// Get the size of the file
+		long length = file.length();
+
+		if (length > Integer.MAX_VALUE) {
+			// File is too large
+		}
+
+		// Create the byte array to hold the data
+		byte[] bytes = new byte[(int) length];
+
+		// Read in the bytes
+		int offset = 0;
+		int numRead = 0;
+		while (offset < bytes.length
+				&& (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+			offset += numRead;
+		}
+
+		// Ensure all the bytes have been read in
+		if (offset < bytes.length) {
+			throw new IOException("Could not completely read file "
+					+ file.getName());
+		}
+
+		// Close the input stream and return bytes
+		is.close();
+		return bytes;
+	}
 }

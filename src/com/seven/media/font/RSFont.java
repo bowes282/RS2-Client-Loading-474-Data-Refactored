@@ -63,8 +63,8 @@ public class RSFont extends Raster {
         characterDrawXOffsets = new int[256];
         characterDrawYOffsets = new int[256];
         characterScreenWidths = new int[256];
-        Buffer stream = new Buffer(archive.getDataForName(s + ".dat"));
-        Buffer stream_1 = new Buffer(archive.getDataForName("index.dat"));
+        Buffer stream = new Buffer(archive.getEntry(s + ".dat"));
+        Buffer stream_1 = new Buffer(archive.getEntry("index.dat"));
         stream_1.currentPosition = stream.readUShort() + 4;
         int k = stream_1.readUnsignedByte();
         if (k > 0) {

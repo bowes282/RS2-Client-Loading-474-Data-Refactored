@@ -194,15 +194,15 @@ public final class Sprite extends Raster {
 	}
 
 	public Sprite(CacheArchive streamLoader, String s, int i) {
-		Buffer stream = new Buffer(streamLoader.getDataForName(s + ".dat"));
-		Buffer stream_1 = new Buffer(streamLoader.getDataForName("index.dat"));
+		Buffer stream = new Buffer(streamLoader.getEntry(s + ".dat"));
+		Buffer stream_1 = new Buffer(streamLoader.getEntry("index.dat"));
 		stream_1.currentPosition = stream.readUShort();
 		maxWidth = stream_1.readUShort();
 		maxHeight = stream_1.readUShort();
 		int j = stream_1.readUnsignedByte();
 		int ai[] = new int[j];
 		for (int k = 0; k < j - 1; k++) {
-			ai[k + 1] = stream_1.read3Bytes();
+			ai[k + 1] = stream_1.readTriByte();
 			if (ai[k + 1] == 0)
 				ai[k + 1] = 1;
 		}

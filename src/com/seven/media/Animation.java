@@ -35,7 +35,7 @@ public final class Animation {
     }
 
     public static void unpackConfig(CacheArchive streamLoader)  {
-		Buffer stream = new Buffer(streamLoader.getDataForName("seq.dat"));
+		Buffer stream = new Buffer(streamLoader.getEntry("seq.dat"));
         int length = stream.readUShort();
         if(animations == null) {
             animations = new Animation[length + 5000];

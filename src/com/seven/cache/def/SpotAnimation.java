@@ -12,7 +12,7 @@ import com.seven.net.CacheArchive;
 public final class SpotAnimation {
 
 	public static void unpackConfig(CacheArchive streamLoader) {
-		Buffer stream = new Buffer(streamLoader.getDataForName("spotanim.dat"));
+		Buffer stream = new Buffer(streamLoader.getEntry("spotanim.dat"));
 		int length = stream.readUShort();
 		if (cache == null)
 			cache = new SpotAnimation[length];

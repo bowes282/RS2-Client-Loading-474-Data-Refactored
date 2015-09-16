@@ -1,14 +1,8 @@
 package com.seven.cache.bzip;
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 
+final class BZip2Context {
 
-final class BZip2Context
-{
-
-	BZip2Context()
-	{
+	BZip2Context() {
 		anIntArray583 = new int[256];
 		anIntArray585 = new int[257];
 		aBooleanArray589 = new boolean[256];
@@ -25,7 +19,7 @@ final class BZip2Context
 		anIntArray600 = new int[6];
 	}
 
-  byte aByteArray563[];
+	byte aByteArray563[];
 	int anInt564;
 	int anInt565;
 	int anInt566;

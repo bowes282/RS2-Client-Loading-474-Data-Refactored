@@ -41,8 +41,8 @@ public final class ItemDefinition {
 	}
 
 	public static void unpackConfig(CacheArchive archive) {
-		item_data = new Buffer(archive.getDataForName("obj.dat"));
-		Buffer stream = new Buffer(archive.getDataForName("obj.idx"));
+		item_data = new Buffer(archive.getEntry("obj.dat"));
+		Buffer stream = new Buffer(archive.getEntry("obj.idx"));
 		item_count = stream.readUShort() + 21;
 		streamIndices = new int[item_count + 50000];
 		int offset = 2;

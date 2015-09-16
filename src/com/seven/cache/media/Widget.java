@@ -44,7 +44,7 @@ public final class Widget {
 
 	public static void load(CacheArchive interfaces, GameFont textDrawingAreas[], CacheArchive graphics) {
 		spriteCache = new ReferenceCache(50000);
-		Buffer buffer = new Buffer(interfaces.getDataForName("data"));
+		Buffer buffer = new Buffer(interfaces.getEntry("data"));
 		int defaultParentId = -1;
 		buffer.readUShort();
 		interfaceCache = new Widget[31000];

@@ -6,7 +6,7 @@ public final class VariableBits {
 
 	public static void unpackConfig(CacheArchive streamLoader)
 	{
-		Buffer stream = new Buffer(streamLoader.getDataForName("varbit.dat"));
+		Buffer stream = new Buffer(streamLoader.getEntry("varbit.dat"));
 		int size = stream.readUShort();
 		if(cache == null)
 			cache = new VariableBits[size];

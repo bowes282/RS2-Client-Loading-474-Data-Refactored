@@ -159,7 +159,7 @@ public final class Buffer extends Cacheable {
 		return value;
 	}
 
-	public int read3Bytes() {
+	public int readTriByte() {
 		currentPosition += 3;
 		return ((payload[currentPosition - 3] & 0xff) << 16)
 				+ ((payload[currentPosition - 2] & 0xff) << 8)

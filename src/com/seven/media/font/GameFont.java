@@ -17,8 +17,8 @@ public final class GameFont extends Raster {
 	anIntArray1496 = new int[256];
 	aRandom1498 = new Random();
 	aBoolean1499 = false;
-	Buffer stream = new Buffer(streamLoader.getDataForName(s + ".dat"));
-	Buffer stream_1 = new Buffer(streamLoader.getDataForName("index.dat"));
+	Buffer stream = new Buffer(streamLoader.getEntry(s + ".dat"));
+	Buffer stream_1 = new Buffer(streamLoader.getEntry("index.dat"));
 	stream_1.currentPosition = stream.readUShort() + 4;
 	int k = stream_1.readUnsignedByte();
 	if(k > 0)

@@ -16,10 +16,10 @@ public final class MessageCensor {
 
 	public static void load(CacheArchive archive) {
 		Buffer fragments = new Buffer(
-				archive.getDataForName("fragmentsenc.txt"));
-		Buffer bad = new Buffer(archive.getDataForName("badenc.txt"));
-		Buffer domain = new Buffer(archive.getDataForName("domainenc.txt"));
-		Buffer tldlist = new Buffer(archive.getDataForName("tldlist.txt"));
+				archive.getEntry("fragmentsenc.txt"));
+		Buffer bad = new Buffer(archive.getEntry("badenc.txt"));
+		Buffer domain = new Buffer(archive.getEntry("domainenc.txt"));
+		Buffer tldlist = new Buffer(archive.getEntry("tldlist.txt"));
 		readValues(fragments, bad, domain, tldlist);
 	}
 

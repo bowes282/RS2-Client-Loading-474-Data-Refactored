@@ -150,7 +150,7 @@ public final class ResourceProvider extends Provider implements Runnable {
 	public int mapAmount = 0;
 
 	public void initialize(CacheArchive archive, Game client) {
-		byte[] mapData = archive.getDataForName("map_index");
+		byte[] mapData = archive.getEntry("map_index");
 		Buffer stream2 = new Buffer(mapData);
 		int j1 = mapData.length / 6;
 		areas = new int[j1];
@@ -163,7 +163,7 @@ public final class ResourceProvider extends Provider implements Runnable {
 			mapAmount++;
 		}
 		System.out.println("Map Amount: " + mapAmount + "");
-		mapData = archive.getDataForName("midi_index");
+		mapData = archive.getEntry("midi_index");
 		stream2 = new Buffer(mapData);
 		j1 = mapData.length;
 		musicPriorities = new int[j1];
@@ -506,15 +506,15 @@ public final class ResourceProvider extends Provider implements Runnable {
 		while (uncompletedCount == 0 && completedCount < 10) {
 			if (maximumPriority == 0)
 				break;
-			Resource onDemandData;
+			Resource resource;
 			synchronized (extras) {
-				onDemandData = (Resource) extras.popHead();
+				resource = (Resource) extras.popHead();
 			}
-			while (onDemandData != null) {
-				if (fileStatus[onDemandData.dataType][onDemandData.ID] != 0) {
-					fileStatus[onDemandData.dataType][onDemandData.ID] = 0;
-					requested.insertHead(onDemandData);
-					request(onDemandData);
+			while (resource != null) {
+				if (fileStatus[resource.dataType][resource.ID] != 0) {
+					fileStatus[resource.dataType][resource.ID] = 0;
+					requested.insertHead(resource);
+					request(resource);
 					expectingData = true;
 					if (filesLoaded < totalFiles)
 						filesLoaded++;
@@ -524,21 +524,21 @@ public final class ResourceProvider extends Provider implements Runnable {
 						return;
 				}
 				synchronized (extras) {
-					onDemandData = (Resource) extras.popHead();
+					resource = (Resource) extras.popHead();
 				}
 			}
-			for (int j = 0; j < 4; j++) {
-				byte abyte0[] = fileStatus[j];
-				int k = abyte0.length;
-				for (int l = 0; l < k; l++)
-					if (abyte0[l] == maximumPriority) {
-						abyte0[l] = 0;
-						Resource onDemandData_1 = new Resource();
-						onDemandData_1.dataType = j;
-						onDemandData_1.ID = l;
-						onDemandData_1.incomplete = false;
-						requested.insertHead(onDemandData_1);
-						request(onDemandData_1);
+			for (int type = 0; type < 4; type++) {
+				byte data[] = fileStatus[type];
+				int size = data.length;
+				for (int file = 0; file < size; file++)
+					if (data[file] == maximumPriority) {
+						data[file] = 0;
+						Resource newResource = new Resource();
+						newResource.dataType = type;
+						newResource.ID = file;
+						newResource.incomplete = false;
+						requested.insertHead(newResource);
+						request(newResource);
 						expectingData = true;
 						if (filesLoaded < totalFiles)
 							filesLoaded++;
@@ -547,7 +547,6 @@ public final class ResourceProvider extends Provider implements Runnable {
 						if (completedCount == 10)
 							return;
 					}
-
 			}
 			maximumPriority--;
 		}

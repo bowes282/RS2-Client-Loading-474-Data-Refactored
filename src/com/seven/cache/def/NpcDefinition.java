@@ -119,8 +119,8 @@ public final class NpcDefinition {
 	}
 
 	public static void unpackConfig(CacheArchive streamLoader) {
-		stream = new Buffer(streamLoader.getDataForName("npc.dat"));
-		Buffer stream2 = new Buffer(streamLoader.getDataForName("npc.idx"));
+		stream = new Buffer(streamLoader.getEntry("npc.dat"));
+		Buffer stream2 = new Buffer(streamLoader.getEntry("npc.idx"));
 		int totalNPCs = stream2.readUShort();
 		streamIndices = new int[totalNPCs];
 		int offset = 2;

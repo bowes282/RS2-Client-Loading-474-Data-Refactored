@@ -16,7 +16,7 @@ public final class VariableParameter {
 	}
 
 	public static void unpackConfig(CacheArchive archive) {
-		Buffer stream = new Buffer(archive.getDataForName("varp.dat"));
+		Buffer stream = new Buffer(archive.getEntry("varp.dat"));
 		anInt702 = 0;
 		int cacheSize = stream.readUShort();
 		if (parameters == null)

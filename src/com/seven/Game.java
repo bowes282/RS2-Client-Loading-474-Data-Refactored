@@ -3641,7 +3641,7 @@ public class Game extends GameShell {
 	}
 
 	private void drawLogo() {
-		byte sprites[] = titleStreamLoader.getDataForName("title.dat");
+		byte sprites[] = titleStreamLoader.getEntry("title.dat");
 		Sprite sprite = new Sprite(sprites, this);
 		flameLeftBackground.initDrawingArea();
 		sprite.method346(0, 0);
@@ -4375,7 +4375,7 @@ public class Game extends GameShell {
 				datainputstream.readFully(abyte1, 0, 6);
 				Buffer stream = new Buffer(abyte1);
 				stream.currentPosition = 3;
-				int i2 = stream.read3Bytes() + 6;
+				int i2 = stream.readTriByte() + 6;
 				int j2 = 6;
 				abyte0 = new byte[i2];
 				System.arraycopy(abyte1, 0, abyte0, 0, 6);
@@ -8323,7 +8323,7 @@ public class Game extends GameShell {
 			drawLoadingText(80, "Unpacking media");
 			CacheArchive streamLoader_5 = streamLoaderForName(8,
 					"sound effects", "sounds", archiveCRCs[8], 55);
-			byte abyte0[] = streamLoader_5.getDataForName("sounds.dat");
+			byte abyte0[] = streamLoader_5.getEntry("sounds.dat");
 
 			Buffer stream = new Buffer(abyte0);
 			SoundTrack.unpack(stream);

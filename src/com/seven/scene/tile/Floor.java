@@ -6,7 +6,7 @@ public final class Floor {
 
 	public static void unpackConfig(CacheArchive streamLoader)
 	{
-		Buffer stream = new Buffer(streamLoader.getDataForName("flo.dat"));
+		Buffer stream = new Buffer(streamLoader.getEntry("flo.dat"));
 		int cacheSize = stream.readUShort();
 		if(cache == null)
 			cache = new Floor[cacheSize];
@@ -29,7 +29,7 @@ public final class Floor {
 			else
 			if(i == 1)
 			{
-				anInt390 = stream.read3Bytes();
+				anInt390 = stream.readTriByte();
 				method262(anInt390);
 			} else
 			if(i == 2)
@@ -49,7 +49,7 @@ public final class Floor {
 				int k = anInt395;
 				int l = anInt396;
 				int i1 = anInt397;
-				int j1 = stream.read3Bytes();
+				int j1 = stream.readTriByte();
 				method262(j1);
 				anInt394 = j;
 				anInt395 = k;
