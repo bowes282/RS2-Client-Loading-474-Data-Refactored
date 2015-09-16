@@ -9,9 +9,9 @@ import java.net.Socket;
 
 import com.seven.GameShell;
 
-public final class RSSocket implements Runnable {
+public final class BufferedConnection implements Runnable {
 
-	public RSSocket(GameShell RSApplet_, Socket socket1) throws IOException {
+	public BufferedConnection(GameShell RSApplet_, Socket socket1) throws IOException {
 		closed = false;
 		isWriter = false;
 		hasIOError = false;

@@ -43,7 +43,7 @@ import com.seven.media.renderable.entity.Player;
 import com.seven.net.Buffer;
 import com.seven.net.CacheArchive;
 import com.seven.net.NetworkConstants;
-import com.seven.net.RSSocket;
+import com.seven.net.BufferedConnection;
 import com.seven.net.requester.Resource;
 import com.seven.net.requester.ResourceProvider;
 import com.seven.net.security.ISAACCipher;
@@ -4471,7 +4471,7 @@ public class Game extends GameShell {
 				: 0, super.graphics, frameMode == ScreenMode.FIXED ? 4 : 0);
 		minimapState = 0;
 		destinationX = 0;
-		RSSocket rsSocket = socketStream;
+		BufferedConnection rsSocket = socketStream;
 		loggedIn = false;
 		loginFailures = 0;
 		login(myUsername, myPassword, true);
@@ -7476,7 +7476,7 @@ public class Game extends GameShell {
 				secondLoginMessage = "Connecting to server...";
 				drawLoginScreen(true);
 			}
-			socketStream = new RSSocket(this,
+			socketStream = new BufferedConnection(this,
 					openSocket(Configuration.server_port + portOffset));
 			long encoded = TextClass.longForName(name);
 			int nameHash = (int) (encoded >> 16 & 31L);
@@ -14195,7 +14195,7 @@ public class Game extends GameShell {
 	private static ImageProducer gameScreenImageProducer;
 	private static ImageProducer chatboxImageProducer;
 	private int daysSinceRecovChange;
-	private RSSocket socketStream;
+	private BufferedConnection socketStream;
 	private int anInt1169;
 	private int minimapZoom;
 	public int anInt1171;
