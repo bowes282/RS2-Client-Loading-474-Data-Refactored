@@ -921,7 +921,7 @@ public class Game extends GameShell {
 	public void initialize() {
 		try {
 			nodeID = 10;
-			portOff = 0;
+			portOffset = 0;
 			setHighMem();
 			isMembers = true;
 			Signlink.storeid = 32;
@@ -1256,7 +1256,7 @@ public class Game extends GameShell {
 		}
 		System.gc();
 		Rasterizer.method367();
-		resourceProvider.method566();
+		resourceProvider.clearExtras();
 		int k = (anInt1069 - 6) / 8 - 1;
 		int j1 = (anInt1069 + 6) / 8 + 1;
 		int i2 = (anInt1070 - 6) / 8 - 1;
@@ -3511,7 +3511,7 @@ public class Game extends GameShell {
 	public static void main(String args[]) {
 		try {
 			nodeID = 10;
-			portOff = 0;
+			portOffset = 0;
 			setHighMem();
 			isMembers = true;
 			Signlink.storeid = 32;
@@ -7477,7 +7477,7 @@ public class Game extends GameShell {
 				drawLoginScreen(true);
 			}
 			socketStream = new RSSocket(this,
-					openSocket(Configuration.server_port + portOff));
+					openSocket(Configuration.server_port + portOffset));
 			long encoded = TextClass.longForName(name);
 			int nameHash = (int) (encoded >> 16 & 31L);
 			outgoing.currentPosition = 0;
@@ -8697,7 +8697,7 @@ public class Game extends GameShell {
 
 	public URL getCodeBase() {
 		try {
-			return new URL(server + ":" + (80 + portOff));
+			return new URL(server + ":" + (80 + portOffset));
 		} catch (Exception _ex) {
 		}
 		return null;
@@ -14003,7 +14003,7 @@ public class Game extends GameShell {
 	private String[] clanList = new String[100];
 	private int currentSong;
 	private static int nodeID = 10;
-	public static int portOff;
+	public static int portOffset;
 	private static boolean isMembers = true;
 	private static boolean lowMem;
 	private volatile boolean drawingFlames;
