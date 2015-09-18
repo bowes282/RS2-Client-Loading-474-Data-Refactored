@@ -8,12 +8,12 @@ import com.seven.media.renderable.Renderable;
 import com.seven.media.renderable.StaticObject;
 import com.seven.scene.CullingCluster;
 import com.seven.scene.graphic.Rasterizer;
-import com.seven.scene.tile.GroundDecoration;
-import com.seven.scene.tile.Tile;
-import com.seven.scene.tile.ShapedTile;
-import com.seven.scene.tile.SimpleTile;
-import com.seven.scene.tile.WallDecoration;
-import com.seven.scene.tile.WallLock;
+import com.seven.scene.map.object.GroundDecoration;
+import com.seven.scene.map.object.Wall;
+import com.seven.scene.map.object.WallDecoration;
+import com.seven.scene.map.object.tile.ShapedTile;
+import com.seven.scene.map.object.tile.SimpleTile;
+import com.seven.scene.map.object.tile.Tile;
 
 public final class SceneGraph {
 
@@ -196,7 +196,7 @@ public final class SceneGraph {
 			Renderable class30_sub2_sub4_1, int i1, int j1, int k1) {
 		if (class30_sub2_sub4 == null && class30_sub2_sub4_1 == null)
 			return;
-		WallLock object1 = new WallLock();
+		Wall object1 = new Wall();
 		object1.uid = j;
 		object1.aByte281 = byte0;
 		object1.anInt274 = l * 128 + 64;
@@ -426,7 +426,7 @@ public final class SceneGraph {
 		}
 	}
 
-	public WallLock method296(int i, int j, int k) {
+	public Wall method296(int i, int j, int k) {
 		Tile class30_sub3 = groundArray[i][j][k];
 		if (class30_sub3 == null)
 			return null;
@@ -526,7 +526,7 @@ public final class SceneGraph {
 				for (int j2 = 0; j2 < anInt439; j2++) {
 					Tile class30_sub3 = groundArray[l1][i2][j2];
 					if (class30_sub3 != null) {
-						WallLock class10 = class30_sub3.obj1;
+						Wall class10 = class30_sub3.obj1;
 						if (class10 != null && class10.aClass30_Sub2_Sub4_278 != null
 								&& class10.aClass30_Sub2_Sub4_278.aClass33Array1425 != null) {
 							method307(l1, 1, 1, i2, j2, (Model) class10.aClass30_Sub2_Sub4_278);
@@ -612,7 +612,7 @@ public final class SceneGraph {
 											- (anIntArrayArrayArray440[i][l][i1] + anIntArrayArrayArray440[i][l + 1][i1]
 													+ anIntArrayArrayArray440[i][l][i1 + 1]
 													+ anIntArrayArrayArray440[i][l + 1][i1 + 1]) / 4;
-									WallLock class10 = class30_sub3.obj1;
+									Wall class10 = class30_sub3.obj1;
 									if (class10 != null && class10.aClass30_Sub2_Sub4_278 != null
 											&& class10.aClass30_Sub2_Sub4_278.aClass33Array1425 != null)
 										mergeNormals(model, (Model) class10.aClass30_Sub2_Sub4_278,
@@ -1056,7 +1056,7 @@ public final class SceneGraph {
 						method316(i, anInt458, anInt460,
 								class30_sub3_7.aClass40_1312, anInt459, j,
 								anInt461);
-					WallLock class10 = class30_sub3_7.obj1;
+					Wall class10 = class30_sub3_7.obj1;
 					if (class10 != null)
 						class10.aClass30_Sub2_Sub4_278.method443(0, anInt458, anInt459, anInt460, anInt461,
 								class10.anInt274 - anInt455, class10.anInt273 - anInt456, class10.anInt275 - anInt457,
@@ -1083,7 +1083,7 @@ public final class SceneGraph {
 				}
 				int j1 = 0;
 				int j2 = 0;
-				WallLock class10_3 = class30_sub3_1.obj1;
+				Wall class10_3 = class30_sub3_1.obj1;
 				WallDecoration class26_1 = class30_sub3_1.obj2;
 				if (class10_3 != null || class26_1 != null) {
 					if (anInt453 == i)
@@ -1218,7 +1218,7 @@ public final class SceneGraph {
 				}
 
 				if (flag2) {
-					WallLock class10_1 = class30_sub3_1.obj1;
+					Wall class10_1 = class30_sub3_1.obj1;
 					if (!method321(l, i, j, class10_1.orientation))
 						class10_1.aClass30_Sub2_Sub4_278.method443(0, anInt458, anInt459, anInt460, anInt461,
 								class10_1.anInt274 - anInt455, class10_1.anInt273 - anInt456,
@@ -1393,7 +1393,7 @@ public final class SceneGraph {
 									anInt460, anInt461, j9, j3, j10, class26.uid);
 						}
 					}
-				WallLock class10_2 = class30_sub3_1.obj1;
+				Wall class10_2 = class30_sub3_1.obj1;
 				if (class10_2 != null) {
 					if ((class10_2.orientation1 & class30_sub3_1.anInt1328) != 0
 							&& !method321(l, i, j, class10_2.orientation1))

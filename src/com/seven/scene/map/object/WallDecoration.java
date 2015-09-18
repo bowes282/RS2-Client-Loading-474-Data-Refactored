@@ -1,4 +1,4 @@
-package com.seven.scene.tile;
+package com.seven.scene.map.object;
 import com.seven.media.renderable.Renderable;
 
 // Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.

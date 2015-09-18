@@ -4,6 +4,12 @@ public final class CollisionMap {
 	
 	private static final int BLOCKED_TILE = 0x200000;
 	private static final int OBJECT_TILE = 0x100;
+	
+	private final int xOffset;
+	private final int yOffset;
+	private final int width;
+	private final int height;
+	public final int[][] adjacencies;
 
 	public CollisionMap() {
 		xOffset = 0;
@@ -502,10 +508,4 @@ public final class CollisionMap {
 				&& (adjacencies[k - xOffset][k1 - yOffset] & 0x20) == 0
 				&& (i1 & 1) == 0;
 	}
-
-	private final int xOffset;
-	private final int yOffset;
-	private final int width;
-	private final int height;
-	public final int[][] adjacencies;
 }

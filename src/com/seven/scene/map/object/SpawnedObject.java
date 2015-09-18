@@ -1,9 +1,9 @@
-package com.seven.media.renderable;
+package com.seven.scene.map.object;
 import com.seven.collection.Linkable;
 
-public final class TemporaryObject extends Linkable {
+public final class SpawnedObject extends Linkable {
 
-	public TemporaryObject()
+	public SpawnedObject()
 	{
 		getLongetivity = -1;
 	}

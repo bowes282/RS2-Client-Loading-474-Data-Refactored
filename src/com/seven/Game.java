@@ -32,11 +32,9 @@ import com.seven.media.font.RSFont;
 import com.seven.media.font.TextClass;
 import com.seven.media.font.TextInput;
 import com.seven.media.renderable.Item;
-import com.seven.media.renderable.MapRegion;
 import com.seven.media.renderable.Model;
 import com.seven.media.renderable.Renderable;
 import com.seven.media.renderable.StaticObject;
-import com.seven.media.renderable.TemporaryObject;
 import com.seven.media.renderable.entity.Entity;
 import com.seven.media.renderable.entity.Npc;
 import com.seven.media.renderable.entity.Player;
@@ -54,11 +52,13 @@ import com.seven.scene.SceneSpotAnim;
 import com.seven.scene.graphic.Fog;
 import com.seven.scene.graphic.Rasterizer;
 import com.seven.scene.map.CollisionMap;
+import com.seven.scene.map.MapRegion;
 import com.seven.scene.map.SceneGraph;
-import com.seven.scene.tile.Floor;
-import com.seven.scene.tile.GroundDecoration;
-import com.seven.scene.tile.WallDecoration;
-import com.seven.scene.tile.WallLock;
+import com.seven.scene.map.object.GroundDecoration;
+import com.seven.scene.map.object.SpawnedObject;
+import com.seven.scene.map.object.Wall;
+import com.seven.scene.map.object.WallDecoration;
+import com.seven.scene.map.object.tile.Floor;
 import com.seven.sound.SoundConstants;
 import com.seven.sound.SoundPlayer;
 import com.seven.sound.SoundTrack;
@@ -1880,7 +1880,7 @@ public class Game extends GameShell {
 
 	private void updateNPCs(Buffer stream, int i) {
 		anInt839 = 0;
-		anInt893 = 0;
+		mobsAwaitingUpdateCount = 0;
 		method139(stream);
 		updateNPCMovement(i, stream);
 		npcUpdateMask(stream);
@@ -3100,7 +3100,7 @@ public class Game extends GameShell {
 					.readBits(Configuration.npcBits));
 			int k1 = stream.readBits(1);
 			if (k1 == 1)
-				anIntArray894[anInt893++] = k;
+				mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = k;
 			npc.boundDim = npc.desc.boundDim;
 			npc.degreesToTurn = npc.desc.degreesToTurn;
 			npc.walkAnimIndex = npc.desc.walkAnim;
@@ -3282,8 +3282,8 @@ public class Game extends GameShell {
 	}
 
 	private void refreshUpdateMasks(Buffer stream) {
-		for (int j = 0; j < anInt893; j++) {
-			int k = anIntArray894[j];
+		for (int j = 0; j < mobsAwaitingUpdateCount; j++) {
+			int k = mobsAwaitingUpdate[j];
 			Player player = players[k];
 			int l = stream.readUnsignedByte();
 			if ((l & 0x40) != 0)
@@ -4109,9 +4109,9 @@ public class Game extends GameShell {
 	}
 
 	private void method63() {
-		TemporaryObject class30_sub1 = (TemporaryObject) spawns
+		SpawnedObject class30_sub1 = (SpawnedObject) spawns
 				.reverseGetFirst();
-		for (; class30_sub1 != null; class30_sub1 = (TemporaryObject) spawns
+		for (; class30_sub1 != null; class30_sub1 = (SpawnedObject) spawns
 				.reverseGetNext())
 			if (class30_sub1.getLongetivity == -1) {
 				class30_sub1.anInt1302 = 0;
@@ -5799,7 +5799,7 @@ public class Game extends GameShell {
 		anIntArrayArray929 = null;
 		players = null;
 		playerIndices = null;
-		anIntArray894 = null;
+		mobsAwaitingUpdate = null;
 		playerSynchronizationBuffers = null;
 		anIntArray840 = null;
 		npcs = null;
@@ -7985,8 +7985,8 @@ public class Game extends GameShell {
 	}
 
 	private void npcUpdateMask(Buffer stream) {
-		for (int j = 0; j < anInt893; j++) {
-			int k = anIntArray894[j];
+		for (int j = 0; j < mobsAwaitingUpdateCount; j++) {
+			int k = mobsAwaitingUpdate[j];
 			Npc npc = npcs[k];
 			int l = stream.readUnsignedByte();
 			if ((l & 0x10) != 0) {
@@ -8244,7 +8244,7 @@ public class Game extends GameShell {
 		}
 	}
 
-	private void method89(TemporaryObject class30_sub1) {
+	private void method89(SpawnedObject class30_sub1) {
 		int i = 0;
 		int j = -1;
 		int k = 0;
@@ -8521,7 +8521,7 @@ public class Game extends GameShell {
 			player.anInt1537 = loopCycle;
 			int k = stream.readBits(1);
 			if (k == 1)
-				anIntArray894[anInt893++] = j;
+				mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = j;
 			int l = stream.readBits(1);
 			int i1 = stream.readBits(5);
 			if (i1 > 15)
@@ -10319,8 +10319,8 @@ public class Game extends GameShell {
 
 	private void method115() {
 		if (loadingStage == 2) {
-			for (TemporaryObject tempObject = (TemporaryObject) spawns
-					.reverseGetFirst(); tempObject != null; tempObject = (TemporaryObject) spawns
+			for (SpawnedObject tempObject = (SpawnedObject) spawns
+					.reverseGetFirst(); tempObject != null; tempObject = (SpawnedObject) spawns
 					.reverseGetNext()) {
 				if (tempObject.getLongetivity > 0)
 					tempObject.getLongetivity--;
@@ -10400,41 +10400,41 @@ public class Game extends GameShell {
 
 	private void updatePlayerMovement(Buffer stream) {
 		stream.initBitAccess();
-		int j = stream.readBits(1);
-		if (j == 0)
+		int update = stream.readBits(1);
+		if (update == 0)
 			return;
-		int k = stream.readBits(2);
-		if (k == 0) {
-			anIntArray894[anInt893++] = internalLocalPlayerIndex;
-			return;
-		}
-		if (k == 1) {
-			int l = stream.readBits(3);
-			localPlayer.moveInDir(false, l);
-			int k1 = stream.readBits(1);
-			if (k1 == 1)
-				anIntArray894[anInt893++] = internalLocalPlayerIndex;
+		int type = stream.readBits(2);
+		if (type == 0) {
+			mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = internalLocalPlayerIndex;
 			return;
 		}
-		if (k == 2) {
-			int i1 = stream.readBits(3);
-			localPlayer.moveInDir(true, i1);
-			int l1 = stream.readBits(3);
-			localPlayer.moveInDir(true, l1);
-			int j2 = stream.readBits(1);
-			if (j2 == 1)
-				anIntArray894[anInt893++] = internalLocalPlayerIndex;
+		if (type == 1) {
+			int direction = stream.readBits(3);
+			localPlayer.moveInDir(false, direction);
+			int updateRequired = stream.readBits(1);
+			if (updateRequired == 1)
+				mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = internalLocalPlayerIndex;
 			return;
 		}
-		if (k == 3) {
+		if (type == 2) {
+			int firstDirection = stream.readBits(3);
+			localPlayer.moveInDir(true, firstDirection);
+			int secondDirection = stream.readBits(3);
+			localPlayer.moveInDir(true, secondDirection);
+			int updateRequired = stream.readBits(1);
+			if (updateRequired == 1)
+				mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = internalLocalPlayerIndex;
+			return;
+		}
+		if (type == 3) {
 			plane = stream.readBits(2);
-			int j1 = stream.readBits(1);
-			int i2 = stream.readBits(1);
-			if (i2 == 1)
-				anIntArray894[anInt893++] = internalLocalPlayerIndex;
-			int k2 = stream.readBits(7);
-			int l2 = stream.readBits(7);
-			localPlayer.setPos(l2, k2, j1 == 1);
+			int teleport = stream.readBits(1);
+			int updateRequired = stream.readBits(1);
+			if (updateRequired == 1)
+				mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = internalLocalPlayerIndex;
+			int y = stream.readBits(7);
+			int x = stream.readBits(7);
+			localPlayer.setPos(x, y, teleport == 1);
 		}
 	}
 
@@ -11069,9 +11069,9 @@ public class Game extends GameShell {
 
 	private void method130(int j, int k, int l, int i1, int j1, int k1, int l1,
 			int i2, int j2) {
-		TemporaryObject class30_sub1 = null;
-		for (TemporaryObject class30_sub1_1 = (TemporaryObject) spawns
-				.reverseGetFirst(); class30_sub1_1 != null; class30_sub1_1 = (TemporaryObject) spawns
+		SpawnedObject class30_sub1 = null;
+		for (SpawnedObject class30_sub1_1 = (SpawnedObject) spawns
+				.reverseGetFirst(); class30_sub1_1 != null; class30_sub1_1 = (SpawnedObject) spawns
 				.reverseGetNext()) {
 			if (class30_sub1_1.anInt1295 != l1
 					|| class30_sub1_1.anInt1297 != i2
@@ -11083,7 +11083,7 @@ public class Game extends GameShell {
 		}
 
 		if (class30_sub1 == null) {
-			class30_sub1 = new TemporaryObject();
+			class30_sub1 = new SpawnedObject();
 			class30_sub1.anInt1295 = l1;
 			class30_sub1.anInt1296 = i1;
 			class30_sub1.anInt1297 = i2;
@@ -11254,7 +11254,7 @@ public class Game extends GameShell {
 				if (k1 == 0) {
 					playerIndices[playerCount++] = i1;
 					player.anInt1537 = loopCycle;
-					anIntArray894[anInt893++] = i1;
+					mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = i1;
 				} else if (k1 == 1) {
 					playerIndices[playerCount++] = i1;
 					player.anInt1537 = loopCycle;
@@ -11262,7 +11262,7 @@ public class Game extends GameShell {
 					player.moveInDir(false, l1);
 					int j2 = stream.readBits(1);
 					if (j2 == 1)
-						anIntArray894[anInt893++] = i1;
+						mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = i1;
 				} else if (k1 == 2) {
 					playerIndices[playerCount++] = i1;
 					player.anInt1537 = loopCycle;
@@ -11272,7 +11272,7 @@ public class Game extends GameShell {
 					player.moveInDir(true, k2);
 					int l2 = stream.readBits(1);
 					if (l2 == 1)
-						anIntArray894[anInt893++] = i1;
+						mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = i1;
 				} else if (k1 == 3)
 					anIntArray840[anInt839++] = i1;
 			}
@@ -11542,7 +11542,7 @@ public class Game extends GameShell {
 				int l19 = intGroundArray[plane][j4 + 1][i7 + 1];
 				int k20 = intGroundArray[plane][j4][i7 + 1];
 				if (j16 == 0) {
-					WallLock class10 = worldController.method296(plane, j4, i7);
+					Wall class10 = worldController.method296(plane, j4, i7);
 					if (class10 != null) {
 						int k21 = class10.uid >> 14 & 0x7fff;
 						if (j12 == 2) {
@@ -11763,7 +11763,7 @@ public class Game extends GameShell {
 				if (l1 == 0) {
 					npcIndices[npcCount++] = j1;
 					npc.anInt1537 = loopCycle;
-					anIntArray894[anInt893++] = j1;
+					mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = j1;
 				} else if (l1 == 1) {
 					npcIndices[npcCount++] = j1;
 					npc.anInt1537 = loopCycle;
@@ -11771,7 +11771,7 @@ public class Game extends GameShell {
 					npc.moveInDir(false, i2);
 					int k2 = stream.readBits(1);
 					if (k2 == 1)
-						anIntArray894[anInt893++] = j1;
+						mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = j1;
 				} else if (l1 == 2) {
 					npcIndices[npcCount++] = j1;
 					npc.anInt1537 = loopCycle;
@@ -11781,7 +11781,7 @@ public class Game extends GameShell {
 					npc.moveInDir(true, l2);
 					int i3 = stream.readBits(1);
 					if (i3 == 1)
-						anIntArray894[anInt893++] = j1;
+						mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = j1;
 				} else if (l1 == 3)
 					anIntArray840[anInt839++] = j1;
 			}
@@ -11967,7 +11967,7 @@ public class Game extends GameShell {
 
 	private void updatePlayers(int i, Buffer stream) {
 		anInt839 = 0;
-		anInt893 = 0;
+		mobsAwaitingUpdateCount = 0;
 		updatePlayerMovement(stream);
 		method134(stream);
 		updateOtherPlayerMovement(stream, i);
@@ -12261,8 +12261,8 @@ public class Game extends GameShell {
 							spawnGroundItem(j, l9);
 						}
 				}
-				for (TemporaryObject class30_sub1 = (TemporaryObject) spawns
-						.reverseGetFirst(); class30_sub1 != null; class30_sub1 = (TemporaryObject) spawns
+				for (SpawnedObject class30_sub1 = (SpawnedObject) spawns
+						.reverseGetFirst(); class30_sub1 != null; class30_sub1 = (SpawnedObject) spawns
 						.reverseGetNext())
 					if (class30_sub1.anInt1297 >= anInt1268
 							&& class30_sub1.anInt1297 < anInt1268 + 8
@@ -12594,8 +12594,8 @@ public class Game extends GameShell {
 								groundItems[k34][k33][l33] = null;
 					}
 				}
-				for (TemporaryObject class30_sub1_1 = (TemporaryObject) spawns
-						.reverseGetFirst(); class30_sub1_1 != null; class30_sub1_1 = (TemporaryObject) spawns
+				for (SpawnedObject class30_sub1_1 = (SpawnedObject) spawns
+						.reverseGetFirst(); class30_sub1_1 != null; class30_sub1_1 = (SpawnedObject) spawns
 						.reverseGetNext()) {
 					class30_sub1_1.anInt1297 -= i17;
 					class30_sub1_1.anInt1298 -= j21;
@@ -13768,7 +13768,7 @@ public class Game extends GameShell {
 		internalLocalPlayerIndex = 2047;
 		players = new Player[maxPlayers];
 		playerIndices = new int[maxPlayers];
-		anIntArray894 = new int[maxPlayers];
+		mobsAwaitingUpdate = new int[maxPlayers];
 		playerSynchronizationBuffers = new Buffer[maxPlayers];
 		anInt897 = 1;
 		anIntArrayArray901 = new int[104][104];
@@ -13957,8 +13957,8 @@ public class Game extends GameShell {
 	private Player[] players;
 	private int playerCount;
 	private int[] playerIndices;
-	private int anInt893;
-	private int[] anIntArray894;
+	private int mobsAwaitingUpdateCount;
+	private int[] mobsAwaitingUpdate;
 	private Buffer[] playerSynchronizationBuffers;
 	private int cameraRotation;
 	public int anInt897;

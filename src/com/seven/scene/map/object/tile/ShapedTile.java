@@ -1,4 +1,4 @@
-package com.seven.scene.tile;
+package com.seven.scene.map.object.tile;
 public final class ShapedTile
 {
 

@@ -1,4 +1,4 @@
-package com.seven.scene.tile;
+package com.seven.scene.map.object.tile;
 import com.seven.net.Buffer;
 import com.seven.net.CacheArchive;
 

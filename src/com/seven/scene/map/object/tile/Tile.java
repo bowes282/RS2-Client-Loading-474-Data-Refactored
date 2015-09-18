@@ -1,7 +1,10 @@
-package com.seven.scene.tile;
+package com.seven.scene.map.object.tile;
 import com.seven.collection.Linkable;
 import com.seven.media.renderable.ItemPile;
 import com.seven.media.renderable.StaticObject;
+import com.seven.scene.map.object.GroundDecoration;
+import com.seven.scene.map.object.Wall;
+import com.seven.scene.map.object.WallDecoration;
 
 // Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
 // Jad home page: http://www.kpdus.com/jad.html
@@ -25,7 +28,7 @@ public final class Tile extends Linkable {
 	public final int anInt1310;
 	public SimpleTile aClass43_1311;
 	public ShapedTile aClass40_1312;
-	public WallLock obj1;
+	public Wall obj1;
 	public WallDecoration obj2;
 	public GroundDecoration obj3;
 	public ItemPile obj4;

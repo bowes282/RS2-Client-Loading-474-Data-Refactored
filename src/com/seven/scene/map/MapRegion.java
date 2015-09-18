@@ -1,12 +1,12 @@
-package com.seven.media.renderable;
+package com.seven.scene.map;
 import com.seven.cache.def.ObjectDefinition;
+import com.seven.media.renderable.Model;
+import com.seven.media.renderable.Renderable;
 import com.seven.net.Buffer;
 import com.seven.net.requester.ResourceProvider;
 import com.seven.scene.SceneObject;
 import com.seven.scene.graphic.Rasterizer;
-import com.seven.scene.map.CollisionMap;
-import com.seven.scene.map.SceneGraph;
-import com.seven.scene.tile.Floor;
+import com.seven.scene.map.object.tile.Floor;
 import com.seven.util.ChunkUtil;
 
 public final class MapRegion {

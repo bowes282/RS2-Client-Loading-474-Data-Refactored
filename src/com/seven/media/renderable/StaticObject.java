@@ -2,9 +2,6 @@ package com.seven.media.renderable;
 
 public final class StaticObject {
 
-	public StaticObject() {
-	}
-
 	public int anInt517;
 	public int anInt518;
 	public int anInt519;

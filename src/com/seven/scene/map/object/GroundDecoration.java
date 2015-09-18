@@ -1,4 +1,4 @@
-package com.seven.scene.tile;
+package com.seven.scene.map.object;
 import com.seven.media.renderable.Renderable;
 
 public final class GroundDecoration

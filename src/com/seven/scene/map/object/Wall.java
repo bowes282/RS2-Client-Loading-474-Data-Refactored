@@ -1,13 +1,9 @@
-package com.seven.scene.tile;
+package com.seven.scene.map.object;
+
 import com.seven.media.renderable.Renderable;
 
-public final class WallLock
-{
-
-	public WallLock()
-	{
-	}
-
+public final class Wall {
+	
 	public int anInt273;
 	public int anInt274;
 	public int anInt275;
@@ -17,4 +13,5 @@ public final class WallLock
 	public Renderable aClass30_Sub2_Sub4_279;
 	public int uid;
 	public byte aByte281;
+	
 }
