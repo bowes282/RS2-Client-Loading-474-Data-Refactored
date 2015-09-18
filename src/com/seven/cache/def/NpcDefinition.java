@@ -158,7 +158,7 @@ public final class NpcDefinition {
 			else
 				return entityDef.method164(j, frame, ai, nextFrame, idk, idk2);
 		}
-		Model model = (Model) modelCache.insertFromCache(interfaceType);
+		Model model = (Model) modelCache.get(interfaceType);
 		if (model == null) {
 			boolean flag = false;
 			for (int i1 = 0; i1 < modelId.length; i1++)
@@ -184,7 +184,7 @@ public final class NpcDefinition {
 			model.scale(132, 132, 132);
 			model.light(84 + lightModifier, 1000 + shadowModifier, -90, -580,
 					-90, true);
-			modelCache.removeFromCache(model, interfaceType);
+			modelCache.put(model, interfaceType);
 		}
 		Model empty = Model.EMPTY_MODEL;
 		empty.method464(model,
@@ -216,7 +216,7 @@ public final class NpcDefinition {
 				return definition.getAnimatedModel(primaryFrame,
 						secondaryFrame, interleaveOrder);
 		}
-		Model model = (Model) modelCache.insertFromCache(interfaceType);
+		Model model = (Model) modelCache.get(interfaceType);
 		if (model == null) {
 			boolean flag = false;
 			for (int index = 0; index < modelId.length; index++)
@@ -242,7 +242,7 @@ public final class NpcDefinition {
 			model.skin();
 			model.light(64 + lightModifier, 850 + shadowModifier, -30, -50,
 					-30, true);
-			modelCache.removeFromCache(model, interfaceType);
+			modelCache.put(model, interfaceType);
 		}
 		Model model_1 = Model.EMPTY_MODEL;
 		model_1.method464(model, SequenceFrame.method532(secondaryFrame)

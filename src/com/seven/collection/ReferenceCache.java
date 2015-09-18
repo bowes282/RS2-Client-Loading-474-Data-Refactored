@@ -1,63 +1,95 @@
 package com.seven.collection;
 import com.seven.util.signlink.Signlink;
 
+/**
+ * A least-recently used cache of references, backed by a {@link HashTable} and a {@link Queue}.
+ */
 public final class ReferenceCache {
+	
+	/**
+	 * The empty cacheable.
+	 */
+	private final Cacheable empty;
+	/**
+	 * The capacity of this cache.
+	 */
+	private final int capacity;
+	/**
+	 * The amount of unused slots in this cache.
+	 */
+	private int spaceLeft;
+	/**
+	 * The HashTable backing this cache.
+	 */
+	private final HashTable table;
+	/**
+	 * The queue of references, used for LRU behaviour.
+	 */
+	private final Queue references;
 
+	/**
+	 * Creates the ReferenceCache.
+	 *
+	 * @param capacity The capacity of this cache.
+	 */
 	public ReferenceCache(int i) {
-		emptyNodeSub = new Cacheable();
-		nodeSubList = new Queue();
-		initialCount = i;
+		empty = new Cacheable();
+		references = new Queue();
+		capacity = i;
 		spaceLeft = i;
-		nodeCache = new HashTable();
+		table = new HashTable();
 	}
 
-	public Cacheable insertFromCache(long l) {
-		Cacheable nodeSub = (Cacheable) nodeCache.get(l);
-		if (nodeSub != null) {
-			nodeSubList.insertHead(nodeSub);
+	/**
+	 * Gets the {@link Cacheable} with the specified key.
+	 * 
+	 * @param key The key.
+	 * @return The Cacheable.
+	 */
+	public Cacheable get(long key) {
+		Cacheable cacheable = (Cacheable) table.get(key);
+		if (cacheable != null) {
+			references.insertHead(cacheable);
 		}
-		return nodeSub;
+		return cacheable;
 	}
 
-	public void removeFromCache(Cacheable nodeSub, long l) {
+	public void put(Cacheable node, long key) {
 		try {
 			if (spaceLeft == 0) {
-				Cacheable nodeSub_1 = nodeSubList.popTail();
-				nodeSub_1.unlink();
-				nodeSub_1.unlinkCacheable();
-				if (nodeSub_1 == emptyNodeSub) {
-					Cacheable nodeSub_2 = nodeSubList.popTail();
-					nodeSub_2.unlink();
-					nodeSub_2.unlinkCacheable();
+				Cacheable front = references.popTail();
+				front.unlink();
+				front.unlinkCacheable();
+				if (front == empty) {
+					front = references.popTail();
+					front.unlink();
+					front.unlinkCacheable();
 				}
 			} else {
 				spaceLeft--;
 			}
-			nodeCache.put(nodeSub, l);
-			nodeSubList.insertHead(nodeSub);
+			table.put(node, key);
+			references.insertHead(node);
 			return;
 		} catch (RuntimeException runtimeexception) {
-			Signlink.reporterror("47547, " + nodeSub + ", " + l + ", " + (byte) 2 + ", " + runtimeexception.toString());
+			Signlink.reporterror("47547, " + node + ", " + key + ", " + (byte) 2 + ", " + runtimeexception.toString());
 		}
 		throw new RuntimeException();
 	}
-
-	public void unlinkAll() {
+	
+	/**
+	 * Clears the contents of this ReferenceCache.
+	 */
+	public void clear() {
 		do {
-			Cacheable nodeSub = nodeSubList.popTail();
-			if (nodeSub != null) {
-				nodeSub.unlink();
-				nodeSub.unlinkCacheable();
+			Cacheable front = references.popTail();
+			if (front != null) {
+				front.unlink();
+				front.unlinkCacheable();
 			} else {
-				spaceLeft = initialCount;
+				spaceLeft = capacity;
 				return;
 			}
 		} while (true);
 	}
-
-	private final Cacheable emptyNodeSub;
-	private final int initialCount;
-	private int spaceLeft;
-	private final HashTable nodeCache;
-	private final Queue nodeSubList;
 }

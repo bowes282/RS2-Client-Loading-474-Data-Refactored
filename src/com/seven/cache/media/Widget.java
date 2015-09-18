@@ -1232,13 +1232,13 @@ public final class Widget {
 
 	private static Sprite CustomSpriteLoader(int id, String s) {
 		long l = (StringUtils.hashSpriteName(s) << 8) + (long) id;
-		Sprite sprite = (Sprite) spriteCache.insertFromCache(l);
+		Sprite sprite = (Sprite) spriteCache.get(l);
 		if (sprite != null) {
 			return sprite;
 		}
 		try {
 			sprite = new Sprite("/Attack/" + id + s);
-			spriteCache.removeFromCache(sprite, l);
+			spriteCache.put(sprite, l);
 		} catch (Exception exception) {
 			return null;
 		}
@@ -2186,12 +2186,12 @@ public final class Widget {
 
 	private static Sprite imageLoader(int i, String s) {
 		long l = (StringUtils.hashSpriteName(s) << 8) + (long) i;
-		Sprite sprite = (Sprite) spriteCache.insertFromCache(l);
+		Sprite sprite = (Sprite) spriteCache.get(l);
 		if (sprite != null)
 			return sprite;
 		try {
 			sprite = new Sprite(s + " " + i);
-			spriteCache.removeFromCache(sprite, l);
+			spriteCache.put(sprite, l);
 		} catch (Exception exception) {
 			return null;
 		}
@@ -2211,7 +2211,7 @@ public final class Widget {
 	}
 
 	private Model method206(int i, int j) {
-		Model model = (Model) models.insertFromCache((i << 16) + j);
+		Model model = (Model) models.get((i << 16) + j);
 		if (model != null)
 			return model;
 		if (i == 1)
@@ -2225,18 +2225,18 @@ public final class Widget {
 		if (i == 5)
 			model = null;
 		if (model != null)
-			models.removeFromCache(model, (i << 16) + j);
+			models.put(model, (i << 16) + j);
 		return model;
 	}
 
 	private static Sprite method207(int i, CacheArchive streamLoader, String s) {
 		long l = (StringUtils.hashSpriteName(s) << 8) + (long) i;
-		Sprite sprite = (Sprite) spriteCache.insertFromCache(l);
+		Sprite sprite = (Sprite) spriteCache.get(l);
 		if (sprite != null)
 			return sprite;
 		try {
 			sprite = new Sprite(streamLoader, s, i);
-			spriteCache.removeFromCache(sprite, l);
+			spriteCache.put(sprite, l);
 		} catch (Exception _ex) {
 			return null;
 		}
@@ -2248,9 +2248,9 @@ public final class Widget {
 		int j = 5;// was parameter
 		if (flag)
 			return;
-		models.unlinkAll();
+		models.clear();
 		if (model != null && j != 4)
-			models.removeFromCache(model, (j << 16) + i);
+			models.put(model, (j << 16) + i);
 	}
 
 	public Model method209(int j, int k, boolean flag) {

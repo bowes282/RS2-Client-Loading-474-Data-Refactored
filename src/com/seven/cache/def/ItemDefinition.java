@@ -232,7 +232,7 @@ public final class ItemDefinition {
 
 	public static Sprite getSprite(int itemId, int stackSize, int outlineColor) {
 		if (outlineColor == 0) {
-			Sprite sprite = (Sprite) image_cache.insertFromCache(itemId);
+			Sprite sprite = (Sprite) image_cache.get(itemId);
 			if (sprite != null && sprite.maxHeight != stackSize
 					&& sprite.maxHeight != -1) {
 
@@ -350,7 +350,7 @@ public final class ItemDefinition {
 			sprite.maxHeight = old_h;
 		}
 		if (outlineColor == 0)
-			image_cache.removeFromCache(enabledSprite, itemId);
+			image_cache.put(enabledSprite, itemId);
 		Raster.initDrawingArea(height, width, pixels, depthBuffer);
 		Raster.setDrawingArea(vp_bottom, vp_left, vp_right, vp_top);
 		Rasterizer.textureInt1 = centerX;
@@ -376,7 +376,7 @@ public final class ItemDefinition {
 			if (stack_item_id != -1)
 				return lookup(stack_item_id).getModel(1);
 		}
-		Model model = (Model) model_cache.insertFromCache(id);
+		Model model = (Model) model_cache.get(id);
 		if (model != null)
 			return model;
 		model = Model.getModel(inventory_model);
@@ -393,7 +393,7 @@ public final class ItemDefinition {
 		}
 		model.light(64 + light_intensity, 768 + light_mag, -50, -10, -50, true);
 		model.fits_on_single_square = true;
-		model_cache.removeFromCache(model, id);
+		model_cache.put(model, id);
 		return model;
 	}
 

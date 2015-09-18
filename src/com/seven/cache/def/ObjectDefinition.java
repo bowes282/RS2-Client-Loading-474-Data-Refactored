@@ -281,7 +281,7 @@ public final class ObjectDefinition {
 			if (j != 10)
 				return null;
 			l1 = (long) ((type << 6) + l) + ((long) (k + 1) << 32);
-			Model model_1 = (Model) mruNodes2.insertFromCache(l1);
+			Model model_1 = (Model) mruNodes2.get(l1);
 			if (model_1 != null)
 				return model_1;
 			if (modelIds == null)
@@ -292,14 +292,14 @@ public final class ObjectDefinition {
 				int l2 = modelIds[i2];
 				if (flag1)
 					l2 += 0x10000;
-				model = (Model) mruNodes1.insertFromCache(l2);
+				model = (Model) mruNodes1.get(l2);
 				if (model == null) {
 					model = Model.getModel(l2 & 0xffff);
 					if (model == null)
 						return null;
 					if (flag1)
 						model.method477();
-					mruNodes1.removeFromCache(model, l2);
+					mruNodes1.put(model, l2);
 				}
 				if (k1 > 1)
 					aModelArray741s[i2] = model;
@@ -319,21 +319,21 @@ public final class ObjectDefinition {
 			if (i1 == -1)
 				return null;
 			l1 = (long) ((type << 8) + (i1 << 3) + l) + ((long) (k + 1) << 32);
-			Model model_2 = (Model) mruNodes2.insertFromCache(l1);
+			Model model_2 = (Model) mruNodes2.get(l1);
 			if (model_2 != null)
 				return model_2;
 			int j2 = modelIds[i1];
 			boolean flag3 = inverted ^ (l > 3);
 			if (flag3)
 				j2 += 0x10000;
-			model = (Model) mruNodes1.insertFromCache(j2);
+			model = (Model) mruNodes1.get(j2);
 			if (model == null) {
 				model = Model.getModel(j2 & 0xffff);
 				if (model == null)
 					return null;
 				if (flag3)
 					model.method477();
-				mruNodes1.removeFromCache(model, j2);
+				mruNodes1.put(model, j2);
 			}
 		}
 		boolean flag;
@@ -364,7 +364,7 @@ public final class ObjectDefinition {
 		model_3.light(84, 1500, -90, -280, -70, !delayShading);
 		if (supportItems == 1)
 			model_3.anInt1654 = model_3.modelHeight;
-		mruNodes2.removeFromCache(model_3, l1);
+		mruNodes2.put(model_3, l1);
 		return model_3;
 	}
 

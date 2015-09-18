@@ -1,6 +1,10 @@
 package com.seven.collection;
 
 public class Linkable {
+	
+	public long key;
+	public Linkable previous;
+	public Linkable next;
 
 	public final void unlink() {
 		if (next == null) {
@@ -11,11 +15,4 @@ public class Linkable {
 			next = null;
 		}
 	}
-
-	public Linkable() {
-	}
-
-	public long key;
-	public Linkable previous;
-	public Linkable next;
 }

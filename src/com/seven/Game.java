@@ -1104,12 +1104,12 @@ public class Game extends GameShell {
 			for (int l = 0; l < 4; l++) {
 				for (int k1 = 0; k1 < 104; k1++) {
 					for (int j2 = 0; j2 < 104; j2++)
-						byteGroundArray[l][k1][j2] = 0;
+						tileFlags[l][k1][j2] = 0;
 				}
 			}
 
-			MapRegion objectManager = new MapRegion(byteGroundArray,
-					intGroundArray);
+			MapRegion objectManager = new MapRegion(tileFlags,
+					tileHeights);
 			int k2 = aByteArrayArray1183.length;
 			outgoing.writeOpCode(0);
 			if (!aBoolean1159) {
@@ -1240,7 +1240,7 @@ public class Game extends GameShell {
 			method63();
 		} catch (Exception exception) {
 		}
-		ObjectDefinition.mruNodes1.unlinkAll();
+		ObjectDefinition.mruNodes1.clear();
 		if (super.gameFrame != null) {
 			outgoing.writeOpCode(210);
 			outgoing.writeInt(0x3f008edd);
@@ -1306,13 +1306,13 @@ public class Game extends GameShell {
 	}
 
 	private void unlinkMRUNodes() {
-		ObjectDefinition.mruNodes1.unlinkAll();
-		ObjectDefinition.mruNodes2.unlinkAll();
-		NpcDefinition.modelCache.unlinkAll();
-		ItemDefinition.model_cache.unlinkAll();
-		ItemDefinition.image_cache.unlinkAll();
-		Player.mruNodes.unlinkAll();
-		SpotAnimation.memCache.unlinkAll();
+		ObjectDefinition.mruNodes1.clear();
+		ObjectDefinition.mruNodes2.clear();
+		NpcDefinition.modelCache.clear();
+		ItemDefinition.model_cache.clear();
+		ItemDefinition.image_cache.clear();
+		Player.mruNodes.clear();
+		SpotAnimation.memCache.clear();
 	}
 
 	private void renderMapScene(int i) {
@@ -1324,9 +1324,9 @@ public class Game extends GameShell {
 		for (int l = 1; l < 103; l++) {
 			int i1 = 24628 + (103 - l) * 512 * 4;
 			for (int k1 = 1; k1 < 103; k1++) {
-				if ((byteGroundArray[i][k1][l] & 0x18) == 0)
+				if ((tileFlags[i][k1][l] & 0x18) == 0)
 					scene.method309(ai, i1, i, k1, l);
-				if (i < 3 && (byteGroundArray[i + 1][k1][l] & 8) != 0)
+				if (i < 3 && (tileFlags[i + 1][k1][l] & 8) != 0)
 					scene.method309(ai, i1, i + 1, k1, l);
 				i1 += 4;
 			}
@@ -1338,9 +1338,9 @@ public class Game extends GameShell {
 		minimapImage.method343();
 		for (int i2 = 1; i2 < 103; i2++) {
 			for (int j2 = 1; j2 < 103; j2++) {
-				if ((byteGroundArray[i][j2][i2] & 0x18) == 0)
+				if ((tileFlags[i][j2][i2] & 0x18) == 0)
 					drawMapScenes(i2, j1, j2, l1, i);
-				if (i < 3 && (byteGroundArray[i + 1][j2][i2] & 8) != 0)
+				if (i < 3 && (tileFlags[i + 1][j2][i2] & 8) != 0)
 					drawMapScenes(i2, j1, j2, l1, i + 1);
 			}
 
@@ -2101,7 +2101,7 @@ public class Game extends GameShell {
 				Rasterizer.method372(0.69999999999999996D);
 			if (k == 4)
 				Rasterizer.method372(0.59999999999999998D);
-			ItemDefinition.image_cache.unlinkAll();
+			ItemDefinition.image_cache.clear();
 			welcomeScreenRaised = true;
 		}
 
@@ -2546,31 +2546,6 @@ public class Game extends GameShell {
 		}
 	}
 
-	private void delFriend(long l) {
-		try {
-			if (l == 0L)
-				return;
-			for (int i = 0; i < friendsCount; i++) {
-				if (friendsListAsLongs[i] != l)
-					continue;
-				friendsCount--;
-				for (int j = i; j < friendsCount; j++) {
-					friendsList[j] = friendsList[j + 1];
-					friendsNodeIDs[j] = friendsNodeIDs[j + 1];
-					friendsListAsLongs[j] = friendsListAsLongs[j + 1];
-				}
-
-				outgoing.writeOpCode(215);
-				outgoing.writeLong(l);
-				break;
-			}
-		} catch (RuntimeException runtimeexception) {
-			Signlink.reporterror("18622, " + false + ", " + l + ", "
-					+ runtimeexception.toString());
-			throw new RuntimeException();
-		}
-	}
-
 	private final int[] sideIconsX = { 17, 49, 83, 114, 146, 180, 214, 16, 49,
 			82, 116, 148, 184, 216 }, sideIconsY = { 9, 7, 7, 5, 2, 3, 7, 303,
 			306, 306, 302, 305, 303, 303, 303 }, sideIconsId = { 0, 1, 2, 3, 4,
@@ -2835,7 +2810,7 @@ public class Game extends GameShell {
 		}
 	}
 
-	private void calcCameraPos() {
+	private void calculateCameraPosition() {
 		int i = x * 128 + 64;
 		int j = y * 128 + 64;
 		int k = method42(plane, j, i) - height;
@@ -2989,21 +2964,21 @@ public class Game extends GameShell {
 		throw new RuntimeException();
 	}
 
-	private int method42(int i, int j, int k) {
-		int l = k >> 7;
-		int i1 = j >> 7;
-		if (l < 0 || i1 < 0 || l > 103 || i1 > 103)
+	private int method42(int z, int y, int x) {
+		int worldX = x >> 7;
+		int worldY = y >> 7;
+		if (worldX < 0 || worldY < 0 || worldX > 103 || worldY > 103)
 			return 0;
-		int j1 = i;
-		if (j1 < 3 && (byteGroundArray[1][l][i1] & 2) == 2)
-			j1++;
-		int k1 = k & 0x7f;
-		int l1 = j & 0x7f;
-		int i2 = intGroundArray[j1][l][i1] * (128 - k1)
-				+ intGroundArray[j1][l + 1][i1] * k1 >> 7;
-		int j2 = intGroundArray[j1][l][i1 + 1] * (128 - k1)
-				+ intGroundArray[j1][l + 1][i1 + 1] * k1 >> 7;
-		return i2 * (128 - l1) + j2 * l1 >> 7;
+		int plane = z;
+		if (plane < 3 && (tileFlags[1][worldX][worldY] & 2) == 2)
+			plane++;
+		int sizeX = x & 0x7f;
+		int sizeY = y & 0x7f;
+		int i2 = tileHeights[plane][worldX][worldY] * (128 - sizeX)
+				+ tileHeights[plane][worldX + 1][worldY] * sizeX >> 7;
+		int j2 = tileHeights[plane][worldX][worldY + 1] * (128 - sizeX)
+				+ tileHeights[plane][worldX + 1][worldY + 1] * sizeX >> 7;
+		return i2 * (128 - sizeY) + j2 * sizeY >> 7;
 	}
 
 	private static String intToKOrMil(int j) {
@@ -4055,7 +4030,7 @@ public class Game extends GameShell {
 		if (loadingStage == 2)
 			checkForGameUsages();
 		if (loadingStage == 2 && aBoolean1160)
-			calcCameraPos();
+			calculateCameraPosition();
 		for (int i1 = 0; i1 < 5; i1++)
 			anIntArray1030[i1]++;
 
@@ -4726,9 +4701,9 @@ public class Game extends GameShell {
 				if (action == 42)
 					addIgnore(l3);
 				if (action == 792)
-					delFriend(l3);
+					removeFriend(l3);
 				if (action == 322)
-					delIgnore(l3);
+					removeIgnore(l3);
 			}
 		}
 		if (action == 53) {
@@ -5738,8 +5713,8 @@ public class Game extends GameShell {
 		aByteArrayArray1247 = null;
 		anIntArray1235 = null;
 		anIntArray1236 = null;
-		intGroundArray = null;
-		byteGroundArray = null;
+		tileHeights = null;
+		tileFlags = null;
 		scene = null;
 		collisionMaps = null;
 		anIntArrayArray901 = null;
@@ -5870,7 +5845,7 @@ public class Game extends GameShell {
 					}
 					if (friendsListAction == 2 && friendsCount > 0) {
 						long l1 = StringUtils.encodeBase37(promptInput);
-						delFriend(l1);
+						removeFriend(l1);
 					}
 					if (friendsListAction == 3 && promptInput.length() > 0) {
 						outgoing.writeOpCode(126);
@@ -5897,7 +5872,7 @@ public class Game extends GameShell {
 					}
 					if (friendsListAction == 5 && ignoreCount > 0) {
 						long l3 = StringUtils.encodeBase37(promptInput);
-						delIgnore(l3);
+						removeIgnore(l3);
 					}
 					if (friendsListAction == 6) {
 						long l3 = StringUtils.encodeBase37(promptInput);
@@ -8282,9 +8257,9 @@ public class Game extends GameShell {
 					"wordenc", archiveCRCs[7], 50);
 			streamLoaderForName(8, "sound effects", "sounds", archiveCRCs[8],
 					55);
-			byteGroundArray = new byte[4][104][104];
-			intGroundArray = new int[4][105][105];
-			scene = new SceneGraph(intGroundArray);
+			tileFlags = new byte[4][104][104];
+			tileHeights = new int[4][105][105];
+			scene = new SceneGraph(tileHeights);
 			for (int j = 0; j < 4; j++)
 				collisionMaps[j] = new CollisionMap();
 
@@ -10035,9 +10010,9 @@ public class Game extends GameShell {
 				for (int l1 = l - 4; l1 <= l + 4; l1++) {
 					for (int k2 = i1 - 4; k2 <= i1 + 4; k2++) {
 						int l2 = plane;
-						if (l2 < 3 && (byteGroundArray[1][l1][k2] & 2) == 2)
+						if (l2 < 3 && (tileFlags[1][l1][k2] & 2) == 2)
 							l2++;
-						int i3 = j1 - intGroundArray[l2][l1][k2];
+						int i3 = j1 - tileHeights[l2][l1][k2];
 						if (i3 > k1)
 							k1 = i3;
 					}
@@ -10486,7 +10461,7 @@ public class Game extends GameShell {
 			int l = yCameraPos >> 7;
 			int i1 = localPlayer.x >> 7;
 			int j1 = localPlayer.y >> 7;
-			if ((byteGroundArray[plane][k][l] & 4) != 0)
+			if ((tileFlags[plane][k][l] & 4) != 0)
 				j = plane;
 			int k1;
 			if (i1 > k)
@@ -10506,7 +10481,7 @@ public class Game extends GameShell {
 						k++;
 					else if (k > i1)
 						k--;
-					if ((byteGroundArray[plane][k][l] & 4) != 0)
+					if ((tileFlags[plane][k][l] & 4) != 0)
 						j = plane;
 					k2 += i2;
 					if (k2 >= 0x10000) {
@@ -10515,7 +10490,7 @@ public class Game extends GameShell {
 							l++;
 						else if (l > j1)
 							l--;
-						if ((byteGroundArray[plane][k][l] & 4) != 0)
+						if ((tileFlags[plane][k][l] & 4) != 0)
 							j = plane;
 					}
 				}
@@ -10527,7 +10502,7 @@ public class Game extends GameShell {
 						l++;
 					else if (l > j1)
 						l--;
-					if ((byteGroundArray[plane][k][l] & 4) != 0)
+					if ((tileFlags[plane][k][l] & 4) != 0)
 						j = plane;
 					l2 += j2;
 					if (l2 >= 0x10000) {
@@ -10536,44 +10511,69 @@ public class Game extends GameShell {
 							k++;
 						else if (k > i1)
 							k--;
-						if ((byteGroundArray[plane][k][l] & 4) != 0)
+						if ((tileFlags[plane][k][l] & 4) != 0)
 							j = plane;
 					}
 				}
 			}
 		}
-		if ((byteGroundArray[plane][localPlayer.x >> 7][localPlayer.y >> 7] & 4) != 0)
+		if ((tileFlags[plane][localPlayer.x >> 7][localPlayer.y >> 7] & 4) != 0)
 			j = plane;
 		return j;
 	}
 
 	private int resetCameraHeight() {
-		int j = method42(plane, yCameraPos, xCameraPos);
-		if (j - zCameraPos < 800
-				&& (byteGroundArray[plane][xCameraPos >> 7][yCameraPos >> 7] & 4) != 0)
+		int orientation = method42(plane, yCameraPos, xCameraPos);
+		if (orientation - zCameraPos < 800
+				&& (tileFlags[plane][xCameraPos >> 7][yCameraPos >> 7] & 4) != 0)
 			return plane;
 		else
 			return 3;
 	}
 
-	private void delIgnore(long l) {
+	private void removeFriend(long name) {
 		try {
-			if (l == 0L)
+			if (name == 0L)
 				return;
-			for (int j = 0; j < ignoreCount; j++)
-				if (ignoreListAsLongs[j] == l) {
+			for (int index = 0; index < friendsCount; index++) {
+				if (friendsListAsLongs[index] != name)
+					continue;
+				friendsCount--;
+				for (int count = index; count < friendsCount; count++) {
+					friendsList[count] = friendsList[count + 1];
+					friendsNodeIDs[count] = friendsNodeIDs[count + 1];
+					friendsListAsLongs[count] = friendsListAsLongs[count + 1];
+				}
+
+				outgoing.writeOpCode(215);
+				outgoing.writeLong(name);
+				break;
+			}
+		} catch (RuntimeException runtimeexception) {
+			Signlink.reporterror("18622, " + false + ", " + name + ", "
+					+ runtimeexception.toString());
+			throw new RuntimeException();
+		}
+	}
+	
+	private void removeIgnore(long name) {
+		try {
+			if (name == 0L)
+				return;
+			for (int index = 0; index < ignoreCount; index++)
+				if (ignoreListAsLongs[index] == name) {
 					ignoreCount--;
-					System.arraycopy(ignoreListAsLongs, j + 1,
-							ignoreListAsLongs, j, ignoreCount - j);
+					System.arraycopy(ignoreListAsLongs, index + 1,
+							ignoreListAsLongs, index, ignoreCount - index);
 
 					outgoing.writeOpCode(74);
-					outgoing.writeLong(l);
+					outgoing.writeLong(name);
 					return;
 				}
 
 			return;
 		} catch (RuntimeException runtimeexception) {
-			Signlink.reporterror("47229, " + 3 + ", " + l + ", "
+			Signlink.reporterror("47229, " + 3 + ", " + name + ", "
 					+ runtimeexception.toString());
 		}
 		throw new RuntimeException();
@@ -11512,10 +11512,10 @@ public class Game extends GameShell {
 			int j16 = anIntArray1177[j12];
 			int j17 = stream.readUShortA();
 			if (j4 >= 0 && i7 >= 0 && j4 < 103 && i7 < 103) {
-				int j18 = intGroundArray[plane][j4][i7];
-				int i19 = intGroundArray[plane][j4 + 1][i7];
-				int l19 = intGroundArray[plane][j4 + 1][i7 + 1];
-				int k20 = intGroundArray[plane][j4][i7 + 1];
+				int j18 = tileHeights[plane][j4][i7];
+				int i19 = tileHeights[plane][j4 + 1][i7];
+				int l19 = tileHeights[plane][j4 + 1][i7 + 1];
+				int k20 = tileHeights[plane][j4][i7 + 1];
 				if (j16 == 0) {
 					Wall class10 = scene.method296(plane, j4, i7);
 					if (class10 != null) {
@@ -11586,10 +11586,10 @@ public class Game extends GameShell {
 				player = players[i10];
 			if (player != null) {
 				ObjectDefinition class46 = ObjectDefinition.lookup(l21);
-				int i22 = intGroundArray[plane][k4][j7];
-				int j22 = intGroundArray[plane][k4 + 1][j7];
-				int k22 = intGroundArray[plane][k4 + 1][j7 + 1];
-				int l22 = intGroundArray[plane][k4][j7 + 1];
+				int i22 = tileHeights[plane][k4][j7];
+				int j22 = tileHeights[plane][k4 + 1][j7];
+				int k22 = tileHeights[plane][k4 + 1][j7 + 1];
+				int l22 = tileHeights[plane][k4][j7 + 1];
 				Model model = class46.modelAt(j19, i20, i22, j22, k22, l22, -1);
 				if (model != null) {
 					spawnObject(k17 + 1, -1, 0, l20, j7, 0, plane, k4, l14 + 1);
@@ -11932,10 +11932,10 @@ public class Game extends GameShell {
 			}
 			if (previousId >= 0) {
 				int plane = z;
-				if (plane < 3 && (byteGroundArray[1][x][y] & 2) == 2)
+				if (plane < 3 && (tileFlags[1][x][y] & 2) == 2)
 					plane++;
 				MapRegion.placeObject(scene, k, y, l, plane,
-						collisionMaps[z], intGroundArray, x, previousId, z);
+						collisionMaps[z], tileHeights, x, previousId, z);
 			}
 		}
 	}
@@ -14212,7 +14212,7 @@ public class Game extends GameShell {
 	static int anInt1211;
 	private String promptInput;
 	private int anInt1213;
-	private int[][][] intGroundArray;
+	private int[][][] tileHeights;
 	private long serverSeed;
 	private int loginScreenCursorPos;
 	private final Sprite[] modIcons;
@@ -14250,7 +14250,7 @@ public class Game extends GameShell {
 	public int anInt1254;
 	private boolean welcomeScreenRaised;
 	private boolean messagePromptRaised;
-	private byte[][][] byteGroundArray;
+	private byte[][][] tileFlags;
 	private int prevSong;
 	private int destinationX;
 	private int destY;
