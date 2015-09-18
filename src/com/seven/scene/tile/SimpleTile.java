@@ -1,9 +1,9 @@
 package com.seven.scene.tile;
 
-public final class TileUnderlay
+public final class SimpleTile
 {
 
-	public TileUnderlay(int i, int j, int k, int l, int i1, int j1, boolean flag)
+	public SimpleTile(int i, int j, int k, int l, int i1, int j1, boolean flag)
 	{
 		aBoolean721 = true;
 		anInt716 = i;

@@ -11,7 +11,7 @@ import com.seven.scene.graphic.Rasterizer;
 import com.seven.scene.tile.GroundDecoration;
 import com.seven.scene.tile.Tile;
 import com.seven.scene.tile.ShapedTile;
-import com.seven.scene.tile.TileUnderlay;
+import com.seven.scene.tile.SimpleTile;
 import com.seven.scene.tile.WallDecoration;
 import com.seven.scene.tile.WallLock;
 
@@ -125,7 +125,7 @@ public final class SceneGraph {
 	public void method279(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2, int j2, int k2, int l2,
 			int i3, int j3, int k3, int l3, int i4, int j4, int k4, int l4) {
 		if (l == 0) {
-			TileUnderlay class43 = new TileUnderlay(k2, l2, i3, j3, -1, k4, false);
+			SimpleTile class43 = new SimpleTile(k2, l2, i3, j3, -1, k4, false);
 			for (int i5 = i; i5 >= 0; i5--)
 				if (groundArray[i5][j][k] == null)
 					groundArray[i5][j][k] = new Tile(i5, j, k);
@@ -134,7 +134,7 @@ public final class SceneGraph {
 			return;
 		}
 		if (l == 1) {
-			TileUnderlay class43_1 = new TileUnderlay(k3, l3, i4, j4, j1, l4, k1 == l1 && k1 == i2 && k1 == j2);
+			SimpleTile class43_1 = new SimpleTile(k3, l3, i4, j4, j1, l4, k1 == l1 && k1 == i2 && k1 == j2);
 			for (int j5 = i; j5 >= 0; j5--)
 				if (groundArray[j5][j][k] == null)
 					groundArray[j5][j][k] = new Tile(j5, j, k);
@@ -707,7 +707,7 @@ public final class SceneGraph {
 		Tile class30_sub3 = groundArray[k][l][i1];
 		if (class30_sub3 == null)
 			return;
-		TileUnderlay class43 = class30_sub3.aClass43_1311;
+		SimpleTile class43 = class30_sub3.aClass43_1311;
 		if (class43 != null) {
 			int j1 = class43.anInt722;
 			if (j1 == 0)
@@ -1435,7 +1435,7 @@ public final class SceneGraph {
 		} while (true);
 	}
 
-	private void method315(TileUnderlay class43, int i, int j, int k, int l, int i1, int j1, int k1) {
+	private void method315(SimpleTile class43, int i, int j, int k, int l, int i1, int j1, int k1) {
 		int l1;
 		int i2 = l1 = (j1 << 7) - anInt455;
 		int j2;

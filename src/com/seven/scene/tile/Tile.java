@@ -23,7 +23,7 @@ public final class Tile extends Linkable {
 	public final int anInt1308;
 	public final int anInt1309;
 	public final int anInt1310;
-	public TileUnderlay aClass43_1311;
+	public SimpleTile aClass43_1311;
 	public ShapedTile aClass40_1312;
 	public WallLock obj1;
 	public WallDecoration obj2;
