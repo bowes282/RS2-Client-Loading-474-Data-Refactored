@@ -8,7 +8,7 @@ import com.seven.net.Buffer;
  * Refactored using Major's 317 refactored client
  * http://www.rune-server.org/runescape-development/rs2-client/downloads/575183-almost-fully-refactored-317-client.html
  */
-final class SoundEnvelope {
+final class Envelope {
 
 	private int segments;
 	private int[] durations;

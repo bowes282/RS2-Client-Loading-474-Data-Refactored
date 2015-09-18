@@ -1,6 +1,6 @@
 package com.seven.sound;
 /**
- * Class which contains only constant values used by the client.
+ * Class which contains constant values pertaining to sound.
  * @author 7Winds
  */
 public class SoundConstants {

@@ -6,23 +6,23 @@ import com.seven.net.Buffer;
  * Refactored reference:
  * http://www.rune-server.org/runescape-development/rs2-client/downloads/575183-almost-fully-refactored-317-client.html
  */
-final class SoundSynthesizer {
+final class Synthesizer {
 
-	private SoundEnvelope pitch;
-	private SoundEnvelope volume;
-	private SoundEnvelope pitchModifier;
-	private SoundEnvelope pitchModifierAmplitude;
-	private SoundEnvelope volumeMultiplier;
-	private SoundEnvelope volumeMultiplierAmplitude;
-	private SoundEnvelope release;
-	private SoundEnvelope attack;
+	private Envelope pitch;
+	private Envelope volume;
+	private Envelope pitchModifier;
+	private Envelope pitchModifierAmplitude;
+	private Envelope volumeMultiplier;
+	private Envelope volumeMultiplierAmplitude;
+	private Envelope release;
+	private Envelope attack;
 	private final int[] oscillatorVolume;
 	private final int[] anIntArray107;
 	private final int[] anIntArray108;
 	private int delayTime;
 	private int delayDecay;
-	private SoundFilter filter;
-	private SoundEnvelope filterEnvelope;
+	private Filter filter;
+	private Envelope filterEnvelope;
 	int duration;
 	int offset;
 	private static int[] samples;
@@ -34,7 +34,7 @@ final class SoundSynthesizer {
 	private static final int[] pitchSteps = new int[5];
 	private static final int[] pitchBaseSteps = new int[5];
 
-	public SoundSynthesizer() {
+	public Synthesizer() {
 		oscillatorVolume = new int[5];
 		anIntArray107 = new int[5];
 		anIntArray108 = new int[5];
@@ -170,15 +170,15 @@ final class SoundSynthesizer {
 					delay = sampleCount - forwardOrder;
 				for (; index < delay; index++) {
 					int sample = (int) ((long) samples[index + forwardOrder]
-							* (long) SoundFilter.forwardMultiplier >> 16);
+							* (long) Filter.forwardMultiplier >> 16);
 					for (int j8 = 0; j8 < forwardOrder; j8++)
 						sample += (int) ((long) samples[(index + forwardOrder)
 								- 1 - j8]
-								* (long) SoundFilter.coefficients[0][j8] >> 16);
+								* (long) Filter.coefficients[0][j8] >> 16);
 
 					for (int j9 = 0; j9 < index; j9++)
 						sample -= (int) ((long) samples[index - 1 - j9]
-								* (long) SoundFilter.coefficients[1][j9] >> 16);
+								* (long) Filter.coefficients[1][j9] >> 16);
 
 					samples[index] = sample;
 					change = filterEnvelope.step(sampleCount + 1);
@@ -191,15 +191,15 @@ final class SoundSynthesizer {
 						delay = sampleCount - forwardOrder;
 					for (; index < delay; index++) {
 						int l8 = (int) ((long) samples[index + forwardOrder]
-								* (long) SoundFilter.forwardMultiplier >> 16);
+								* (long) Filter.forwardMultiplier >> 16);
 						for (int k9 = 0; k9 < forwardOrder; k9++)
 							l8 += (int) ((long) samples[(index + forwardOrder)
 									- 1 - k9]
-									* (long) SoundFilter.coefficients[0][k9] >> 16);
+									* (long) Filter.coefficients[0][k9] >> 16);
 
 						for (int i10 = 0; i10 < backOrder; i10++)
 							l8 -= (int) ((long) samples[index - 1 - i10]
-									* (long) SoundFilter.coefficients[1][i10] >> 16);
+									* (long) Filter.coefficients[1][i10] >> 16);
 
 						samples[index] = l8;
 						change = filterEnvelope.step(sampleCount + 1);
@@ -216,11 +216,11 @@ final class SoundSynthesizer {
 					for (int l9 = (index + forwardOrder) - sampleCount; l9 < forwardOrder; l9++)
 						sample += (int) ((long) samples[(index + forwardOrder)
 								- 1 - l9]
-								* (long) SoundFilter.coefficients[0][l9] >> 16);
+								* (long) Filter.coefficients[0][l9] >> 16);
 
 					for (int j10 = 0; j10 < backOrder; j10++)
 						sample -= (int) ((long) samples[index - 1 - j10]
-								* (long) SoundFilter.coefficients[1][j10] >> 16);
+								* (long) Filter.coefficients[1][j10] >> 16);
 
 					samples[index] = sample;
 				}
@@ -254,32 +254,32 @@ final class SoundSynthesizer {
 	}
 
 	public void decode(Buffer stream) {
-		pitch = new SoundEnvelope();
+		pitch = new Envelope();
 		pitch.decode(stream);
-		volume = new SoundEnvelope();
+		volume = new Envelope();
 		volume.decode(stream);
 		int option = stream.readUnsignedByte();
 		if (option != 0) {
 			stream.currentPosition--;
-			pitchModifier = new SoundEnvelope();
+			pitchModifier = new Envelope();
 			pitchModifier.decode(stream);
-			pitchModifierAmplitude = new SoundEnvelope();
+			pitchModifierAmplitude = new Envelope();
 			pitchModifierAmplitude.decode(stream);
 		}
 		option = stream.readUnsignedByte();
 		if (option != 0) {
 			stream.currentPosition--;
-			volumeMultiplier = new SoundEnvelope();
+			volumeMultiplier = new Envelope();
 			volumeMultiplier.decode(stream);
-			volumeMultiplierAmplitude = new SoundEnvelope();
+			volumeMultiplierAmplitude = new Envelope();
 			volumeMultiplierAmplitude.decode(stream);
 		}
 		option = stream.readUnsignedByte();
 		if (option != 0) {
 			stream.currentPosition--;
-			release = new SoundEnvelope();
+			release = new Envelope();
 			release.decode(stream);
-			attack = new SoundEnvelope();
+			attack = new Envelope();
 			attack.decode(stream);
 		}
 		for (int index = 0; index < 10; index++) {
@@ -295,8 +295,8 @@ final class SoundSynthesizer {
 		delayDecay = stream.readUSmart();
 		duration = stream.readUShort();
 		offset = stream.readUShort();
-		filter = new SoundFilter();
-		filterEnvelope = new SoundEnvelope();
+		filter = new Filter();
+		filterEnvelope = new Envelope();
 		filter.decode(stream, filterEnvelope);
 	}
 

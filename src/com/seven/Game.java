@@ -61,7 +61,7 @@ import com.seven.scene.map.object.WallDecoration;
 import com.seven.scene.map.object.tile.Floor;
 import com.seven.sound.SoundConstants;
 import com.seven.sound.SoundPlayer;
-import com.seven.sound.SoundTrack;
+import com.seven.sound.Track;
 import com.seven.util.GameConstants;
 import com.seven.util.MouseDetection;
 import com.seven.util.PacketConstants;
@@ -4275,7 +4275,7 @@ public class Game extends GameShell {
 		for (int count = 0; count < trackCount; count++) {
 			boolean replay = false;
 			try {
-				Buffer stream = SoundTrack.data(trackLoops[count],
+				Buffer stream = Track.data(trackLoops[count],
 						tracks[count]);
 				new SoundPlayer((InputStream) new ByteArrayInputStream(
 						stream.payload, 0, stream.currentPosition),
@@ -8301,7 +8301,7 @@ public class Game extends GameShell {
 			byte abyte0[] = streamLoader_5.getEntry("sounds.dat");
 
 			Buffer stream = new Buffer(abyte0);
-			SoundTrack.unpack(stream);
+			Track.unpack(stream);
 
 			if (Configuration.repackIndexOne) {
 				repackCacheIndex(1);
@@ -11456,7 +11456,7 @@ public class Game extends GameShell {
 					&& !lowMem && trackCount < 50) {
 				tracks[trackCount] = i9;
 				trackLoops[trackCount] = i16;
-				soundDelay[trackCount] = SoundTrack.delays[i9];
+				soundDelay[trackCount] = Track.delays[i9];
 				trackCount++;
 			}
 		}
@@ -12644,7 +12644,7 @@ public class Game extends GameShell {
 				int volume = incoming.readUShort();
 				tracks[trackCount] = soundId;
 				trackLoops[trackCount] = type;
-				soundDelay[trackCount] = delay + SoundTrack.delays[soundId];
+				soundDelay[trackCount] = delay + Track.delays[soundId];
 				soundVolume[trackCount] = volume;
 				trackCount++;
 				opCode = -1;

@@ -6,6 +6,9 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.FloatControl;
 
+/**
+ * Custom class which is not found in the 317 deob.
+ */
 public class SoundPlayer implements Runnable {
 
 	private AudioInputStream stream;

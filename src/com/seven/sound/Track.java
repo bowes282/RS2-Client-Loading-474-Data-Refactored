@@ -6,21 +6,21 @@ import com.seven.net.Buffer;
  * Refactored reference:
  * http://www.rune-server.org/runescape-development/rs2-client/downloads/575183-almost-fully-refactored-317-client.html
  */
-public final class SoundTrack {
+public final class Track {
 
-	private SoundTrack() {
-		synthesizers = new SoundSynthesizer[10];
+	private Track() {
+		synthesizers = new Synthesizer[10];
 	}
 	
 	public static void unpack(Buffer stream) {
 		output = new byte[0x6baa8];
 		riff = new Buffer(output);
-		SoundSynthesizer.init();
+		Synthesizer.init();
 		do {
 			int id = stream.readUShort();
 			if (id == 65535)
 				return;
-			tracks[id] = new SoundTrack();
+			tracks[id] = new Track();
 			tracks[id].decode(stream);
 			delays[id] = tracks[id].calculateDelay();		
 		} while (true);
@@ -28,7 +28,7 @@ public final class SoundTrack {
 
 	public static Buffer data(int loops, int id) {
 		if (tracks[id] != null) {
-			SoundTrack soundTrack = tracks[id];
+			Track soundTrack = tracks[id];
 			return soundTrack.pack(loops);
 		} else {
 			return null;
@@ -40,7 +40,7 @@ public final class SoundTrack {
 			int valid = stream.readUnsignedByte();
 			if (valid != 0) {
 				stream.currentPosition--;
-				synthesizers[synthesizer] = new SoundSynthesizer();
+				synthesizers[synthesizer] = new Synthesizer();
 				synthesizers[synthesizer].decode(stream);
 			}
 		}
@@ -138,11 +138,11 @@ public final class SoundTrack {
 		return size;
 	}
 
-	private static final SoundTrack[] tracks = new SoundTrack[5000];
+	private static final Track[] tracks = new Track[5000];
 	public static final int[] delays = new int[5000];
 	private static byte[] output;
 	private static Buffer riff;
-	private final SoundSynthesizer[] synthesizers;
+	private final Synthesizer[] synthesizers;
 	private int loopStart;
 	private int loopEnd;
 

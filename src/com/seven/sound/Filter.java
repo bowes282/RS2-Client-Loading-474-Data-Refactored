@@ -9,7 +9,7 @@ import com.seven.net.Buffer;
  * Refactored information from Major's 317 refactored client
  * http://www.rune-server.org/runescape-development/rs2-client/downloads/575183-almost-fully-refactored-317-client.html
  */
-final class SoundFilter {
+final class Filter {
 
 	final int[] pairs;
 	private final int[][][] phases;
@@ -20,7 +20,7 @@ final class SoundFilter {
 	private static float forwardMinimisedCoefficientMultiplier;
 	static int forwardMultiplier;
 
-	public SoundFilter() {
+	public Filter() {
 		pairs = new int[2];
 		phases = new int[2][2][4];
 		magnitudes = new int[2][2][4];
@@ -105,7 +105,7 @@ final class SoundFilter {
 		return pairs[direction] * 2;
 	}
 
-	public void decode(Buffer stream, SoundEnvelope soundEnveleope) {
+	public void decode(Buffer stream, Envelope soundEnveleope) {
 		int count = stream.readUnsignedByte();
 		pairs[0] = count >> 4;
 		pairs[1] = count & 0xf;
