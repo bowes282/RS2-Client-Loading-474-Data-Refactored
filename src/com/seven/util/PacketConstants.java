@@ -1,6 +1,6 @@
 package com.seven.util;
 /**
- * Class used to Identify packets
+ * Class containing packet-related constants.
  * 
  * @author 7Winds
  */

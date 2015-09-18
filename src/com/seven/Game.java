@@ -30,7 +30,6 @@ import com.seven.media.Raster;
 import com.seven.media.font.GameFont;
 import com.seven.media.font.RSFont;
 import com.seven.media.font.TextClass;
-import com.seven.media.font.TextInput;
 import com.seven.media.renderable.Item;
 import com.seven.media.renderable.Model;
 import com.seven.media.renderable.Renderable;
@@ -62,6 +61,7 @@ import com.seven.scene.map.object.tile.Floor;
 import com.seven.sound.SoundConstants;
 import com.seven.sound.SoundPlayer;
 import com.seven.sound.Track;
+import com.seven.util.ChatMessageCodec;
 import com.seven.util.GameConstants;
 import com.seven.util.MouseDetection;
 import com.seven.util.PacketConstants;
@@ -5877,9 +5877,9 @@ public class Game extends GameShell {
 						outgoing.writeByte(0);
 						int k = outgoing.currentPosition;
 						outgoing.writeLong(aLong953);
-						TextInput.method526(promptInput, outgoing);
+						ChatMessageCodec.encode(promptInput, outgoing);
 						outgoing.writeBytes(outgoing.currentPosition - k);
-						promptInput = TextInput.processText(promptInput);
+						promptInput = ChatMessageCodec.processText(promptInput);
 						// promptInput = Censor.doCensor(promptInput);
 						pushMessage(promptInput, 6, TextClass.fixName(TextClass
 								.nameForLong(aLong953)));
@@ -6133,11 +6133,11 @@ public class Game extends GameShell {
 						outgoing.writeByteS(i3);
 						outgoing.writeByteS(j2);
 						chatBuffer.currentPosition = 0;
-						TextInput.method526(inputString, chatBuffer);
+						ChatMessageCodec.encode(inputString, chatBuffer);
 						outgoing.writeReverseDataA(chatBuffer.payload, 0,
 								chatBuffer.currentPosition);
 						outgoing.writeBytes(outgoing.currentPosition - j3);
-						inputString = TextInput.processText(inputString);
+						inputString = ChatMessageCodec.processText(inputString);
 						// inputString = Censor.doCensor(inputString);
 						localPlayer.spokenText = inputString;
 						localPlayer.textColour = j2;
@@ -9942,7 +9942,7 @@ public class Game extends GameShell {
 						chatBuffer.currentPosition = 0;
 						buffer.readReverseData(chatBuffer.payload, offset, 0);
 						chatBuffer.currentPosition = 0;
-						String text = TextInput.method525(offset, chatBuffer);
+						String text = ChatMessageCodec.decode(offset, chatBuffer);
 						// s = Censor.doCensor(s);
 						player.spokenText = text;
 						player.textColour = textInfo >> 8;
@@ -12889,7 +12889,7 @@ public class Game extends GameShell {
 					try {
 						anIntArray1240[anInt1169] = j18;
 						anInt1169 = (anInt1169 + 1) % 100;
-						String s9 = TextInput.method525(packetSize - 13,
+						String s9 = ChatMessageCodec.decode(packetSize - 13,
 								incoming);
 						// if(l21 != 3)
 						// s9 = Censor.doCensor(s9);

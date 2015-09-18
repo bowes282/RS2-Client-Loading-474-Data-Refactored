@@ -1,44 +1,33 @@
 package com.seven.net.security;
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 
 public final class ISAACCipher {
 
-	public ISAACCipher(int seed[])
-	{
+	public ISAACCipher(int seed[]) {
 		memory = new int[256];
 		results = new int[256];
 		System.arraycopy(seed, 0, results, 0, seed.length);
 		initializeKeySet();
 	}
 
-	public int getNextKey()
-	{
-		if(count-- == 0)
-		{
+	public int getNextKey() {
+		if (count-- == 0) {
 			isaac();
 			count = 255;
 		}
 		return results[count];
 	}
 
-	private void isaac()
-	{
+	private void isaac() {
 		lastResult += ++counter;
-		for(int i = 0; i < 256; i++)
-		{
+		for (int i = 0; i < 256; i++) {
 			int j = memory[i];
-			if((i & 3) == 0)
+			if ((i & 3) == 0)
 				accumulator ^= accumulator << 13;
-			else
-			if((i & 3) == 1)
+			else if ((i & 3) == 1)
 				accumulator ^= accumulator >>> 6;
-			else
-			if((i & 3) == 2)
+			else if ((i & 3) == 2)
 				accumulator ^= accumulator << 2;
-			else
-			if((i & 3) == 3)
+			else if ((i & 3) == 3)
 				accumulator ^= accumulator >>> 16;
 			accumulator += memory[i + 128 & 0xff];
 			int k;
@@ -48,8 +37,7 @@ public final class ISAACCipher {
 
 	}
 
-	private void initializeKeySet()
-	{
+	private void initializeKeySet() {
 		int i1;
 		int j1;
 		int k1;
@@ -58,8 +46,7 @@ public final class ISAACCipher {
 		int j2;
 		int k2;
 		int l = i1 = j1 = k1 = l1 = i2 = j2 = k2 = 0x9e3779b9;
-		for(int i = 0; i < 4; i++)
-		{
+		for (int i = 0; i < 4; i++) {
 			l ^= i1 << 11;
 			k1 += l;
 			i1 += j1;
@@ -86,8 +73,7 @@ public final class ISAACCipher {
 			l += i1;
 		}
 
-		for(int j = 0; j < 256; j += 8)
-		{
+		for (int j = 0; j < 256; j += 8) {
 			l += results[j];
 			i1 += results[j + 1];
 			j1 += results[j + 2];
@@ -130,8 +116,7 @@ public final class ISAACCipher {
 			memory[j + 7] = k2;
 		}
 
-		for(int k = 0; k < 256; k += 8)
-		{
+		for (int k = 0; k < 256; k += 8) {
 			l += memory[k];
 			i1 += memory[k + 1];
 			j1 += memory[k + 2];

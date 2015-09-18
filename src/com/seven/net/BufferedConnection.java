@@ -1,9 +1,5 @@
 package com.seven.net;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 import java.io.*;
 import java.net.Socket;
 
@@ -11,7 +7,8 @@ import com.seven.GameShell;
 
 public final class BufferedConnection implements Runnable {
 
-	public BufferedConnection(GameShell RSApplet_, Socket socket1) throws IOException {
+	public BufferedConnection(GameShell RSApplet_, Socket socket1)
+			throws IOException {
 		closed = false;
 		isWriter = false;
 		hasIOError = false;
