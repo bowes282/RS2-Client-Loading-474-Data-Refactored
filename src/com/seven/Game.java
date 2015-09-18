@@ -29,7 +29,6 @@ import com.seven.media.ImageProducer;
 import com.seven.media.Raster;
 import com.seven.media.font.GameFont;
 import com.seven.media.font.RSFont;
-import com.seven.media.font.StringUtils;
 import com.seven.media.renderable.Item;
 import com.seven.media.renderable.Model;
 import com.seven.media.renderable.Renderable;
@@ -66,6 +65,7 @@ import com.seven.util.GameConstants;
 import com.seven.util.MouseDetection;
 import com.seven.util.PacketConstants;
 import com.seven.util.SkillConstants;
+import com.seven.util.StringUtils;
 import com.seven.util.signlink.Signlink;
 
 public class Game extends GameShell {
@@ -77,7 +77,7 @@ public class Game extends GameShell {
 	private Fog depthBuffer = new Fog();
 
 	private int[][] xp_added = new int[10][3];
-	private Sprite[] skill_sprites = new Sprite[SkillConstants.skillsCount];
+	private Sprite[] skill_sprites = new Sprite[SkillConstants.SKILL_COUNT];
 
 	public static ScreenMode frameMode = ScreenMode.FIXED;
 	public static int frameWidth = 765;
@@ -8338,7 +8338,7 @@ public class Game extends GameShell {
 			for (int i = 0; i < size; i++) {
 				cacheSprite[i] = new Sprite("Sprites/" + i);
 			}
-			for (int imageId = 0; imageId < SkillConstants.skillsCount; imageId++) {
+			for (int imageId = 0; imageId < SkillConstants.SKILL_COUNT; imageId++) {
 				skill_sprites[imageId] = new Sprite("xp_drop/" + imageId);
 			}
 			multiOverlay = new Sprite(streamLoader_2, "overlay_multiway", 0);
@@ -10642,8 +10642,8 @@ public class Game extends GameShell {
 				if (j1 == 8)
 					k1 = localPlayer.combatLevel;
 				if (j1 == 9) {
-					for (int l1 = 0; l1 < SkillConstants.skillsCount; l1++)
-						if (SkillConstants.skillEnabled[l1])
+					for (int l1 = 0; l1 < SkillConstants.SKILL_COUNT; l1++)
+						if (SkillConstants.ENABLED_SKILLS[l1])
 							k1 += maxStats[l1];
 
 				}
@@ -13730,7 +13730,7 @@ public class Game extends GameShell {
 		login = Buffer.create();
 		aBoolean848 = true;
 		openInterfaceId = -1;
-		currentExp = new int[SkillConstants.skillsCount];
+		currentExp = new int[SkillConstants.SKILL_COUNT];
 		aBoolean872 = false;
 		anIntArray873 = new int[5];
 		aBooleanArray876 = new boolean[5];
@@ -13748,7 +13748,7 @@ public class Game extends GameShell {
 		anInt897 = 1;
 		anIntArrayArray901 = new int[104][104];
 		aByteArray912 = new byte[16384];
-		currentStats = new int[SkillConstants.skillsCount];
+		currentStats = new int[SkillConstants.SKILL_COUNT];
 		ignoreListAsLongs = new long[100];
 		loadingError = false;
 		anIntArray928 = new int[5];
@@ -13789,7 +13789,7 @@ public class Game extends GameShell {
 		aBoolean1031 = false;
 		mapFunctions = new Sprite[100];
 		dialogueId = -1;
-		maxStats = new int[SkillConstants.skillsCount];
+		maxStats = new int[SkillConstants.SKILL_COUNT];
 		anIntArray1045 = new int[2000];
 		maleCharacter = true;
 		minimapLeft = new int[152];

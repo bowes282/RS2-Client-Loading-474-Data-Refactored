@@ -1,4 +1,4 @@
-package com.seven.media.font;
+package com.seven.util;
 import com.seven.util.signlink.Signlink;
 
 /**

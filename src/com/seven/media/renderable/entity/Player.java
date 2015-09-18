@@ -7,9 +7,9 @@ import com.seven.cache.def.SpotAnimation;
 import com.seven.cache.media.SequenceFrame;
 import com.seven.collection.ReferenceCache;
 import com.seven.media.Animation;
-import com.seven.media.font.StringUtils;
 import com.seven.media.renderable.Model;
 import com.seven.net.Buffer;
+import com.seven.util.StringUtils;
 
 public final class Player extends Entity {
 	

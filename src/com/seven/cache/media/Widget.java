@@ -6,10 +6,10 @@ import com.seven.cache.def.ItemDefinition;
 import com.seven.cache.def.NpcDefinition;
 import com.seven.collection.ReferenceCache;
 import com.seven.media.font.GameFont;
-import com.seven.media.font.StringUtils;
 import com.seven.media.renderable.Model;
 import com.seven.net.Buffer;
 import com.seven.net.CacheArchive;
+import com.seven.util.StringUtils;
 
 /**
  * Previously known as RSInterface, which is a class
