@@ -7,7 +7,7 @@ import com.seven.cache.def.SpotAnimation;
 import com.seven.cache.media.SequenceFrame;
 import com.seven.collection.ReferenceCache;
 import com.seven.media.Animation;
-import com.seven.media.font.TextClass;
+import com.seven.media.font.StringUtils;
 import com.seven.media.renderable.Model;
 import com.seven.net.Buffer;
 
@@ -156,7 +156,7 @@ public final class Player extends Entity {
 		super.runAnimIndex = stream.readUShort();
 		if(super.runAnimIndex == 65535)
 			super.runAnimIndex = -1;
-		name = TextClass.fixName(TextClass.nameForLong(stream.readLong()));
+		name = StringUtils.formatUsername(StringUtils.decodeBase37(stream.readLong()));
 		combatLevel = stream.readUnsignedByte();
 		skill = stream.readUShort();
 		visible = true;

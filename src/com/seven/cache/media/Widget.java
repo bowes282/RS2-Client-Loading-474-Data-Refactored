@@ -6,7 +6,7 @@ import com.seven.cache.def.ItemDefinition;
 import com.seven.cache.def.NpcDefinition;
 import com.seven.collection.ReferenceCache;
 import com.seven.media.font.GameFont;
-import com.seven.media.font.TextClass;
+import com.seven.media.font.StringUtils;
 import com.seven.media.renderable.Model;
 import com.seven.net.Buffer;
 import com.seven.net.CacheArchive;
@@ -1231,7 +1231,7 @@ public final class Widget {
 	}
 
 	private static Sprite CustomSpriteLoader(int id, String s) {
-		long l = (TextClass.method585(s) << 8) + (long) id;
+		long l = (StringUtils.hashSpriteName(s) << 8) + (long) id;
 		Sprite sprite = (Sprite) spriteCache.insertFromCache(l);
 		if (sprite != null) {
 			return sprite;
@@ -2185,7 +2185,7 @@ public final class Widget {
 	}
 
 	private static Sprite imageLoader(int i, String s) {
-		long l = (TextClass.method585(s) << 8) + (long) i;
+		long l = (StringUtils.hashSpriteName(s) << 8) + (long) i;
 		Sprite sprite = (Sprite) spriteCache.insertFromCache(l);
 		if (sprite != null)
 			return sprite;
@@ -2230,7 +2230,7 @@ public final class Widget {
 	}
 
 	private static Sprite method207(int i, CacheArchive streamLoader, String s) {
-		long l = (TextClass.method585(s) << 8) + (long) i;
+		long l = (StringUtils.hashSpriteName(s) << 8) + (long) i;
 		Sprite sprite = (Sprite) spriteCache.insertFromCache(l);
 		if (sprite != null)
 			return sprite;

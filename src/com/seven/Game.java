@@ -29,7 +29,7 @@ import com.seven.media.ImageProducer;
 import com.seven.media.Raster;
 import com.seven.media.font.GameFont;
 import com.seven.media.font.RSFont;
-import com.seven.media.font.TextClass;
+import com.seven.media.font.StringUtils;
 import com.seven.media.renderable.Item;
 import com.seven.media.renderable.Model;
 import com.seven.media.renderable.Renderable;
@@ -871,7 +871,7 @@ public class Game extends GameShell {
 			if (localPlayer != null && localPlayer.name != null) {
 				s = localPlayer.name;
 			} else {
-				s = TextClass.fixName(capitalize(myUsername));
+				s = StringUtils.formatUsername(capitalize(myUsername));
 			}
 			Raster.setDrawingArea(140 + yOffset, 8, 509, 120 + yOffset);
 			int xOffset = 0;
@@ -2958,7 +2958,7 @@ public class Game extends GameShell {
 						0, "");
 				return;
 			}
-			String s = TextClass.fixName(TextClass.nameForLong(l));
+			String s = StringUtils.formatUsername(StringUtils.decodeBase37(l));
 			for (int i = 0; i < friendsCount; i++)
 				if (friendsListAsLongs[i] == l) {
 					pushMessage(s + " is already on your friend list", 0, "");
@@ -3248,7 +3248,7 @@ public class Game extends GameShell {
 			clearTopInterfaces();
 			if (reportAbuseInput.length() > 0) {
 				outgoing.writeOpCode(218);
-				outgoing.writeLong(TextClass.longForName(reportAbuseInput));
+				outgoing.writeLong(StringUtils.encodeBase37(reportAbuseInput));
 				outgoing.writeByte(j - 601);
 				outgoing.writeByte(canMute ? 1 : 0);
 			}
@@ -4720,7 +4720,7 @@ public class Game extends GameShell {
 			String s = menuActionText[id];
 			int k1 = s.indexOf("@whi@");
 			if (k1 != -1) {
-				long l3 = TextClass.longForName(s.substring(k1 + 5).trim());
+				long l3 = StringUtils.encodeBase37(s.substring(k1 + 5).trim());
 				if (action == 337)
 					addFriend(l3);
 				if (action == 42)
@@ -4764,8 +4764,8 @@ public class Game extends GameShell {
 			int l1 = s1.indexOf("@whi@");
 			if (l1 != -1) {
 				s1 = s1.substring(l1 + 5).trim();
-				String s7 = TextClass.fixName(TextClass.nameForLong(TextClass
-						.longForName(s1)));
+				String s7 = StringUtils.formatUsername(StringUtils.decodeBase37(StringUtils
+						.encodeBase37(s1)));
 				boolean flag9 = false;
 				for (int j3 = 0; j3 < playerCount; j3++) {
 					Player class30_sub2_sub4_sub1_sub2_7 = players[playerIndices[j3]];
@@ -5335,7 +5335,7 @@ public class Game extends GameShell {
 			String s3 = menuActionText[id];
 			int k2 = s3.indexOf("@whi@");
 			if (k2 != -1) {
-				long l4 = TextClass.longForName(s3.substring(k2 + 5).trim());
+				long l4 = StringUtils.encodeBase37(s3.substring(k2 + 5).trim());
 				int k3 = -1;
 				for (int i4 = 0; i4 < friendsCount; i4++) {
 					if (friendsListAsLongs[i4] != l4)
@@ -5865,11 +5865,11 @@ public class Game extends GameShell {
 					messagePromptRaised = false;
 					inputTaken = true;
 					if (friendsListAction == 1) {
-						long l = TextClass.longForName(promptInput);
+						long l = StringUtils.encodeBase37(promptInput);
 						addFriend(l);
 					}
 					if (friendsListAction == 2 && friendsCount > 0) {
-						long l1 = TextClass.longForName(promptInput);
+						long l1 = StringUtils.encodeBase37(promptInput);
 						delFriend(l1);
 					}
 					if (friendsListAction == 3 && promptInput.length() > 0) {
@@ -5881,8 +5881,8 @@ public class Game extends GameShell {
 						outgoing.writeBytes(outgoing.currentPosition - k);
 						promptInput = ChatMessageCodec.processText(promptInput);
 						// promptInput = Censor.doCensor(promptInput);
-						pushMessage(promptInput, 6, TextClass.fixName(TextClass
-								.nameForLong(aLong953)));
+						pushMessage(promptInput, 6, StringUtils.formatUsername(StringUtils
+								.decodeBase37(aLong953)));
 						if (privateChatMode == 2) {
 							privateChatMode = 1;
 							outgoing.writeOpCode(95);
@@ -5892,15 +5892,15 @@ public class Game extends GameShell {
 						}
 					}
 					if (friendsListAction == 4 && ignoreCount < 100) {
-						long l2 = TextClass.longForName(promptInput);
+						long l2 = StringUtils.encodeBase37(promptInput);
 						addIgnore(l2);
 					}
 					if (friendsListAction == 5 && ignoreCount > 0) {
-						long l3 = TextClass.longForName(promptInput);
+						long l3 = StringUtils.encodeBase37(promptInput);
 						delIgnore(l3);
 					}
 					if (friendsListAction == 6) {
-						long l3 = TextClass.longForName(promptInput);
+						long l3 = StringUtils.encodeBase37(promptInput);
 						chatJoin(l3);
 					}
 				}
@@ -5940,8 +5940,8 @@ public class Game extends GameShell {
 				if (j == 13 || j == 10) {
 					if (amountOrNameInput.length() > 0) {
 						outgoing.writeOpCode(60);
-						outgoing.writeLong(TextClass
-								.longForName(amountOrNameInput));
+						outgoing.writeLong(StringUtils
+								.encodeBase37(amountOrNameInput));
 					}
 					inputDialogState = 0;
 					inputTaken = true;
@@ -6501,8 +6501,8 @@ public class Game extends GameShell {
 				widget.optionType = 0;
 				return;
 			} else {
-				widget.defaultText = TextClass.fixName(TextClass
-						.nameForLong(ignoreListAsLongs[index]));
+				widget.defaultText = StringUtils.formatUsername(StringUtils
+						.decodeBase37(ignoreListAsLongs[index]));
 				widget.optionType = 1;
 				return;
 			}
@@ -7453,7 +7453,7 @@ public class Game extends GameShell {
 			}
 			socketStream = new BufferedConnection(this,
 					openSocket(Configuration.server_port + portOffset));
-			long encoded = TextClass.longForName(name);
+			long encoded = StringUtils.encodeBase37(name);
 			int nameHash = (int) (encoded >> 16 & 31L);
 			outgoing.currentPosition = 0;
 			outgoing.writeByte(14);
@@ -9926,7 +9926,7 @@ public class Game extends GameShell {
 			int offset = buffer.readNegUByte();
 			int off = buffer.currentPosition;
 			if (player.name != null && player.visible) {
-				long name = TextClass.longForName(player.name);
+				long name = StringUtils.encodeBase37(player.name);
 				boolean ignored = false;
 				if (privilege <= 1) {
 					for (int count = 0; count < ignoreCount; count++) {
@@ -10254,7 +10254,7 @@ public class Game extends GameShell {
 				pushMessage("Your ignore list is full. Max of 100 hit", 0, "");
 				return;
 			}
-			String s = TextClass.fixName(TextClass.nameForLong(l));
+			String s = StringUtils.formatUsername(StringUtils.decodeBase37(l));
 			for (int j = 0; j < ignoreCount; j++)
 				if (ignoreListAsLongs[j] == l) {
 					pushMessage(s + " is already on your ignore list", 0, "");
@@ -10854,7 +10854,7 @@ public class Game extends GameShell {
 					clanMember = true;
 					break;
 				}
-				long nameHash = TextClass.longForName(player.name);
+				long nameHash = StringUtils.encodeBase37(player.name);
 				for (int f = 0; f < friendsCount; f++) {
 					if (nameHash != friendsListAsLongs[f]
 							|| friendsNodeIDs[f] == 0) {
@@ -11351,7 +11351,7 @@ public class Game extends GameShell {
 			j += 15;
 			boldText.drawTextWithPotentialShadow(true, c / 2 - 88, 0xffffff,
 					"Password: "
-							+ TextClass.passwordAsterisks(myPassword)
+							+ StringUtils.passwordAsterisks(myPassword)
 							+ ((loginScreenCursorPos == 1)
 									& (loopCycle % 40 < 20) ? "@yel@|" : ""), j);
 			j += 15;
@@ -12208,7 +12208,7 @@ public class Game extends GameShell {
 				anInt1193 = incoming.readIMEInt();
 				daysSinceLastLogin = incoming.readUShort();
 				if (anInt1193 != 0 && openInterfaceId == -1) {
-					Signlink.dnslookup(TextClass.method586(anInt1193));
+					Signlink.dnslookup(StringUtils.decodeIp(anInt1193));
 					clearTopInterfaces();
 					char character = '\u028A';
 					if (daysSinceRecovChange != 201 || membersInt == 1)
@@ -12672,7 +12672,7 @@ public class Game extends GameShell {
 				String s = incoming.readString();
 				if (s.endsWith(":tradereq:")) {
 					String s3 = s.substring(0, s.indexOf(":"));
-					long l17 = TextClass.longForName(s3);
+					long l17 = StringUtils.encodeBase37(s3);
 					boolean flag2 = false;
 					for (int j27 = 0; j27 < ignoreCount; j27++) {
 						if (ignoreListAsLongs[j27] != l17)
@@ -12684,14 +12684,14 @@ public class Game extends GameShell {
 						pushMessage("wishes to trade with you.", 4, s3);
 				} else if (s.endsWith(":clan:")) {
 					String s4 = s.substring(0, s.indexOf(":"));
-					TextClass.longForName(s4);
+					StringUtils.encodeBase37(s4);
 					pushMessage("Clan: ", 8, s4);
 				} else if (s.endsWith("#url#")) {
 					String link = s.substring(0, s.indexOf("#"));
 					pushMessage("Join us at: ", 9, link);
 				} else if (s.endsWith(":duelreq:")) {
 					String s4 = s.substring(0, s.indexOf(":"));
-					long l18 = TextClass.longForName(s4);
+					long l18 = StringUtils.encodeBase37(s4);
 					boolean flag3 = false;
 					for (int k27 = 0; k27 < ignoreCount; k27++) {
 						if (ignoreListAsLongs[k27] != l18)
@@ -12703,7 +12703,7 @@ public class Game extends GameShell {
 						pushMessage("wishes to duel with you.", 8, s4);
 				} else if (s.endsWith(":chalreq:")) {
 					String s5 = s.substring(0, s.indexOf(":"));
-					long l19 = TextClass.longForName(s5);
+					long l19 = StringUtils.encodeBase37(s5);
 					boolean flag4 = false;
 					for (int l27 = 0; l27 < ignoreCount; l27++) {
 						if (ignoreListAsLongs[l27] != l19)
@@ -12739,7 +12739,7 @@ public class Game extends GameShell {
 			case 50:
 				long l4 = incoming.readLong();
 				int i18 = incoming.readUnsignedByte();
-				String s7 = TextClass.fixName(TextClass.nameForLong(l4));
+				String s7 = StringUtils.formatUsername(StringUtils.decodeBase37(l4));
 				for (int k24 = 0; k24 < friendsCount; k24++) {
 					if (l4 != friendsListAsLongs[k24])
 						continue;
@@ -12898,18 +12898,18 @@ public class Game extends GameShell {
 									s9,
 									7,
 									"@cr2@"
-											+ TextClass.fixName(TextClass
-													.nameForLong(l5)));
+											+ StringUtils.formatUsername(StringUtils
+													.decodeBase37(l5)));
 						else if (l21 == 1)
 							pushMessage(
 									s9,
 									7,
 									"@cr1@"
-											+ TextClass.fixName(TextClass
-													.nameForLong(l5)));
+											+ StringUtils.formatUsername(StringUtils
+													.decodeBase37(l5)));
 						else
-							pushMessage(s9, 3, TextClass.fixName(TextClass
-									.nameForLong(l5)));
+							pushMessage(s9, 3, StringUtils.formatUsername(StringUtils
+									.decodeBase37(l5)));
 					} catch (Exception exception1) {
 						Signlink.reporterror("cde1");
 					}
