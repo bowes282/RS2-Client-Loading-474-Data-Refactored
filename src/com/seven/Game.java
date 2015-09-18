@@ -2371,37 +2371,12 @@ public class Game extends GameShell {
 								hitMarks[((Entity) (obj)).hitMarkTypes[j1]]
 										.drawSprite(spriteDrawX - 12,
 												spriteDrawY - 12);
-								if (Configuration.tenXHp) {
-									smallText
-											.drawText(
-													0,
-													String.valueOf(((Entity) (obj)).hitDamages[j1] * 10),
-													spriteDrawY + 4,
-													spriteDrawX);
-								} else {
-									smallText
-											.drawText(
-													0,
-													String.valueOf(((Entity) (obj)).hitDamages[j1]),
-													spriteDrawY + 4,
-													spriteDrawX);
-								}
-
-								if (Configuration.tenXHp) {
-									smallText
-											.drawText(
-													0xffffff,
-													String.valueOf(((Entity) (obj)).hitDamages[j1] * 10),
-													spriteDrawY + 3,
-													spriteDrawX - 1);
-								} else {
-									smallText
-											.drawText(
-													0xffffff,
-													String.valueOf(((Entity) (obj)).hitDamages[j1]),
-													spriteDrawY + 3,
-													spriteDrawX - 1);
-								}
+								
+								smallText.drawText(0, Configuration.tenXHp ? String.valueOf(((Entity) (obj)).hitDamages[j1] * 10) 
+										: String.valueOf(((Entity) (obj)).hitDamages[j1] * 1), spriteDrawY + 4, spriteDrawX);
+								
+								smallText.drawText(0xffffff, Configuration.tenXHp ?	String.valueOf(((Entity) (obj)).hitDamages[j1] * 10)
+										: String.valueOf(((Entity) (obj)).hitDamages[j1] * 1),	spriteDrawY + 3, spriteDrawX - 1);
 							}
 						}
 					}
