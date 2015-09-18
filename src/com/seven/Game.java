@@ -1097,10 +1097,10 @@ public class Game extends GameShell {
 			projectiles.clear();
 			Rasterizer.method366();
 			unlinkMRUNodes();
-			worldController.initToNull();
+			scene.initToNull();
 			System.gc();
 			for (int i = 0; i < 4; i++)
-				aClass11Array1230[i].initialize();
+				collisionMaps[i].initialize();
 			for (int l = 0; l < 4; l++) {
 				for (int k1 = 0; k1 < 104; k1++) {
 					for (int j2 = 0; j2 < 104; j2++)
@@ -1120,7 +1120,7 @@ public class Game extends GameShell {
 					if (abyte0 != null)
 						objectManager.method180(abyte0, k5, i4,
 								(anInt1069 - 6) * 8, (anInt1070 - 6) * 8,
-								aClass11Array1230);
+								collisionMaps);
 				}
 				for (int j4 = 0; j4 < k2; j4++) {
 					int l5 = (anIntArray1234[j4] >> 8) * 64 - regionBaseX;
@@ -1141,8 +1141,8 @@ public class Game extends GameShell {
 					if (abyte1 != null) {
 						int l8 = (anIntArray1234[i6] >> 8) * 64 - regionBaseX;
 						int k9 = (anIntArray1234[i6] & 0xff) * 64 - regionBaseY;
-						objectManager.method190(l8, aClass11Array1230, k9,
-								worldController, abyte1);
+						objectManager.method190(l8, collisionMaps, k9,
+								scene, abyte1);
 					}
 				}
 
@@ -1163,7 +1163,7 @@ public class Game extends GameShell {
 											|| aByteArrayArray1183[l11] == null)
 										continue;
 									objectManager.method179(i9, l9,
-											aClass11Array1230, k4 * 8,
+											collisionMaps, k4 * 8,
 											(j10 & 7) * 8,
 											aByteArrayArray1183[l11],
 											(l10 & 7) * 8, j3, j6 * 8);
@@ -1197,8 +1197,8 @@ public class Game extends GameShell {
 									if (anIntArray1234[k12] != j12
 											|| aByteArrayArray1247[k12] == null)
 										continue;
-									objectManager.method183(aClass11Array1230,
-											worldController, k10, j8 * 8,
+									objectManager.method183(collisionMaps,
+											scene, k10, j8 * 8,
 											(i12 & 7) * 8, l6,
 											aByteArrayArray1247[k12],
 											(k11 & 7) * 8, i11, j9 * 8);
@@ -1214,7 +1214,7 @@ public class Game extends GameShell {
 
 			}
 			outgoing.writeOpCode(0);
-			objectManager.method171(aClass11Array1230, worldController);
+			objectManager.method171(collisionMaps, scene);
 			gameScreenImageProducer.initDrawingArea();
 			outgoing.writeOpCode(0);
 			int k3 = MapRegion.anInt145;
@@ -1223,9 +1223,9 @@ public class Game extends GameShell {
 			if (k3 < plane - 1)
 				k3 = plane - 1;
 			if (lowMem)
-				worldController.method275(MapRegion.anInt145);
+				scene.method275(MapRegion.anInt145);
 			else
-				worldController.method275(0);
+				scene.method275(0);
 			for (int i5 = 0; i5 < 104; i5++) {
 				for (int i7 = 0; i7 < 104; i7++)
 					spawnGroundItem(i5, i7);
@@ -1325,9 +1325,9 @@ public class Game extends GameShell {
 			int i1 = 24628 + (103 - l) * 512 * 4;
 			for (int k1 = 1; k1 < 103; k1++) {
 				if ((byteGroundArray[i][k1][l] & 0x18) == 0)
-					worldController.method309(ai, i1, i, k1, l);
+					scene.method309(ai, i1, i, k1, l);
 				if (i < 3 && (byteGroundArray[i + 1][k1][l] & 8) != 0)
-					worldController.method309(ai, i1, i + 1, k1, l);
+					scene.method309(ai, i1, i + 1, k1, l);
 				i1 += 4;
 			}
 
@@ -1350,7 +1350,7 @@ public class Game extends GameShell {
 		anInt1071 = 0;
 		for (int k2 = 0; k2 < 104; k2++) {
 			for (int l2 = 0; l2 < 104; l2++) {
-				int i3 = worldController.method303(plane, k2, l2);
+				int i3 = scene.getFloorDecorationKey(plane, k2, l2);
 				if (i3 != 0) {
 					i3 = i3 >> 14 & 0x7fff;
 					int j3 = ObjectDefinition.lookup(i3).minimapFunction;
@@ -1372,7 +1372,7 @@ public class Game extends GameShell {
 	private void spawnGroundItem(int i, int j) {
 		Deque class19 = groundItems[plane][i][j];
 		if (class19 == null) {
-			worldController.method295(plane, i, j);
+			scene.method295(plane, i, j);
 			return;
 		}
 		int k = 0xfa0a1f01;
@@ -1406,7 +1406,7 @@ public class Game extends GameShell {
 		}
 
 		int i1 = i + (j << 7) + 0x60000000;
-		worldController.method281(i, i1, ((Renderable) (obj1)),
+		scene.method281(i, i1, ((Renderable) (obj1)),
 				method42(plane, j * 128 + 64, i * 128 + 64),
 				((Renderable) (obj2)), ((Renderable) (obj)), plane, j);
 	}
@@ -1430,7 +1430,7 @@ public class Game extends GameShell {
 			}
 			if (!npc.desc.clickable)
 				k += 0x80000000;
-			worldController.method285(plane, npc.anInt1552,
+			scene.method285(plane, npc.anInt1552,
 					method42(plane, npc.y, npc.x), k, npc.y,
 					(npc.boundDim - 1) * 64 + 60, npc.x, npc, npc.aBoolean1541);
 		}
@@ -3052,9 +3052,9 @@ public class Game extends GameShell {
 		myUsername = "mod wind";
 		myPassword = "test";
 		unlinkMRUNodes();
-		worldController.initToNull();
+		scene.initToNull();
 		for (int i = 0; i < 4; i++)
-			aClass11Array1230[i].initialize();
+			collisionMaps[i].initialize();
 		Arrays.fill(chatMessages, null);
 		System.gc();
 		stopMidi();
@@ -3154,7 +3154,7 @@ public class Game extends GameShell {
 					&& loopCycle < player.anInt1708) {
 				player.aBoolean1699 = false;
 				player.anInt1709 = method42(plane, player.y, player.x);
-				worldController.method286(plane, player.y, player,
+				scene.method286(plane, player.y, player,
 						player.anInt1552, player.anInt1722, player.x,
 						player.anInt1709, player.anInt1719, player.anInt1721,
 						i1, player.anInt1720);
@@ -3166,7 +3166,7 @@ public class Game extends GameShell {
 				anIntArrayArray929[j1][k1] = anInt1265;
 			}
 			player.anInt1709 = method42(plane, player.y, player.x);
-			worldController.method285(plane, player.anInt1552,
+			scene.method285(plane, player.anInt1552,
 					player.anInt1709, i1, player.y, 60, player.x, player,
 					player.aBoolean1541);
 		}
@@ -3293,9 +3293,9 @@ public class Game extends GameShell {
 	}
 
 	private void drawMapScenes(int i, int k, int l, int i1, int j1) {
-		int k1 = worldController.method300(j1, l, i);
+		int k1 = scene.getWallKey(j1, l, i);
 		if (k1 != 0) {
-			int l1 = worldController.method304(j1, l, i, k1);
+			int l1 = scene.method304(j1, l, i, k1);
 			int k2 = l1 >> 6 & 3;
 			int i3 = l1 & 0x1f;
 			int k3 = k;
@@ -3369,9 +3369,9 @@ public class Game extends GameShell {
 					}
 			}
 		}
-		k1 = worldController.method302(j1, l, i);
+		k1 = scene.getInteractableObjectKey(j1, l, i);
 		if (k1 != 0) {
-			int i2 = worldController.method304(j1, l, i, k1);
+			int i2 = scene.method304(j1, l, i, k1);
 			int l2 = i2 >> 6 & 3;
 			int j3 = i2 & 0x1f;
 			int l3 = k1 >> 14 & 0x7fff;
@@ -3403,7 +3403,7 @@ public class Game extends GameShell {
 				}
 			}
 		}
-		k1 = worldController.method303(j1, l, i);
+		k1 = scene.getFloorDecorationKey(j1, l, i);
 		if (k1 != 0) {
 			int j2 = k1 >> 14 & 0x7fff;
 			ObjectDefinition class46 = ObjectDefinition.lookup(j2);
@@ -3623,7 +3623,7 @@ public class Game extends GameShell {
 								player.x);
 				}
 				class30_sub2_sub4_sub4.method456(anInt945);
-				worldController.method285(plane,
+				scene.method285(plane,
 						class30_sub2_sub4_sub4.anInt1595,
 						(int) class30_sub2_sub4_sub4.aDouble1587, -1,
 						(int) class30_sub2_sub4_sub4.aDouble1586, 60,
@@ -4109,15 +4109,15 @@ public class Game extends GameShell {
 	}
 
 	private void method63() {
-		SpawnedObject class30_sub1 = (SpawnedObject) spawns
+		SpawnedObject spawnedObject = (SpawnedObject) spawns
 				.reverseGetFirst();
-		for (; class30_sub1 != null; class30_sub1 = (SpawnedObject) spawns
+		for (; spawnedObject != null; spawnedObject = (SpawnedObject) spawns
 				.reverseGetNext())
-			if (class30_sub1.getLongetivity == -1) {
-				class30_sub1.anInt1302 = 0;
-				method89(class30_sub1);
+			if (spawnedObject.getLongetivity == -1) {
+				spawnedObject.delay = 0;
+				method89(spawnedObject);
 			} else {
-				class30_sub1.unlink();
+				spawnedObject.unlink();
 			}
 
 	}
@@ -4229,7 +4229,7 @@ public class Game extends GameShell {
 
 	private boolean clickObject(int i, int j, int k) {
 		int i1 = i >> 14 & 0x7fff;
-		int j1 = worldController.method304(plane, k, j, i);
+		int j1 = scene.method304(plane, k, j, i);
 		if (j1 == -1)
 			return false;
 		int k1 = j1 & 0x1f;
@@ -4705,10 +4705,10 @@ public class Game extends GameShell {
 		}
 		if (action == 519)
 			if (!menuOpen)
-				worldController.method312(super.saveClickY - 4,
+				scene.method312(super.saveClickY - 4,
 						super.saveClickX - 4);
 			else
-				worldController.method312(second - 4, first - 4);
+				scene.method312(second - 4, first - 4);
 		if (action == 1062) {
 			anInt924 += regionBaseX;
 			if (anInt924 >= 113) {
@@ -5551,7 +5551,7 @@ public class Game extends GameShell {
 			if (l == j)
 				continue;
 			j = l;
-			if (k1 == 2 && worldController.method304(plane, i1, j1, l) >= 0) {
+			if (k1 == 2 && scene.method304(plane, i1, j1, l) >= 0) {
 				ObjectDefinition objectDef = ObjectDefinition.lookup(l1);
 				if (objectDef.childrenIDs != null)
 					objectDef = objectDef.method580();
@@ -5765,8 +5765,8 @@ public class Game extends GameShell {
 		anIntArray1236 = null;
 		intGroundArray = null;
 		byteGroundArray = null;
-		worldController = null;
-		aClass11Array1230 = null;
+		scene = null;
+		collisionMaps = null;
 		anIntArrayArray901 = null;
 		anIntArrayArray825 = null;
 		bigX = null;
@@ -6082,7 +6082,7 @@ public class Game extends GameShell {
 							for (int k1 = 0; k1 < 4; k1++) {
 								for (int i2 = 1; i2 < 103; i2++) {
 									for (int k2 = 1; k2 < 103; k2++) {
-										aClass11Array1230[k1].adjacencies[i2][k2] = 0;
+										collisionMaps[k1].adjacencies[i2][k2] = 0;
 									}
 								}
 							}
@@ -7794,7 +7794,7 @@ public class Game extends GameShell {
 		bigY[l3++] = j1;
 		boolean flag1 = false;
 		int j4 = bigX.length;
-		int ai[][] = aClass11Array1230[plane].adjacencies;
+		int ai[][] = collisionMaps[plane].adjacencies;
 		while (i4 != l3) {
 			j3 = bigX[i4];
 			k3 = bigY[i4];
@@ -7805,13 +7805,13 @@ public class Game extends GameShell {
 			}
 			if (i1 != 0) {
 				if ((i1 < 5 || i1 == 10)
-						&& aClass11Array1230[plane].method219(k2, j3, k3, j,
+						&& collisionMaps[plane].method219(k2, j3, k3, j,
 								i1 - 1, i2)) {
 					flag1 = true;
 					break;
 				}
 				if (i1 < 10
-						&& aClass11Array1230[plane].method220(k2, i2, k3,
+						&& collisionMaps[plane].method220(k2, i2, k3,
 								i1 - 1, j, j3)) {
 					flag1 = true;
 					break;
@@ -7819,7 +7819,7 @@ public class Game extends GameShell {
 			}
 			if (k1 != 0
 					&& k != 0
-					&& aClass11Array1230[plane].method221(i2, k2, j3, k, l1,
+					&& collisionMaps[plane].method221(i2, k2, j3, k, l1,
 							k1, k3)) {
 				flag1 = true;
 				break;
@@ -8250,27 +8250,27 @@ public class Game extends GameShell {
 		int k = 0;
 		int l = 0;
 		if (class30_sub1.anInt1296 == 0)
-			i = worldController.method300(class30_sub1.anInt1295,
-					class30_sub1.anInt1297, class30_sub1.anInt1298);
+			i = scene.getWallKey(class30_sub1.anInt1295,
+					class30_sub1.x, class30_sub1.y);
 		if (class30_sub1.anInt1296 == 1)
-			i = worldController.method301(class30_sub1.anInt1295,
-					class30_sub1.anInt1297, class30_sub1.anInt1298);
+			i = scene.getWallDecorationKey(class30_sub1.anInt1295,
+					class30_sub1.x, class30_sub1.y);
 		if (class30_sub1.anInt1296 == 2)
-			i = worldController.method302(class30_sub1.anInt1295,
-					class30_sub1.anInt1297, class30_sub1.anInt1298);
+			i = scene.getInteractableObjectKey(class30_sub1.anInt1295,
+					class30_sub1.x, class30_sub1.y);
 		if (class30_sub1.anInt1296 == 3)
-			i = worldController.method303(class30_sub1.anInt1295,
-					class30_sub1.anInt1297, class30_sub1.anInt1298);
+			i = scene.getFloorDecorationKey(class30_sub1.anInt1295,
+					class30_sub1.x, class30_sub1.y);
 		if (i != 0) {
-			int i1 = worldController.method304(class30_sub1.anInt1295,
-					class30_sub1.anInt1297, class30_sub1.anInt1298, i);
+			int i1 = scene.method304(class30_sub1.anInt1295,
+					class30_sub1.x, class30_sub1.y, i);
 			j = i >> 14 & 0x7fff;
 			k = i1 & 0x1f;
 			l = i1 >> 6;
 		}
 		class30_sub1.getPreviousId = j;
-		class30_sub1.anInt1301 = k;
-		class30_sub1.anInt1300 = l;
+		class30_sub1.previousType = k;
+		class30_sub1.previousOrientation = l;
 	}
 
 	void startUp() {
@@ -8309,9 +8309,9 @@ public class Game extends GameShell {
 					55);
 			byteGroundArray = new byte[4][104][104];
 			intGroundArray = new int[4][105][105];
-			worldController = new SceneGraph(intGroundArray);
+			scene = new SceneGraph(intGroundArray);
 			for (int j = 0; j < 4; j++)
-				aClass11Array1230[j] = new CollisionMap();
+				collisionMaps[j] = new CollisionMap();
 
 			minimapImage = new Sprite(512, 512);
 			CacheArchive streamLoader_6 = streamLoaderForName(5, "update list",
@@ -9199,7 +9199,7 @@ public class Game extends GameShell {
 				if (class30_sub2_sub4_sub3.aBoolean1567)
 					class30_sub2_sub4_sub3.unlink();
 				else
-					worldController.method285(class30_sub2_sub4_sub3.anInt1560,
+					scene.method285(class30_sub2_sub4_sub3.anInt1560,
 							0, class30_sub2_sub4_sub3.anInt1563, -1,
 							class30_sub2_sub4_sub3.anInt1562, 60,
 							class30_sub2_sub4_sub3.anInt1561,
@@ -10319,44 +10319,44 @@ public class Game extends GameShell {
 
 	private void method115() {
 		if (loadingStage == 2) {
-			for (SpawnedObject tempObject = (SpawnedObject) spawns
-					.reverseGetFirst(); tempObject != null; tempObject = (SpawnedObject) spawns
+			for (SpawnedObject spawnedObject = (SpawnedObject) spawns
+					.reverseGetFirst(); spawnedObject != null; spawnedObject = (SpawnedObject) spawns
 					.reverseGetNext()) {
-				if (tempObject.getLongetivity > 0)
-					tempObject.getLongetivity--;
-				if (tempObject.getLongetivity == 0) {
-					if (tempObject.getPreviousId < 0
-							|| MapRegion.method178(tempObject.getPreviousId,
-									tempObject.anInt1301)) {
-						method142(tempObject.anInt1298,
-								tempObject.anInt1295, tempObject.anInt1300,
-								tempObject.anInt1301, tempObject.anInt1297,
-								tempObject.anInt1296, tempObject.getPreviousId);
-						tempObject.unlink();
+				if (spawnedObject.getLongetivity > 0)
+					spawnedObject.getLongetivity--;
+				if (spawnedObject.getLongetivity == 0) {
+					if (spawnedObject.getPreviousId < 0
+							|| MapRegion.modelReady(spawnedObject.getPreviousId,
+									spawnedObject.previousType)) {
+						removeObject(spawnedObject.y,
+								spawnedObject.anInt1295, spawnedObject.previousOrientation,
+								spawnedObject.previousType, spawnedObject.x,
+								spawnedObject.anInt1296, spawnedObject.getPreviousId);
+						spawnedObject.unlink();
 					}
 				} else {
-					if (tempObject.anInt1302 > 0)
-						tempObject.anInt1302--;
-					if (tempObject.anInt1302 == 0
-							&& tempObject.anInt1297 >= 1
-							&& tempObject.anInt1298 >= 1
-							&& tempObject.anInt1297 <= 102
-							&& tempObject.anInt1298 <= 102
-							&& (tempObject.anInt1291 < 0 || MapRegion
-									.method178(tempObject.anInt1291,
-											tempObject.anInt1293))) {
-						method142(tempObject.anInt1298,
-								tempObject.anInt1295, tempObject.anInt1292,
-								tempObject.anInt1293, tempObject.anInt1297,
-								tempObject.anInt1296, tempObject.anInt1291);
-						tempObject.anInt1302 = -1;
-						if (tempObject.anInt1291 == tempObject.getPreviousId
-								&& tempObject.getPreviousId == -1)
-							tempObject.unlink();
-						else if (tempObject.anInt1291 == tempObject.getPreviousId
-								&& tempObject.anInt1292 == tempObject.anInt1300
-								&& tempObject.anInt1293 == tempObject.anInt1301)
-							tempObject.unlink();
+					if (spawnedObject.delay > 0)
+						spawnedObject.delay--;
+					if (spawnedObject.delay == 0
+							&& spawnedObject.x >= 1
+							&& spawnedObject.y >= 1
+							&& spawnedObject.x <= 102
+							&& spawnedObject.y <= 102
+							&& (spawnedObject.id < 0 || MapRegion
+									.modelReady(spawnedObject.id,
+											spawnedObject.type))) {
+						removeObject(spawnedObject.y,
+								spawnedObject.anInt1295, spawnedObject.orientation,
+								spawnedObject.type, spawnedObject.x,
+								spawnedObject.anInt1296, spawnedObject.id);
+						spawnedObject.delay = -1;
+						if (spawnedObject.id == spawnedObject.getPreviousId
+								&& spawnedObject.getPreviousId == -1)
+							spawnedObject.unlink();
+						else if (spawnedObject.id == spawnedObject.getPreviousId
+								&& spawnedObject.orientation == spawnedObject.previousOrientation
+								&& spawnedObject.type == spawnedObject.previousType)
+							spawnedObject.unlink();
 					}
 				}
 			}
@@ -11069,33 +11069,33 @@ public class Game extends GameShell {
 
 	private void method130(int j, int k, int l, int i1, int j1, int k1, int l1,
 			int i2, int j2) {
-		SpawnedObject class30_sub1 = null;
-		for (SpawnedObject class30_sub1_1 = (SpawnedObject) spawns
-				.reverseGetFirst(); class30_sub1_1 != null; class30_sub1_1 = (SpawnedObject) spawns
+		SpawnedObject spawnedObject = null;
+		for (SpawnedObject spawn = (SpawnedObject) spawns
+				.reverseGetFirst(); spawn != null; spawn = (SpawnedObject) spawns
 				.reverseGetNext()) {
-			if (class30_sub1_1.anInt1295 != l1
-					|| class30_sub1_1.anInt1297 != i2
-					|| class30_sub1_1.anInt1298 != j1
-					|| class30_sub1_1.anInt1296 != i1)
+			if (spawn.anInt1295 != l1
+					|| spawn.x != i2
+					|| spawn.y != j1
+					|| spawn.anInt1296 != i1)
 				continue;
-			class30_sub1 = class30_sub1_1;
+			spawnedObject = spawn;
 			break;
 		}
 
-		if (class30_sub1 == null) {
-			class30_sub1 = new SpawnedObject();
-			class30_sub1.anInt1295 = l1;
-			class30_sub1.anInt1296 = i1;
-			class30_sub1.anInt1297 = i2;
-			class30_sub1.anInt1298 = j1;
-			method89(class30_sub1);
-			spawns.insertHead(class30_sub1);
+		if (spawnedObject == null) {
+			spawnedObject = new SpawnedObject();
+			spawnedObject.anInt1295 = l1;
+			spawnedObject.anInt1296 = i1;
+			spawnedObject.x = i2;
+			spawnedObject.y = j1;
+			method89(spawnedObject);
+			spawns.insertHead(spawnedObject);
 		}
-		class30_sub1.anInt1291 = k;
-		class30_sub1.anInt1293 = k1;
-		class30_sub1.anInt1292 = l;
-		class30_sub1.anInt1302 = j2;
-		class30_sub1.getLongetivity = j;
+		spawnedObject.id = k;
+		spawnedObject.type = k1;
+		spawnedObject.orientation = l;
+		spawnedObject.delay = j2;
+		spawnedObject.getLongetivity = j;
 	}
 
 	private boolean interfaceIsSelected(Widget class9) {
@@ -11542,7 +11542,7 @@ public class Game extends GameShell {
 				int l19 = intGroundArray[plane][j4 + 1][i7 + 1];
 				int k20 = intGroundArray[plane][j4][i7 + 1];
 				if (j16 == 0) {
-					Wall class10 = worldController.method296(plane, j4, i7);
+					Wall class10 = scene.method296(plane, j4, i7);
 					if (class10 != null) {
 						int k21 = class10.uid >> 14 & 0x7fff;
 						if (j12 == 2) {
@@ -11560,7 +11560,7 @@ public class Game extends GameShell {
 					}
 				}
 				if (j16 == 1) {
-					WallDecoration class26 = worldController.method297(j4, i7,
+					WallDecoration class26 = scene.method297(j4, i7,
 							plane);
 					if (class26 != null)
 						class26.aClass30_Sub2_Sub4_504 = new SceneObject(
@@ -11568,7 +11568,7 @@ public class Game extends GameShell {
 								j18, k20, j17, false);
 				}
 				if (j16 == 2) {
-					StaticObject class28 = worldController.method298(j4, i7,
+					StaticObject class28 = scene.method298(j4, i7,
 							plane);
 					if (j12 == 11)
 						j12 = 10;
@@ -11578,7 +11578,7 @@ public class Game extends GameShell {
 								j18, k20, j17, false);
 				}
 				if (j16 == 3) {
-					GroundDecoration class49 = worldController.method299(i7,
+					GroundDecoration class49 = scene.method299(i7,
 							j4, plane);
 					if (class49 != null)
 						class49.aClass30_Sub2_Sub4_814 = new SceneObject(
@@ -11910,57 +11910,57 @@ public class Game extends GameShell {
 		}
 	}
 
-	private void method142(int i, int j, int k, int l, int i1, int j1, int k1) {
-		if (i1 >= 1 && i >= 1 && i1 <= 102 && i <= 102) {
-			if (lowMem && j != plane)
+	private void removeObject(int y, int z, int k, int l, int x, int group, int k1) {
+		if (x >= 1 && y >= 1 && x <= 102 && y <= 102) {
+			if (lowMem && z != plane)
 				return;
-			int i2 = 0;
-			if (j1 == 0)
-				i2 = worldController.method300(j, i1, i);
-			if (j1 == 1)
-				i2 = worldController.method301(j, i1, i);
-			if (j1 == 2)
-				i2 = worldController.method302(j, i1, i);
-			if (j1 == 3)
-				i2 = worldController.method303(j, i1, i);
-			if (i2 != 0) {
-				int i3 = worldController.method304(j, i1, i, i2);
-				int j2 = i2 >> 14 & 0x7fff;
-				int k2 = i3 & 0x1f;
-				int l2 = i3 >> 6;
-				if (j1 == 0) {
-					worldController.method291(i1, j, i, (byte) -119);
-					ObjectDefinition class46 = ObjectDefinition.lookup(j2);
-					if (class46.solid)
-						aClass11Array1230[j].method215(l2, k2,
-								class46.impenetrable, i1, i);
+			int key = 0;
+			if (group == 0)
+				key = scene.getWallKey(z, x, y);
+			if (group == 1)
+				key = scene.getWallDecorationKey(z, x, y);
+			if (group == 2)
+				key = scene.getInteractableObjectKey(z, x, y);
+			if (group == 3)
+				key = scene.getFloorDecorationKey(z, x, y);
+			if (key != 0) {
+				int config = scene.method304(z, x, y, key);
+				int id = key >> 14 & 0x7fff;
+				int objectType = config & 0x1f;
+				int orientation = config >> 6;
+				if (group == 0) {
+					scene.removeWall(x, z, y, (byte) -119);
+					ObjectDefinition objectDef = ObjectDefinition.lookup(id);
+					if (objectDef.solid)
+						collisionMaps[z].removeObject(orientation, objectType,
+								objectDef.impenetrable, x, y);
 				}
-				if (j1 == 1)
-					worldController.method292(i, j, i1);
-				if (j1 == 2) {
-					worldController.method293(j, i1, i);
-					ObjectDefinition class46_1 = ObjectDefinition.lookup(j2);
-					if (i1 + class46_1.width > 103 || i + class46_1.width > 103
-							|| i1 + class46_1.length > 103
-							|| i + class46_1.length > 103)
+				if (group == 1)
+					scene.removeWallDecoration(y, z, x);
+				if (group == 2) {
+					scene.removeObject(z, x, y);
+					ObjectDefinition objectDef = ObjectDefinition.lookup(id);
+					if (x + objectDef.width > 103 || y + objectDef.width > 103
+							|| x + objectDef.length > 103
+							|| y + objectDef.length > 103)
 						return;
-					if (class46_1.solid)
-						aClass11Array1230[j].method216(l2, class46_1.width, i1,
-								i, class46_1.length, class46_1.impenetrable);
+					if (objectDef.solid)
+						collisionMaps[z].method216(orientation, objectDef.width, x,
+								y, objectDef.length, objectDef.impenetrable);
 				}
-				if (j1 == 3) {
-					worldController.method294(j, i, i1);
-					ObjectDefinition class46_2 = ObjectDefinition.lookup(j2);
-					if (class46_2.solid && class46_2.isInteractive)
-						aClass11Array1230[j].method218(i, i1);
+				if (group == 3) {
+					scene.removeFloorDecoration(z, y, x);
+					ObjectDefinition objectDef = ObjectDefinition.lookup(id);
+					if (objectDef.solid && objectDef.isInteractive)
+						collisionMaps[z].removeFloorDecoration(y, x);
 				}
 			}
 			if (k1 >= 0) {
-				int j3 = j;
-				if (j3 < 3 && (byteGroundArray[1][i1][i] & 2) == 2)
+				int j3 = z;
+				if (j3 < 3 && (byteGroundArray[1][x][y] & 2) == 2)
 					j3++;
-				MapRegion.method188(worldController, k, i, l, j3,
-						aClass11Array1230[j], intGroundArray, i1, k1, j);
+				MapRegion.method188(scene, k, y, l, j3,
+						collisionMaps[z], intGroundArray, x, k1, z);
 			}
 		}
 	}
@@ -12264,10 +12264,10 @@ public class Game extends GameShell {
 				for (SpawnedObject class30_sub1 = (SpawnedObject) spawns
 						.reverseGetFirst(); class30_sub1 != null; class30_sub1 = (SpawnedObject) spawns
 						.reverseGetNext())
-					if (class30_sub1.anInt1297 >= anInt1268
-							&& class30_sub1.anInt1297 < anInt1268 + 8
-							&& class30_sub1.anInt1298 >= anInt1269
-							&& class30_sub1.anInt1298 < anInt1269 + 8
+					if (class30_sub1.x >= anInt1268
+							&& class30_sub1.x < anInt1268 + 8
+							&& class30_sub1.y >= anInt1269
+							&& class30_sub1.y < anInt1269 + 8
 							&& class30_sub1.anInt1295 == plane)
 						class30_sub1.getLongetivity = 0;
 				opCode = -1;
@@ -12597,12 +12597,12 @@ public class Game extends GameShell {
 				for (SpawnedObject class30_sub1_1 = (SpawnedObject) spawns
 						.reverseGetFirst(); class30_sub1_1 != null; class30_sub1_1 = (SpawnedObject) spawns
 						.reverseGetNext()) {
-					class30_sub1_1.anInt1297 -= i17;
-					class30_sub1_1.anInt1298 -= j21;
-					if (class30_sub1_1.anInt1297 < 0
-							|| class30_sub1_1.anInt1298 < 0
-							|| class30_sub1_1.anInt1297 >= 104
-							|| class30_sub1_1.anInt1298 >= 104)
+					class30_sub1_1.x -= i17;
+					class30_sub1_1.y -= j21;
+					if (class30_sub1_1.x < 0
+							|| class30_sub1_1.y < 0
+							|| class30_sub1_1.x >= 104
+							|| class30_sub1_1.y >= 104)
 						class30_sub1_1.unlink();
 				}
 				if (destinationX != 0) {
@@ -13372,9 +13372,9 @@ public class Game extends GameShell {
 		Model.anInt1686 = super.mouseY
 				- (frameMode == ScreenMode.FIXED ? 4 : 0);
 		Raster.clear();
-		worldController.method313(xCameraPos, yCameraPos, xCameraCurve,
+		scene.method313(xCameraPos, yCameraPos, xCameraCurve,
 				zCameraPos, j, yCameraCurve);
-		worldController.clearObj5Cache();
+		scene.clearObj5Cache();
 		if (Configuration.enableFog) {
 			double fogDistance = Math.sqrt(Math.pow(zCameraPos, 2));
 			int fogStartDistance = 1330;
@@ -13873,7 +13873,7 @@ public class Game extends GameShell {
 		tabID = 3;
 		inputTaken = false;
 		songChanging = true;
-		aClass11Array1230 = new CollisionMap[4];
+		collisionMaps = new CollisionMap[4];
 		anIntArray1240 = new int[100];
 		trackLoops = new int[50];
 		aBoolean1242 = false;
@@ -13990,7 +13990,7 @@ public class Game extends GameShell {
 	private final String[] chatNames;
 	private final String[] chatMessages;
 	private int anInt945;
-	private SceneGraph worldController;
+	private SceneGraph scene;
 	private Sprite[] sideIcons;
 	private int menuScreenArea;
 	private int menuOffsetX;
@@ -14250,7 +14250,7 @@ public class Game extends GameShell {
 	private int nextSong;
 	private boolean songChanging;
 	private final int[] minimapLineWidth;
-	private CollisionMap[] aClass11Array1230;
+	private CollisionMap[] collisionMaps;
 	public static int BIT_MASKS[];
 	private int[] anIntArray1234;
 	private int[] anIntArray1235;

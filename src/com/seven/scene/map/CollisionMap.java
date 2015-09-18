@@ -186,7 +186,7 @@ public final class CollisionMap {
 		adjacencies[x][y] |= value;
 	}
 
-	public void method215(int i, int j, boolean flag, int k, int l) {
+	public void removeObject(int i, int j, boolean flag, int k, int l) {
 		k -= xOffset;
 		l -= yOffset;
 		if (j == 0) {
@@ -334,7 +334,7 @@ public final class CollisionMap {
 		adjacencies[j][k] &= 0xffffff - i;
 	}
 
-	public void method218(int j, int k) {
+	public void removeFloorDecoration(int j, int k) {
 		k -= xOffset;
 		j -= yOffset;
 		adjacencies[k][j] &= 0xdfffff;

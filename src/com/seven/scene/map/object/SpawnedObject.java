@@ -8,16 +8,16 @@ public final class SpawnedObject extends Linkable {
 		getLongetivity = -1;
 	}
 
-	public int anInt1291;
-	public int anInt1292;
-	public int anInt1293;
+	public int id;
+	public int orientation;
+	public int type;
 	public int getLongetivity;
 	public int anInt1295;
 	public int anInt1296;
-	public int anInt1297;
-	public int anInt1298;
+	public int x;
+	public int y;
 	public int getPreviousId;
-	public int anInt1300;
-	public int anInt1301;
-	public int anInt1302;
+	public int previousOrientation;
+	public int previousType;
+	public int delay;
 }

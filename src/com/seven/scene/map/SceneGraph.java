@@ -382,7 +382,7 @@ public final class SceneGraph {
 		}
 	}
 
-	public void method291(int i, int j, int k, byte byte0) {
+	public void removeWall(int i, int j, int k, byte byte0) {
 		Tile class30_sub3 = groundArray[j][i][k];
 		if (byte0 != -119)
 			aBoolean434 = !aBoolean434;
@@ -391,14 +391,14 @@ public final class SceneGraph {
 		}
 	}
 
-	public void method292(int j, int k, int l) {
+	public void removeWallDecoration(int j, int k, int l) {
 		Tile class30_sub3 = groundArray[k][l][j];
 		if (class30_sub3 != null) {
 			class30_sub3.obj2 = null;
 		}
 	}
 
-	public void method293(int i, int k, int l) {
+	public void removeObject(int i, int k, int l) {
 		Tile class30_sub3 = groundArray[i][k][l];
 		if (class30_sub3 == null)
 			return;
@@ -412,7 +412,7 @@ public final class SceneGraph {
 
 	}
 
-	public void method294(int i, int j, int k) {
+	public void removeFloorDecoration(int i, int j, int k) {
 		Tile class30_sub3 = groundArray[i][k][j];
 		if (class30_sub3 == null)
 			return;
@@ -462,7 +462,7 @@ public final class SceneGraph {
 			return class30_sub3.obj3;
 	}
 
-	public int method300(int i, int j, int k) {
+	public int getWallKey(int i, int j, int k) {
 		Tile class30_sub3 = groundArray[i][j][k];
 		if (class30_sub3 == null || class30_sub3.obj1 == null)
 			return 0;
@@ -470,7 +470,7 @@ public final class SceneGraph {
 			return class30_sub3.obj1.uid;
 	}
 
-	public int method301(int i, int j, int l) {
+	public int getWallDecorationKey(int i, int j, int l) {
 		Tile class30_sub3 = groundArray[i][j][l];
 		if (class30_sub3 == null || class30_sub3.obj2 == null)
 			return 0;
@@ -478,7 +478,7 @@ public final class SceneGraph {
 			return class30_sub3.obj2.uid;
 	}
 
-	public int method302(int i, int j, int k) {
+	public int getInteractableObjectKey(int i, int j, int k) {
 		Tile class30_sub3 = groundArray[i][j][k];
 		if (class30_sub3 == null)
 			return 0;
@@ -491,7 +491,7 @@ public final class SceneGraph {
 		return 0;
 	}
 
-	public int method303(int i, int j, int k) {
+	public int getFloorDecorationKey(int i, int j, int k) {
 		Tile class30_sub3 = groundArray[i][j][k];
 		if (class30_sub3 == null || class30_sub3.obj3 == null)
 			return 0;

@@ -689,7 +689,7 @@ public final class MapRegion {
 		}
 		if (type == 5) {
 			int i4 = 16;
-			int k4 = scene.method300(z, x, y);
+			int k4 = scene.getWallKey(z, x, y);
 			if (k4 > 0)
 				i4 = ObjectDefinition.lookup(k4 >> 14 & 0x7fff).decorDisplacement;
 			Object obj13;
@@ -762,7 +762,7 @@ public final class MapRegion {
 		return (hue / 4 << 10) + (saturation / 32 << 7) + luminance / 2;
 	}
 
-	public static boolean method178(int i, int j) {
+	public static boolean modelReady(int i, int j) {
 		ObjectDefinition class46 = ObjectDefinition.lookup(i);
 		if (j == 11)
 			j = 10;
@@ -1115,7 +1115,7 @@ public final class MapRegion {
 		}
 		if (k == 5) {
 			int j4 = 16;
-			int l4 = worldController.method300(k1, i1, j);
+			int l4 = worldController.getWallKey(k1, i1, j);
 			if (l4 > 0)
 				j4 = ObjectDefinition.lookup(l4 >> 14 & 0x7fff).decorDisplacement;
 			Object obj13;
