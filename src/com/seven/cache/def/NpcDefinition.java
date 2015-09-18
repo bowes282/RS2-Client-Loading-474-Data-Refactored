@@ -108,9 +108,9 @@ public final class NpcDefinition {
 			int low = varBit.getLow();
 			int high = varBit.getHigh();
 			int mask = Game.BIT_MASKS[high - low];
-			child = clientInstance.variousSettings[variable] >> low & mask;
+			child = clientInstance.settings[variable] >> low & mask;
 		} else if (settingId != -1)
-			child = clientInstance.variousSettings[settingId];
+			child = clientInstance.settings[settingId];
 		if (child < 0 || child >= childrenIDs.length
 				|| childrenIDs[child] == -1)
 			return null;

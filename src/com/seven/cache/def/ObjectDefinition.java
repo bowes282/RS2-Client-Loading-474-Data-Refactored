@@ -265,9 +265,9 @@ public final class ObjectDefinition {
 			int k = varBit.getLow();
 			int l = varBit.getHigh();
 			int i1 = Game.BIT_MASKS[l - k];
-			i = clientInstance.variousSettings[j] >> k & i1;
+			i = clientInstance.settings[j] >> k & i1;
 		} else if (varp != -1)
-			i = clientInstance.variousSettings[varp];
+			i = clientInstance.settings[varp];
 		if (i < 0 || i >= childrenIDs.length || childrenIDs[i] == -1)
 			return null;
 		else

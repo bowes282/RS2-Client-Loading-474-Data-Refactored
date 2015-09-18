@@ -2091,7 +2091,7 @@ public class Game extends GameShell {
 		int j = VariableParameter.parameters[i].anInt709;
 		if (j == 0)
 			return;
-		int k = variousSettings[i];
+		int k = settings[i];
 		if (j == 1) {
 			if (k == 1)
 				Rasterizer.method372(0.90000000000000002D);
@@ -5083,8 +5083,8 @@ public class Game extends GameShell {
 			Widget class9_2 = Widget.interfaceCache[second];
 			if (class9_2.scripts != null && class9_2.scripts[0][0] == 5) {
 				int i2 = class9_2.scripts[0][1];
-				if (variousSettings[i2] != class9_2.scriptDefaults[0]) {
-					variousSettings[i2] = class9_2.scriptDefaults[0];
+				if (settings[i2] != class9_2.scriptDefaults[0]) {
+					settings[i2] = class9_2.scriptDefaults[0];
 					adjustVolume(i2);
 				}
 			}
@@ -5431,7 +5431,7 @@ public class Game extends GameShell {
 			Widget class9_3 = Widget.interfaceCache[second];
 			if (class9_3.scripts != null && class9_3.scripts[0][0] == 5) {
 				int l2 = class9_3.scripts[0][1];
-				variousSettings[l2] = 1 - variousSettings[l2];
+				settings[l2] = 1 - settings[l2];
 				adjustVolume(l2);
 			}
 		}
@@ -5788,7 +5788,7 @@ public class Game extends GameShell {
 		menuActionTypes = null;
 		selectedMenuActions = null;
 		menuActionText = null;
-		variousSettings = null;
+		settings = null;
 		minimapHintX = null;
 		minimapHintY = null;
 		minimapHint = null;
@@ -5962,8 +5962,8 @@ public class Game extends GameShell {
 							int amt = Integer.parseInt(inputString
 									.substring(12));
 							anIntArray1045[300] = amt;
-							if (variousSettings[300] != amt) {
-								variousSettings[300] = amt;
+							if (settings[300] != amt) {
+								settings[300] = amt;
 								adjustVolume(300);
 								if (dialogueId != -1)
 									inputTaken = true;
@@ -9498,12 +9498,12 @@ public class Game extends GameShell {
 										&& childInterface.id != 12171
 										&& childInterface.id != 12172)
 									text = text.substring(0, k7)
-											+ formatCoins(parseInterfaceOpcode(
+											+ formatCoins(executeScript(
 													childInterface, 0))
 											+ text.substring(k7 + 2);
 								else
 									text = text.substring(0, k7)
-											+ interfaceIntToString(parseInterfaceOpcode(
+											+ interfaceIntToString(executeScript(
 													childInterface, 0))
 											+ text.substring(k7 + 2);
 							} while (true);
@@ -9512,7 +9512,7 @@ public class Game extends GameShell {
 								if (l7 == -1)
 									break;
 								text = text.substring(0, l7)
-										+ interfaceIntToString(parseInterfaceOpcode(
+										+ interfaceIntToString(executeScript(
 												childInterface, 1))
 										+ text.substring(l7 + 2);
 							} while (true);
@@ -9521,7 +9521,7 @@ public class Game extends GameShell {
 								if (i8 == -1)
 									break;
 								text = text.substring(0, i8)
-										+ interfaceIntToString(parseInterfaceOpcode(
+										+ interfaceIntToString(executeScript(
 												childInterface, 2))
 										+ text.substring(i8 + 2);
 							} while (true);
@@ -9530,7 +9530,7 @@ public class Game extends GameShell {
 								if (j8 == -1)
 									break;
 								text = text.substring(0, j8)
-										+ interfaceIntToString(parseInterfaceOpcode(
+										+ interfaceIntToString(executeScript(
 												childInterface, 3))
 										+ text.substring(j8 + 2);
 							} while (true);
@@ -9539,7 +9539,7 @@ public class Game extends GameShell {
 								if (k8 == -1)
 									break;
 								text = text.substring(0, k8)
-										+ interfaceIntToString(parseInterfaceOpcode(
+										+ interfaceIntToString(executeScript(
 												childInterface, 4))
 										+ text.substring(k8 + 2);
 							} while (true);
@@ -9668,7 +9668,7 @@ public class Game extends GameShell {
 								if (index == -1)
 									break;
 								text = text.substring(0, index)
-										+ interfaceIntToString(parseInterfaceOpcode(
+										+ interfaceIntToString(executeScript(
 												childInterface, 0))
 										+ text.substring(index + 2);
 							} while (true);
@@ -9677,7 +9677,7 @@ public class Game extends GameShell {
 								if (index == -1)
 									break;
 								text = text.substring(0, index)
-										+ interfaceIntToString(parseInterfaceOpcode(
+										+ interfaceIntToString(executeScript(
 												childInterface, 1))
 										+ text.substring(index + 2);
 							} while (true);
@@ -9686,7 +9686,7 @@ public class Game extends GameShell {
 								if (index == -1)
 									break;
 								text = text.substring(0, index)
-										+ interfaceIntToString(parseInterfaceOpcode(
+										+ interfaceIntToString(executeScript(
 												childInterface, 2))
 										+ text.substring(index + 2);
 							} while (true);
@@ -9695,7 +9695,7 @@ public class Game extends GameShell {
 								if (index == -1)
 									break;
 								text = text.substring(0, index)
-										+ interfaceIntToString(parseInterfaceOpcode(
+										+ interfaceIntToString(executeScript(
 												childInterface, 3))
 										+ text.substring(index + 2);
 							} while (true);
@@ -9704,7 +9704,7 @@ public class Game extends GameShell {
 								if (index == -1)
 									break;
 								text = text.substring(0, index)
-										+ interfaceIntToString(parseInterfaceOpcode(
+										+ interfaceIntToString(executeScript(
 												childInterface, 4))
 										+ text.substring(index + 2);
 							} while (true);
@@ -9747,7 +9747,7 @@ public class Game extends GameShell {
 								if (k7 == -1)
 									break;
 								s2 = s2.substring(0, k7)
-										+ interfaceIntToString(parseInterfaceOpcode(
+										+ interfaceIntToString(executeScript(
 												childInterface, 0))
 										+ s2.substring(k7 + 2);
 							} while (true);
@@ -9756,7 +9756,7 @@ public class Game extends GameShell {
 								if (l7 == -1)
 									break;
 								s2 = s2.substring(0, l7)
-										+ interfaceIntToString(parseInterfaceOpcode(
+										+ interfaceIntToString(executeScript(
 												childInterface, 1))
 										+ s2.substring(l7 + 2);
 							} while (true);
@@ -9765,7 +9765,7 @@ public class Game extends GameShell {
 								if (i8 == -1)
 									break;
 								s2 = s2.substring(0, i8)
-										+ interfaceIntToString(parseInterfaceOpcode(
+										+ interfaceIntToString(executeScript(
 												childInterface, 2))
 										+ s2.substring(i8 + 2);
 							} while (true);
@@ -9774,7 +9774,7 @@ public class Game extends GameShell {
 								if (j8 == -1)
 									break;
 								s2 = s2.substring(0, j8)
-										+ interfaceIntToString(parseInterfaceOpcode(
+										+ interfaceIntToString(executeScript(
 												childInterface, 3))
 										+ s2.substring(j8 + 2);
 							} while (true);
@@ -9783,7 +9783,7 @@ public class Game extends GameShell {
 								if (k8 == -1)
 									break;
 								s2 = s2.substring(0, k8)
-										+ interfaceIntToString(parseInterfaceOpcode(
+										+ interfaceIntToString(executeScript(
 												childInterface, 4))
 										+ s2.substring(k8 + 2);
 							} while (true);
@@ -10601,107 +10601,107 @@ public class Game extends GameShell {
 			return super.getParameter(s);
 	}
 
-	private int parseInterfaceOpcode(Widget class9, int j) {
-		if (class9.scripts == null || j >= class9.scripts.length)
+	private int executeScript(Widget widget, int id) {
+		if (widget.scripts == null || id >= widget.scripts.length)
 			return -2;
 		try {
-			int ai[] = class9.scripts[j];
-			int k = 0;
-			int l = 0;
-			int i1 = 0;
+			int script[] = widget.scripts[id];
+			int accumulator = 0;
+			int counter = 0;
+			int operator = 0;
 			do {
-				int j1 = ai[l++];
-				int k1 = 0;
-				byte byte0 = 0;
-				if (j1 == 0)
-					return k;
-				if (j1 == 1)
-					k1 = currentStats[ai[l++]];
-				if (j1 == 2)
-					k1 = maxStats[ai[l++]];
-				if (j1 == 3)
-					k1 = currentExp[ai[l++]];
-				if (j1 == 4) {
-					Widget class9_1 = Widget.interfaceCache[ai[l++]];
-					int k2 = ai[l++];
-					if (k2 >= 0
-							&& k2 < ItemDefinition.item_count
-							&& (!ItemDefinition.lookup(k2).is_members_only || isMembers)) {
-						for (int j3 = 0; j3 < class9_1.inventoryItemId.length; j3++)
-							if (class9_1.inventoryItemId[j3] == k2 + 1)
-								k1 += class9_1.invStackSizes[j3];
+				int instruction = script[counter++];
+				int value = 0;
+				byte next = 0;
+				if (instruction == 0)
+					return accumulator;
+				if (instruction == 1)
+					value = currentStats[script[counter++]];
+				if (instruction == 2)
+					value = maximumLevels[script[counter++]];
+				if (instruction == 3)
+					value = currentExp[script[counter++]];
+				if (instruction == 4) {
+					Widget other = Widget.interfaceCache[script[counter++]];
+					int item = script[counter++];
+					if (item >= 0
+							&& item < ItemDefinition.item_count
+							&& (!ItemDefinition.lookup(item).is_members_only || isMembers)) {
+						for (int slot = 0; slot < other.inventoryItemId.length; slot++)
+							if (other.inventoryItemId[slot] == item + 1)
+								value += other.invStackSizes[slot];
 
 					}
 				}
-				if (j1 == 5)
-					k1 = variousSettings[ai[l++]];
-				if (j1 == 6)
-					k1 = anIntArray1019[maxStats[ai[l++]] - 1];
-				if (j1 == 7)
-					k1 = (variousSettings[ai[l++]] * 100) / 46875;
-				if (j1 == 8)
-					k1 = localPlayer.combatLevel;
-				if (j1 == 9) {
-					for (int l1 = 0; l1 < SkillConstants.SKILL_COUNT; l1++)
-						if (SkillConstants.ENABLED_SKILLS[l1])
-							k1 += maxStats[l1];
+				if (instruction == 5)
+					value = settings[script[counter++]];
+				if (instruction == 6)
+					value = SKILL_EXPERIENCE[maximumLevels[script[counter++]] - 1];
+				if (instruction == 7)
+					value = (settings[script[counter++]] * 100) / 46875;
+				if (instruction == 8)
+					value = localPlayer.combatLevel;
+				if (instruction == 9) {
+					for (int skill = 0; skill < SkillConstants.SKILL_COUNT; skill++)
+						if (SkillConstants.ENABLED_SKILLS[skill])
+							value += maximumLevels[skill];
 
 				}
-				if (j1 == 10) {
-					Widget class9_2 = Widget.interfaceCache[ai[l++]];
-					int l2 = ai[l++] + 1;
-					if (l2 >= 0 && l2 < ItemDefinition.item_count && isMembers) {
-						for (int k3 = 0; k3 < class9_2.inventoryItemId.length; k3++) {
-							if (class9_2.inventoryItemId[k3] != l2)
+				if (instruction == 10) {
+					Widget other = Widget.interfaceCache[script[counter++]];
+					int item = script[counter++] + 1;
+					if (item >= 0 && item < ItemDefinition.item_count && isMembers) {
+						for (int stored = 0; stored < other.inventoryItemId.length; stored++) {
+							if (other.inventoryItemId[stored] != item)
 								continue;
-							k1 = 0x3b9ac9ff;
+							value = 0x3b9ac9ff;
 							break;
 						}
 
 					}
 				}
-				if (j1 == 11)
-					k1 = energy;
-				if (j1 == 12)
-					k1 = weight;
-				if (j1 == 13) {
-					int i2 = variousSettings[ai[l++]];
-					int i3 = ai[l++];
-					k1 = (i2 & 1 << i3) == 0 ? 0 : 1;
+				if (instruction == 11)
+					value = runEnergy;
+				if (instruction == 12)
+					value = weight;
+				if (instruction == 13) {
+					int bool = settings[script[counter++]];
+					int shift = script[counter++];
+					value = (bool & 1 << shift) == 0 ? 0 : 1;
 				}
-				if (j1 == 14) {
-					int j2 = ai[l++];
-					VariableBits varBit = VariableBits.cache[j2];
-					int l3 = varBit.getSetting();
-					int i4 = varBit.getLow();
-					int j4 = varBit.getHigh();
-					int k4 = BIT_MASKS[j4 - i4];
-					k1 = variousSettings[l3] >> i4 & k4;
+				if (instruction == 14) {
+					int index = script[counter++];
+					VariableBits bits = VariableBits.cache[index];
+					int setting = bits.getSetting();
+					int low = bits.getLow();
+					int high = bits.getHigh();
+					int mask = BIT_MASKS[high - low];
+					value = settings[setting] >> low & mask;
 				}
-				if (j1 == 15)
-					byte0 = 1;
-				if (j1 == 16)
-					byte0 = 2;
-				if (j1 == 17)
-					byte0 = 3;
-				if (j1 == 18)
-					k1 = (localPlayer.x >> 7) + regionBaseX;
-				if (j1 == 19)
-					k1 = (localPlayer.y >> 7) + regionBaseY;
-				if (j1 == 20)
-					k1 = ai[l++];
-				if (byte0 == 0) {
-					if (i1 == 0)
-						k += k1;
-					if (i1 == 1)
-						k -= k1;
-					if (i1 == 2 && k1 != 0)
-						k /= k1;
-					if (i1 == 3)
-						k *= k1;
-					i1 = 0;
+				if (instruction == 15)
+					next = 1;
+				if (instruction == 16)
+					next = 2;
+				if (instruction == 17)
+					next = 3;
+				if (instruction == 18)
+					value = (localPlayer.x >> 7) + regionBaseX;
+				if (instruction == 19)
+					value = (localPlayer.y >> 7) + regionBaseY;
+				if (instruction == 20)
+					value = script[counter++];
+				if (next == 0) {
+					if (operator == 0)
+						accumulator += value;
+					if (operator == 1)
+						accumulator -= value;
+					if (operator == 2 && value != 0)
+						accumulator /= value;
+					if (operator == 3)
+						accumulator *= value;
+					operator = 0;
 				} else {
-					i1 = byte0;
+					operator = next;
 				}
 			} while (true);
 		} catch (Exception _ex) {
@@ -11077,7 +11077,7 @@ public class Game extends GameShell {
 		if (widget.scriptOperators == null)
 			return false;
 		for (int i = 0; i < widget.scriptOperators.length; i++) {
-			int j = parseInterfaceOpcode(widget, i);
+			int j = executeScript(widget, i);
 			int k = widget.scriptDefaults[i];
 			if (widget.scriptOperators[i] == 2) {
 				if (j >= k)
@@ -12066,8 +12066,8 @@ public class Game extends GameShell {
 			outgoing.writeShort(button);
 
 			if (widget.scripts != null && widget.scripts[0][0] == 5) {
-				if (variousSettings[toggle] != widget.scriptDefaults[0]) {
-					variousSettings[toggle] = widget.scriptDefaults[0];
+				if (settings[toggle] != widget.scriptDefaults[0]) {
+					settings[toggle] = widget.scriptDefaults[0];
 					adjustVolume(toggle);
 				}
 			}
@@ -12076,7 +12076,7 @@ public class Game extends GameShell {
 			outgoing.writeOpCode(185);
 			outgoing.writeShort(button);
 			if (widget.scripts != null && widget.scripts[0][0] == 5) {
-				variousSettings[toggle] = 1 - variousSettings[toggle];
+				settings[toggle] = 1 - settings[toggle];
 				adjustVolume(toggle);
 			}
 			switch (button) {
@@ -12101,8 +12101,8 @@ public class Game extends GameShell {
 	 */
 	public void sendConfiguration(int id, int state) {
 		anIntArray1045[id] = state;
-		if (variousSettings[id] != state) {
-			variousSettings[id] = state;
+		if (settings[id] != state) {
+			settings[id] = state;
 			adjustVolume(id);
 			if (dialogueId != -1)
 				inputTaken = true;
@@ -12330,10 +12330,10 @@ public class Game extends GameShell {
 						addToXPCounter(k1, xp);
 					currentExp[k1] = i10;
 					currentStats[k1] = l15;
-					maxStats[k1] = 1;
+					maximumLevels[k1] = 1;
 					for (int k20 = 0; k20 < 98; k20++)
-						if (i10 >= anIntArray1019[k20])
-							maxStats[k1] = k20 + 2;
+						if (i10 >= SKILL_EXPERIENCE[k20])
+							maximumLevels[k1] = k20 + 2;
 				}
 				opCode = -1;
 				return true;
@@ -12786,7 +12786,7 @@ public class Game extends GameShell {
 			case 110:
 				if (tabID == 12) {
 				}
-				energy = incoming.readUnsignedByte();
+				runEnergy = incoming.readUnsignedByte();
 				opCode = -1;
 				return true;
 
@@ -12858,9 +12858,9 @@ public class Game extends GameShell {
 				return true;
 
 			case 68:
-				for (int k5 = 0; k5 < variousSettings.length; k5++)
-					if (variousSettings[k5] != anIntArray1045[k5]) {
-						variousSettings[k5] = anIntArray1045[k5];
+				for (int k5 = 0; k5 < settings.length; k5++)
+					if (settings[k5] != anIntArray1045[k5]) {
+						settings[k5] = anIntArray1045[k5];
 						adjustVolume(k5);
 					}
 				opCode = -1;
@@ -13156,8 +13156,8 @@ public class Game extends GameShell {
 				int j8 = incoming.readLEUShort();
 				int l14 = incoming.readMEInt();
 				anIntArray1045[j8] = l14;
-				if (variousSettings[j8] != l14) {
-					variousSettings[j8] = l14;
+				if (settings[j8] != l14) {
+					settings[j8] = l14;
 					adjustVolume(j8);
 					if (dialogueId != -1)
 						inputTaken = true;
@@ -13169,8 +13169,8 @@ public class Game extends GameShell {
 				int k8 = incoming.readLEUShort();
 				byte byte0 = incoming.readSignedByte();
 				anIntArray1045[k8] = byte0;
-				if (variousSettings[k8] != byte0) {
-					variousSettings[k8] = byte0;
+				if (settings[k8] != byte0) {
+					settings[k8] = byte0;
 					adjustVolume(k8);
 					if (dialogueId != -1)
 						inputTaken = true;
@@ -13766,7 +13766,7 @@ public class Game extends GameShell {
 		anIntArray968 = new int[33];
 		anIntArray969 = new int[256];
 		indices = new Index[5];
-		variousSettings = new int[2000];
+		settings = new int[2000];
 		aBoolean972 = false;
 		anInt975 = 50;
 		anIntArray976 = new int[anInt975];
@@ -13789,7 +13789,7 @@ public class Game extends GameShell {
 		aBoolean1031 = false;
 		mapFunctions = new Sprite[100];
 		dialogueId = -1;
-		maxStats = new int[SkillConstants.SKILL_COUNT];
+		maximumLevels = new int[SkillConstants.SKILL_COUNT];
 		anIntArray1045 = new int[2000];
 		maleCharacter = true;
 		minimapLeft = new int[152];
@@ -13991,7 +13991,7 @@ public class Game extends GameShell {
 	private final int[] anIntArray968;
 	private final int[] anIntArray969;
 	public final Index[] indices;
-	public int variousSettings[];
+	public int settings[];
 	private boolean aBoolean972;
 	private final int anInt975;
 	private final int[] anIntArray976;
@@ -14040,7 +14040,7 @@ public class Game extends GameShell {
 	private int anInt1016;
 	private boolean aBoolean1017;
 	private int openWalkableInterface;
-	private static final int[] anIntArray1019;
+	private static final int[] SKILL_EXPERIENCE;
 	private int minimapState;
 	private int duplicateClickCount;
 	private int loadingStage;
@@ -14059,7 +14059,7 @@ public class Game extends GameShell {
 	private int anInt1040;
 	private int anInt1041;
 	private int dialogueId;
-	private final int[] maxStats;
+	private final int[] maximumLevels;
 	private final int[] anIntArray1045;
 	private int anInt1046;
 	private boolean maleCharacter;
@@ -14152,7 +14152,7 @@ public class Game extends GameShell {
 	private Sprite[] minimapHint;
 	private boolean aBoolean1141;
 	private static int anInt1142;
-	private int energy;
+	private int runEnergy;
 	private boolean continuedDialogue;
 	private Sprite[] crosses;
 	private Background[] aBackgroundArray1152s;
@@ -14352,13 +14352,13 @@ public class Game extends GameShell {
 	}
 
 	static {
-		anIntArray1019 = new int[99];
+		SKILL_EXPERIENCE = new int[99];
 		int i = 0;
 		for (int j = 0; j < 99; j++) {
 			int l = j + 1;
 			int i1 = (int) ((double) l + 300D * Math.pow(2D, (double) l / 7D));
 			i += i1;
-			anIntArray1019[j] = i / 4;
+			SKILL_EXPERIENCE[j] = i / 4;
 		}
 		BIT_MASKS = new int[32];
 		i = 2;

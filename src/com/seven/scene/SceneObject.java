@@ -32,11 +32,11 @@ public final class SceneObject extends Renderable {
 				int l = varBit.getLow();
 				int i1 = varBit.getHigh();
 				int j1 = Game.BIT_MASKS[i1 - l];
-				i = clientInstance.variousSettings[k] >> l & j1;
+				i = clientInstance.settings[k] >> l & j1;
 			} catch (Exception ex) {
 			}
 		} else if (anInt1602 != -1) {
-			i = clientInstance.variousSettings[anInt1602];
+			i = clientInstance.settings[anInt1602];
 		}
 		if (i < 0 || i >= anIntArray1600.length || anIntArray1600[i] == -1) {
 			return null;
