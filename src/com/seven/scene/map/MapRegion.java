@@ -965,7 +965,7 @@ public final class MapRegion {
 		return (i & 0xff80) + j;
 	}
 
-	public static void method188(SceneGraph worldController, int i, int j, int k, int l, CollisionMap class11, int ai[][][], int i1, int j1, int k1) {
+	public static void placeObject(SceneGraph worldController, int i, int j, int k, int l, CollisionMap class11, int ai[][][], int i1, int j1, int k1) {
 		int l1 = ai[l][i1][j];
 		int i2 = ai[l][i1 + 1][j];
 		int j2 = ai[l][i1 + 1][j + 1];

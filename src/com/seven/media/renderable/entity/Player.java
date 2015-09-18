@@ -25,17 +25,17 @@ public final class Player extends Entity {
 		model.fits_on_single_square = true;
 		if(aBoolean1699)
 			return model;
-		if(super.gfxId != -1 && super.anInt1521 != -1) {
+		if(super.gfxId != -1 && super.currentAnimation != -1) {
 			SpotAnimation spotAnim = SpotAnimation.cache[super.gfxId];
 			Model model_2 = spotAnim.getModel();
 			if(model_2 != null) {
-				Model model_3 = new Model(true, SequenceFrame.method532(super.anInt1521), false, model_2);
+				Model model_3 = new Model(true, SequenceFrame.method532(super.currentAnimation), false, model_2);
 				int nextFrame = spotAnim.animationSequence.anIntArray353[super.nextGraphicsAnimationFrame];
-				int cycle1 = spotAnim.animationSequence.anIntArray355[super.anInt1521];
+				int cycle1 = spotAnim.animationSequence.anIntArray355[super.currentAnimation];
 				int cycle2 = super.anInt1522;
-				model_3.translate(0, -super.anInt1524, 0);
+				model_3.translate(0, -super.graphicHeight, 0);
 				model_3.skin();
-				model_3.method470(spotAnim.animationSequence.anIntArray353[super.anInt1521], nextFrame, cycle1, cycle2);
+				model_3.method470(spotAnim.animationSequence.anIntArray353[super.currentAnimation], nextFrame, cycle1, cycle2);
 				model_3.faceGroups = null;
 				model_3.vertexGroups = null;
 				if(spotAnim.resizeXY != 128 || spotAnim.resizeZ != 128)
@@ -190,12 +190,12 @@ public final class Player extends Entity {
 			int nextFrame = -1;
 			int cycle1 = 0;
 			int cycle2 = 0;
-			if(super.emoteAnimation >= 0 && super.anInt1529 == 0) {
+			if(super.emoteAnimation >= 0 && super.animationDelay == 0) {
 				Animation animation = Animation.animations[super.emoteAnimation];
-				currentFrame = animation.anIntArray353[super.anInt1527];
+				currentFrame = animation.anIntArray353[super.displayedEmoteFrames];
 				nextFrame = animation.anIntArray353[super.nextAnimationFrame];
-				cycle1 = animation.anIntArray355[super.anInt1527];
-				cycle2 = super.anInt1528;
+				cycle1 = animation.anIntArray355[super.displayedEmoteFrames];
+				cycle2 = super.emoteTimeRemaining;
 			} else if(super.movementAnimation >= 0) {
 				Animation animation = Animation.animations[super.movementAnimation];
 				currentFrame = animation.anIntArray353[super.displayedMovementFrames];
@@ -214,13 +214,13 @@ public final class Player extends Entity {
 		int i1 = -1;
 		int j1 = -1;
 		int k1 = -1;
-		if(super.emoteAnimation >= 0 && super.anInt1529 == 0)
+		if(super.emoteAnimation >= 0 && super.animationDelay == 0)
 		{
 			Animation animation = Animation.animations[super.emoteAnimation];
-			currentFrame = animation.anIntArray353[super.anInt1527];
+			currentFrame = animation.anIntArray353[super.displayedEmoteFrames];
 			nextFrame = animation.anIntArray353[super.nextAnimationFrame];
-			cycle1 = animation.anIntArray355[super.anInt1527];
-			cycle2 = super.anInt1528;
+			cycle1 = animation.anIntArray355[super.displayedEmoteFrames];
+			cycle2 = super.emoteTimeRemaining;
 			if(super.movementAnimation >= 0 && super.movementAnimation != super.standAnimIndex)
 				i1 = Animation.animations[super.movementAnimation].anIntArray353[super.displayedMovementFrames];
 			if(animation.anInt360 >= 0)

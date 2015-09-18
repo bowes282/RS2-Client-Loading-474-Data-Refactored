@@ -309,7 +309,7 @@ public final class CollisionMap {
 		}
 	}
 
-	public void method216(int i, int j, int k, int l, int i1, boolean flag) {
+	public void removeObject(int i, int j, int k, int l, int i1, boolean flag) {
 		int j1 = 256;
 		if (flag)
 			j1 += 0x20000;

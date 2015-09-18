@@ -11,8 +11,8 @@ public final class Npc extends Entity {
 	public NpcDefinition desc;
 
 	private Model getAnimatedModel() {
-		if (super.emoteAnimation >= 0 && super.anInt1529 == 0) {
-			int emote = Animation.animations[super.emoteAnimation].anIntArray353[super.anInt1527];
+		if (super.emoteAnimation >= 0 && super.animationDelay == 0) {
+			int emote = Animation.animations[super.emoteAnimation].anIntArray353[super.displayedEmoteFrames];
 			int movement = -1;
 			if (super.movementAnimation >= 0 && super.movementAnimation != super.standAnimIndex)
 				movement = Animation.animations[super.movementAnimation].anIntArray353[super.displayedMovementFrames];
@@ -32,14 +32,14 @@ public final class Npc extends Entity {
 		if (animatedModel == null)
 			return null;
 		super.height = animatedModel.modelHeight;
-		if (super.gfxId != -1 && super.anInt1521 != -1) {
+		if (super.gfxId != -1 && super.currentAnimation != -1) {
 			SpotAnimation spotAnim = SpotAnimation.cache[super.gfxId];
 			Model graphicModel = spotAnim.getModel();
 			if (graphicModel != null) {
-				int frame = spotAnim.animationSequence.anIntArray353[super.anInt1521];
+				int frame = spotAnim.animationSequence.anIntArray353[super.currentAnimation];
 				Model model = new Model(true, SequenceFrame.method532(frame),
 						false, graphicModel);
-				model.translate(0, -super.anInt1524, 0);
+				model.translate(0, -super.graphicHeight, 0);
 				model.skin();
 				model.apply(frame);
 				model.faceGroups = null;

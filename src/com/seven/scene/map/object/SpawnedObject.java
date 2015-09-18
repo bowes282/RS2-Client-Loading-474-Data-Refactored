@@ -12,8 +12,8 @@ public final class SpawnedObject extends Linkable {
 	public int orientation;
 	public int type;
 	public int getLongetivity;
-	public int anInt1295;
-	public int anInt1296;
+	public int plane;
+	public int group;
 	public int x;
 	public int y;
 	public int getPreviousId;
