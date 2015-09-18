@@ -1096,7 +1096,7 @@ public class Game extends GameShell {
 			incompleteAnimables.clear();
 			projectiles.clear();
 			Rasterizer.method366();
-			unlinkMRUNodes();
+			unlinkCaches();
 			scene.initToNull();
 			System.gc();
 			for (int i = 0; i < 4; i++)
@@ -1240,7 +1240,7 @@ public class Game extends GameShell {
 			method63();
 		} catch (Exception exception) {
 		}
-		ObjectDefinition.mruNodes1.clear();
+		ObjectDefinition.baseModels.clear();
 		if (super.gameFrame != null) {
 			outgoing.writeOpCode(210);
 			outgoing.writeInt(0x3f008edd);
@@ -1305,14 +1305,14 @@ public class Game extends GameShell {
 		return frequencies.get(maxIndex);
 	}
 
-	private void unlinkMRUNodes() {
-		ObjectDefinition.mruNodes1.clear();
-		ObjectDefinition.mruNodes2.clear();
+	private void unlinkCaches() {
+		ObjectDefinition.baseModels.clear();
+		ObjectDefinition.models.clear();
 		NpcDefinition.modelCache.clear();
-		ItemDefinition.model_cache.clear();
-		ItemDefinition.image_cache.clear();
-		Player.mruNodes.clear();
-		SpotAnimation.memCache.clear();
+		ItemDefinition.models.clear();
+		ItemDefinition.sprites.clear();
+		Player.models.clear();
+		SpotAnimation.models.clear();
 	}
 
 	private void renderMapScene(int i) {
@@ -2101,7 +2101,7 @@ public class Game extends GameShell {
 				Rasterizer.method372(0.69999999999999996D);
 			if (k == 4)
 				Rasterizer.method372(0.59999999999999998D);
-			ItemDefinition.image_cache.clear();
+			ItemDefinition.sprites.clear();
 			welcomeScreenRaised = true;
 		}
 
@@ -3001,7 +3001,7 @@ public class Game extends GameShell {
 		loginScreenState = 0;
 		myUsername = "mod wind";
 		myPassword = "test";
-		unlinkMRUNodes();
+		unlinkCaches();
 		scene.initToNull();
 		for (int i = 0; i < 4; i++)
 			collisionMaps[i].initialize();
@@ -5792,10 +5792,10 @@ public class Game extends GameShell {
 		Widget.interfaceCache = null;
 		Animation.animations = null;
 		SpotAnimation.cache = null;
-		SpotAnimation.memCache = null;
+		SpotAnimation.models = null;
 		VariableParameter.parameters = null;
 		super.fullGameScreen = null;
-		Player.mruNodes = null;
+		Player.models = null;
 		Rasterizer.nullLoader();
 		SceneGraph.nullLoader();
 		Model.nullLoader();

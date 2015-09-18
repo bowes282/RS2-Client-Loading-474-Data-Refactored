@@ -58,7 +58,7 @@ public final class SpotAnimation {
 	}
 
 	public Model getModel() {
-		Model model = (Model) memCache.get(anInt404);
+		Model model = (Model) models.get(anInt404);
 		if (model != null)
 			return model;
 		model = Model.getModel(modelId);
@@ -68,7 +68,7 @@ public final class SpotAnimation {
 			if (originalModelColours[0] != 0)
 				model.recolor(originalModelColours[i], modifiedModelColours[i]);
 
-		memCache.put(model, anInt404);
+		models.put(model, anInt404);
 		return model;
 	}
 
@@ -92,5 +92,5 @@ public final class SpotAnimation {
 	public int rotation;
 	public int modelBrightness;
 	public int modelShadow;
-	public static ReferenceCache memCache = new ReferenceCache(30);
+	public static ReferenceCache models = new ReferenceCache(30);
 }

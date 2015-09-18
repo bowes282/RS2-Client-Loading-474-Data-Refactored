@@ -241,7 +241,7 @@ public final class Player extends Entity {
 			cycle1 = animation.anIntArray355[super.displayedMovementFrames];
 			cycle2 = super.anInt1519;
 		}
-		Model model_1 = (Model) mruNodes.get(l);
+		Model model_1 = (Model) models.get(l);
 		if(model_1 == null)
 		{
 			boolean flag = false;
@@ -261,7 +261,7 @@ public final class Player extends Entity {
 			if(flag)
 			{
 				if(aLong1697 != -1L)
-					model_1 = (Model) mruNodes.get(aLong1697);
+					model_1 = (Model) models.get(aLong1697);
 				if(model_1 == null)
 					return null;
 			}
@@ -303,7 +303,7 @@ public final class Player extends Entity {
 			model_1.skin();
 			model_1.scale(132, 132, 132);
 			model_1.light(72, 1300, -30, -50, -30, true);
-			mruNodes.put(model_1, l);
+			models.put(model_1, l);
 			aLong1697 = l;
 		}
 		if(aBoolean1699)
@@ -393,7 +393,7 @@ public final class Player extends Entity {
 	public int team;
 	private int anInt1702;
 	public String name;
-	public static ReferenceCache mruNodes = new ReferenceCache(260);
+	public static ReferenceCache models = new ReferenceCache(260);
 	public int combatLevel;
 	public int headIcon;
 	public int skullIcon;

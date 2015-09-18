@@ -16,8 +16,8 @@ import com.seven.scene.graphic.Rasterizer;
 public final class ItemDefinition {
 
 	public static void clearCache() {
-		model_cache = null;
-		image_cache = null;
+		models = null;
+		sprites = null;
 		streamIndices = null;
 		cache = null;
 		item_data = null;
@@ -232,7 +232,7 @@ public final class ItemDefinition {
 
 	public static Sprite getSprite(int itemId, int stackSize, int outlineColor) {
 		if (outlineColor == 0) {
-			Sprite sprite = (Sprite) image_cache.get(itemId);
+			Sprite sprite = (Sprite) sprites.get(itemId);
 			if (sprite != null && sprite.maxHeight != stackSize
 					&& sprite.maxHeight != -1) {
 
@@ -350,7 +350,7 @@ public final class ItemDefinition {
 			sprite.maxHeight = old_h;
 		}
 		if (outlineColor == 0)
-			image_cache.put(enabledSprite, itemId);
+			sprites.put(enabledSprite, itemId);
 		Raster.initDrawingArea(height, width, pixels, depthBuffer);
 		Raster.setDrawingArea(vp_bottom, vp_left, vp_right, vp_top);
 		Rasterizer.textureInt1 = centerX;
@@ -376,7 +376,7 @@ public final class ItemDefinition {
 			if (stack_item_id != -1)
 				return lookup(stack_item_id).getModel(1);
 		}
-		Model model = (Model) model_cache.get(id);
+		Model model = (Model) models.get(id);
 		if (model != null)
 			return model;
 		model = Model.getModel(inventory_model);
@@ -393,7 +393,7 @@ public final class ItemDefinition {
 		}
 		model.light(64 + light_intensity, 768 + light_mag, -50, -10, -50, true);
 		model.fits_on_single_square = true;
-		model_cache.put(model, id);
+		models.put(model, id);
 		return model;
 	}
 
@@ -529,8 +529,8 @@ public final class ItemDefinition {
 	public int value;
 	public int[] modified_model_colors;
 	public int id;
-	public static ReferenceCache image_cache = new ReferenceCache(100);
-	public static ReferenceCache model_cache = new ReferenceCache(50);
+	public static ReferenceCache sprites = new ReferenceCache(100);
+	public static ReferenceCache models = new ReferenceCache(50);
 	public int[] original_model_colors;
 	public boolean is_members_only;
 	private int equipped_model_female_3;
