@@ -1,138 +1,120 @@
 package com.seven.cache.def;
+
 import com.seven.media.renderable.Model;
 import com.seven.net.Buffer;
 import com.seven.net.CacheArchive;
 
 public final class IdentityKit {
+	
+	public static int length;
+	public static IdentityKit kits[];
+	public int part;
+	private int[] bodyModels;
+	private final int[] originalColors;
+	private final int[] replacementColors;
+	private final int[] headModels = { -1, -1, -1, -1, -1 };
+	public boolean validStyle;
+	
+	private IdentityKit() {
+		part = -1;
+		originalColors = new int[6];
+		replacementColors = new int[6];
+		validStyle = false;
+	}
 
-	public static void unpackConfig(CacheArchive streamLoader)
-	{
-		Buffer stream = new Buffer(streamLoader.getEntry("idk.dat"));
+	public static void unpackConfig(CacheArchive archive) {
+		Buffer stream = new Buffer(archive.getEntry("idk.dat"));
 		length = stream.readUShort();
-		if(cache == null)
-			cache = new IdentityKit[length];
-		for(int j = 0; j < length; j++)
-		{
-			if(cache[j] == null)
-				cache[j] = new IdentityKit();
-			cache[j].readValues(stream);
+		if (kits == null)
+			kits = new IdentityKit[length];
+		for (int id = 0; id < length; id++) {
+			if (kits[id] == null)
+				kits[id] = new IdentityKit();
+			kits[id].readValues(stream);
 		}
 	}
 
-	private void readValues(Buffer stream)
-	{
-		do
-		{
-			int i = stream.readUnsignedByte();
-			if(i == 0)
+	private void readValues(Buffer buffer) {
+		do {
+			int opcode = buffer.readUnsignedByte();
+			if (opcode == 0)
 				return;
-			if(i == 1)
-				anInt657 = stream.readUnsignedByte();
-			else
-			if(i == 2)
-			{
-				int j = stream.readUnsignedByte();
-				anIntArray658 = new int[j];
-				for(int k = 0; k < j; k++)
-					anIntArray658[k] = stream.readUShort();
+			if (opcode == 1)
+				part = buffer.readUnsignedByte();
+			else if (opcode == 2) {
+				int count = buffer.readUnsignedByte();
+				bodyModels = new int[count];
+				for (int part = 0; part < count; part++)
+					bodyModels[part] = buffer.readUShort();
 
-			} else
-			if(i == 3)
-				aBoolean662 = true;
+			} else if (opcode == 3)
+				validStyle = true;
+			else if (opcode >= 40 && opcode < 50)
+				originalColors[opcode - 40] = buffer.readUShort();
+			else if (opcode >= 50 && opcode < 60)
+				replacementColors[opcode - 50] = buffer.readUShort();
+			else if (opcode >= 60 && opcode < 70)
+				headModels[opcode - 60] = buffer.readUShort();
 			else
-			if(i >= 40 && i < 50)
-				anIntArray659[i - 40] = stream.readUShort();
-			else
-			if(i >= 50 && i < 60)
-				anIntArray660[i - 50] = stream.readUShort();
-			else
-			if(i >= 60 && i < 70)
-				anIntArray661[i - 60] = stream.readUShort();
-			else
-				System.out.println("Error unrecognised config code: " + i);
-		} while(true);
+				System.out.println("Error unrecognised config code: " + opcode);
+		} while (true);
 	}
 
-	public boolean method537()
-	{
-		if(anIntArray658 == null)
+	public boolean bodyLoaded() {
+		if (bodyModels == null)
 			return true;
-		boolean flag = true;
-		for(int j = 0; j < anIntArray658.length; j++)
-			if(!Model.isCached(anIntArray658[j]))
-				flag = false;
+		boolean ready = true;
+		for (int part = 0; part < bodyModels.length; part++)
+			if (!Model.isCached(bodyModels[part]))
+				ready = false;
 
-		return flag;
+		return ready;
 	}
 
-	public Model method538()
-	{
-		if(anIntArray658 == null)
+	public Model bodyModel() {
+		if (bodyModels == null)
 			return null;
-		Model aclass30_sub2_sub4_sub6s[] = new Model[anIntArray658.length];
-		for(int i = 0; i < anIntArray658.length; i++)
-			aclass30_sub2_sub4_sub6s[i] = Model.getModel(anIntArray658[i]);
+		Model models[] = new Model[bodyModels.length];
+		for (int part = 0; part < bodyModels.length; part++)
+			models[part] = Model.getModel(bodyModels[part]);
 
 		Model model;
-		if(aclass30_sub2_sub4_sub6s.length == 1)
-			model = aclass30_sub2_sub4_sub6s[0];
+		if (models.length == 1)
+			model = models[0];
 		else
-			model = new Model(aclass30_sub2_sub4_sub6s.length, aclass30_sub2_sub4_sub6s);
-		for(int j = 0; j < 6; j++)
-		{
-			if(anIntArray659[j] == 0)
+			model = new Model(models.length, models);
+		for (int part = 0; part < 6; part++) {
+			if (originalColors[part] == 0)
 				break;
-			model.recolor(anIntArray659[j], anIntArray660[j]);
+			model.recolor(originalColors[part], replacementColors[part]);
 		}
 
 		return model;
 	}
 
-	public boolean method539()
-	{
-		boolean flag1 = true;
-		for(int i = 0; i < 5; i++)
-			if(anIntArray661[i] != -1 && !Model.isCached(anIntArray661[i]))
-				flag1 = false;
+	public boolean headLoaded() {
+		boolean ready = true;
+		for (int part = 0; part < 5; part++)
+			if (headModels[part] != -1 && !Model.isCached(headModels[part]))
+				ready = false;
 
-		return flag1;
+		return ready;
 	}
 
-	public Model method540()
-	{
-		Model aclass30_sub2_sub4_sub6s[] = new Model[5];
-		int j = 0;
-		for(int k = 0; k < 5; k++)
-			if(anIntArray661[k] != -1)
-				aclass30_sub2_sub4_sub6s[j++] = Model.getModel(anIntArray661[k]);
+	public Model headModel() {
+		Model models[] = new Model[5];
+		int count = 0;
+		for (int part = 0; part < 5; part++)
+			if (headModels[part] != -1)
+				models[count++] = Model.getModel(headModels[part]);
 
-		Model model = new Model(j, aclass30_sub2_sub4_sub6s);
-		for(int l = 0; l < 6; l++)
-		{
-			if(anIntArray659[l] == 0)
+		Model model = new Model(count, models);
+		for (int part = 0; part < 6; part++) {
+			if (originalColors[part] == 0)
 				break;
-			model.recolor(anIntArray659[l], anIntArray660[l]);
+			model.recolor(originalColors[part], replacementColors[part]);
 		}
 
 		return model;
 	}
-
-	private IdentityKit()
-	{
-		anInt657 = -1;
-		anIntArray659 = new int[6];
-		anIntArray660 = new int[6];
-		aBoolean662 = false;
-	}
-
-	public static int length;
-	public static IdentityKit cache[];
-	public int anInt657;
-	private int[] anIntArray658;
-	private final int[] anIntArray659;
-	private final int[] anIntArray660;
-	private final int[] anIntArray661 = {
-		-1, -1, -1, -1, -1
-	};
-	public boolean aBoolean662;
 }

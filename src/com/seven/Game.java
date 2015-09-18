@@ -3019,8 +3019,8 @@ public class Game extends GameShell {
 		for (int j = 0; j < 7; j++) {
 			anIntArray1065[j] = -1;
 			for (int k = 0; k < IdentityKit.length; k++) {
-				if (IdentityKit.cache[k].aBoolean662
-						|| IdentityKit.cache[k].anInt657 != j
+				if (IdentityKit.kits[k].validStyle
+						|| IdentityKit.kits[k].part != j
 								+ (maleCharacter ? 0 : 7))
 					continue;
 				anIntArray1065[j] = k;
@@ -3180,8 +3180,8 @@ public class Game extends GameShell {
 						i2 = IdentityKit.length - 1;
 					if (j1 == 1 && ++i2 >= IdentityKit.length)
 						i2 = 0;
-				} while (IdentityKit.cache[i2].aBoolean662
-						|| IdentityKit.cache[i2].anInt657 != k
+				} while (IdentityKit.kits[i2].validStyle
+						|| IdentityKit.kits[i2].part != k
 								+ (maleCharacter ? 0 : 7));
 				anIntArray1065[k] = i2;
 				aBoolean1031 = true;
@@ -5788,7 +5788,7 @@ public class Game extends GameShell {
 		NpcDefinition.nullLoader();
 		ItemDefinition.clearCache();
 		Floor.cache = null;
-		IdentityKit.cache = null;
+		IdentityKit.kits = null;
 		Widget.interfaceCache = null;
 		Animation.animations = null;
 		SpotAnimation.cache = null;
@@ -6494,7 +6494,7 @@ public class Game extends GameShell {
 			if (aBoolean1031) {
 				for (int k1 = 0; k1 < 7; k1++) {
 					int l1 = anIntArray1065[k1];
-					if (l1 >= 0 && !IdentityKit.cache[l1].method537())
+					if (l1 >= 0 && !IdentityKit.kits[l1].bodyLoaded())
 						return;
 				}
 
@@ -6504,8 +6504,8 @@ public class Game extends GameShell {
 				for (int j2 = 0; j2 < 7; j2++) {
 					int k2 = anIntArray1065[j2];
 					if (k2 >= 0)
-						aclass30_sub2_sub4_sub6s[i2++] = IdentityKit.cache[k2]
-								.method538();
+						aclass30_sub2_sub4_sub6s[i2++] = IdentityKit.kits[k2]
+								.bodyModel();
 				}
 
 				Model model = new Model(i2, aclass30_sub2_sub4_sub6s);

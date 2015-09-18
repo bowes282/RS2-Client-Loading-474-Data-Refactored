@@ -252,7 +252,7 @@ public final class Player extends Entity {
 					k2 = k1;
 				if(j1 >= 0 && i2 == 5)
 					k2 = j1;
-				if(k2 >= 256 && k2 < 512 && !IdentityKit.cache[k2 - 256].method537())
+				if(k2 >= 256 && k2 < 512 && !IdentityKit.kits[k2 - 256].bodyLoaded())
 					flag = true;
 				if(k2 >= 512 && !ItemDefinition.lookup(k2 - 512).isEquippedModelCached(anInt1702))
 					flag = true;
@@ -279,7 +279,7 @@ public final class Player extends Entity {
 					i3 = j1;
 				if(i3 >= 256 && i3 < 512)
 				{
-					Model model_3 = IdentityKit.cache[i3 - 256].method538();
+					Model model_3 = IdentityKit.kits[i3 - 256].bodyModel();
 					if(model_3 != null)
 						aclass30_sub2_sub4_sub6s[j2++] = model_3;
 				}
@@ -338,7 +338,7 @@ public final class Player extends Entity {
 		for(int i = 0; i < 12; i++)
 		{
 			int j = equipment[i];
-			if(j >= 256 && j < 512 && !IdentityKit.cache[j - 256].method539())
+			if(j >= 256 && j < 512 && !IdentityKit.kits[j - 256].headLoaded())
 				flag = true;
 			if(j >= 512 && !ItemDefinition.lookup(j - 512).isDialogueModelCached(anInt1702))
 				flag = true;
@@ -353,7 +353,7 @@ public final class Player extends Entity {
 			int i1 = equipment[l];
 			if(i1 >= 256 && i1 < 512)
 			{
-				Model model_1 = IdentityKit.cache[i1 - 256].method540();
+				Model model_1 = IdentityKit.kits[i1 - 256].headModel();
 				if(model_1 != null)
 					aclass30_sub2_sub4_sub6s[k++] = model_1;
 			}
