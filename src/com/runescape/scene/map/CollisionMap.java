@@ -3,7 +3,7 @@ package com.runescape.scene.map;
 public final class CollisionMap {
 	
 	private static final int BLOCKED_TILE = 0x200000;
-	private static final int OBJECT_TILE = 0x100;
+	//private static final int OBJECT_TILE = 0x100;
 	
 	private final int xOffset;
 	private final int yOffset;

@@ -375,9 +375,9 @@ public class Model extends Renderable {
 		anIntArray1640 = triangleColours2;
 		vertices = numVertices;
 		anInt1630 = numTriangles;
-		vertexX = vertexX;
-		vertexY = vertexY;
-		vertexZ = vertexZ;
+		this.vertexX = vertexX;
+		this.vertexY = vertexY;
+		this.vertexZ = vertexZ;
 		anIntArray1631 = facePoint1;
 		anIntArray1632 = facePoint2;
 		anIntArray1633 = facePoint3;
@@ -769,9 +769,9 @@ public class Model extends Renderable {
 		anIntArray1640 = triangleColours2;
 		vertices = numVertices;
 		anInt1630 = numTriangles;
-		vertexX = vertexX;
-		vertexY = vertexY;
-		vertexZ = vertexZ;
+		this.vertexX = vertexX;
+		this.vertexY = vertexY;
+		this.vertexZ = vertexZ;
 		anIntArray1631 = facePoint1;
 		anIntArray1632 = facePoint2;
 		anIntArray1633 = facePoint3;

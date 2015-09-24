@@ -13706,6 +13706,7 @@ public class Game extends GameShell {
 		fullscreenInterfaceID = -1;
 	}
 
+	@SuppressWarnings("unused")
 	private int currentTrackPlaying;
 
 	public Game() {

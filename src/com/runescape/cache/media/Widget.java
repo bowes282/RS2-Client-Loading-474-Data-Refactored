@@ -1,6 +1,4 @@
 package com.runescape.cache.media;
-import java.util.Arrays;
-
 import com.runescape.Game;
 import com.runescape.cache.def.ItemDefinition;
 import com.runescape.cache.def.NpcDefinition;
