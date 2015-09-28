@@ -33,7 +33,7 @@ public class Configuration {
 	/**
 	 * A string which indicates the Client's name.
 	 */
-	public static final String CLIENT_NAME = "Project Aeolus - Official";
+	public static final String CLIENT_NAME = "Project RuneSeven - Official";
 	
 	public static boolean normalLogin = true;
 	

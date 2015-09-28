@@ -94,11 +94,11 @@ public final class Widget {
 				widget.drawsTransparent = false;
 				widget.scrollMax = buffer.readUShort();
 				widget.hoverOnly = buffer.readUnsignedByte() == 1;
-				int i2 = buffer.readUShort();
-				widget.children = new int[i2];
-				widget.childX = new int[i2];
-				widget.childY = new int[i2];
-				for (int index = 0; index < i2; index++) {
+				int length = buffer.readUShort();
+				widget.children = new int[length];
+				widget.childX = new int[length];
+				widget.childY = new int[length];
+				for (int index = 0; index < length; index++) {
 					widget.children[index] = buffer.readUShort();
 					widget.childX[index] = buffer.readShort();
 					widget.childY[index] = buffer.readShort();

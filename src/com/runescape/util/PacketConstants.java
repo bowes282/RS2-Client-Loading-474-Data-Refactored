@@ -85,7 +85,7 @@ public class PacketConstants {
 			173, 228, 121, 83, 133, 68, 0
 		};
 
-		public static final int[] packetSizes = {
+		public static final int[] PACKET_SIZES = {
 			0, 0, 0, 0, 6, 0, 0, 0, 4, 0, 
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 			0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 
