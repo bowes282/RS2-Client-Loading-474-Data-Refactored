@@ -35,9 +35,9 @@ public final class Widget {
 		int id = inventoryItemId[i];
 		inventoryItemId[i] = inventoryItemId[j];
 		inventoryItemId[j] = id;
-		id = invStackSizes[i];
-		invStackSizes[i] = invStackSizes[j];
-		invStackSizes[j] = id;
+		id = inventoryAmounts[i];
+		inventoryAmounts[i] = inventoryAmounts[j];
+		inventoryAmounts[j] = id;
 	}
 
 	public static void load(CacheArchive interfaces, GameFont textDrawingAreas[], CacheArchive graphics) {
@@ -110,7 +110,7 @@ public final class Widget {
 			}
 			if (widget.type == TYPE_INVENTORY) {
 				widget.inventoryItemId = new int[widget.width * widget.height];
-				widget.invStackSizes = new int[widget.width * widget.height];
+				widget.inventoryAmounts = new int[widget.width * widget.height];
 				widget.aBoolean259 = buffer.readUnsignedByte() == 1;
 				widget.hasActions = buffer.readUnsignedByte() == 1;
 				widget.usableItems = buffer.readUnsignedByte() == 1;
@@ -193,9 +193,9 @@ public final class Widget {
 				}
 				content = buffer.readUnsignedByte();
 				if (content != 0)
-					widget.anInt257 = (content - 1 << 8) + buffer.readUnsignedByte();
+					widget.defaultAnimationId = (content - 1 << 8) + buffer.readUnsignedByte();
 				else
-					widget.anInt257 = -1;
+					widget.defaultAnimationId = -1;
 				content = buffer.readUnsignedByte();
 				if (content != 0)
 					widget.anInt258 = (content - 1 << 8) + buffer.readUnsignedByte();
@@ -207,7 +207,7 @@ public final class Widget {
 			}
 			if (widget.type == TYPE_ITEM_LIST) {
 				widget.inventoryItemId = new int[widget.width * widget.height];
-				widget.invStackSizes = new int[widget.width * widget.height];
+				widget.inventoryAmounts = new int[widget.width * widget.height];
 				widget.centerText = buffer.readUnsignedByte() == 1;
 				int l2 = buffer.readUnsignedByte();
 				if (textDrawingAreas != null)
@@ -1181,7 +1181,7 @@ public final class Widget {
 		t.modelZoom = 560;
 		t.modelRotation1 = 150;
 		t.modelRotation2 = 0;
-		t.anInt257 = -1;
+		t.defaultAnimationId = -1;
 		t.anInt258 = -1;
 	}
 
@@ -2318,12 +2318,12 @@ public final class Widget {
 	public String defaultText;
 	public boolean hasActions;
 	public int id;
-	public int invStackSizes[];
+	public int inventoryAmounts[];
 	public int inventoryItemId[];
 	public byte opacity;
 	private int anInt255;
 	private int anInt256;
-	public int anInt257;
+	public int defaultAnimationId;
 	public int anInt258;
 	public boolean aBoolean259;
 	public Sprite enabledSprite;

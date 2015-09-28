@@ -291,7 +291,7 @@ public class GameShell extends Applet implements Runnable, MouseListener,
 		int offsetX = 0;
 		int offsetY = 0;
 		int childID = 0;
-		int tabInterfaceID = Game.tabInterfaceIDs[Game.tabID];
+		int tabInterfaceID = Game.tabInterfaceIDs[Game.tabId];
 		if (tabInterfaceID != -1) {
 			Widget tab = Widget.interfaceCache[tabInterfaceID];
 			offsetX = Game.frameMode == Game.ScreenMode.FIXED ? Game.frameWidth - 218

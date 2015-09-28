@@ -2606,30 +2606,30 @@ public class Game extends GameShell {
 		int yOffset = frameMode == ScreenMode.FIXED ? 0 : frameHeight - 336;
 		if (frameMode == ScreenMode.FIXED || frameMode != ScreenMode.FIXED
 				&& !changeTabArea) {
-			if (tabInterfaceIDs[tabID] != -1 && tabID != 15) {
-				cacheSprite[redStonesId[tabID]].drawSprite(redStonesX[tabID]
-						+ xOffset, redStonesY[tabID] + yOffset);
+			if (tabInterfaceIDs[tabId] != -1 && tabId != 15) {
+				cacheSprite[redStonesId[tabId]].drawSprite(redStonesX[tabId]
+						+ xOffset, redStonesY[tabId] + yOffset);
 			}
 		} else if (changeTabArea && frameWidth < 1000) {
 			int[] stoneX = { 226, 194, 162, 130, 99, 65, 34, 219, 195, 161,
 					130, 98, 65, 33 };
 			int[] stoneY = { 73, 73, 73, 73, 73, 73, 73, -1, 37, 37, 37, 37,
 					37, 37, 37 };
-			if (tabInterfaceIDs[tabID] != -1 && tabID != 10
+			if (tabInterfaceIDs[tabId] != -1 && tabId != 10
 					&& showTabComponents) {
-				if (tabID == 7) {
+				if (tabId == 7) {
 					cacheSprite[39].drawSprite(frameWidth - 130,
 							frameHeight - 37);
 				}
-				cacheSprite[39].drawSprite(frameWidth - stoneX[tabID],
-						frameHeight - stoneY[tabID]);
+				cacheSprite[39].drawSprite(frameWidth - stoneX[tabId],
+						frameHeight - stoneY[tabId]);
 			}
 		} else if (changeTabArea && frameWidth >= 1000) {
 			int[] stoneX = { 417, 385, 353, 321, 289, 256, 224, 129, 193, 161,
 					130, 98, 65, 33 };
-			if (tabInterfaceIDs[tabID] != -1 && tabID != 10
+			if (tabInterfaceIDs[tabId] != -1 && tabId != 10
 					&& showTabComponents) {
-				cacheSprite[39].drawSprite(frameWidth - stoneX[tabID],
+				cacheSprite[39].drawSprite(frameWidth - stoneX[tabId],
 						frameHeight - 37);
 			}
 		}
@@ -2693,9 +2693,9 @@ public class Game extends GameShell {
 			if (overlayInterfaceId != -1) {
 				drawInterface(0, x, Widget.interfaceCache[overlayInterfaceId],
 						y);
-			} else if (tabInterfaceIDs[tabID] != -1) {
+			} else if (tabInterfaceIDs[tabId] != -1) {
 				drawInterface(0, x,
-						Widget.interfaceCache[tabInterfaceIDs[tabID]], y);
+						Widget.interfaceCache[tabInterfaceIDs[tabId]], y);
 			}
 		}
 		if (menuOpen) {
@@ -2921,7 +2921,7 @@ public class Game extends GameShell {
 		try {
 			if (l == 0L)
 				return;
-			if (friendsCount >= 100 && anInt1046 != 1) {
+			if (friendsCount >= 100 && member != 1) {
 				pushMessage(
 						"Your friendlist is full. Max of 100 for free users, and 200 for members",
 						0, "");
@@ -3558,7 +3558,7 @@ public class Game extends GameShell {
 				if (class30_sub2_sub4_sub4.anInt1590 < 0) {
 					int j = -class30_sub2_sub4_sub4.anInt1590 - 1;
 					Player player;
-					if (j == unknownInt10)
+					if (j == localPlayerIndex)
 						player = localPlayer;
 					else
 						player = players[j];
@@ -3753,14 +3753,14 @@ public class Game extends GameShell {
 		}
 	}
 
-	private void writeInterface(int i) {
+	private void resetAnimation(int i) {
 		Widget class9 = Widget.interfaceCache[i];
 		for (int j = 0; j < class9.children.length; j++) {
 			if (class9.children[j] == -1)
 				break;
 			Widget class9_1 = Widget.interfaceCache[class9.children[j]];
 			if (class9_1.type == 1)
-				writeInterface(class9_1.id);
+				resetAnimation(class9_1.id);
 			class9_1.anInt246 = 0;
 			class9_1.anInt208 = 0;
 		}
@@ -3957,9 +3957,9 @@ public class Game extends GameShell {
 							int l2 = anInt1085;
 							int l3 = mouseInvInterfaceIndex;
 							childInterface.inventoryItemId[l3] = childInterface.inventoryItemId[l2];
-							childInterface.invStackSizes[l3] = childInterface.invStackSizes[l2];
+							childInterface.inventoryAmounts[l3] = childInterface.inventoryAmounts[l2];
 							childInterface.inventoryItemId[l2] = -1;
-							childInterface.invStackSizes[l2] = 0;
+							childInterface.inventoryAmounts[l2] = 0;
 						} else if (j1 == 1) {
 							int i3 = anInt1085;
 							for (int i4 = mouseInvInterfaceIndex; i3 != i4;)
@@ -4464,12 +4464,12 @@ public class Game extends GameShell {
 		}
 		if (action == 700) {
 			if (tabInterfaceIDs[10] != -1) {
-				if (tabID == 10) {
+				if (tabId == 10) {
 					showTabComponents = !showTabComponents;
 				} else {
 					showTabComponents = true;
 				}
-				tabID = 10;
+				tabId = 10;
 				tabAreaAltered = true;
 			}
 		}
@@ -4593,7 +4593,7 @@ public class Game extends GameShell {
 				switch (second) {
 				case 19144:
 					inventoryOverlay(15106, 3213);
-					writeInterface(15106);
+					resetAnimation(15106);
 					inputTaken = true;
 					break;
 				default:
@@ -4827,7 +4827,7 @@ public class Game extends GameShell {
 				System.out.println("spellId: " + spellId + " - spellSelected: " + spellSelected);
 				System.out.println(second + " " + widget.selectedActionName + " " + anInt1137);
 			if (spellUsableOn == 16) {
-				tabID = 3;
+				tabId = 3;
 				tabAreaAltered = true;
 			}
 			return;
@@ -4916,7 +4916,7 @@ public class Game extends GameShell {
 		}
 		if (action == 1004) {
 			if (tabInterfaceIDs[10] != -1) {
-				tabID = 10;
+				tabId = 10;
 				tabAreaAltered = true;
 			}
 		}
@@ -5392,8 +5392,8 @@ public class Game extends GameShell {
 			ItemDefinition itemDef = ItemDefinition.lookup(clicked);
 			Widget widget = Widget.interfaceCache[second];
 			String s5;
-			if (widget != null && widget.invStackSizes[first] >= 0x186a0)
-				s5 = widget.invStackSizes[first] + " x " + itemDef.name;
+			if (widget != null && widget.inventoryAmounts[first] >= 0x186a0)
+				s5 = widget.inventoryAmounts[first] + " x " + itemDef.name;
 			else if (itemDef.description != null)
 				s5 = new String(itemDef.description);
 			else
@@ -6777,7 +6777,7 @@ public class Game extends GameShell {
 	}
 
 	public static void setTab(int id) {
-		tabID = id;
+		tabId = id;
 		tabAreaAltered = true;
 	}
 
@@ -6834,7 +6834,7 @@ public class Game extends GameShell {
 							&& super.mouseY >= tabClickY[i] + yOffset
 							&& super.mouseY < tabClickY[i] + 37 + yOffset
 							&& tabInterfaceIDs[i] != -1) {
-						tabID = i;
+						tabId = i;
 						tabAreaAltered = true;
 						break;
 					}
@@ -6845,12 +6845,12 @@ public class Game extends GameShell {
 						&& super.saveClickY >= frameHeight - 72
 						&& super.saveClickY < frameHeight - 40
 						&& tabInterfaceIDs[0] != -1) {
-					if (tabID == 0) {
+					if (tabId == 0) {
 						showTabComponents = !showTabComponents;
 					} else {
 						showTabComponents = true;
 					}
-					tabID = 0;
+					tabId = 0;
 					tabAreaAltered = true;
 
 				}
@@ -6859,12 +6859,12 @@ public class Game extends GameShell {
 						&& super.saveClickY >= frameHeight - 72
 						&& super.saveClickY < frameHeight - 40
 						&& tabInterfaceIDs[1] != -1) {
-					if (tabID == 1) {
+					if (tabId == 1) {
 						showTabComponents = !showTabComponents;
 					} else {
 						showTabComponents = true;
 					}
-					tabID = 1;
+					tabId = 1;
 					tabAreaAltered = true;
 
 				}
@@ -6873,12 +6873,12 @@ public class Game extends GameShell {
 						&& super.saveClickY >= frameHeight - 72
 						&& super.saveClickY < frameHeight - 40
 						&& tabInterfaceIDs[2] != -1) {
-					if (tabID == 2) {
+					if (tabId == 2) {
 						showTabComponents = !showTabComponents;
 					} else {
 						showTabComponents = true;
 					}
-					tabID = 2;
+					tabId = 2;
 					tabAreaAltered = true;
 
 				}
@@ -6887,12 +6887,12 @@ public class Game extends GameShell {
 						&& super.saveClickY >= frameHeight - 72
 						&& super.saveClickY < frameHeight - 40
 						&& tabInterfaceIDs[3] != -1) {
-					if (tabID == 3) {
+					if (tabId == 3) {
 						showTabComponents = !showTabComponents;
 					} else {
 						showTabComponents = true;
 					}
-					tabID = 3;
+					tabId = 3;
 					tabAreaAltered = true;
 
 				}
@@ -6901,12 +6901,12 @@ public class Game extends GameShell {
 						&& super.saveClickY >= frameHeight - 72
 						&& super.saveClickY < frameHeight - 40
 						&& tabInterfaceIDs[4] != -1) {
-					if (tabID == 4) {
+					if (tabId == 4) {
 						showTabComponents = !showTabComponents;
 					} else {
 						showTabComponents = true;
 					}
-					tabID = 4;
+					tabId = 4;
 					tabAreaAltered = true;
 
 				}
@@ -6915,12 +6915,12 @@ public class Game extends GameShell {
 						&& super.saveClickY >= frameHeight - 72
 						&& super.saveClickY < frameHeight - 40
 						&& tabInterfaceIDs[5] != -1) {
-					if (tabID == 5) {
+					if (tabId == 5) {
 						showTabComponents = !showTabComponents;
 					} else {
 						showTabComponents = true;
 					}
-					tabID = 5;
+					tabId = 5;
 					tabAreaAltered = true;
 
 				}
@@ -6929,12 +6929,12 @@ public class Game extends GameShell {
 						&& super.saveClickY >= frameHeight - 72
 						&& super.saveClickY < frameHeight - 40
 						&& tabInterfaceIDs[6] != -1) {
-					if (tabID == 6) {
+					if (tabId == 6) {
 						showTabComponents = !showTabComponents;
 					} else {
 						showTabComponents = true;
 					}
-					tabID = 6;
+					tabId = 6;
 					tabAreaAltered = true;
 
 				}
@@ -6944,12 +6944,12 @@ public class Game extends GameShell {
 						&& super.saveClickY >= frameHeight - 37
 						&& super.saveClickY < frameHeight - 0
 						&& tabInterfaceIDs[8] != -1) {
-					if (tabID == 8) {
+					if (tabId == 8) {
 						showTabComponents = !showTabComponents;
 					} else {
 						showTabComponents = true;
 					}
-					tabID = 8;
+					tabId = 8;
 					tabAreaAltered = true;
 
 				}
@@ -6958,12 +6958,12 @@ public class Game extends GameShell {
 						&& super.saveClickY >= frameHeight - 37
 						&& super.saveClickY < frameHeight - 0
 						&& tabInterfaceIDs[9] != -1) {
-					if (tabID == 9) {
+					if (tabId == 9) {
 						showTabComponents = !showTabComponents;
 					} else {
 						showTabComponents = true;
 					}
-					tabID = 9;
+					tabId = 9;
 					tabAreaAltered = true;
 
 				}
@@ -6972,12 +6972,12 @@ public class Game extends GameShell {
 						&& super.saveClickY >= frameHeight - 37
 						&& super.saveClickY < frameHeight - 0
 						&& tabInterfaceIDs[10] != -1) {
-					if (tabID == 7) {
+					if (tabId == 7) {
 						showTabComponents = !showTabComponents;
 					} else {
 						showTabComponents = true;
 					}
-					tabID = 7;
+					tabId = 7;
 					tabAreaAltered = true;
 
 				}
@@ -6986,12 +6986,12 @@ public class Game extends GameShell {
 						&& super.saveClickY >= frameHeight - 37
 						&& super.saveClickY < frameHeight - 0
 						&& tabInterfaceIDs[11] != -1) {
-					if (tabID == 11) {
+					if (tabId == 11) {
 						showTabComponents = !showTabComponents;
 					} else {
 						showTabComponents = true;
 					}
-					tabID = 11;
+					tabId = 11;
 					tabAreaAltered = true;
 
 				}
@@ -7000,12 +7000,12 @@ public class Game extends GameShell {
 						&& super.saveClickY >= frameHeight - 37
 						&& super.saveClickY < frameHeight - 0
 						&& tabInterfaceIDs[12] != -1) {
-					if (tabID == 12) {
+					if (tabId == 12) {
 						showTabComponents = !showTabComponents;
 					} else {
 						showTabComponents = true;
 					}
-					tabID = 12;
+					tabId = 12;
 					tabAreaAltered = true;
 
 				}
@@ -7014,12 +7014,12 @@ public class Game extends GameShell {
 						&& super.saveClickY >= frameHeight - 37
 						&& super.saveClickY < frameHeight - 0
 						&& tabInterfaceIDs[13] != -1) {
-					if (tabID == 13) {
+					if (tabId == 13) {
 						showTabComponents = !showTabComponents;
 					} else {
 						showTabComponents = true;
 					}
-					tabID = 13;
+					tabId = 13;
 					tabAreaAltered = true;
 
 				}
@@ -7028,132 +7028,132 @@ public class Game extends GameShell {
 						&& super.mouseY <= frameHeight) {
 					if (super.mouseX >= frameWidth - 417
 							&& super.mouseX <= frameWidth - 386) {
-						if (tabID == 0) {
+						if (tabId == 0) {
 							showTabComponents = !showTabComponents;
 						} else {
 							showTabComponents = true;
 						}
-						tabID = 0;
+						tabId = 0;
 						tabAreaAltered = true;
 					}
 					if (super.mouseX >= frameWidth - 385
 							&& super.mouseX <= frameWidth - 354) {
-						if (tabID == 1) {
+						if (tabId == 1) {
 							showTabComponents = !showTabComponents;
 						} else {
 							showTabComponents = true;
 						}
-						tabID = 1;
+						tabId = 1;
 						tabAreaAltered = true;
 					}
 					if (super.mouseX >= frameWidth - 353
 							&& super.mouseX <= frameWidth - 322) {
-						if (tabID == 2) {
+						if (tabId == 2) {
 							showTabComponents = !showTabComponents;
 						} else {
 							showTabComponents = true;
 						}
-						tabID = 2;
+						tabId = 2;
 						tabAreaAltered = true;
 					}
 					if (super.mouseX >= frameWidth - 321
 							&& super.mouseX <= frameWidth - 290) {
-						if (tabID == 3) {
+						if (tabId == 3) {
 							showTabComponents = !showTabComponents;
 						} else {
 							showTabComponents = true;
 						}
-						tabID = 3;
+						tabId = 3;
 						tabAreaAltered = true;
 					}
 					if (super.mouseX >= frameWidth - 289
 							&& super.mouseX <= frameWidth - 258) {
-						if (tabID == 4) {
+						if (tabId == 4) {
 							showTabComponents = !showTabComponents;
 						} else {
 							showTabComponents = true;
 						}
-						tabID = 4;
+						tabId = 4;
 						tabAreaAltered = true;
 					}
 					if (super.mouseX >= frameWidth - 257
 							&& super.mouseX <= frameWidth - 226) {
-						if (tabID == 5) {
+						if (tabId == 5) {
 							showTabComponents = !showTabComponents;
 						} else {
 							showTabComponents = true;
 						}
-						tabID = 5;
+						tabId = 5;
 						tabAreaAltered = true;
 					}
 					if (super.mouseX >= frameWidth - 225
 							&& super.mouseX <= frameWidth - 194) {
-						if (tabID == 6) {
+						if (tabId == 6) {
 							showTabComponents = !showTabComponents;
 						} else {
 							showTabComponents = true;
 						}
-						tabID = 6;
+						tabId = 6;
 						tabAreaAltered = true;
 					}
 					if (super.mouseX >= frameWidth - 193
 							&& super.mouseX <= frameWidth - 163) {
-						if (tabID == 8) {
+						if (tabId == 8) {
 							showTabComponents = !showTabComponents;
 						} else {
 							showTabComponents = true;
 						}
-						tabID = 8;
+						tabId = 8;
 						tabAreaAltered = true;
 					}
 					if (super.mouseX >= frameWidth - 162
 							&& super.mouseX <= frameWidth - 131) {
-						if (tabID == 9) {
+						if (tabId == 9) {
 							showTabComponents = !showTabComponents;
 						} else {
 							showTabComponents = true;
 						}
-						tabID = 9;
+						tabId = 9;
 						tabAreaAltered = true;
 					}
 					if (super.mouseX >= frameWidth - 130
 							&& super.mouseX <= frameWidth - 99) {
-						if (tabID == 7) {
+						if (tabId == 7) {
 							showTabComponents = !showTabComponents;
 						} else {
 							showTabComponents = true;
 						}
-						tabID = 7;
+						tabId = 7;
 						tabAreaAltered = true;
 					}
 					if (super.mouseX >= frameWidth - 98
 							&& super.mouseX <= frameWidth - 67) {
-						if (tabID == 11) {
+						if (tabId == 11) {
 							showTabComponents = !showTabComponents;
 						} else {
 							showTabComponents = true;
 						}
-						tabID = 11;
+						tabId = 11;
 						tabAreaAltered = true;
 					}
 					if (super.mouseX >= frameWidth - 66
 							&& super.mouseX <= frameWidth - 45) {
-						if (tabID == 12) {
+						if (tabId == 12) {
 							showTabComponents = !showTabComponents;
 						} else {
 							showTabComponents = true;
 						}
-						tabID = 12;
+						tabId = 12;
 						tabAreaAltered = true;
 					}
 					if (super.mouseX >= frameWidth - 31
 							&& super.mouseX <= frameWidth) {
-						if (tabID == 13) {
+						if (tabId == 13) {
 							showTabComponents = !showTabComponents;
 						} else {
 							showTabComponents = true;
 						}
-						tabID = 13;
+						tabId = 13;
 						tabAreaAltered = true;
 					}
 				}
@@ -7320,9 +7320,9 @@ public class Game extends GameShell {
 					buildInterfaceMenu(548 + xOffset,
 							Widget.interfaceCache[overlayInterfaceId],
 							super.mouseX, 207 + yOffset, super.mouseY, 0);
-				} else if (tabInterfaceIDs[tabID] != -1) {
+				} else if (tabInterfaceIDs[tabId] != -1) {
 					buildInterfaceMenu(548 + xOffset,
-							Widget.interfaceCache[tabInterfaceIDs[tabID]],
+							Widget.interfaceCache[tabInterfaceIDs[tabId]],
 							super.mouseX, 207 + yOffset, super.mouseY, 0);
 				}
 			}
@@ -7338,9 +7338,9 @@ public class Game extends GameShell {
 							Widget.interfaceCache[overlayInterfaceId],
 							super.mouseX, frameHeight - yOffset - 267,
 							super.mouseY, 0);
-				} else if (tabInterfaceIDs[tabID] != -1) {
+				} else if (tabInterfaceIDs[tabId] != -1) {
 					buildInterfaceMenu(frameWidth - 197,
-							Widget.interfaceCache[tabInterfaceIDs[tabID]],
+							Widget.interfaceCache[tabInterfaceIDs[tabId]],
 							super.mouseX, frameHeight - yOffset - 267,
 							super.mouseY, 0);
 				}
@@ -7550,7 +7550,7 @@ public class Game extends GameShell {
 				overlayInterfaceId = -1;
 				openWalkableInterface = -1;
 				continuedDialogue = false;
-				tabID = 3;
+				tabId = 3;
 				inputDialogState = 0;
 				menuOpen = false;
 				messagePromptRaised = false;
@@ -8852,7 +8852,7 @@ public class Game extends GameShell {
 		}
 		if (entity.interactingEntity >= 32768) {
 			int j = entity.interactingEntity - 32768;
-			if (j == unknownInt10)
+			if (j == localPlayerIndex)
 				j = internalLocalPlayerIndex;
 			Player player = players[j];
 			if (player != null) {
@@ -9095,10 +9095,10 @@ public class Game extends GameShell {
 		if (flashingSidebarId != -1)
 			tabAreaAltered = true;
 		if (tabAreaAltered) {
-			if (flashingSidebarId != -1 && flashingSidebarId == tabID) {
+			if (flashingSidebarId != -1 && flashingSidebarId == tabId) {
 				flashingSidebarId = -1;
 				outgoing.writeOpCode(120);
-				outgoing.writeByte(tabID);
+				outgoing.writeByte(tabId);
 			}
 			tabAreaAltered = false;
 			chatSettingImageProducer.initDrawingArea();
@@ -9278,7 +9278,7 @@ public class Game extends GameShell {
 									Sprite item_icon = ItemDefinition
 											.getSprite(
 													itemId,
-													childInterface.invStackSizes[item],
+													childInterface.inventoryAmounts[item],
 													l9);
 									if (item_icon != null) {
 										if (activeInterfaceType != 0
@@ -9338,8 +9338,8 @@ public class Game extends GameShell {
 											item_icon
 													.drawSprite(tileX, tileY);
 										if (item_icon.maxWidth == 33
-												|| childInterface.invStackSizes[item] != 1) {
-											int k10 = childInterface.invStackSizes[item];
+												|| childInterface.inventoryAmounts[item] != 1) {
+											int k10 = childInterface.inventoryAmounts[item];
 
 											smallText.render(0,
 													intToKOrMil(k10), tileY
@@ -9579,7 +9579,7 @@ public class Game extends GameShell {
 					if (selected)
 						emoteAnimation = childInterface.anInt258;
 					else
-						emoteAnimation = childInterface.anInt257;
+						emoteAnimation = childInterface.defaultAnimationId;
 					Model model;
 					if (emoteAnimation == -1) {
 						model = childInterface.method209(-1, -1, selected);
@@ -9606,10 +9606,10 @@ public class Game extends GameShell {
 										.lookup(childInterface.inventoryItemId[slot] - 1);
 								String name = item.name;
 								if (item.stackable
-										|| childInterface.invStackSizes[slot] != 1)
+										|| childInterface.inventoryAmounts[slot] != 1)
 									name = name
 											+ " x"
-											+ intToKOrMilLongName(childInterface.invStackSizes[slot]);
+											+ intToKOrMilLongName(childInterface.inventoryAmounts[slot]);
 								int __x = _x + column
 										* (115 + childInterface.spritePaddingX);
 								int __y = _y + row
@@ -10422,13 +10422,13 @@ public class Game extends GameShell {
 			if (class9_1.type == 1)
 				flag1 |= animateRSInterface(i, class9_1.id);
 			if (class9_1.type == 6
-					&& (class9_1.anInt257 != -1 || class9_1.anInt258 != -1)) {
+					&& (class9_1.defaultAnimationId != -1 || class9_1.anInt258 != -1)) {
 				boolean flag2 = interfaceIsSelected(class9_1);
 				int l;
 				if (flag2)
 					l = class9_1.anInt258;
 				else
-					l = class9_1.anInt257;
+					l = class9_1.defaultAnimationId;
 				if (l != -1) {
 					Animation animation = Animation.animations[l];
 					for (class9_1.anInt208 += i; class9_1.anInt208 > animation
@@ -10629,7 +10629,7 @@ public class Game extends GameShell {
 							&& (!ItemDefinition.lookup(item).is_members_only || isMembers)) {
 						for (int slot = 0; slot < other.inventoryItemId.length; slot++)
 							if (other.inventoryItemId[slot] == item + 1)
-								value += other.invStackSizes[slot];
+								value += other.inventoryAmounts[slot];
 
 					}
 				}
@@ -10781,7 +10781,7 @@ public class Game extends GameShell {
 			if (frameMode != ScreenMode.FIXED && changeTabArea) {
 				if (super.mouseX >= frameWidth - 26
 						&& super.mouseX <= frameWidth - 1 && super.mouseY >= 2
-						&& super.mouseY <= 24 || tabID == 15) {
+						&& super.mouseY <= 24 || tabId == 15) {
 					cacheSprite[27].drawSprite(frameWidth - 25, 2);
 				} else {
 					cacheSprite[27].drawARGBSprite(frameWidth - 25, 2, 165);
@@ -10936,7 +10936,7 @@ public class Game extends GameShell {
 		if (frameMode != ScreenMode.FIXED && changeTabArea) {
 			if (super.mouseX >= frameWidth - 26
 					&& super.mouseX <= frameWidth - 1 && super.mouseY >= 2
-					&& super.mouseY <= 24 || tabID == 10) {
+					&& super.mouseY <= 24 || tabId == 10) {
 				cacheSprite[27].drawSprite(frameWidth - 25, 2);
 			} else {
 				cacheSprite[27].drawARGBSprite(frameWidth - 25, 2, 165);
@@ -11468,7 +11468,7 @@ public class Game extends GameShell {
 			int i12 = stream.readUShortA();
 			int j14 = stream.readUShort();
 			if (k6 >= 0 && j9 >= 0 && k6 < 104 && j9 < 104
-					&& i12 != unknownInt10) {
+					&& i12 != localPlayerIndex) {
 				Item class30_sub2_sub4_sub2_2 = new Item();
 				class30_sub2_sub4_sub2_2.ID = i1;
 				class30_sub2_sub4_sub2_2.anInt1559 = j14;
@@ -11580,7 +11580,7 @@ public class Game extends GameShell {
 			int l21 = stream.readUShort();
 			byte byte3 = stream.readNegByte();
 			Player player;
-			if (i10 == unknownInt10)
+			if (i10 == localPlayerIndex)
 				player = localPlayer;
 			else
 				player = players[i10];
@@ -12045,7 +12045,7 @@ public class Game extends GameShell {
 	 */
 	public void sendString(String text, int index) {
 		Widget.interfaceCache[index].defaultText = text;
-		if (Widget.interfaceCache[index].parent == tabInterfaceIDs[tabID]) {
+		if (Widget.interfaceCache[index].parent == tabInterfaceIDs[tabId]) {
 		}
 	}
 
@@ -12607,7 +12607,7 @@ public class Game extends GameShell {
 			if (opcode == 208) {
 				int i3 = incoming.readLEShort();
 				if (i3 >= 0)
-					writeInterface(i3);
+					resetAnimation(i3);
 				openWalkableInterface = i3;
 				opcode = -1;
 				return true;
@@ -12694,98 +12694,100 @@ public class Game extends GameShell {
 			}
 
 			if (opcode == 253) {
-				String text = incoming.readString();
-				if (text.endsWith(":tradereq:")) {
-					String s3 = text.substring(0, text.indexOf(":"));
-					long l17 = StringUtils.encodeBase37(s3);
-					boolean flag2 = false;
-					for (int j27 = 0; j27 < ignoreCount; j27++) {
-						if (ignoreListAsLongs[j27] != l17)
+				String message = incoming.readString();
+				if (message.endsWith(":tradereq:")) {
+					String name = message.substring(0, message.indexOf(":"));
+					long encodedName = StringUtils.encodeBase37(name);
+					boolean ignored = false;
+					for (int index = 0; index < ignoreCount; index++) {
+						if (ignoreListAsLongs[index] != encodedName)
 							continue;
-						flag2 = true;
+						ignored = true;
 
 					}
-					if (!flag2 && onTutorialIsland == 0)
-						pushMessage("wishes to trade with you.", 4, s3);
-				} else if (text.endsWith(":clan:")) {
-					String s4 = text.substring(0, text.indexOf(":"));
-					StringUtils.encodeBase37(s4);
-					pushMessage("Clan: ", 8, s4);
-				} else if (text.endsWith("#url#")) {
-					String link = text.substring(0, text.indexOf("#"));
+					if (!ignored && onTutorialIsland == 0)
+						pushMessage("wishes to trade with you.", 4, name);
+				} else if (message.endsWith(":clan:")) {
+					String name = message.substring(0, message.indexOf(":"));
+					StringUtils.encodeBase37(name);
+					pushMessage("Clan: ", 8, name);
+				} else if (message.endsWith("#url#")) {
+					String link = message.substring(0, message.indexOf("#"));
 					pushMessage("Join us at: ", 9, link);
-				} else if (text.endsWith(":duelreq:")) {
-					String s4 = text.substring(0, text.indexOf(":"));
-					long l18 = StringUtils.encodeBase37(s4);
-					boolean flag3 = false;
-					for (int k27 = 0; k27 < ignoreCount; k27++) {
-						if (ignoreListAsLongs[k27] != l18)
+				} else if (message.endsWith(":duelreq:")) {
+					String name = message.substring(0, message.indexOf(":"));
+					long encodedName = StringUtils.encodeBase37(name);
+					boolean ignored = false;
+					for (int count = 0; count < ignoreCount; count++) {
+						if (ignoreListAsLongs[count] != encodedName)
 							continue;
-						flag3 = true;
+						ignored = true;
 
 					}
-					if (!flag3 && onTutorialIsland == 0)
-						pushMessage("wishes to duel with you.", 8, s4);
-				} else if (text.endsWith(":chalreq:")) {
-					String s5 = text.substring(0, text.indexOf(":"));
-					long l19 = StringUtils.encodeBase37(s5);
-					boolean flag4 = false;
-					for (int l27 = 0; l27 < ignoreCount; l27++) {
-						if (ignoreListAsLongs[l27] != l19)
+					if (!ignored && onTutorialIsland == 0)
+						pushMessage("wishes to duel with you.", 8, name);
+				} else if (message.endsWith(":chalreq:")) {
+					String name = message.substring(0, message.indexOf(":"));
+					long encodedName = StringUtils.encodeBase37(name);
+					boolean ignored = false;
+					for (int index = 0; index < ignoreCount; index++) {
+						if (ignoreListAsLongs[index] != encodedName)
 							continue;
-						flag4 = true;
+						ignored = true;
 
 					}
-					if (!flag4 && onTutorialIsland == 0) {
-						String s8 = text.substring(text.indexOf(":") + 1,
-								text.length() - 9);
-						pushMessage(s8, 8, s5);
+					if (!ignored && onTutorialIsland == 0) {
+						String s8 = message.substring(message.indexOf(":") + 1,
+								message.length() - 9);
+						pushMessage(s8, 8, name);
 					}
-				} else if (text.endsWith(":resetautocast:")) {
+				} else if (message.endsWith(":resetautocast:")) {
 					autocast = false;
 					autoCastId = 0;
 					cacheSprite[43].drawSprite(-100, -100);
 				} else {
-					pushMessage(text, 0, "");
+					pushMessage(message, 0, "");
 				}
 				opcode = -1;
 				return true;
 			}
 			
 			if (opcode == 1) {
-				for (int k4 = 0; k4 < players.length; k4++)
-					if (players[k4] != null)
-						players[k4].emoteAnimation = -1;
-				for (int j12 = 0; j12 < npcs.length; j12++)
-					if (npcs[j12] != null)
-						npcs[j12].emoteAnimation = -1;
+				for (int index = 0; index < players.length; index++) {
+					if (players[index] != null)
+						players[index].emoteAnimation = -1;
+				}
+				for (int index = 0; index < npcs.length; index++) {
+					if (npcs[index] != null)
+						npcs[index].emoteAnimation = -1;
+				}
 				opcode = -1;
 				return true;
 			}
 
 			if (opcode == 50) {
-				long l4 = incoming.readLong();
-				int i18 = incoming.readUnsignedByte();
-				String s7 = StringUtils.formatUsername(StringUtils.decodeBase37(l4));
-				for (int k24 = 0; k24 < friendsCount; k24++) {
-					if (l4 != friendsListAsLongs[k24])
+				long encodedName = incoming.readLong();
+				int world = incoming.readUnsignedByte();
+				String name = StringUtils.formatUsername(StringUtils.decodeBase37(encodedName));
+				for (int playerIndex = 0; playerIndex < friendsCount; playerIndex++) {
+					if (encodedName != friendsListAsLongs[playerIndex])
 						continue;
-					if (friendsNodeIDs[k24] != i18) {
-						friendsNodeIDs[k24] = i18;
-						if (i18 >= 2) {
-							pushMessage(s7 + " has logged in.", 5, "");
+					if (friendsNodeIDs[playerIndex] != world) {
+						friendsNodeIDs[playerIndex] = world;
+						if (world >= 2) {
+							pushMessage(name + " has logged in.", 5, "");
 						}
-						if (i18 <= 1) {
-							pushMessage(s7 + " has logged out.", 5, "");
+						if (world <= 1) {
+							pushMessage(name + " has logged out.", 5, "");
 						}
 					}
-					s7 = null;
+					name = null;
 
 				}
-				if (s7 != null && friendsCount < 200) {
-					friendsListAsLongs[friendsCount] = l4;
-					friendsList[friendsCount] = s7;
-					friendsNodeIDs[friendsCount] = i18;
+				if (name != null && friendsCount < 200) {
+					friendsListAsLongs[friendsCount] = encodedName;
+					friendsList[friendsCount] = name;
+					friendsNodeIDs[friendsCount] = world;
 					friendsCount++;
 				}
 				for (boolean flag6 = false; !flag6;) {
@@ -12812,7 +12814,7 @@ public class Game extends GameShell {
 			}
 				
 			if (opcode == 110) {
-				if (tabID == 12) {
+				if (tabId == 12) {
 				}
 				runEnergy = incoming.readUnsignedByte();
 				opcode = -1;
@@ -12856,8 +12858,8 @@ public class Game extends GameShell {
 			}
 
 			if (opcode == 248) {			
-				int i5 = incoming.readUShortA();
-				int k12 = incoming.readUShort();
+				int id = incoming.readUShortA();
+				int overlay = incoming.readUShort();
 				if (backDialogueId != -1) {
 					backDialogueId = -1;
 					inputTaken = true;
@@ -12866,8 +12868,8 @@ public class Game extends GameShell {
 					inputDialogState = 0;
 					inputTaken = true;
 				}
-				openInterfaceId = i5;
-				overlayInterfaceId = k12;
+				openInterfaceId = id;
+				overlayInterfaceId = overlay;
 				tabAreaAltered = true;
 				continuedDialogue = false;
 				opcode = -1;
@@ -12875,15 +12877,15 @@ public class Game extends GameShell {
 			}
 			
 			if (opcode == 79) {
-				int j5 = incoming.readLEUShort();
-				int l12 = incoming.readUShortA();
-				Widget class9_3 = Widget.interfaceCache[j5];
-				if (class9_3 != null && class9_3.type == 0) {
-					if (l12 < 0)
-						l12 = 0;
-					if (l12 > class9_3.scrollMax - class9_3.height)
-						l12 = class9_3.scrollMax - class9_3.height;
-					class9_3.scrollPosition = l12;
+				int id = incoming.readLEUShort();
+				int scrollPosition = incoming.readUShortA();
+				Widget widget = Widget.interfaceCache[id];
+				if (widget != null && widget.type == 0) {
+					if (scrollPosition < 0)
+						scrollPosition = 0;
+					if (scrollPosition > widget.scrollMax - widget.height)
+						scrollPosition = widget.scrollMax - widget.height;
+					widget.scrollPosition = scrollPosition;
 				}
 				opcode = -1;
 				return true;
@@ -12900,50 +12902,50 @@ public class Game extends GameShell {
 			}
 
 			if (opcode == 196) {
-				long l5 = incoming.readLong();
-				int j18 = incoming.readInt();
-				int l21 = incoming.readUnsignedByte();
-				boolean flag5 = false;
-				for (int i28 = 0; i28 < 100; i28++) {
-					if (anIntArray1240[i28] != j18)
+				long encodedName = incoming.readLong();
+				int messageId = incoming.readInt();
+				int rights = incoming.readUnsignedByte();
+				boolean invalid = false;
+				for (int index = 0; index < 100; index++) {
+					if (privateMessageIds[index] != messageId)
 						continue;
-					flag5 = true;
+					invalid = true;
 
 				}
-				if (l21 <= 1) {
-					for (int l29 = 0; l29 < ignoreCount; l29++) {
-						if (ignoreListAsLongs[l29] != l5)
+				if (rights <= 1) {
+					for (int index = 0; index < ignoreCount; index++) {
+						if (ignoreListAsLongs[index] != encodedName)
 							continue;
-						flag5 = true;
+						invalid = true;
 
 					}
 				}
-				if (!flag5 && onTutorialIsland == 0)
+				if (!invalid && onTutorialIsland == 0)
 					try {
-						anIntArray1240[anInt1169] = j18;
-						anInt1169 = (anInt1169 + 1) % 100;
-						String s9 = ChatMessageCodec.decode(packetSize - 13,
+						privateMessageIds[privateMessageCount] = messageId;
+						privateMessageCount = (privateMessageCount + 1) % 100;
+						String message = ChatMessageCodec.decode(packetSize - 13,
 								incoming);
 						// if(l21 != 3)
 						// s9 = Censor.doCensor(s9);
-						if (l21 == 2 || l21 == 3)
+						if (rights == 2 || rights == 3)
 							pushMessage(
-									s9,
+									message,
 									7,
 									"@cr2@"
 											+ StringUtils.formatUsername(StringUtils
-													.decodeBase37(l5)));
-						else if (l21 == 1)
+													.decodeBase37(encodedName)));
+						else if (rights == 1)
 							pushMessage(
-									s9,
+									message,
 									7,
 									"@cr1@"
 											+ StringUtils.formatUsername(StringUtils
-													.decodeBase37(l5)));
+													.decodeBase37(encodedName)));
 						else
-							pushMessage(s9, 3, StringUtils.formatUsername(StringUtils
-									.decodeBase37(l5)));
-					} catch (Exception exception1) {
+							pushMessage(message, 3, StringUtils.formatUsername(StringUtils
+									.decodeBase37(encodedName)));
+					} catch (Exception ex) {
 						Signlink.reporterror("cde1");
 					}
 				opcode = -1;
@@ -12959,32 +12961,32 @@ public class Game extends GameShell {
 			
 			if (opcode == 24) {
 				flashingSidebarId = incoming.readUByteS();
-				if (flashingSidebarId == tabID) {
+				if (flashingSidebarId == tabId) {
 					if (flashingSidebarId == 3)
-						tabID = 1;
+						tabId = 1;
 					else
-						tabID = 3;
+						tabId = 3;
 				}
 				opcode = -1;
 				return true;
 			}
 
 			if (opcode == 246) {
-				int i6 = incoming.readLEUShort();
-				int i13 = incoming.readUShort();
-				int k18 = incoming.readUShort();
-				if (k18 == 65535) {
-					Widget.interfaceCache[i6].defaultMediaType = 0;
+				int widget = incoming.readLEUShort();
+				int scale = incoming.readUShort();
+				int item = incoming.readUShort();
+				if (item == 65535) {
+					Widget.interfaceCache[widget].defaultMediaType = 0;
 					opcode = -1;
 					return true;
 				} else {
-					ItemDefinition itemDef = ItemDefinition.lookup(k18);
-					Widget.interfaceCache[i6].defaultMediaType = 4;
-					Widget.interfaceCache[i6].defaultMedia = k18;
-					Widget.interfaceCache[i6].modelRotation1 = itemDef.rotation_y;
-					Widget.interfaceCache[i6].modelRotation2 = itemDef.rotation_y;
-					Widget.interfaceCache[i6].modelZoom = (itemDef.model_zoom * 100)
-							/ i13;
+					ItemDefinition definition = ItemDefinition.lookup(item);
+					Widget.interfaceCache[widget].defaultMediaType = 4;
+					Widget.interfaceCache[widget].defaultMedia = item;
+					Widget.interfaceCache[widget].modelRotation1 = definition.rotation_y;
+					Widget.interfaceCache[widget].modelRotation2 = definition.rotation_y;
+					Widget.interfaceCache[widget].modelZoom = (definition.model_zoom * 100)
+							/ scale;
 					opcode = -1;
 					return true;
 					}
@@ -12992,15 +12994,15 @@ public class Game extends GameShell {
 
 			if (opcode == 171) {			
 				boolean flag1 = incoming.readUnsignedByte() == 1;
-				int j13 = incoming.readUShort();
-				Widget.interfaceCache[j13].hoverOnly = flag1;
+				int id = incoming.readUShort();
+				Widget.interfaceCache[id].hoverOnly = flag1;
 				opcode = -1;
 				return true;
 			}
 
 			if (opcode == 142) {
-				int j6 = incoming.readLEUShort();
-				writeInterface(j6);
+				int id = incoming.readLEUShort();
+				resetAnimation(id);
 				if (backDialogueId != -1) {
 					backDialogueId = -1;
 					inputTaken = true;
@@ -13009,7 +13011,7 @@ public class Game extends GameShell {
 					inputDialogState = 0;
 					inputTaken = true;
 				}
-				overlayInterfaceId = j6;
+				overlayInterfaceId = id;
 				tabAreaAltered = true;
 				openInterfaceId = -1;
 				continuedDialogue = false;
@@ -13020,7 +13022,7 @@ public class Game extends GameShell {
 			if (opcode == 126) {
 				try {
 					String text = incoming.readString();
-					int frame = incoming.readUShortA();
+					int id = incoming.readUShortA();
 					if (text.startsWith("www.")) {
 						launchURL(text);
 					}
@@ -13029,10 +13031,10 @@ public class Game extends GameShell {
 								.equalsIgnoreCase("on") ? true : false;
 					if (text.startsWith(":prayer:"))
 						prayerBook = text.substring(8);
-					updateStrings(text, frame);
-					sendString(text, frame);
-					if (frame >= 18144 && frame <= 18244) {
-						clanList[frame - 18144] = text;
+					updateStrings(text, id);
+					sendString(text, id);
+					if (id >= 18144 && id <= 18244) {
+						clanList[id - 18144] = text;
 					}
 				} catch (Exception e) {
 				}
@@ -13050,7 +13052,7 @@ public class Game extends GameShell {
 			}
 
 			if (opcode == 240) {			
-				if (tabID == 12) {
+				if (tabId == 12) {
 				}
 				weight = incoming.readShort();
 				opcode = -1;
@@ -13058,53 +13060,54 @@ public class Game extends GameShell {
 			}
 
 			if (opcode == 8) {
-				int k6 = incoming.readLEUShortA();
-				int l13 = incoming.readUShort();
-				Widget.interfaceCache[k6].defaultMediaType = 1;
-				Widget.interfaceCache[k6].defaultMedia = l13;
+				int id = incoming.readLEUShortA();
+				int model = incoming.readUShort();
+				Widget.interfaceCache[id].defaultMediaType = 1;
+				Widget.interfaceCache[id].defaultMedia = model;
 				opcode = -1;
 				return true;
 			}
 
 			if (opcode == 122) {			
-				int l6 = incoming.readLEUShortA();
-				int i14 = incoming.readLEUShortA();
-				int i19 = i14 >> 10 & 0x1f;
-				int i22 = i14 >> 5 & 0x1f;
-				int l24 = i14 & 0x1f;
-				Widget.interfaceCache[l6].textColor = (i19 << 19) + (i22 << 11)
-						+ (l24 << 3);
+				int id = incoming.readLEUShortA();
+				int color = incoming.readLEUShortA();
+				int red = color >> 10 & 0x1f;
+				int green = color >> 5 & 0x1f;
+				int blue = color & 0x1f;
+				Widget.interfaceCache[id].textColor = (red << 19) + (green << 11)
+						+ (blue << 3);
 				opcode = -1;
 				return true;
 			}
 
 			if (opcode == 53) {
-				int i7 = incoming.readUShort();
-				Widget class9_1 = Widget.interfaceCache[i7];
-				int j19 = incoming.readUShort();
-				for (int j22 = 0; j22 < j19; j22++) {
-					int i25 = incoming.readUnsignedByte();
-					if (i25 == 255)
-						i25 = incoming.readIMEInt();
-					class9_1.inventoryItemId[j22] = incoming.readLEUShortA();
-					class9_1.invStackSizes[j22] = i25;
+				int interfaceId = incoming.readUShort();
+				Widget widget = Widget.interfaceCache[interfaceId];
+				int itemCount = incoming.readUShort();
+				for (int j22 = 0; j22 < itemCount; j22++) {
+					int amount = incoming.readUnsignedByte();
+					if (amount == 255) {
+						amount = incoming.readIMEInt();
+					}
+					widget.inventoryItemId[j22] = incoming.readLEUShortA();
+					widget.inventoryAmounts[j22] = amount;
 				}
-				for (int j25 = j19; j25 < class9_1.inventoryItemId.length; j25++) {
-					class9_1.inventoryItemId[j25] = 0;
-					class9_1.invStackSizes[j25] = 0;
+				for (int slot = itemCount; slot < widget.inventoryItemId.length; slot++) {
+					widget.inventoryItemId[slot] = 0;
+					widget.inventoryAmounts[slot] = 0;
 				}
 				opcode = -1;
 				return true;
 			}
 
 			if (opcode == 230) {			
-				int j7 = incoming.readUShortA();
-				int j14 = incoming.readUShort();
-				int k19 = incoming.readUShort();
-				int k22 = incoming.readLEUShortA();
-				Widget.interfaceCache[j14].modelRotation1 = k19;
-				Widget.interfaceCache[j14].modelRotation2 = k22;
-				Widget.interfaceCache[j14].modelZoom = j7;
+				int scale = incoming.readUShortA();
+				int id = incoming.readUShort();
+				int pitch = incoming.readUShort();
+				int roll = incoming.readLEUShortA();
+				Widget.interfaceCache[id].modelRotation1 = pitch;
+				Widget.interfaceCache[id].modelRotation2 = roll;
+				Widget.interfaceCache[id].modelZoom = scale;
 				opcode = -1;
 				return true;
 			}
@@ -13142,8 +13145,8 @@ public class Game extends GameShell {
 			}
 
 			if (opcode == 249) {
-				anInt1046 = incoming.readUByteA();
-				unknownInt10 = incoming.readLEUShortA();
+				member = incoming.readUByteA();
+				localPlayerIndex = incoming.readLEUShortA();
 				opcode = -1;
 				return true;
 			}
@@ -13174,7 +13177,7 @@ public class Game extends GameShell {
 
 			if (opcode == 97) {			
 				int interfaceId = incoming.readUShort();
-				writeInterface(interfaceId);
+				resetAnimation(interfaceId);
 				if (overlayInterfaceId != -1) {
 					overlayInterfaceId = -1;
 					tabAreaAltered = true;
@@ -13199,20 +13202,19 @@ public class Game extends GameShell {
 			}
 
 			if (opcode == 218) {
-				int i8 = incoming.readLEShortA();
-				dialogueId = i8;
+				dialogueId = incoming.readLEShortA();
 				inputTaken = true;
 				opcode = -1;
 				return true;
 			}
 				
 			if(opcode == 87) {
-				int j8 = incoming.readLEUShort();
-				int l14 = incoming.readMEInt();
-				anIntArray1045[j8] = l14;
-				if (settings[j8] != l14) {
-					settings[j8] = l14;
-					adjustVolume(j8);
+				int id = incoming.readLEUShort();
+				int value = incoming.readMEInt();
+				anIntArray1045[id] = value;
+				if (settings[id] != value) {
+					settings[id] = value;
+					adjustVolume(id);
 					if (dialogueId != -1)
 						inputTaken = true;
 				}
@@ -13221,12 +13223,12 @@ public class Game extends GameShell {
 			}
 			
 			if (opcode == 36) {
-				int k8 = incoming.readLEUShort();
-				byte byte0 = incoming.readSignedByte();
-				anIntArray1045[k8] = byte0;
-				if (settings[k8] != byte0) {
-					settings[k8] = byte0;
-					adjustVolume(k8);
+				int id = incoming.readLEUShort();
+				byte value = incoming.readSignedByte();
+				anIntArray1045[id] = value;
+				if (settings[id] != value) {
+					settings[id] = value;
+					adjustVolume(id);
 					if (dialogueId != -1)
 						inputTaken = true;
 				}
@@ -13241,10 +13243,10 @@ public class Game extends GameShell {
 			}
 
 			if (opcode == 200) {
-				int l8 = incoming.readUShort();
-				int i15 = incoming.readShort();
-				Widget widget = Widget.interfaceCache[l8];
-				widget.anInt257 = i15;
+				int id = incoming.readUShort();
+				int animation = incoming.readShort();
+				Widget widget = Widget.interfaceCache[id];
+				widget.defaultAnimationId = animation;
 				opcode = -1;
 				return true;
 			}
@@ -13268,18 +13270,18 @@ public class Game extends GameShell {
 				return true;
 			}
 				if (opcode == 34) {
-				int i9 = incoming.readUShort();
-				Widget childInterface2 = Widget.interfaceCache[i9];
+				int interfaceId = incoming.readUShort();
+				Widget widget = Widget.interfaceCache[interfaceId];
 				while (incoming.currentPosition < packetSize) {
-					int j20 = incoming.readUSmart();
-					int i23 = incoming.readUShort();
-					int l25 = incoming.readUnsignedByte();
-					if (l25 == 255)
-						l25 = incoming.readInt();
-					if (j20 >= 0
-							&& j20 < childInterface2.inventoryItemId.length) {
-						childInterface2.inventoryItemId[j20] = i23;
-						childInterface2.invStackSizes[j20] = l25;
+					int slot = incoming.readUSmart();
+					int id = incoming.readUShort();
+					int amount = incoming.readUnsignedByte();
+					if (amount == 255)
+						amount = incoming.readInt();
+					if (slot >= 0
+							&& slot < widget.inventoryItemId.length) {
+						widget.inventoryItemId[slot] = id;
+						widget.inventoryAmounts[slot] = amount;
 					}
 				}
 				opcode = -1;
@@ -13294,19 +13296,19 @@ public class Game extends GameShell {
 			}
 
 			if (opcode == 106) {
-				tabID = incoming.readNegUByte();
+				tabId = incoming.readNegUByte();
 				tabAreaAltered = true;
 				opcode = -1;
 				return true;
 			}
 			if (opcode == 164) {
-				int j9 = incoming.readLEUShort();
-				writeInterface(j9);
+				int id = incoming.readLEUShort();
+				resetAnimation(id);
 				if (overlayInterfaceId != -1) {
 					overlayInterfaceId = -1;
 					tabAreaAltered = true;
 				}
-				backDialogueId = j9;
+				backDialogueId = id;
 				inputTaken = true;
 				openInterfaceId = -1;
 				continuedDialogue = false;
@@ -13788,7 +13790,7 @@ public class Game extends GameShell {
 		aBooleanArray876 = new boolean[5];
 		drawFlames = false;
 		reportAbuseInput = "";
-		unknownInt10 = -1;
+		localPlayerIndex = -1;
 		menuOpen = false;
 		inputString = "";
 		maxPlayers = 2048;
@@ -13897,11 +13899,11 @@ public class Game extends GameShell {
 		anInt1211 = 78;
 		promptInput = "";
 		modIcons = new Sprite[2];
-		tabID = 3;
+		tabId = 3;
 		inputTaken = false;
 		fadeMusic = true;
 		collisionMaps = new CollisionMap[4];
-		anIntArray1240 = new int[100];
+		privateMessageIds = new int[100];
 		trackLoops = new int[50];
 		aBoolean1242 = false;
 		soundDelay = new int[50];
@@ -13975,7 +13977,7 @@ public class Game extends GameShell {
 	private MouseDetection mouseDetection;
 	private volatile boolean drawFlames;
 	private String reportAbuseInput;
-	private int unknownInt10;
+	private int localPlayerIndex;
 	private boolean menuOpen;
 	private int anInt886;
 	private String inputString;
@@ -14113,7 +14115,7 @@ public class Game extends GameShell {
 	private int dialogueId;
 	private final int[] maximumLevels;
 	private final int[] anIntArray1045;
-	private int anInt1046;
+	private int member;
 	private boolean maleCharacter;
 	private int anInt1048;
 	private String aString1049;
@@ -14223,7 +14225,7 @@ public class Game extends GameShell {
 	private static ImageProducer chatboxImageProducer;
 	private int daysSinceRecovChange;
 	private BufferedConnection socketStream;
-	private int anInt1169;
+	private int privateMessageCount;
 	private int minimapZoom;
 	public int anInt1171;
 	private String myUsername;
@@ -14269,7 +14271,7 @@ public class Game extends GameShell {
 	private int loginScreenCursorPos;
 	private final Sprite[] modIcons;
 	private long aLong1220;
-	static int tabID;
+	static int tabId;
 	private int hintIconNpcId;
 	public static boolean inputTaken;
 	private int inputDialogState;
@@ -14285,7 +14287,7 @@ public class Game extends GameShell {
 	private int anInt1237;
 	private int anInt1238;
 	public final int anInt1239 = 100;
-	private final int[] anIntArray1240;
+	private final int[] privateMessageIds;
 	private final int[] trackLoops;
 	private boolean aBoolean1242;
 	private int atInventoryLoopCycle;
