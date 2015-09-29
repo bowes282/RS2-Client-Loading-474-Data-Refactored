@@ -10,7 +10,7 @@ public class Fog {
     /**
      * Sets the fog color.
      */
-    public static int setColor = 0xCBCAB6;
+    public static int setColor = 0xA7C5C7;
     
     /**
      * 
