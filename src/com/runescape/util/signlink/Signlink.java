@@ -172,8 +172,41 @@ public final class Signlink implements Runnable {
 	}
 
 	public static String findcachedir() {
-		return "./Cache/";
+		String os = System.getProperty("os.name").toLowerCase();
+		String cacheLoc = System.getProperty("user.home") + "/Cache/";
+		String local = "./Cache/";
+		//windows
+		if (os.indexOf("win") >= 0) {
+			File cacheDir = new File(local);
+			if(!cacheDir.exists()) {
+				cacheDir.mkdir();
+			}
+			return local;
+		//macintosh
+		} else if (os.indexOf("mac") >= 0) {
+			File cacheDirectory = new File(cacheLoc);
+			if(!cacheDirectory.exists()) {
+				cacheDirectory.mkdir();
+			}
+			return cacheLoc;
+		//linux
+		} else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("aix") > 0) {
+			File cacheDirectory = new File(cacheLoc);
+			if(!cacheDirectory.exists()) {
+				cacheDirectory.mkdir();
+			}
+			return cacheLoc;
+		//solaris
+		} else if (os.indexOf("sunos") >= 0) {
+			File cacheDirectory = new File(cacheLoc);
+			if(!cacheDirectory.exists()) {
+				cacheDirectory.mkdir();
+			}
+			return cacheLoc;
+		}
+		return local;
 	}
+	
 
 	/**
 	 * Plays the specified midi sequence.

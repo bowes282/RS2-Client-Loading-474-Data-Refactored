@@ -12674,14 +12674,14 @@ public class Game extends GameShell {
 			}
 			
 			if (opcode == 104) {
-				int j4 = incoming.readNegUByte();
-				int i12 = incoming.readUByteA();
-				String s6 = incoming.readString();
-				if (j4 >= 1 && j4 <= 5) {
-					if (s6.equalsIgnoreCase("null"))
-						s6 = null;
-					atPlayerActions[j4 - 1] = s6;
-					atPlayerArray[j4 - 1] = i12 == 0;
+				int slot = incoming.readNegUByte();
+				int primary = incoming.readUByteA();
+				String message = incoming.readString();
+				if (slot >= 1 && slot <= 5) {
+					if (message.equalsIgnoreCase("null"))
+						message = null;
+					atPlayerActions[slot - 1] = message;
+					atPlayerArray[slot - 1] = primary == 0;
 				}
 				opcode = -1;
 				return true;
