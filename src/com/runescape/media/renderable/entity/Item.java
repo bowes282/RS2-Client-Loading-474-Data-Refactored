@@ -1,16 +1,14 @@
-package com.runescape.media.renderable;
+package com.runescape.media.renderable.entity;
+
 import com.runescape.cache.def.ItemDefinition;
+import com.runescape.media.renderable.Model;
+import com.runescape.media.renderable.Renderable;
 
 public final class Item extends Renderable {
 
-	public final Model getRotatedModel()
-	{
+	public final Model getRotatedModel() {
 		ItemDefinition itemDef = ItemDefinition.lookup(ID);
-			return itemDef.getModel(anInt1559);
-	}
-
-	public Item()
-	{
+		return itemDef.getModel(anInt1559);
 	}
 
 	public int ID;

@@ -55,7 +55,7 @@ public final class ItemDefinition {
 		}
 		cache = new ItemDefinition[10];
 		for (int _ctr = 0; _ctr < 10; _ctr++)
-			cache[_ctr] = new ItemDefinition();		
+			cache[_ctr] = new ItemDefinition();
 	}
 
 	public Model getChatEquipModel(int gender) {

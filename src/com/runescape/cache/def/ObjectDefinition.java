@@ -1,5 +1,6 @@
 package com.runescape.cache.def;
 
+import java.io.IOException;
 import com.runescape.Game;
 import com.runescape.cache.config.VariableBits;
 import com.runescape.cache.media.SequenceFrame;
@@ -47,7 +48,7 @@ public final class ObjectDefinition {
 	public int varbit;
 	public int decorDisplacement;
 	public int[] modelTypes;
-	public byte description[];
+	public byte[] description;
 	public boolean isInteractive;
 	public boolean castsShadow;
 	public static ReferenceCache models = new ReferenceCache(30);
@@ -190,7 +191,7 @@ public final class ObjectDefinition {
 		stream = null;
 	}
 
-	public static void unpackConfig(CacheArchive streamLoader) {
+	public static void unpackConfig(CacheArchive streamLoader) throws IOException {
 		stream = new Buffer(streamLoader.getEntry("loc.dat"));
 		Buffer stream = new Buffer(streamLoader.getEntry("loc.idx"));
 		int totalObjects = stream.readUShort();
