@@ -1,5 +1,5 @@
 package com.runescape.collection;
-import com.runescape.util.signlink.Signlink;
+import com.runescape.sign.SignLink;
 
 /**
  * A least-recently used cache of references, backed by a {@link HashTable} and a {@link Queue}.
@@ -72,7 +72,7 @@ public final class ReferenceCache {
 			references.insertHead(node);
 			return;
 		} catch (RuntimeException runtimeexception) {
-			Signlink.reporterror("47547, " + node + ", " + key + ", " + (byte) 2 + ", " + runtimeexception.toString());
+			SignLink.reporterror("47547, " + node + ", " + key + ", " + (byte) 2 + ", " + runtimeexception.toString());
 		}
 		throw new RuntimeException();
 	}

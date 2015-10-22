@@ -6,7 +6,7 @@ import com.runescape.Configuration;
 import com.runescape.collection.Cacheable;
 import com.runescape.collection.Deque;
 import com.runescape.net.security.ISAACCipher;
-import com.runescape.util.signlink.Signlink;
+import com.runescape.sign.SignLink;
 
 public final class Buffer extends Cacheable {
 
@@ -114,7 +114,7 @@ public final class Buffer extends Cacheable {
 			payload[currentPosition++] = (byte) (int) (value >> 8);
 			payload[currentPosition++] = (byte) (int) value;
 		} catch (RuntimeException runtimeexception) {
-			Signlink.reporterror("14395, " + 5 + ", " + value + ", "
+			SignLink.reporterror("14395, " + 5 + ", " + value + ", "
 					+ runtimeexception.toString());
 			throw new RuntimeException();
 		}

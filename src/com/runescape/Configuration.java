@@ -20,6 +20,8 @@ public class Configuration {
 	 */
 	public static int server_port = 43594;
 	
+	public static boolean useJaggrab = true;
+	
 	/**
 	 * Toggles a security feature called RSA to prevent packet sniffers
 	 */

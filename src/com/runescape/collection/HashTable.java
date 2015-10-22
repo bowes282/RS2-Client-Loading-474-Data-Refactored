@@ -1,6 +1,6 @@
 package com.runescape.collection;
 
-import com.runescape.util.signlink.Signlink;
+import com.runescape.sign.SignLink;
 
 final class HashTable {
 
@@ -59,7 +59,7 @@ final class HashTable {
 			linkable.key = key;
 			return;
 		} catch (RuntimeException runtimeexception) {
-			Signlink.reporterror("91499, " + linkable + ", " + key + ", "
+			SignLink.reporterror("91499, " + linkable + ", " + key + ", "
 					+ (byte) 7 + ", " + runtimeexception.toString());
 		}
 		throw new RuntimeException();

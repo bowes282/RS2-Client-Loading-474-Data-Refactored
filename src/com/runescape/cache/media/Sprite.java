@@ -8,8 +8,8 @@ import com.runescape.Game;
 import com.runescape.media.Raster;
 import com.runescape.net.Buffer;
 import com.runescape.net.CacheArchive;
+import com.runescape.sign.SignLink;
 import com.runescape.util.FileUtility;
-import com.runescape.util.signlink.Signlink;
 
 public final class Sprite extends Raster {
 
@@ -20,7 +20,7 @@ public final class Sprite extends Raster {
 		drawOffsetX = drawOffsetY = 0;
 	}
 
-	public String location = Signlink.findcachedir() + "Sprites/";
+	public String location = SignLink.findcachedir() + "Sprites/";
 
 	public Sprite(byte data[], Component component) {
 		try {

@@ -1,5 +1,5 @@
 package com.runescape.util;
-import com.runescape.util.signlink.Signlink;
+import com.runescape.sign.SignLink;
 
 /**
  * A string utility class used by jagex to encode/decode, and format text
@@ -43,7 +43,7 @@ public final class StringUtils {
 			}
 			return new String(chars, 12 - length, length);
 		} catch (RuntimeException runtimeexception) {
-			Signlink.reporterror("81570, " + encoded + ", " + (byte) -99 + ", " + runtimeexception.toString());
+			SignLink.reporterror("81570, " + encoded + ", " + (byte) -99 + ", " + runtimeexception.toString());
 		}
 		throw new RuntimeException();
 	}

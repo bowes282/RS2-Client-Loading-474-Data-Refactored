@@ -1,31 +1,32 @@
-package com.runescape.util.signlink;
+package com.runescape.sign;
 
 import java.applet.Applet;
 import java.io.*;
 import java.net.*;
+
 import javax.sound.midi.*;
 import javax.sound.sampled.*;
 
-public final class Signlink implements Runnable {
+public final class SignLink implements Runnable {
 
 	public static final int clientversion = 317;
 	public static int uid;
 	public static int storeid = 32;
 	public static RandomAccessFile cache_dat = null;
-	public static final RandomAccessFile[] cache_idx = new RandomAccessFile[5];
+	public static final RandomAccessFile[] indices = new RandomAccessFile[5];
 	public static boolean sunjava;
 	public static Applet mainapp = null;
 	private static boolean active;
-	private static int threadliveid;
-	private static InetAddress socketip;
-	private static int socketreq;
+	private static int threadLiveId;
+	private static InetAddress socketAddress;
+	private static int socketRequest;
 	private static Socket socket = null;
 	private static int threadreqpri = 1;
 	private static Runnable threadreq = null;
 	private static String dnsreq = null;
 	public static String dns = null;
-	private static String urlreq = null;
-	private static DataInputStream urlstream = null;
+	private static String urlRequest = null;
+	private static DataInputStream urlStream = null;
 	private static int savelen;
 	private static String savereq = null;
 	private static byte[] savebuf = null;
@@ -40,11 +41,11 @@ public final class Signlink implements Runnable {
 	public static boolean reporterror = true;
 	public static String errorName = "";
 
-	private Signlink() {
+	private SignLink() {
 	}
 
 	public static void startpriv(InetAddress inetaddress) {
-		threadliveid = (int) (Math.random() * 99999999D);
+		threadLiveId = (int) (Math.random() * 99999999D);
 		if (active) {
 			try {
 				Thread.sleep(500L);
@@ -52,13 +53,13 @@ public final class Signlink implements Runnable {
 			}
 			active = false;
 		}
-		socketreq = 0;
+		socketRequest = 0;
 		threadreq = null;
 		dnsreq = null;
 		savereq = null;
-		urlreq = null;
-		socketip = inetaddress;
-		Thread thread = new Thread(new Signlink());
+		urlRequest = null;
+		socketAddress = inetaddress;
+		Thread thread = new Thread(new SignLink());
 		thread.setDaemon(true);
 		thread.start();
 		while (!active)
@@ -70,24 +71,24 @@ public final class Signlink implements Runnable {
 
 	public void run() {
 		active = true;
-		String s = findcachedir();
-		uid = getuid(s);
+		String directory = findcachedir();
+		uid = getUid(directory);
 		try {
-			cache_dat = new RandomAccessFile(s + "main_file_cache.dat", "rw");
-			for (int j = 0; j < 5; j++)
-				cache_idx[j] = new RandomAccessFile(s + "main_file_cache.idx"
-						+ j, "rw");
+			cache_dat = new RandomAccessFile(directory + "main_file_cache.dat", "rw");
+			for (int index = 0; index < 5; index++)
+				indices[index] = new RandomAccessFile(directory + "main_file_cache.idx"
+						+ index, "rw");
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
-		for (int i = threadliveid; threadliveid == i;) {
-			if (socketreq != 0) {
+		for (int i = threadLiveId; threadLiveId == i;) {
+			if (socketRequest != 0) {
 				try {
-					socket = new Socket(socketip, socketreq);
+					socket = new Socket(socketAddress, socketRequest);
 				} catch (Exception _ex) {
 					socket = null;
 				}
-				socketreq = 0;
+				socketRequest = 0;
 			} else if (threadreq != null) {
 				Thread thread = new Thread(threadreq);
 				thread.setDaemon(true);
@@ -105,13 +106,13 @@ public final class Signlink implements Runnable {
 				if (savebuf != null)
 					try {
 						FileOutputStream fileoutputstream = new FileOutputStream(
-								s + savereq);
+								directory + savereq);
 						fileoutputstream.write(savebuf, 0, savelen);
 						fileoutputstream.close();
 					} catch (Exception _ex) {
 					}
 				if (waveplay) {
-					String wave = s + savereq;
+					String wave = directory + savereq;
 					waveplay = false;
 					AudioInputStream audioInputStream = null;
 					try {
@@ -141,7 +142,7 @@ public final class Signlink implements Runnable {
 
 				}
 				if (play) {
-					midi = s + savereq;
+					midi = directory + savereq;
 					try {
 						if (music != null) {
 							music.stop();
@@ -154,15 +155,15 @@ public final class Signlink implements Runnable {
 					play = false;
 				}
 				savereq = null;
-			} else if (urlreq != null) {
+			} else if (urlRequest != null) {
 				try {
 					System.out.println("urlstream");
-					urlstream = new DataInputStream((new URL(
-							mainapp.getCodeBase(), urlreq)).openStream());
+					urlStream = new DataInputStream((new URL(
+							mainapp.getCodeBase(), urlRequest)).openStream());
 				} catch (Exception _ex) {
-					urlstream = null;
+					urlStream = null;
 				}
-				urlreq = null;
+				urlRequest = null;
 			}
 			try {
 				Thread.sleep(50L);
@@ -175,38 +176,38 @@ public final class Signlink implements Runnable {
 		String os = System.getProperty("os.name").toLowerCase();
 		String cacheLoc = System.getProperty("user.home") + "/Cache/";
 		String local = "./Cache/";
-		//windows
+		// windows
 		if (os.indexOf("win") >= 0) {
 			File cacheDir = new File(local);
-			if(!cacheDir.exists()) {
+			if (!cacheDir.exists()) {
 				cacheDir.mkdir();
 			}
 			return local;
-		//macintosh
+			// macintosh
 		} else if (os.indexOf("mac") >= 0) {
 			File cacheDirectory = new File(cacheLoc);
-			if(!cacheDirectory.exists()) {
+			if (!cacheDirectory.exists()) {
 				cacheDirectory.mkdir();
 			}
 			return cacheLoc;
-		//linux
-		} else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 || os.indexOf("aix") > 0) {
+			// linux
+		} else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0
+				|| os.indexOf("aix") > 0) {
 			File cacheDirectory = new File(cacheLoc);
-			if(!cacheDirectory.exists()) {
+			if (!cacheDirectory.exists()) {
 				cacheDirectory.mkdir();
 			}
 			return cacheLoc;
-		//solaris
+			// solaris
 		} else if (os.indexOf("sunos") >= 0) {
 			File cacheDirectory = new File(cacheLoc);
-			if(!cacheDirectory.exists()) {
+			if (!cacheDirectory.exists()) {
 				cacheDirectory.mkdir();
 			}
 			return cacheLoc;
 		}
 		return local;
 	}
-	
 
 	/**
 	 * Plays the specified midi sequence.
@@ -323,7 +324,7 @@ public final class Signlink implements Runnable {
 		}
 	}
 
-	private static int getuid(String s) {
+	private static int getUid(String s) {
 		try {
 			File file = new File(s + "uid.dat");
 			if (!file.exists() || file.length() < 4L) {
@@ -345,31 +346,31 @@ public final class Signlink implements Runnable {
 		}
 	}
 
-	public static synchronized Socket opensocket(int i) throws IOException {
-		for (socketreq = i; socketreq != 0;)
+	public static synchronized Socket openSocket(int port) throws IOException {
+		for (socketRequest = port; socketRequest != 0;)
 			try {
 				Thread.sleep(50L);
 			} catch (Exception _ex) {
 			}
-
 		if (socket == null)
 			throw new IOException("could not open socket");
 		else
 			return socket;
 	}
 
-	public static synchronized DataInputStream openurl(String s)
+	public static synchronized DataInputStream openUrl(String url)
 			throws IOException {
-		for (urlreq = s; urlreq != null;)
+		for (urlRequest = url; urlRequest != null;) {
 			try {
 				Thread.sleep(50L);
-			} catch (Exception _ex) {
+			} catch (Exception ex) {
 			}
+		}
 
-		if (urlstream == null)
-			throw new IOException("could not open: " + s);
-		else
-			return urlstream;
+		if (urlStream == null) {
+			throw new IOException("could not open: " + url);
+		}
+		return urlStream;
 	}
 
 	public static synchronized void dnslookup(String s) {
@@ -411,7 +412,7 @@ public final class Signlink implements Runnable {
 	public static void reporterror(String s) {
 		System.out.println("Error: " + s);
 	}
-	
+
 	public static void setError(String error) {
 		errorName = error;
 	}

@@ -8,7 +8,7 @@ import com.runescape.collection.Deque;
 import com.runescape.collection.Queue;
 import com.runescape.net.Buffer;
 import com.runescape.net.CacheArchive;
-import com.runescape.util.signlink.Signlink;
+import com.runescape.sign.SignLink;
 
 public final class ResourceProvider extends Provider implements Runnable {
 
@@ -88,7 +88,7 @@ public final class ResourceProvider extends Provider implements Runnable {
 				if (current != null) {
 					idleTime = 0;
 					if (length == 0) {
-						Signlink.reporterror("Rej: " + type + "," + file);
+						SignLink.reporterror("Rej: " + type + "," + file);
 						current.buffer = null;
 						if (current.incomplete)
 							synchronized (complete) {
@@ -357,7 +357,7 @@ public final class ResourceProvider extends Provider implements Runnable {
 				}
 			}
 		} catch (Exception exception) {
-			Signlink.reporterror("od_ex " + exception.getMessage());
+			SignLink.reporterror("od_ex " + exception.getMessage());
 		}
 	}
 
