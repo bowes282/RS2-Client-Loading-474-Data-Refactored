@@ -41,6 +41,7 @@ import com.runescape.net.Buffer;
 import com.runescape.net.BufferedConnection;
 import com.runescape.net.CacheArchive;
 import com.runescape.net.NetworkConstants;
+import com.runescape.net.protocol.ProtocolConstants;
 import com.runescape.net.requester.Resource;
 import com.runescape.net.requester.ResourceProvider;
 import com.runescape.net.security.ISAACCipher;
@@ -96,6 +97,11 @@ public class Game extends GameShell {
 			: true;
 	public static boolean transparentTabArea = false;
 	private final int[] soundVolume;
+	/*
+	 * CRC32 is one of hash functions based on on the "polynomial" division idea.
+	 * The CRC is acronym for Cyclic Redundancy Code (other variants instead "Code" is "Check" and "Checksum") algorithm.
+	 * The number 32 is specifying the size of resulting hash value (checksum The value calculated from content of file.
+	 */
 	private CRC32 indexCrc = new CRC32();
 
 	public static void frameMode(ScreenMode screenMode) {
@@ -1219,7 +1225,7 @@ public class Game extends GameShell {
 				k3 = plane;
 			if (k3 < plane - 1)
 				k3 = plane - 1;
-			if (lowMem)
+			if (lowMemory)
 				scene.method275(MapRegion.anInt145);
 			else
 				scene.method275(0);
@@ -1242,7 +1248,7 @@ public class Game extends GameShell {
 			outgoing.writeOpCode(210);
 			outgoing.writeInt(0x3f008edd);
 		}
-		if (lowMem && SignLink.cache_dat != null) {
+		if (lowMemory && SignLink.cache_dat != null) {
 			int j = resourceProvider.getVersionCount(0);
 			for (int i1 = 0; i1 < j; i1++) {
 				int l1 = resourceProvider.getModelIndex(i1);
@@ -2128,7 +2134,7 @@ public class Game extends GameShell {
 			}
 			if (k == 4)
 				Configuration.enableMusic = false;
-			if (Configuration.enableMusic != flag1 && !lowMem) {
+			if (Configuration.enableMusic != flag1 && !lowMemory) {
 				if (Configuration.enableMusic) {
 					nextSong = currentSong;
 					fadeMusic = true;
@@ -2720,7 +2726,7 @@ public class Game extends GameShell {
 	}
 
 	private void writeBackgroundTexture(int j) {
-		if (!lowMem) {
+		if (!lowMemory) {
 			if (Rasterizer.anIntArray1480[17] >= j) {
 				Background background = Rasterizer.aBackgroundArray1474s[17];
 				int k = background.anInt1452 * background.anInt1453 - 1;
@@ -3103,7 +3109,7 @@ public class Game extends GameShell {
 			}
 			if (player == null || !player.isVisible())
 				continue;
-			player.aBoolean1699 = (lowMem && playerCount > 50 || playerCount > 200)
+			player.aBoolean1699 = (lowMemory && playerCount > 50 || playerCount > 200)
 					&& !flag
 					&& player.movementAnimation == player.standAnimIndex;
 			int j1 = player.x >> 7;
@@ -3462,7 +3468,7 @@ public class Game extends GameShell {
 	private static void setHighMem() {
 		SceneGraph.lowMem = false;
 		Rasterizer.lowMem = false;
-		lowMem = false;
+		lowMemory = false;
 		MapRegion.lowMem = false;
 		ObjectDefinition.lowMemory = false;
 	}
@@ -3486,7 +3492,7 @@ public class Game extends GameShell {
 	public static Game instance;
 
 	private void loadingStages() {
-		if (lowMem && loadingStage == 2 && MapRegion.anInt131 != plane) {
+		if (lowMemory && loadingStage == 2 && MapRegion.anInt131 != plane) {
 			gameScreenImageProducer.initDrawingArea();
 			drawLoadingMessages(1, "Loading - please wait.", null);
 			gameScreenImageProducer.drawGraphics(
@@ -3499,7 +3505,7 @@ public class Game extends GameShell {
 			int j = method54();
 			if (j != 0 && System.currentTimeMillis() - aLong824 > 0x57e40L) {
 				SignLink.reporterror(myUsername + " glcfb " + serverSeed + ","
-						+ j + "," + lowMem + "," + indices[0] + ","
+						+ j + "," + lowMemory + "," + indices[0] + ","
 						+ resourceProvider.remaining() + "," + plane + ","
 						+ anInt1069 + "," + anInt1070);
 				aLong824 = System.currentTimeMillis();
@@ -4218,7 +4224,7 @@ public class Game extends GameShell {
 	}
 
 	public void playSong(int id) {
-		if (id != currentSong && Configuration.enableMusic && !lowMem
+		if (id != currentSong && Configuration.enableMusic && !lowMemory
 				&& prevSong == 0) {
 			nextSong = id;
 			fadeMusic = true;
@@ -4292,7 +4298,7 @@ public class Game extends GameShell {
 			prevSong -= 20;
 			if (prevSong < 0)
 				prevSong = 0;
-			if (prevSong == 0 && Configuration.enableMusic && !lowMem) {
+			if (prevSong == 0 && Configuration.enableMusic && !lowMemory) {
 				nextSong = currentSong;
 				fadeMusic = true;
 				resourceProvider.provide(2, nextSong);
@@ -7439,6 +7445,16 @@ public class Game extends GameShell {
 				+ ((i & 0xff00) * l + (j & 0xff00) * k & 0xff0000) >> 8;
 	}
 
+	/**
+	 * The login method for the 317 protocol.
+	 * 
+	 * @param name
+	 * 		The name of the user trying to login.
+	 * @param password
+	 * 		The password of the user trying to login.
+	 * @param reconnecting
+	 * 		The flag for the user indicating to attempt to reconnect.
+	 */
 	private void login(String name, String password, boolean reconnecting) {
 		SignLink.setError(name);
 		try {
@@ -7452,18 +7468,25 @@ public class Game extends GameShell {
 			long encoded = StringUtils.encodeBase37(name);
 			int nameHash = (int) (encoded >> 16 & 31L);
 			outgoing.currentPosition = 0;
-			outgoing.writeByte(14);
+			//client -> server
+			outgoing.writeByte(ProtocolConstants.GAME_SEVER_OPCODE);
 			outgoing.writeByte(nameHash);
 			socketStream.queueBytes(2, outgoing.payload);
-			for (int j = 0; j < 8; j++)
+			 // server -> client
+			for (int j = 0; j < 8; j++) {
 				socketStream.read();
-
+			}
+			/*
+			 * Returns numeric values indicated the state of a users
+			 * login session. 
+			 */
 			int response = socketStream.read();
 			int copy = response;
+			
 			if (response == 0) {
 				socketStream.flushInputStream(incoming.payload, 8);
 				incoming.currentPosition = 0;
-				serverSeed = incoming.readLong();
+				serverSeed = incoming.readLong(); //aka server session key
 				int seed[] = new int[4];
 				seed[0] = (int) (Math.random() * 99999999D);
 				seed[1] = (int) (Math.random() * 99999999D);
@@ -7475,23 +7498,48 @@ public class Game extends GameShell {
 				outgoing.writeInt(seed[1]);
 				outgoing.writeInt(seed[2]);
 				outgoing.writeInt(seed[3]);
+				/*
+				 * User identification, in the 317 protocol a random number would
+				 * be generated for a player as an Integer, and this integer would
+				 * be stored on the users computer in a file called uid.dat within
+				 * the clients cache files.
+				 */
 				outgoing.writeInt(SignLink.uid);
-				outgoing.writeString(UserIdentification.generateUID());
+				/*
+				 * This is not found in the 317 protocol, but what this does is
+				 * grabs the users serial number from their operating system so
+				 * if this user were to ever change their "ip address" the server
+				 * can still recognize that this user is infact the same person becaused
+				 * off the serial number of their operating system.
+				 */
+				outgoing.writeString(UserIdentification.generateUID()); //Custom not found in 317 protocol.
 				outgoing.writeString(name);
 				outgoing.writeString(password);
-				outgoing.encodeRSA(NetworkConstants.RSA_EXPONENT,
-						NetworkConstants.RSA_MODULUS);
-				login.currentPosition = 0;
-				if (reconnecting)
-					login.writeByte(18);
-				else
-					login.writeByte(16);
-				login.writeByte(outgoing.currentPosition + 36 + 1 + 1 + 2);
-				login.writeByte(255); // magic number
-				login.writeShort(317); // client version
-				login.writeByte(lowMem ? 1 : 0);
-				for (int index = 0; index < 9; index++)
+				/*
+				 * RSA is an algorithm used by modern computers to encrypt and decrypt messages.
+				 * It is an asymmetric cryptographic algorithm. Asymmetric means that there are two different keys.
+				 * This is also called public key cryptography, because one of them can be given to everyone.
+				 * The other key must be kept private. RSA works because it generates number so large that it is
+				 * virtually impossible to find the modulus of given number.
+				 */
+				outgoing.encodeRSA(NetworkConstants.RSA_EXPONENT, NetworkConstants.RSA_MODULUS);
+				login.currentPosition = 0;					
+				login.writeByte(reconnecting ? ProtocolConstants.RECONNECTION_OPCODE : ProtocolConstants.NEW_CONNECTION_OPCODE);
+				login.writeByte(outgoing.currentPosition + ProtocolConstants.LOGIN_BLOCK_ENCRYPTION_KEY); // size of the login block
+				login.writeByte(ProtocolConstants.MAGIC_NUMBER_OPCODE);
+				login.writeShort(ProtocolConstants.PROTOCOL_REVISION);
+				/*
+				 * Client version
+				 * 
+				 * 0 indicates low memory : 1 indicates high memory.
+				 */
+				login.writeByte(lowMemory ? 1 : 0); // client version
+				/*
+				 * Crc keys used for the update server.
+				 */
+				for (int index = 0; index < 9; index++) {
 					login.writeInt(archiveCRCs[index]);
+				}
 
 				login.writeBytes(outgoing.payload, outgoing.currentPosition, 0);
 				outgoing.encryption = new ISAACCipher(seed);
@@ -11412,7 +11460,7 @@ public class Game extends GameShell {
 		// : frameWidth - 5);
 		char c = '\u0168';
 		char c1 = '\310';
-		if (Configuration.enableMusic && !lowMem) {
+		if (Configuration.enableMusic && !lowMemory) {
 			playSong(SoundConstants.SCAPE_RUNE);
 		}
 		if (loginScreenState == 0) {
@@ -11553,7 +11601,7 @@ public class Game extends GameShell {
 					&& localPlayer.pathX[0] <= k3 + i14
 					&& localPlayer.pathY[0] >= j6 - i14
 					&& localPlayer.pathY[0] <= j6 + i14 && aBoolean848
-					&& !lowMem && trackCount < 50) {
+					&& !lowMemory && trackCount < 50) {
 				tracks[trackCount] = i9;
 				trackLoops[trackCount] = i16;
 				soundDelay[trackCount] = Track.delays[i9];
@@ -11985,7 +12033,7 @@ public class Game extends GameShell {
 	private void removeObject(int y, int z, int k, int l, int x, int group,
 			int previousId) {
 		if (x >= 1 && y >= 1 && x <= 102 && y <= 102) {
-			if (lowMem && z != plane)
+			if (lowMemory && z != plane)
 				return;
 			int key = 0;
 			if (group == 0)
@@ -12462,7 +12510,7 @@ public class Game extends GameShell {
 				int id = incoming.readLEUShort();
 				if (id == 65535)
 					id = -1;
-				if (id != currentSong && Configuration.enableMusic && !lowMem
+				if (id != currentSong && Configuration.enableMusic && !lowMemory
 						&& prevSong == 0) {
 					nextSong = id;
 					fadeMusic = true;
@@ -12476,7 +12524,7 @@ public class Game extends GameShell {
 			if (opcode == PacketConstants.NEXT_OR_PREVIOUS_SONG) {
 				int id = incoming.readLEUShortA();
 				int delay = incoming.readUShortA();
-				if (Configuration.enableMusic && !lowMem) {
+				if (Configuration.enableMusic && !lowMemory) {
 					nextSong = id;
 					fadeMusic = false;
 					resourceProvider.provide(2, nextSong);
@@ -14137,7 +14185,7 @@ public class Game extends GameShell {
 	private static int nodeID = 10;
 	public static int portOffset;
 	private static boolean isMembers = true;
-	private static boolean lowMem;
+	private static boolean lowMemory = false;
 	private volatile boolean drawingFlames;
 	private int spriteDrawX;
 	private int spriteDrawY;
