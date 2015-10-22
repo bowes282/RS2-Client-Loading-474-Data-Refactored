@@ -20,7 +20,7 @@ public class Configuration {
 	 */
 	public static int server_port = 43594;
 	
-	public static boolean useJaggrab = true;
+	public static boolean useJaggrab = false;
 	
 	/**
 	 * Toggles a security feature called RSA to prevent packet sniffers
@@ -35,7 +35,7 @@ public class Configuration {
 	/**
 	 * A string which indicates the Client's name.
 	 */
-	public static final String CLIENT_NAME = "Project RuneSeven - Official";
+	public static final String CLIENT_NAME = "RuneScape";
 	
 	public static boolean normalLogin = true;
 	
