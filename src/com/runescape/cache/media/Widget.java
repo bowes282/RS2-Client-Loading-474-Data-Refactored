@@ -45,7 +45,7 @@ public final class Widget {
 		Buffer buffer = new Buffer(interfaces.getEntry("data"));
 		int defaultParentId = -1;
 		buffer.readUShort();
-		interfaceCache = new Widget[31000];
+		interfaceCache = new Widget[38000];
 		
 		while (buffer.currentPosition < buffer.payload.length) {
 			int interfaceId = buffer.readUShort();
@@ -251,7 +251,7 @@ public final class Widget {
 		}		
 		interfaceLoader = interfaces;
 		clanChatTab(textDrawingAreas);
-		//clanChatSetup(textDrawingAreas);
+		clanChatSetup(textDrawingAreas);
 		configureLunar(textDrawingAreas);
 		quickCurses(textDrawingAreas);
 		quickPrayers(textDrawingAreas);
@@ -357,226 +357,171 @@ public final class Widget {
 	}
 	
 	public static void clanChatTab(GameFont[] tda) {
-		Widget tab = addTabInterface(18128);
-		addHoverButton(18129, "/Clan Chat/SPRITE", 6, 72, 32, "Join Clan", 550,
-				18130, 5);
-		addHoveredButton(18130, "/Clan Chat/SPRITE", 7, 72, 32, 18131);
-		addHoverButton(18132, "/Clan Chat/SPRITE", 6, 72, 32, "Clan Setup", -1,
-				18133, 5);
-		addConfigHover(18250, 4, 18251, 1, 2, "/Clan Chat/Lootshare", 40, 40,
-				308, 1, "Toggle Lootshare", 18252, 0, 1,
-				"/Clan Chat/Lootshare", 18253, "Toggle xp 2", "Toggle xp 3",
-				12, 20);
-		addHoveredButton(18133, "/Clan Chat/SPRITE", 7, 72, 32, 18134);
-		addText(18135, "Join Clan", tda, 0, 0xff9b00, true, true);
-		addText(18136, "Clan Setup", tda, 0, 0xff9b00, true, true);
-		addSprite(18137, 38, "/Clan Chat/SPRITE");
-		addText(18138, "Clan Chat", tda, 2, 0xff9b00, true, true);
-		addText(18139, "Talking in: Not in clan", tda, 0, 0xff9b00, false, true);
-		addText(18140, "Owner: None", tda, 0, 0xff9b00, false, true);
-		addSprite(16126, 4, "/Clan Chat/SPRITE");
-		addText(18141, "(1/100)", tda, 2, 0xff9b00, true, true);
-		tab.totalChildren(14);
-		tab.child(0, 18137, 0, 53);
-		tab.child(1, 18143, 6, 62);
-		tab.child(2, 18129, 15, 226);
-		tab.child(3, 18130, 15, 226);
-		tab.child(4, 18132, 103, 226);
-		tab.child(5, 18133, 103, 226);
-		tab.child(6, 18135, 51, 237);
-		tab.child(7, 18136, 139, 237);
-		tab.child(8, 18138, 95, 1);
-		tab.child(9, 18139, 10, 23);
-		tab.child(10, 18140, 25, 38);
-		tab.child(11, 18250, 153, 22);
-		tab.child(12, 18252, 153, 22);
-		tab.child(13, 18141, 163, 1);
-
+		Widget tab = addTabInterface(37128);
+		addHoverButton(37129, "/Clan Chat/SPRITE", 6, 72, 32,
+				"Join Chat", -1, 37130, 5);
+		addHoveredButton(37130, "/Clan Chat/SPRITE", 7, 72, 32,
+				37131);
+		addHoverButton(37132, "/Clan Chat/SPRITE", 6, 72, 32,
+				"Clan Setup", -1, 37133, 5);
+		addHoveredButton(37133, "/Clan Chat/SPRITE", 7, 72, 32,
+				37134);
+		// addButton(37250, 0, "/Clan Chat/Lootshare", "Toggle lootshare");
+		addText(37135, "Join Chat", tda, 0, 0xff9b00, true, true);
+		addText(37136, "Clan Setup", tda, 0, 0xff9b00, true, true);
+		addSprite(37137, 37, "/Clan Chat/SPRITE");
+		addText(37138, "Clan Chat", tda, 1, 0xff9b00, true, true);
+		addText(37139, "Talking in: Not in chat", tda, 0, 0xff9b00, false, true);
+		addText(37140, "Owner: None", tda, 0, 0xff9b00, false, true);
+		tab.totalChildren(13);
+		tab.child(0, 16126, 0, 221);
+		tab.child(1, 16126, 0, 59);
+		tab.child(2, 37137, 0, 62);
+		tab.child(3, 37143, 0, 62);
+		tab.child(4, 37129, 15, 226);
+		tab.child(5, 37130, 15, 226);
+		tab.child(6, 37132, 103, 226);
+		tab.child(7, 37133, 103, 226);
+		tab.child(8, 37135, 51, 237);
+		tab.child(9, 37136, 139, 237);
+		tab.child(10, 37138, 95, 1);
+		tab.child(11, 37139, 10, 23);
+		tab.child(12, 37140, 25, 38);
 		/* Text area */
-		Widget list = addTabInterface(18143);
+		Widget list = addTabInterface(37143);
 		list.totalChildren(100);
-		for (int i = 18144; i <= 18244; i++) {
+		for (int i = 37144; i <= 37244; i++) {
 			addText(i, "", tda, 0, 0xffffff, false, true);
 		}
-		for (int id = 18144, i = 0; id <= 18243 && i <= 99; id++, i++) {
-			interfaceCache[id].actions = new String[] { "Edit Rank", "Kick",
-					"Ban" };
+		for (int id = 37144, i = 0; id <= 37243 && i <= 99; id++, i++) {
+			interfaceCache[id].actions = new String[] { "Kick" };
 			list.children[i] = id;
 			list.childX[i] = 5;
-			for (int id2 = 18144, i2 = 1; id2 <= 18243 && i2 <= 99; id2++, i2++) {
+			for (int id2 = 37144, i2 = 1; id2 <= 37243 && i2 <= 99; id2++, i2++) {
 				list.childY[0] = 2;
 				list.childY[i2] = list.childY[i2 - 1] + 14;
 			}
 		}
 		list.height = 158;
-		list.width = 162;
+		list.width = 174;
 		list.scrollMax = 1405;
 	}
 	
-	
-
 	public static void clanChatSetup(GameFont[] tda) {
-		Widget tab = addTabInterface(15456);
-		addSprite(15251, 0, "Clan Chat/sprite");
-		addHoverButton(15252, "Clan Chat/button", 2, 150, 35, "Set prefix", -1,
-				15253, 1);
-		addHoveredButton(15253, "Clan Chat/button", 3, 150, 35, 15254);
-		addHoverButton(15255, "Clan Chat/button", 2, 150, 35, "Anyone", -1,
-				15256, 1);
-		addHoveredButton(15256, "Clan Chat/button", 3, 150, 35, 15257);
-
-		addHoverButton(16000, "b", 1, 150, 35, "Only me", -1, 15999, 1);
-		addHoverButton(16001, "b", 1, 150, 35, "General+", -1, 15999, 1);
-		addHoverButton(16002, "b", 1, 150, 35, "Captain+", -1, 15999, 1);
-		addHoverButton(16003, "b", 1, 150, 35, "Lieutenant+", -1, 15999, 1);
-		addHoverButton(16004, "b", 1, 150, 35, "Sergeant+", -1, 15999, 1);
-		addHoverButton(16005, "b", 1, 150, 35, "Corporal+", -1, 15999, 1);
-		addHoverButton(16006, "b", 1, 150, 35, "Recruit+", -1, 15999, 1);
-		addHoverButton(16007, "b", 1, 150, 35, "Any friends", -1, 15999, 1);
-
-		addHoverButton(15258, "Clan Chat/button", 2, 150, 35, "Anyone", -1,
-				15259, 1);
-		addHoveredButton(15259, "Clan Chat/button", 3, 150, 35, 15260);
-
-		addHoverButton(16010, "b", 1, 150, 35, "Only me", -1, 15999, 1);
-		addHoverButton(16011, "b", 1, 150, 35, "General+", -1, 15999, 1);
-		addHoverButton(16012, "b", 1, 150, 35, "Captain+", -1, 15999, 1);
-		addHoverButton(16013, "b", 1, 150, 35, "Lieutenant+", -1, 15999, 1);
-		addHoverButton(16014, "b", 1, 150, 35, "Sergeant+", -1, 15999, 1);
-		addHoverButton(16015, "b", 1, 150, 35, "Corporal+", -1, 15999, 1);
-		addHoverButton(16016, "b", 1, 150, 35, "Recruit+", -1, 15999, 1);
-		addHoverButton(16017, "b", 1, 150, 35, "Any friends", -1, 15999, 1);
-
-		addHoverButton(15261, "Clan Chat/button", 2, 150, 35, "Only me", -1,
-				15262, 1);
-		addHoveredButton(15262, "Clan Chat/button", 3, 150, 35, 15263);
-
-		// addHoverButton(48020, "b", 1, 150, 35, "Only me", -1, 47999, 1);
-		addHoverButton(16221, "b", 1, 150, 35, "General+", -1, 15999, 1);
-		addHoverButton(16222, "b", 1, 150, 35, "Captain+", -1, 15999, 1);
-		addHoverButton(16223, "b", 1, 150, 35, "Lieutenant+", -1, 15999, 1);
-		addHoverButton(16224, "b", 1, 150, 35, "Sergeant+", -1, 15999, 1);
-		addHoverButton(16225, "b", 1, 150, 35, "Corporal+", -1, 15999, 1);
-		addHoverButton(16226, "b", 1, 150, 35, "Recruit+", -1, 15999, 1);
-
-		addHoverButton(15267, "Clan Chat/close", 0, 16, 16, "Close", -1, 15268,
-				1);
-		addHoveredButton(15268, "Clan Chat/close", 1, 16, 16, 15269);
-
-		addText(15800, "Clan name:", tda, 0, 0xff981f, false, true);
-		addText(15801, "Who can enter chat?", tda, 0, 0xff981f, false, true);
-		addText(15812, "Who can talk on chat?", tda, 0, 0xff981f, false, true);
-		addText(15813, "Who can kick on chat?", tda, 0, 0xff981f, false, true);
-		addText(15814, "None", tda, 2, 0xffffff, true, true);
-		addText(15815, "Anyone", tda, 2, 0xffffff, true, true);
-		addText(15816, "Anyone", tda, 2, 0xffffff, true, true);
-		addText(15817, "Only me", tda, 2, 0xffffff, true, true);
-
-		/* Table */
-		addSprite(18319, 10, "/Interfaces/Clan Chat/sprite");
-
-		/* Label */
-		addText(18320, "Name:", tda, 2, 0xFF981F, false, true);
-		addText(18321, "Rank:", tda, 2, 0xFF981F, false, true);
-
-		/* Ranked members list */
-
-		/* Table info text */
-		addText(18322, "Friends List", tda, 2, 0xFF981F, true, true);
-
-		addText(18323, "Right click on a name to edit the member.", tda, 0,
-				0xFF981F, true, true);
-
-		/* Add ranked member button */
-		addButton(18324, 0, "/Interfaces/Clan Chat/plus", "Add ranked member");
-		interfaceCache[18323].optionType = 5;
-
-		/* Add banned member button */
-		addButton(18325, 0, "/Interfaces/Clan Chat/plus", "Add banned member");
-		interfaceCache[18325].optionType = 5;
-
+		Widget rsi = addInterface(37300);
+		rsi.totalChildren(12 + 15);
+		int count = 0;
+		/* Background */
+		addSprite(37301, 1, "/Clan Chat/sprite");
+		rsi.child(count++, 37301, 14, 18);
+		/* Close button */
+		addButton(37302, 0, "/Clan Chat/close", "Close");
+		interfaceCache[37302].optionType = 3;
+		rsi.child(count++, 37302, 475, 26);
 		/* Clan Setup title */
-		addText(18303, "Clan Chat Setup", tda, 2, 0xFF981F, true, true);
-
-		tab.totalChildren(48);
-		tab.child(0, 15251, 15, 15);
-		tab.child(1, 15252, 25, 50);
-		tab.child(2, 15253, 25, 50);
-		tab.child(3, 15267, 476, 23);
-		tab.child(4, 15268, 476, 23);
-		tab.child(5, 16000, 25, 87 + 10);
-		tab.child(6, 16001, 25, 87 + 10);
-		tab.child(7, 16002, 25, 87 + 10);
-		tab.child(8, 16003, 25, 87 + 10);
-		tab.child(9, 16004, 25, 87 + 10);
-		tab.child(10, 16005, 25, 87 + 10);
-		tab.child(11, 16006, 25, 87 + 10);
-		tab.child(12, 16007, 25, 87 + 10);
-		tab.child(13, 15255, 25, 87 + 10);
-		tab.child(14, 15256, 25, 87 + 10);
-		tab.child(15, 16010, 25, 128 + 16);
-		tab.child(16, 16011, 25, 128 + 16);
-		tab.child(17, 16012, 25, 128 + 16);
-		tab.child(18, 16013, 25, 128 + 16);
-		tab.child(19, 16014, 25, 128 + 16);
-		tab.child(20, 16015, 25, 128 + 16);
-		tab.child(21, 16016, 25, 128 + 16);
-		tab.child(22, 16017, 25, 128 + 16);
-		tab.child(23, 15258, 25, 128 + 16);
-		tab.child(24, 15259, 25, 128 + 16);
-		// tab.child(25, 48020, 25, 168+35);
-		tab.child(25, 16221, 25, 168 + 23);
-		tab.child(26, 16222, 25, 168 + 23);
-		tab.child(27, 16223, 25, 168 + 23);
-		tab.child(28, 16224, 25, 168 + 23);
-		tab.child(29, 16225, 25, 168 + 23);
-		tab.child(30, 16226, 25, 168 + 23);
-		tab.child(31, 15261, 25, 168 + 23);
-		tab.child(32, 15262, 25, 168 + 23);
-		tab.child(33, 15800, 73, 54);
-		tab.child(34, 15801, 53, 95 + 5);
-		tab.child(35, 15812, 53, 136 + 10);
-		tab.child(36, 15813, 53, 177 + 15);
-		tab.child(37, 15814, 100, 54 + 12);
-		tab.child(38, 15815, 100, 95 + 5 + 12);
-		tab.child(39, 15816, 100, 136 + 10 + 12);
-		tab.child(40, 15817, 100, 177 + 15 + 12);
-		tab.child(41, 14100, 0 - 8, 94);
-		tab.child(42, 18319, 197, 70);
-		tab.child(43, 18320, 202 - 4, 74);
-		tab.child(44, 18321, 339 - 4, 74);
-		tab.child(45, 18322, 337, 47);
-		tab.child(46, 18323, 337, 47 + 11);
-		// tab.child(47, 18324, 319, 75);
-		// tab.child(48, 18325, 459, 75);
-		tab.child(47, 18303, 256, 26 - 5);
-
-		tab = addTabInterface(14100);
-		tab.width = 474;
-		tab.height = 213;
-		tab.scrollMax = 2030;
-		for (int i = 14101; i <= 14300; i++)
-			addText2(i, "", tda, 1, 0xffff64, false, true);
-
-		for (int i = 17551; i <= 17750; i++) {
-			addHoverText2(i, "", new String[] { "Unban", "General", "Captain",
-					"Lieutenant", "Sergeant", "Corporal", "Recruit", "Guest" },
-					tda, 1, 0xffffff, false, false, 150);
+		addText(37303, "Clan Chat Setup", tda, 2, 0xFF981F, true, true);
+		rsi.child(count++, 37303, 256, 26);
+		/* Setup buttons */
+		String[] titles = { "Clan name:", "Who can enter chat?",
+				"Who can talk on chat?", "Who can kick on chat?",
+				"Who can ban on chat?" };
+		String[] defaults = { "Chat Disabled", "Anyone", "Anyone", "Anyone",
+				"Anyone" };
+		String[] whoCan = { "Anyone", "Recruit", "Corporal", "Sergeant",
+				"Lieutenant", "Captain", "General", "Only Me" };
+		for (int index = 0, id = 37304, y = 50; index < titles.length; index++, id += 3, y += 40) {
+			addButton(id, 2, "/Clan Chat/sprite", "");
+			interfaceCache[id].optionType = 0;
+			if (index > 0) {
+				interfaceCache[id].actions = whoCan;
+			} else {
+				interfaceCache[id].actions = new String[] { "Edit Name",
+						"Delete Clan" };
+				;
+			}
+			addText(id + 1, titles[index], tda, 0, 0xFF981F, true, true);
+			addText(id + 2, defaults[index], tda, 1, 0xFFFFFF, true, true);
+			rsi.child(count++, id, 25, y);
+			rsi.child(count++, id + 1, 100, y + 4);
+			rsi.child(count++, id + 2, 100, y + 17);
 		}
-
-		tab.totalChildren(400);
-		int Child = 0;
-		int Y = 3;
-		for (int i = 14101; i <= 14300; i++) {
-			tab.child(Child, i, 204, Y);
-			Child++;
-			Y += 13;
+		/* Table */
+		addSprite(37319, 5, "/Clan Chat/sprite");
+		rsi.child(count++, 37319, 197, 70);
+		/* Labels */
+		int id = 37320;
+		int y = 74;
+		addText(id, "Ranked Members", tda, 2, 0xFF981F, false, true);
+		rsi.child(count++, id++, 202, y);
+		addText(id, "Banned Members", tda, 2, 0xFF981F, false, true);
+		rsi.child(count++, id++, 339, y);
+		/* Ranked members list */
+		Widget list = addInterface(id++);
+		int lines = 100;
+		list.totalChildren(lines);
+		String[] ranks = { "Remove", "Recruit", "Corporal", "Sergeant",
+				"Lieutenant", "Captain", "General", "Owner" };
+		list.childY[0] = 2;
+		// System.out.println(id);
+		for (int index = id; index < id + lines; index++) {
+			addText(index, "", tda, 1, 0xffffff, false, true);
+			interfaceCache[index].actions = ranks;
+			list.children[index - id] = index;
+			list.childX[index - id] = 2;
+			list.childY[index - id] = (index - id > 0 ? list.childY[index - id
+					- 1] + 14 : 0);
 		}
-		Y = 3;
-		for (int i = 17551; i <= 17750; i++) {
-			tab.child(Child, i, 343, Y);
-			Child++;
-			Y += 13;
+		id += lines;
+		list.width = 119;
+		list.height = 210;
+		list.scrollMax = (lines * 14) + 2;
+		rsi.child(count++, list.id, 199, 92);
+		/* Banned members list */
+		list = addInterface(id++);
+		list.totalChildren(lines);
+		list.childY[0] = 2;
+		// System.out.println(id);
+		for (int index = id; index < id + lines; index++) {
+			addText(index, "", tda, 1, 0xffffff, false, true);
+			interfaceCache[index].actions = new String[] { "Unban" };
+			list.children[index - id] = index;
+			list.childX[index - id] = 0;
+			list.childY[index - id] = (index - id > 0 ? list.childY[index - id
+					- 1] + 14 : 0);
+		}
+		id += lines;
+		list.width = 119;
+		list.height = 210;
+		list.scrollMax = (lines * 14) + 2;
+		rsi.child(count++, list.id, 339, 92);
+		/* Table info text */
+		y = 47;
+		addText(id, "You can manage both ranked and banned members here.", tda,
+				0, 0xFF981F, true, true);
+		rsi.child(count++, id++, 337, y);
+		addText(id, "Right click on a name to edit the member.", tda, 0,
+				0xFF981F, true, true);
+		rsi.child(count++, id++, 337, y + 11);
+		/* Add ranked member button */
+		y = 75;
+		addButton(id, 0, "/Clan Chat/plus", "Add Member");
+		interfaceCache[id].optionType = 5;
+		rsi.child(count++, id++, 319, y);
+		/* Add banned member button */
+		addButton(id, 0, "/Clan Chat/plus", "Add Member");
+		interfaceCache[id].optionType = 5;
+		rsi.child(count++, id++, 459, y);
+
+		/* Hovers */
+		int[] clanSetup = { 37302, 37304, 37307, 37310, 37313, 37316, 37526,
+				37527 };
+		String[] names = { "close", "sprite", "sprite", "sprite", "sprite",
+				"sprite", "plus", "plus" };
+		int[] ids = { 1, 3, 3, 3, 3, 3, 1, 1 };
+		for (int index = 0; index < clanSetup.length; index++) {
+			rsi = interfaceCache[clanSetup[index]];
+			rsi.disabledSprite = imageLoader(ids[index],
+					"/Clan Chat/" + names[index]);
 		}
 	}
 	

@@ -130,15 +130,18 @@ public final class NpcDefinition {
 		}
 
 		cache = new NpcDefinition[20];
-		for (int count = 0; count < 20; count++)
+		for (int count = 0; count < 20; count++) {
 			cache[count] = new NpcDefinition();
+		}
+		
 		for (int index = 0; index < totalNPCs; index++) {
-			NpcDefinition ed = lookup(index);
-			if (ed == null)
+			NpcDefinition def = lookup(index);
+			if (def == null)
 				continue;
-			if (ed.name == null)
+			if (def.name == null)
 				continue;
 		}
+
 		System.out.println("Loaded: " + totalNPCs + " Npcs");
 	}
 
