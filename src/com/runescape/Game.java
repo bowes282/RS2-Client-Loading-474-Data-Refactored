@@ -1591,6 +1591,26 @@ public class Game extends GameShell {
 					secondMenuAction[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
+				if (k >= i2 && i1 >= j2
+						&& k < i2 + (childInterface.type == 4 ? 100 : childInterface.width)
+						&& i1 < j2 + childInterface.height) {
+					if (childInterface.actions != null) {
+						if ((childInterface.type == 4 && childInterface.defaultText.length() > 0)
+								|| childInterface.type == 5) {
+							for (int action = childInterface.actions.length - 1; action >= 0; action--) {
+								if (childInterface.actions[action] != null) {
+									menuActionText[menuActionRow] = childInterface.actions[action]
+											+ (childInterface.type == 4 ? " "
+													+ childInterface.defaultText : "");
+									menuActionTypes[menuActionRow] = 647;
+									firstMenuAction[menuActionRow] = action;
+									secondMenuAction[menuActionRow] = childInterface.id;
+									menuActionRow++;
+								}
+							}
+						}
+					}
+				}
 				if (childInterface.type == Widget.TYPE_INVENTORY) {
 					int k2 = 0;
 					for (int l2 = 0; l2 < childInterface.height; l2++) {
@@ -5073,6 +5093,24 @@ public class Game extends GameShell {
 			outgoing.writeShort(clicked);
 			outgoing.writeLEShort(first + regionBaseX);
 			outgoing.writeShortA(anInt1137);
+		}
+		// clan chat
+		if (action == 647) {
+			outgoing.writeOpCode(213);
+			outgoing.writeShort(second);
+			outgoing.writeShort(first);
+			switch (second) {
+			case 37304:
+				if (first == 0) {
+					inputTaken = true;
+					inputDialogState = 0;
+					messagePromptRaised = true;
+					promptInput = "";
+					friendsListAction = 8;
+					aString1121 = "Enter your new clan name";
+				}
+				break;
+			}
 		}
 		if (action == 646) {
 			outgoing.writeOpCode(185);
