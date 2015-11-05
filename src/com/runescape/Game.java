@@ -8314,7 +8314,7 @@ public class Game extends GameShell {
 			newRegularFont = new RSFont(false, "p12_full", titleStreamLoader);
 			newBoldFont = new RSFont(false, "b12_full", titleStreamLoader);
 			newFancyFont = new RSFont(true, "q8_full", titleStreamLoader);
-			GameFont gameFont = new GameFont(true, "q8_full", titleStreamLoader);
+			gameFont = new GameFont(true, "q8_full", titleStreamLoader);
 			drawLogo();
 			loadTitleScreen();
 			CacheArchive streamLoader = createArchive(2, "config",
@@ -8389,6 +8389,11 @@ public class Game extends GameShell {
 			for (int imageId = 0; imageId < SkillConstants.SKILL_COUNT; imageId++) {
 				skill_sprites[imageId] = new Sprite("xp_drop/" + imageId);
 			}
+			Sprite[] clanIcons = new Sprite[9];
+			for (int index = 0; index < clanIcons.length; index++) {
+				clanIcons[index] = new Sprite("Clan Chat/Icons/" + index);
+			}
+			RSFont.unpackImages(modIcons, clanIcons);
 			multiOverlay = new Sprite(streamLoader_2, "overlay_multiway", 0);
 			mapBack = new Background(streamLoader_2, "mapback", 0);
 			for (int j3 = 0; j3 <= 14; j3++)
@@ -8472,9 +8477,9 @@ public class Game extends GameShell {
 			VariableBits.unpackConfig(streamLoader);
 			ItemDefinition.isMembers = isMembers;
 			drawLoadingText(95, "Unpacking interfaces");
-			GameFont aclass30_sub2_sub1_sub4s[] = { smallText, regularText,
+			GameFont gameFonts[] = { smallText, regularText,
 					boldText, gameFont };
-			Widget.load(streamLoader_1, aclass30_sub2_sub1_sub4s,
+			Widget.load(streamLoader_1, gameFonts,
 					streamLoader_2);
 			drawLoadingText(100, "Preparing game engine");
 			for (int j6 = 0; j6 < 33; j6++) {
@@ -9599,15 +9604,25 @@ public class Game extends GameShell {
 						} else {
 							s1 = text;
 							text = "";
+						}						
+						RSFont font = null;
+						if (textDrawingArea == smallText) {
+							font = newSmallFont;
+						} else if (textDrawingArea == regularText) {
+							font = newRegularFont;
+						} else if (textDrawingArea == boldText) {
+							font = newBoldFont;
+						} else if (textDrawingArea == gameFont) {
+							font = newFancyFont;
 						}
-						if (childInterface.centerText)
-							textDrawingArea.method382(colour, _x
-									+ childInterface.width / 2, s1, l6,
-									childInterface.textShadow);
-						else
-							textDrawingArea.drawTextWithPotentialShadow(
-									childInterface.textShadow, _x, colour, s1,
-									l6);
+						if (childInterface.centerText) {
+							font.drawCenteredString(s1,
+									_x + childInterface.width / 2, l6, colour,
+									childInterface.textShadow ? 0 : -1);
+						} else {
+							font.drawBasicString(s1, _x, l6, colour,
+									childInterface.textShadow ? 0 : -1);
+						}
 					}
 				} else if (childInterface.type == Widget.TYPE_SPRITE) {
 					Sprite sprite;
@@ -14469,6 +14484,7 @@ public class Game extends GameShell {
 	private GameFont smallText;
 	private GameFont regularText;
 	private GameFont boldText;
+	private GameFont gameFont;
 	public RSFont newSmallFont, newRegularFont, newBoldFont;
 	public RSFont newFancyFont;
 	private int anInt1275;

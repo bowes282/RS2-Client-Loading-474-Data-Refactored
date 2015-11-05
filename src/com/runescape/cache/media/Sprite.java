@@ -857,7 +857,7 @@ public final class Sprite extends Raster {
 	public int myWidth;
 	public int myHeight;
 	int drawOffsetX;
-	int drawOffsetY;
+	public int drawOffsetY;
 	public int maxWidth;
 	public int maxHeight;
 }

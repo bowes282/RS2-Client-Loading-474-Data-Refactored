@@ -19,7 +19,8 @@ public class RSFont extends Raster {
     public byte[] aByteArray4151;
     public byte[][] fontPixels;
     public int[] characterScreenWidths;
-    public Sprite[] chatImages;
+    public static Sprite[] chatImages;
+    public static Sprite[] clanImages;
     public static String aRSString_4135;
     public static String startTransparency;
     public static String startDefaultShadow;
@@ -33,6 +34,7 @@ public class RSFont extends Raster {
     public static String startStrikethrough;
     public static String endColor;
     public static String startImage;
+    public static String startClanImage;
     public static String endUnderline;
     public static String defaultStrikethrough;
     public static String startShadow;
@@ -224,8 +226,9 @@ public class RSFont extends Raster {
         }
     }
 
-    public void unpackChatImages(Sprite[] icons) {
+    public static void unpackImages(Sprite[] icons, Sprite[] clan) {
         chatImages = icons;
+        clanImages = clan;
     }
 
     public void drawBasicString(String string, int drawX, int drawY) {
@@ -263,17 +266,36 @@ public class RSFont extends Raster {
                         if (effectString.startsWith(startImage)) {
                             try {
                                 int imageId = Integer.valueOf(effectString.substring(4));
-                                Sprite icon = chatImages[imageId];
-                                int iconModY = icon.maxHeight;
+                                Sprite chatImageId = chatImages[imageId];
+                                int iconModY = chatImageId.maxHeight;
                                 if (transparency == 256) {
-                                    icon.method346(drawX, (drawY + baseCharacterHeight - iconModY));
+                                	chatImageId.method346(drawX, (drawY + baseCharacterHeight - iconModY));
                                 } else {
-                                    icon.drawSprite(drawX,(drawY + baseCharacterHeight - iconModY), transparency);
+                                	chatImageId.drawSprite(drawX,(drawY + baseCharacterHeight - iconModY), transparency);
                                 }
-                                drawX += icon.maxWidth;
+                                drawX += chatImageId.maxWidth;
                             } catch (Exception exception) {
                                 /* empty */
                             }
+                        } else if (effectString.startsWith(startClanImage)) {
+    							try {
+    								int imageId = Integer.valueOf(effectString
+    										.substring(5));
+    								Sprite icon = clanImages[imageId];
+    								int iconModY = icon.myHeight + icon.drawOffsetY
+    										+ 1;
+    								if (transparency == 256) {
+    									icon.drawSprite(drawX, (drawY
+    											+ baseCharacterHeight - iconModY));
+    								} else {
+    									icon.drawSprite(drawX, (drawY
+    											+ baseCharacterHeight - iconModY),
+    											transparency);
+    								}
+    								drawX += 11;
+    							} catch (Exception exception) {
+    								exception.printStackTrace();
+    							}    						
                         } else {
                             setTextEffects(effectString);
                         }
@@ -796,6 +818,7 @@ public class RSFont extends Raster {
         defaultStrikethrough = "str";
         endUnderline = "/u";
         startImage = "img=";
+        startClanImage = "clan=";
         startShadow = "shad=";
         startUnderline = "u=";
         endColor = "/col";
