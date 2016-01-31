@@ -1,6 +1,6 @@
 package com.runescape.sound;
 
-import com.runescape.net.Buffer;
+import com.runescape.io.Buffer;
 
 /**
  * A simple envelope generator to control a variety of parameters (such as

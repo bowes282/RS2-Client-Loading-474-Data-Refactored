@@ -1,11 +1,11 @@
 package com.runescape.cache.def;
 
-import com.runescape.Game;
+import com.runescape.Client;
+import com.runescape.cache.anim.Frame;
 import com.runescape.cache.config.VariableBits;
-import com.runescape.cache.media.SequenceFrame;
 import com.runescape.collection.ReferenceCache;
-import com.runescape.media.renderable.Model;
-import com.runescape.net.Buffer;
+import com.runescape.entity.model.Model;
+import com.runescape.io.Buffer;
 import com.runescape.net.CacheArchive;
 
 /**
@@ -35,7 +35,7 @@ public final class NpcDefinition {
 	public long interfaceType;
 	public int degreesToTurn;
 	public static NpcDefinition[] cache;
-	public static Game clientInstance;
+	public static Client clientInstance;
 	public int turn90CWAnimIndex;
 	public boolean clickable;
 	public int lightModifier;
@@ -107,7 +107,7 @@ public final class NpcDefinition {
 			int variable = varBit.getSetting();
 			int low = varBit.getLow();
 			int high = varBit.getHigh();
-			int mask = Game.BIT_MASKS[high - low];
+			int mask = Client.BIT_MASKS[high - low];
 			child = clientInstance.settings[variable] >> low & mask;
 		} else if (settingId != -1)
 			child = clientInstance.settings[settingId];
@@ -191,8 +191,8 @@ public final class NpcDefinition {
 		}
 		Model empty = Model.EMPTY_MODEL;
 		empty.method464(model,
-				SequenceFrame.method532(frame) & SequenceFrame.method532(j)
-						& SequenceFrame.method532(nextFrame));
+				Frame.method532(frame) & Frame.method532(j)
+						& Frame.method532(nextFrame));
 		if (frame != -1 && j != -1)
 			empty.method471(ai, j, frame);
 		else if (frame != -1 && nextFrame != -1)
@@ -248,8 +248,8 @@ public final class NpcDefinition {
 			modelCache.put(model, interfaceType);
 		}
 		Model model_1 = Model.EMPTY_MODEL;
-		model_1.method464(model, SequenceFrame.method532(secondaryFrame)
-				& SequenceFrame.method532(primaryFrame));
+		model_1.method464(model, Frame.method532(secondaryFrame)
+				& Frame.method532(primaryFrame));
 		if (secondaryFrame != -1 && primaryFrame != -1)
 			model_1.method471(interleaveOrder, primaryFrame, secondaryFrame);
 		else if (secondaryFrame != -1)

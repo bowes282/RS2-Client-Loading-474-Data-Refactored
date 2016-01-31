@@ -1,6 +1,6 @@
 package com.runescape.util;
 
-import com.runescape.Game;
+import com.runescape.Client;
 
 public final class MouseDetection implements Runnable {
 
@@ -20,7 +20,7 @@ public final class MouseDetection implements Runnable {
 		}
 	}
 
-	public MouseDetection(Game client1) {
+	public MouseDetection(Client client1) {
 		syncObject = new Object();
 		coordsY = new int[500];
 		running = true;
@@ -28,7 +28,7 @@ public final class MouseDetection implements Runnable {
 		clientInstance = client1;
 	}
 
-	private Game clientInstance;
+	private Client clientInstance;
 	public final Object syncObject;
 	public final int[] coordsY;
 	public boolean running;

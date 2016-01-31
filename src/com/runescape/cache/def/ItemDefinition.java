@@ -1,18 +1,13 @@
 package com.runescape.cache.def;
 
-import com.runescape.cache.media.Sprite;
+import com.runescape.cache.graphics.Sprite;
 import com.runescape.collection.ReferenceCache;
-import com.runescape.media.Raster;
-import com.runescape.media.renderable.Model;
-import com.runescape.net.Buffer;
+import com.runescape.draw.Raster;
+import com.runescape.draw.Rasterizer;
+import com.runescape.entity.model.Model;
+import com.runescape.io.Buffer;
 import com.runescape.net.CacheArchive;
-import com.runescape.scene.graphic.Rasterizer;
 
-/**
- * Refactored reference from rename317
- * https://code.google.com/p/rename317/source
- * /browse/trunk/src/rs2/ItemDef.java?spec=svn202&r=202
- */
 public final class ItemDefinition {
 
 	public static void clearCache() {

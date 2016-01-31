@@ -1,6 +1,6 @@
 package com.runescape.cache.config;
 
-import com.runescape.net.Buffer;
+import com.runescape.io.Buffer;
 import com.runescape.net.CacheArchive;
 
 public final class VariableParameter {

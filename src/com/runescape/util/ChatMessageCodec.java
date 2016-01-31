@@ -1,6 +1,6 @@
 package com.runescape.util;
 
-import com.runescape.net.Buffer;
+import com.runescape.io.Buffer;
 
 public final class ChatMessageCodec {
 

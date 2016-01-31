@@ -3,7 +3,7 @@ import java.awt.*;
 
 public final class GameFrame extends Frame {
 
-	private final GameShell applet;
+	private final GameApplet applet;
 	public Toolkit toolkit = Toolkit.getDefaultToolkit();
 	public Dimension screenSize = toolkit.getScreenSize();
 	public int screenWidth = (int) screenSize.getWidth();
@@ -11,7 +11,7 @@ public final class GameFrame extends Frame {
 	protected final Insets insets;
 	private static final long serialVersionUID = 1L;
 
-	public GameFrame(GameShell applet, int width, int height, boolean resizable, boolean fullscreen) {
+	public GameFrame(GameApplet applet, int width, int height, boolean resizable, boolean fullscreen) {
 		this.applet = applet;
 		setTitle(Configuration.CLIENT_NAME);
 		setResizable(resizable);

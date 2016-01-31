@@ -1,12 +1,12 @@
 package com.runescape.cache.def;
 
 import java.io.IOException;
-import com.runescape.Game;
+import com.runescape.Client;
+import com.runescape.cache.anim.Frame;
 import com.runescape.cache.config.VariableBits;
-import com.runescape.cache.media.SequenceFrame;
 import com.runescape.collection.ReferenceCache;
-import com.runescape.media.renderable.Model;
-import com.runescape.net.Buffer;
+import com.runescape.entity.model.Model;
+import com.runescape.io.Buffer;
 import com.runescape.net.CacheArchive;
 import com.runescape.net.requester.ResourceProvider;
 
@@ -37,7 +37,7 @@ public final class ObjectDefinition {
 	public int length;
 	public boolean contouredGround;
 	public boolean occludes;
-	public static Game clientInstance;
+	public static Client clientInstance;
 	public boolean hollow;
 	public boolean solid;
 	public int surroundings;
@@ -265,7 +265,7 @@ public final class ObjectDefinition {
 			int j = varBit.getSetting();
 			int k = varBit.getLow();
 			int l = varBit.getHigh();
-			int i1 = Game.BIT_MASKS[l - k];
+			int i1 = Client.BIT_MASKS[l - k];
 			i = clientInstance.settings[j] >> k & i1;
 		} else if (varp != -1)
 			i = clientInstance.settings[varp];
@@ -342,7 +342,7 @@ public final class ObjectDefinition {
 		boolean flag2;
 		flag2 = translateX != 0 || translateY != 0 || translateZ != 0;
 		Model model_3 = new Model(modifiedModelColors == null,
-				SequenceFrame.method532(k), l == 0 && k == -1 && !flag
+				Frame.method532(k), l == 0 && k == -1 && !flag
 						&& !flag2, model);
 		if (k != -1) {
 			model_3.skin();

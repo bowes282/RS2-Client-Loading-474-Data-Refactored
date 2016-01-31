@@ -3,6 +3,7 @@ package com.runescape.net;
 import java.io.InputStream;
 
 import com.runescape.cache.bzip.BZip2Decompressor;
+import com.runescape.io.Buffer;
 
 import java.io.FileInputStream;
 import java.io.IOException;

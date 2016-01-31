@@ -3,11 +3,11 @@ package com.runescape.net;
 import java.io.*;
 import java.net.Socket;
 
-import com.runescape.GameShell;
+import com.runescape.GameApplet;
 
 public final class BufferedConnection implements Runnable {
 
-	public BufferedConnection(GameShell RSApplet_, Socket socket1)
+	public BufferedConnection(GameApplet RSApplet_, Socket socket1)
 			throws IOException {
 		closed = false;
 		isWriter = false;
@@ -143,7 +143,7 @@ public final class BufferedConnection implements Runnable {
 	private OutputStream outputStream;
 	private final Socket socket;
 	private boolean closed;
-	private final GameShell rsApplet;
+	private final GameApplet rsApplet;
 	private byte[] buffer;
 	private int writeIndex;
 	private int buffIndex;

@@ -1,10 +1,10 @@
 package com.runescape.scene;
-import com.runescape.Game;
+import com.runescape.Client;
+import com.runescape.cache.anim.Animation;
 import com.runescape.cache.config.VariableBits;
 import com.runescape.cache.def.ObjectDefinition;
-import com.runescape.media.Animation;
-import com.runescape.media.renderable.Model;
-import com.runescape.media.renderable.Renderable;
+import com.runescape.entity.Renderable;
+import com.runescape.entity.model.Model;
 
 public final class SceneObject extends Renderable {
 	
@@ -18,7 +18,7 @@ public final class SceneObject extends Renderable {
 	private final int anInt1606;
 	private Animation aAnimation_1607;
 	private int anInt1608;
-	public static Game clientInstance;
+	public static Client clientInstance;
 	private final int anInt1610;
 	private final int anInt1611;
 	private final int anInt1612;
@@ -31,7 +31,7 @@ public final class SceneObject extends Renderable {
 				int k = varBit.getSetting();
 				int l = varBit.getLow();
 				int i1 = varBit.getHigh();
-				int j1 = Game.BIT_MASKS[i1 - l];
+				int j1 = Client.BIT_MASKS[i1 - l];
 				i = clientInstance.settings[k] >> l & j1;
 			} catch (Exception ex) {
 			}
@@ -48,7 +48,7 @@ public final class SceneObject extends Renderable {
 	public Model getRotatedModel() {
 		int j = -1;
 		if (aAnimation_1607 != null) {
-			int k = Game.loopCycle - anInt1608;
+			int k = Client.loopCycle - anInt1608;
 			if (k > 100 && aAnimation_1607.anInt356 > 0) {
 				k = 100;
 			}
@@ -63,7 +63,7 @@ public final class SceneObject extends Renderable {
 				aAnimation_1607 = null;
 				break;
 			}
-			anInt1608 = Game.loopCycle - k;
+			anInt1608 = Client.loopCycle - k;
 			if (aAnimation_1607 != null) {
 				j = aAnimation_1607.anIntArray353[anInt1599];
 			}
@@ -91,7 +91,7 @@ public final class SceneObject extends Renderable {
 		if (l1 != -1) {
 			aAnimation_1607 = Animation.animations[l1];
 			anInt1599 = 0;
-			anInt1608 = Game.loopCycle;
+			anInt1608 = Client.loopCycle;
 			if (flag && aAnimation_1607.anInt356 != -1) {
 				anInt1599 = (int) (Math.random() * (double) aAnimation_1607.anInt352);
 				anInt1608 -= (int) (Math.random() * (double) aAnimation_1607.method258(anInt1599));

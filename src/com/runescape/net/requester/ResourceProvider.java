@@ -3,10 +3,10 @@ import java.io.*;
 import java.net.Socket;
 import java.util.zip.GZIPInputStream;
 
-import com.runescape.Game;
+import com.runescape.Client;
 import com.runescape.collection.Deque;
 import com.runescape.collection.Queue;
-import com.runescape.net.Buffer;
+import com.runescape.io.Buffer;
 import com.runescape.net.CacheArchive;
 import com.runescape.sign.SignLink;
 
@@ -22,7 +22,7 @@ public final class ResourceProvider extends Provider implements Runnable {
 	private final byte[] payload;
 	public int tick;
 	private final byte[][] fileStatus;
-	private Game clientInstance;
+	private Client clientInstance;
 	private final Deque extras;
 	private int completedSize;
 	private int remainingData;
@@ -149,7 +149,7 @@ public final class ResourceProvider extends Provider implements Runnable {
 
 	public int mapAmount = 0;
 
-	public void initialize(CacheArchive archive, Game client) {
+	public void initialize(CacheArchive archive, Client client) {
 		byte[] mapData = archive.getEntry("map_index");
 		Buffer stream2 = new Buffer(mapData);
 		int j1 = mapData.length / 6;
@@ -205,7 +205,7 @@ public final class ResourceProvider extends Provider implements Runnable {
 				if (currentTime - lastRequestTime < 4000L)
 					return;
 				lastRequestTime = currentTime;
-				socket = clientInstance.openSocket(43594 + Game.portOffset);
+				socket = clientInstance.openSocket(43594 + Client.portOffset);
 				inputStream = socket.getInputStream();
 				outputStream = socket.getOutputStream();
 				outputStream.write(15);
@@ -219,7 +219,7 @@ public final class ResourceProvider extends Provider implements Runnable {
 			payload[2] = (byte) resource.ID;
 			if (resource.incomplete)
 				payload[3] = 2;
-			else if (!Game.loggedIn)
+			else if (!Client.loggedIn)
 				payload[3] = 1;
 			else
 				payload[3] = 0;
@@ -340,7 +340,7 @@ public final class ResourceProvider extends Provider implements Runnable {
 					idleTime = 0;
 					loadingMessage = "";
 				}
-				if (Game.loggedIn && socket != null && outputStream != null && (maximumPriority > 0 || clientInstance.indices[0] == null)) {
+				if (Client.loggedIn && socket != null && outputStream != null && (maximumPriority > 0 || clientInstance.indices[0] == null)) {
 					deadTime++;
 					if (deadTime > 500) {
 						deadTime = 0;

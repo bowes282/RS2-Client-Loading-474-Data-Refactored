@@ -1,6 +1,6 @@
 package com.runescape.sound;
 
-import com.runescape.net.Buffer;
+import com.runescape.io.Buffer;
 
 /**
  * Refactored reference:
