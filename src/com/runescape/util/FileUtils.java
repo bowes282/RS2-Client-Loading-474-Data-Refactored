@@ -13,7 +13,7 @@ import java.util.zip.CRC32;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-public class FileUtility {
+public class FileUtils {
 
 	public static void writeFile(File f, byte[] data) {
 		try {

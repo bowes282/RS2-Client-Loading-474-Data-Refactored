@@ -9,7 +9,7 @@ import com.runescape.draw.Raster;
 import com.runescape.io.Buffer;
 import com.runescape.net.CacheArchive;
 import com.runescape.sign.SignLink;
-import com.runescape.util.FileUtility;
+import com.runescape.util.FileUtils;
 
 public final class Sprite extends Raster {
 
@@ -44,7 +44,7 @@ public final class Sprite extends Raster {
 
 	public Sprite(String img, int width, int height) {
 		try {
-			Image image = Toolkit.getDefaultToolkit().createImage(FileUtility.readFile(img));
+			Image image = Toolkit.getDefaultToolkit().createImage(FileUtils.readFile(img));
 			myWidth = width;
 			myHeight = height;
 			maxWidth = myWidth;
