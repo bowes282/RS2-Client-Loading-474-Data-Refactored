@@ -22,6 +22,7 @@ import com.runescape.cache.def.ObjectDefinition;
 import com.runescape.cache.graphics.Background;
 import com.runescape.cache.graphics.GameFont;
 import com.runescape.cache.graphics.Sprite;
+import com.runescape.cache.graphics.SpriteLoader;
 import com.runescape.cache.graphics.Widget;
 import com.runescape.collection.Deque;
 import com.runescape.collection.Linkable;
@@ -96,6 +97,7 @@ public class Client extends GameApplet {
 			: true;
 	public static boolean transparentTabArea = false;
 	private final int[] soundVolume;
+	
 	/*
 	 * CRC32 is one of hash functions based on on the "polynomial" division idea.
 	 * The CRC is acronym for Cyclic Redundancy Code (other variants instead "Code" is "Check" and "Checksum") algorithm.
@@ -8395,14 +8397,15 @@ public class Client extends GameApplet {
 
 	void startUp() {
 		drawLoadingText(20, "Starting up");
+		SpriteLoader.loadSprites();		
 		if (SignLink.cache_dat != null) {
 			for (int i = 0; i < 5; i++)
 				indices[i] = new Index(SignLink.cache_dat,
 						SignLink.indices[i], i + 1);
 		}
 		try {
-			System.out.println(Configuration.useJaggrab);
-			if (Configuration.useJaggrab) {
+
+		  if (Configuration.useJaggrab) {
 				requestCrcs();
 			}
 			titleStreamLoader = createArchive(1, "title screen", "title",
@@ -8475,23 +8478,15 @@ public class Client extends GameApplet {
 			if (Configuration.repackIndexFour) {
 				dumpCacheIndex(4);
 			}
-			// GetMusic(3); //Used to pack new songs (midi format)
-			// musics();
 
-			File[] file = new File(SignLink.findcachedir()
-					+ "/sprites/sprites/").listFiles();
-			int size = file.length;
-			cacheSprite = new Sprite[size];
-			System.out.println("Images Loaded: " + size);
-			for (int i = 0; i < size; i++) {
-				cacheSprite[i] = new Sprite("Sprites/" + i);
-			}
-			for (int imageId = 0; imageId < SkillConstants.SKILL_COUNT; imageId++) {
-				skill_sprites[imageId] = new Sprite("xp_drop/" + imageId);
+			cacheSprite = SpriteLoader.getSprites();
+
+			for (int imageId = 73, index = 0; imageId < SkillConstants.SKILL_COUNT; imageId++, index++) {
+				skill_sprites[index] = cacheSprite[imageId];
 			}
 			Sprite[] clanIcons = new Sprite[9];
 			for (int index = 0; index < clanIcons.length; index++) {
-				clanIcons[index] = new Sprite("Clan Chat/Icons/" + index);
+				clanIcons[index] = new Sprite("Interfaces/Clan Chat/Icons/" + index);
 			}
 			RSFont.unpackImages(modIcons, clanIcons);
 			multiOverlay = new Sprite(streamLoader_2, "overlay_multiway", 0);
