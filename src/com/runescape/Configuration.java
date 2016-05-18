@@ -1,4 +1,5 @@
 package com.runescape;
+
 /**
  * The main configuration for the Client
  * @author 7Winds

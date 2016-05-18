@@ -152,12 +152,11 @@ public final class Widget {
 			}
 			
 			if (widget.type == TYPE_TEXT) {
-				widget.defaultText = buffer.readString().replaceAll("RuneScape", "Project Aeolus");
+				widget.defaultText = buffer.readString().replaceAll("RuneScape", "Astraeus");
 				if (widget.id == 19209) {
 					widget.defaultText.replaceAll("Total", "");
 				}
 				widget.secondaryText = buffer.readString();
-				//System.out.println("Id: " + rsInterface.id + " - " + rsInterface.message + "\n");
 			}
 
 			if (widget.type == TYPE_MODEL_LIST || widget.type == TYPE_RECTANGLE || widget.type == TYPE_TEXT)

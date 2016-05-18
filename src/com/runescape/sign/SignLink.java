@@ -408,6 +408,11 @@ public final class SignLink implements Runnable {
 			return true;
 		}
 	}
+	
+  public static String indexLocation(int cacheIndex, int index) {
+        return SignLink.findcachedir() + "index" + cacheIndex + "/"
+            + (index != -1 ? index + ".gz" : "");
+      }
 
 	public static void reporterror(String s) {
 		System.out.println("Error: " + s);
