@@ -25,7 +25,7 @@ public class Configuration {
 	/**
 	 * Toggles a security feature called RSA to prevent packet sniffers
 	 */
-	public static final boolean ENABLE_RSA = true;
+	public static final boolean ENABLE_RSA = false;
 	
 	/**
 	 * The url that the users will get redirected to after clicking "New User"

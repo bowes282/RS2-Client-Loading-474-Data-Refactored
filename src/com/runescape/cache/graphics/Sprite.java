@@ -338,9 +338,12 @@ public final class Sprite extends Raster {
 			i1 += l;
 		}
 	}
-
+	
 	public void drawSprite1(int i, int j) {
-		int k = 128;// was parameter
+	      drawSprite1(i, j, 128);
+	}
+
+	public void drawSprite1(int i, int j, int k) {
 		i += drawOffsetX;
 		j += drawOffsetY;
 		int i1 = i + j * Raster.width;

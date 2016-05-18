@@ -1551,45 +1551,31 @@ public class Client extends GameApplet {
 				if (childInterface.optionType == Widget.OPTION_TOGGLE_SETTING
 						&& k >= i2 && i1 >= j2 && k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
-					// System.out.println("2"+class9_1.tooltip + ", " +
-					// class9_1.interfaceID);
-					// menuActionName[menuActionRow] = class9_1.tooltip + ", " +
-					// class9_1.id;
 					menuActionText[menuActionRow] = childInterface.tooltip;
 					menuActionTypes[menuActionRow] = 169;
 					secondMenuAction[menuActionRow] = childInterface.id;
 					menuActionRow++;
-					if (childInterface.hoverText != null) {
-						// drawHoverBox(k, l, class9_1.hoverText);
-						// System.out.println("DRAWING INTERFACE: " +
-						// class9_1.hoverText);
-					}
 				}
+				
 				if (childInterface.optionType == Widget.OPTION_RESET_SETTING
 						&& k >= i2 && i1 >= j2 && k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
-					// System.out.println("3"+class9_1.tooltip + ", " +
-					// class9_1.interfaceID);
-					// menuActionName[menuActionRow] = class9_1.tooltip + ", " +
-					// class9_1.id;
 					menuActionText[menuActionRow] = childInterface.tooltip;
 					menuActionTypes[menuActionRow] = 646;
 					secondMenuAction[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
+				
 				if (childInterface.optionType == Widget.OPTION_CONTINUE
 						&& !continuedDialogue && k >= i2 && i1 >= j2
 						&& k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
-					// System.out.println("4"+class9_1.tooltip + ", " +
-					// class9_1.interfaceID);
-					// menuActionName[menuActionRow] = class9_1.tooltip + ", " +
-					// class9_1.id;
 					menuActionText[menuActionRow] = childInterface.tooltip;
 					menuActionTypes[menuActionRow] = 679;
 					secondMenuAction[menuActionRow] = childInterface.id;
 					menuActionRow++;
 				}
+				
 				if (k >= i2 && i1 >= j2
 						&& k < i2 + (childInterface.type == 4 ? 100 : childInterface.width)
 						&& i1 < j2 + childInterface.height) {
@@ -1610,6 +1596,7 @@ public class Client extends GameApplet {
 						}
 					}
 				}
+				
 				if (childInterface.type == Widget.TYPE_INVENTORY) {
 					int k2 = 0;
 					for (int l2 = 0; l2 < childInterface.height; l2++) {
@@ -2111,49 +2098,76 @@ public class Client extends GameApplet {
 		}
 	}
 
-	private void adjustVolume(int i) {
-		int j = VariableParameter.parameters[i].anInt709;
-		if (j == 0)
+	private void updateVarp(int id) {
+		int parameter = VariableParameter.parameters[id].anInt709;
+		
+		if (parameter == 0) {
 			return;
-		int k = settings[i];
-		if (j == 1) {
-			if (k == 1)
-				Rasterizer.method372(0.90000000000000002D);
-			if (k == 2)
-				Rasterizer.method372(0.80000000000000004D);
-			if (k == 3)
-				Rasterizer.method372(0.69999999999999996D);
-			if (k == 4)
-				Rasterizer.method372(0.59999999999999998D);
+		}
+		
+		int state = settings[id];		
+		
+		if (parameter == 1) {
+		      
+			if (state == 1) {
+				Rasterizer.method372(0.9);
+			}
+			
+			if (state == 2) {
+				Rasterizer.method372(0.8);
+			}
+			
+			if (state == 3) {
+				Rasterizer.method372(0.7);
+			}
+			
+			if (state == 4) {
+				Rasterizer.method372(0.6);
+			}
+			
 			ItemDefinition.sprites.clear();
 			welcomeScreenRaised = true;
 		}
 
-		if (j == 3) {
-			boolean flag1 = Configuration.enableMusic;
-			if (k == 0) {
-				if (SignLink.music != null)
+		if (parameter == 3) {
+		      
+			boolean previousPlayingMusic = Configuration.enableMusic;
+			
+			if (state == 0) {
+			      
+				if (SignLink.music != null) {
 					adjustVolume(Configuration.enableMusic, 500);
+				}
+				
 				Configuration.enableMusic = true;
 			}
-			if (k == 1) {
-				if (SignLink.music != null)
+			if (state == 1) {
+			      
+				if (SignLink.music != null) {
 					adjustVolume(Configuration.enableMusic, 300);
+				}
+				
 				Configuration.enableMusic = true;
 			}
-			if (k == 2) {
-				if (SignLink.music != null)
+			if (state == 2) {
+			      
+				if (SignLink.music != null) {
 					adjustVolume(Configuration.enableMusic, 100);
+				}
+				
 				Configuration.enableMusic = true;
 			}
-			if (k == 3) {
-				if (SignLink.music != null)
+			if (state == 3) {
+			      
+				if (SignLink.music != null) {
 					adjustVolume(Configuration.enableMusic, 0);
+				}
+				
 				Configuration.enableMusic = true;
 			}
-			if (k == 4)
+			if (state == 4)
 				Configuration.enableMusic = false;
-			if (Configuration.enableMusic != flag1 && !lowMemory) {
+			if (Configuration.enableMusic != previousPlayingMusic && !lowMemory) {
 				if (Configuration.enableMusic) {
 					nextSong = currentSong;
 					fadeMusic = true;
@@ -2165,38 +2179,45 @@ public class Client extends GameApplet {
 			}
 		}
 
-		if (j == 4) {
-			SoundPlayer.setVolume(k);
-			if (k == 0) {
+		if (parameter == 4) {
+			SoundPlayer.setVolume(state);
+			if (state == 0) {
 				aBoolean848 = true;
 				setWaveVolume(0);
 			}
-			if (k == 1) {
+			if (state == 1) {
 				aBoolean848 = true;
 				setWaveVolume(-400);
 			}
-			if (k == 2) {
+			if (state == 2) {
 				aBoolean848 = true;
 				setWaveVolume(-800);
 			}
-			if (k == 3) {
+			if (state == 3) {
 				aBoolean848 = true;
 				setWaveVolume(-1200);
 			}
-			if (k == 4)
+			if (state == 4)
 				aBoolean848 = false;
 		}
 
-		if (j == 5)
-			anInt1253 = k;
-		if (j == 6)
-			anInt1249 = k;
-		if (j == 8) {
-			splitPrivateChat = k;
+		if (parameter == 5) {
+			anInt1253 = state;
+		}
+		
+		if (parameter == 6) {
+			anInt1249 = state;
+		}
+		
+		if (parameter == 8) {
+			splitPrivateChat = state;
 			inputTaken = true;
 		}
-		if (j == 9)
-			anInt913 = k;
+		
+		if (parameter == 9) {
+			anInt913 = state;
+		}
+		
 	}
 
 	public CacheArchive mediaStreamLoader;
@@ -4478,6 +4499,29 @@ public class Client extends GameApplet {
 		minimapRotation = 0;
 		minimapZoom = 0;
 	}
+	
+	private void showInterface(int interfaceId) {  
+	      
+        resetAnimation(interfaceId);
+        
+         if (overlayInterfaceId != -1) {
+           overlayInterfaceId = -1;
+           tabAreaAltered = true;
+         }
+         
+         if (backDialogueId != -1) {
+           backDialogueId = -1;
+           inputTaken = true;
+         }
+         
+         if (inputDialogState != 0) {
+           inputDialogState = 0;
+           inputTaken = true;
+         }
+       
+         openInterfaceId = interfaceId;
+         continuedDialogue = false;     
+ }
 
 	private void processMenuActions(int id) {
 		if (id < 0)
@@ -4526,7 +4570,30 @@ public class Client extends GameApplet {
 			prayClicked = !prayClicked;
 			outgoing.writeOpCode(185);
 			outgoing.writeShort(5000);
-		}
+		}	
+		
+		System.out.println(action);
+		
+    switch (action) { 
+
+    case 1315:
+    case 1316:
+    case 1317:
+    case 1318:
+    case 1319:
+    case 1320:
+    case 1321:
+    case 879:
+    case 850:
+    case 475:
+    case 1050:
+      // button click
+      outgoing.writeOpCode(185);
+      outgoing.writeShort(action);
+      break;
+
+    }		
+		
 		if (action == 1508 && Configuration.enableOrbs) { // Toggle HP above
 															// heads
 			Configuration.hpAboveHeads = !Configuration.hpAboveHeads;
@@ -4623,6 +4690,8 @@ public class Client extends GameApplet {
 			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
+		
+		// widget action
 		if (action == 315) {
 			Widget widget = Widget.interfaceCache[second];
 			boolean flag8 = true;
@@ -4630,12 +4699,18 @@ public class Client extends GameApplet {
 				flag8 = promptUserForInput(widget);
 			if (flag8) {
 
-				switch (second) {
+				switch (second) {				      
+				      
 				case 19144:
 					inventoryOverlay(15106, 3213);
 					resetAnimation(15106);
 					inputTaken = true;
 					break;
+
+				case 27653:
+				      showInterface(15106);
+				      break;
+					
 				default:
 					outgoing.writeOpCode(185);
 					outgoing.writeShort(second);
@@ -4937,24 +5012,7 @@ public class Client extends GameApplet {
 			if (Widget.interfaceCache[second].parent == backDialogueId)
 				atInventoryInterfaceType = 3;
 		}
-		if (action == 1050) {
-			int currentHP = Integer
-					.parseInt(Widget.interfaceCache[4016].defaultText);
-			if (!(currentHP <= 0)) {
-				runClicked = !runClicked;
-				sendConfiguration(429, runClicked ? 1 : 0);
-				outgoing.writeOpCode(185);
-				outgoing.writeShort(152);
-			}
-		}
-		if (menuActionText[id].contains("Toggle Run")) {
-			int currentHP = Integer
-					.parseInt(Widget.interfaceCache[4016].defaultText);
-			if (!(currentHP <= 0)) {
-				runClicked = !runClicked;
-				sendConfiguration(429, runClicked ? 0 : 1);
-			}
-		}
+
 		if (action == 1004) {
 			if (tabInterfaceIDs[10] != -1) {
 				tabId = 10;
@@ -5119,7 +5177,7 @@ public class Client extends GameApplet {
 				int i2 = class9_2.scripts[0][1];
 				if (settings[i2] != class9_2.scriptDefaults[0]) {
 					settings[i2] = class9_2.scriptDefaults[0];
-					adjustVolume(i2);
+					updateVarp(i2);
 				}
 			}
 		}
@@ -5456,16 +5514,21 @@ public class Client extends GameApplet {
 				s5 = "It's a " + itemDef.name + ".";
 			pushMessage(s5, 0, "");
 		}
-		if (action == 169) {
+
+
+		if (action == 169) {		      
 			outgoing.writeOpCode(185);
-			outgoing.writeShort(second);
-			Widget class9_3 = Widget.interfaceCache[second];
-			if (class9_3.scripts != null && class9_3.scripts[0][0] == 5) {
-				int l2 = class9_3.scripts[0][1];
-				settings[l2] = 1 - settings[l2];
-				adjustVolume(l2);
-			}
+			outgoing.writeShort(second);			
+			Widget widget = Widget.interfaceCache[second];
+			
+			if (widget.scripts != null && widget.scripts[0][0] == 5) {			      
+				int setting = widget.scripts[0][1];				
+				settings[setting] = 1 - settings[setting];
+				updateVarp(setting);				
+			}	
+			
 		}
+		
 		if (action == 447) {
 			itemSelected = 1;
 			anInt1283 = first;
@@ -5999,7 +6062,7 @@ public class Client extends GameApplet {
 							anIntArray1045[300] = amt;
 							if (settings[300] != amt) {
 								settings[300] = amt;
-								adjustVolume(300);
+								updateVarp(300);
 								if (dialogueId != -1)
 									inputTaken = true;
 							}
@@ -6043,7 +6106,7 @@ public class Client extends GameApplet {
 
 						if (inputString.equals("::orbs"))
 							Configuration.enableOrbs = !Configuration.enableOrbs;
-						// TODO
+						
 						if (inputString.equals("::rint")) {
 							GameFont gameFont = new GameFont(true, "q8_full",
 									titleStreamLoader);
@@ -6615,7 +6678,7 @@ public class Client extends GameApplet {
 				characterDisplay.skin();
 				characterDisplay
 						.apply(Animation.animations[staticFrame].anIntArray353[0]);
-				// characterDisplay.method479(64, 850, -30, -50, -30, true);
+				//characterDisplay.light(64, 850, -30, -50, -30, true);
 				rsInterface.defaultMediaType = 5;
 				rsInterface.defaultMedia = 0;
 				Widget.method208(aBoolean994, characterDisplay);
@@ -7549,7 +7612,7 @@ public class Client extends GameApplet {
 				 * can still recognize that this user is infact the same person becaused
 				 * off the serial number of their operating system.
 				 */
-				//outgoing.writeString(UserIdentification.generateUID()); //Custom not found in 317 protocol.
+				outgoing.writeString(""); //Custom not found in 317 protocol.
 				outgoing.writeString(name);
 				outgoing.writeString(password);
 				/*
@@ -7679,7 +7742,7 @@ public class Client extends GameApplet {
 				anInt1188 = 0;
 				anInt1155 = 0;
 				anInt1226 = 0;
-				sendConfiguration(429, 1);
+				//sendConfiguration(429, 1);
 				this.stopMidi();
 				setupGameplayScreen();
 				return;
@@ -11150,6 +11213,97 @@ public class Client extends GameApplet {
 			gameScreenImageProducer.initDrawingArea();
 		}
 	}
+	
+	 private void loadAllOrbs(int xOffset) {
+	       loadHpOrb(xOffset);
+	       loadPrayerOrb(xOffset);
+	       loadRunOrb(xOffset);
+	       loadSpecialOrb(xOffset);
+	       if (frameMode == ScreenMode.FIXED) {
+	         cacheSprite[worldHover ? 54 : 53].drawSprite(202, 20);
+	       } else {
+	         cacheSprite[worldHover ? 52 : 51].drawSprite(frameWidth - 118, 154);
+	       }
+	     }
+	 
+	 private int poisonType = 0;
+	 
+	  private void loadHpOrb(int xOffset) {
+	        int hover = poisonType == 0 ? 8 : 7;
+	        Sprite bg = cacheSprite[hpHover ? hover : 7];
+	        int id = 0;
+	        if (poisonType == 0)
+	          id = 0;
+	        if (poisonType == 1)
+	          id = 177;
+	        if (poisonType == 2)
+	          id = 5;
+	        Sprite fg = cacheSprite[id];
+	        bg.drawSprite(0 + xOffset, 41);
+	        fg.drawSprite(27 + xOffset, 45);
+	        int level = currentStats[3];
+	        int max = maximumLevels[3];
+	        double percent = level / (double) max;
+	        cacheSprite[14].myHeight = (int) (26 * (1 - percent));
+	        cacheSprite[14].drawSprite(27 + xOffset, 45);
+	        if (percent <= .25) {
+	          cacheSprite[9].drawSprite1(33 + xOffset, 52, 200 + (int) (50 * Math.sin(loopCycle / 7.0)));
+	        } else {
+	          cacheSprite[9].drawSprite(33 + xOffset, 52);
+	        }
+	        smallText.method382(getOrbTextColor((int) (percent * 100)), 15 + xOffset, "" + level, 67, true);
+	      }
+	  
+	  private void loadPrayerOrb(int xOffset) {
+	        Sprite bg = cacheSprite[prayHover ? 8 : 7];
+	        Sprite fg = cacheSprite[prayClicked ? 2 : 1];
+	        bg.drawSprite(0 + xOffset, 85);
+	        fg.drawSprite(27 + xOffset, 89);
+	        int level = currentStats[5];
+	        int max = maximumLevels[5];
+	        double percent = level / (double) max;
+	        cacheSprite[14].myHeight = (int) (26 * (1 - percent));
+	        cacheSprite[14].drawSprite(27 + xOffset, 89);
+	        if (percent <= .25) {
+	          cacheSprite[10].drawSprite1(30 + xOffset, 92, 200 + (int) (50 * Math.sin(loopCycle / 7.0)));
+	        } else {
+	          cacheSprite[10].drawSprite(30 + xOffset, 92);
+	        }
+	        smallText.method382(getOrbTextColor((int) (percent * 100)), 16 + xOffset, level + "", 111, true);
+	      }
+	  
+	  private void loadRunOrb(int xOffset) {
+	        Sprite bg = cacheSprite[runHover ? 8 : 7];
+	        Sprite fg = cacheSprite[settings[152] == 1 ? 4 : 3];
+	        bg.drawSprite(24 + xOffset, 122);
+	        fg.drawSprite(51 + xOffset, 126);
+	        int level = runEnergy;
+	        double percent = level / (double) 100;
+	        cacheSprite[14].myHeight = (int) (26 * (1 - percent));
+	        cacheSprite[14].drawSprite(51 + xOffset, 126);
+	        if (percent <= .25) {
+	          cacheSprite[settings[152] == 1 ? 12 : 11].drawSprite1(58 + xOffset, 130, 200 + (int) (50 * Math.sin(loopCycle / 7.0)));
+	        } else {
+	          cacheSprite[settings[152] == 1 ? 12 : 11].drawSprite(58 + xOffset, 130);
+	        }
+	        smallText.method382(getOrbTextColor((int) (percent * 100)), 40 + xOffset, level + "", 148, true);
+	      }
+	  
+	  private int specialOrb = 0;
+	  
+	  private void loadSpecialOrb(int xOffset) {
+	        Sprite image = cacheSprite[specialHover ? 56 : 42];
+	        Sprite fill = cacheSprite[specialEnabled == 0 ? 5 : 6];
+	        Sprite sword = cacheSprite[55];
+	        double percent = specialOrb / (double) 100;
+	        boolean isFixed = frameMode == ScreenMode.FIXED;
+	        image.drawSprite((isFixed ? 170 : 160) + xOffset, isFixed ? 122 : 148);
+	        fill.drawSprite((isFixed ? 174 : 163) + xOffset, isFixed ? 126 : 151);
+	        cacheSprite[14].myHeight = (int) (26 * (1 - percent));
+	        cacheSprite[14].drawSprite(175 + xOffset, 127);
+	        sword.drawSprite((isFixed ? 179 : 168) + xOffset, isFixed ? 131 : 156);
+	        smallText.method382(getOrbTextColor((int) (percent * 100)), (isFixed ? 212 : 202) + xOffset, specialOrb + "", isFixed ? 148 : 173, true);
+	      }
 
 	private void npcScreenPos(Entity entity, int i) {
 		calcEntityScreenPos(entity.x, i, entity.y);
@@ -12250,16 +12404,22 @@ public class Client extends GameApplet {
 
 	public void sendButtonClick(int button, int toggle, int type) {
 		Widget widget = Widget.interfaceCache[button];
+		
 		switch (type) {
 		case 135:
 			boolean flag8 = true;
-			if (widget.contentType > 0)
+			
+			if (widget.contentType > 0) {
 				flag8 = promptUserForInput(widget);
+			}
+				
 			if (flag8) {
 				outgoing.writeOpCode(185);
 				outgoing.writeShort(button);
 			}
 			break;
+			
+		// case reset setting widget
 		case 646:
 			outgoing.writeOpCode(185);
 			outgoing.writeShort(button);
@@ -12267,25 +12427,17 @@ public class Client extends GameApplet {
 			if (widget.scripts != null && widget.scripts[0][0] == 5) {
 				if (settings[toggle] != widget.scriptDefaults[0]) {
 					settings[toggle] = widget.scriptDefaults[0];
-					adjustVolume(toggle);
+					updateVarp(toggle);
 				}
 			}
 			break;
+			
 		case 169:
 			outgoing.writeOpCode(185);
 			outgoing.writeShort(button);
 			if (widget.scripts != null && widget.scripts[0][0] == 5) {
 				settings[toggle] = 1 - settings[toggle];
-				adjustVolume(toggle);
-			}
-			switch (button) {
-			case 74214:
-				System.out.println("toggle = " + toggle);
-				if (toggle == 0)
-					sendConfiguration(173, toggle);
-				if (toggle == 1)
-					sendButtonClick(153, 173, 646);
-				break;
+				updateVarp(toggle);
 			}
 			break;
 
@@ -12303,7 +12455,7 @@ public class Client extends GameApplet {
 		anIntArray1045[id] = state;
 		if (settings[id] != state) {
 			settings[id] = state;
-			adjustVolume(id);
+			updateVarp(id);
 			if (dialogueId != -1)
 				inputTaken = true;
 		}
@@ -12401,6 +12553,16 @@ public class Client extends GameApplet {
 				addToXPCounter(skillId, gainedXP);
 				opcode = -1;
 				return true;
+			}
+			
+			if (opcode == 183) {
+		        try {
+		              specialEnabled = incoming.readNegUByte();
+		            } catch (Exception e) {
+		              e.printStackTrace();
+		            }
+		        opcode = -1;
+		        return true;
 			}
 
 			if (opcode == PacketConstants.OPEN_WELCOME_SCREEN) {
@@ -13013,8 +13175,6 @@ public class Client extends GameApplet {
 			}
 
 			if (opcode == 110) {
-				if (tabId == 12) {
-				}
 				runEnergy = incoming.readUnsignedByte();
 				opcode = -1;
 				return true;
@@ -13094,7 +13254,7 @@ public class Client extends GameApplet {
 				for (int k5 = 0; k5 < settings.length; k5++)
 					if (settings[k5] != anIntArray1045[k5]) {
 						settings[k5] = anIntArray1045[k5];
-						adjustVolume(k5);
+						updateVarp(k5);
 					}
 				opcode = -1;
 				return true;
@@ -13217,6 +13377,17 @@ public class Client extends GameApplet {
 				continuedDialogue = false;
 				opcode = -1;
 				return true;
+			}
+			
+			if (opcode == 137) {
+            try {
+                  int special = incoming.readUnsignedByte();
+                  specialOrb = special;
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+                opcode = -1;
+                return true;
 			}
 
 			if (opcode == 126) {
@@ -13414,7 +13585,7 @@ public class Client extends GameApplet {
 				anIntArray1045[id] = value;
 				if (settings[id] != value) {
 					settings[id] = value;
-					adjustVolume(id);
+					updateVarp(id);
 					if (dialogueId != -1)
 						inputTaken = true;
 				}
@@ -13428,7 +13599,7 @@ public class Client extends GameApplet {
 				anIntArray1045[id] = value;
 				if (settings[id] != value) {
 					settings[id] = value;
-					adjustVolume(id);
+					updateVarp(id);
 					if (dialogueId != -1)
 						inputTaken = true;
 				}
@@ -13686,48 +13857,17 @@ public class Client extends GameApplet {
 			menuActionRow = 3;
 		}
 		if (runHover && Configuration.enableOrbs) {
-			menuActionText[1] = !runClicked ? "Turn run mode on"
-					: "Turn run mode off";
+			menuActionText[1] = settings[152] == 1 ? "Toggle Run" : "Toggle Run";
 			menuActionTypes[1] = 1050;
 			menuActionRow = 2;
 		}
 	}
 
-	private void drawSpecialOrb() {
-		if (!Widget.interfaceCache[155].defaultText
-				.equalsIgnoreCase("Auto retaliate")) {
-			String value = Widget.interfaceCache[155].defaultText;
-
-			int spec = Integer.parseInt(value);
-			if (specialHover) {
-				cacheSprite[56].drawSprite(frameMode == ScreenMode.FIXED ? 153
-						: frameWidth - 63, frameMode == ScreenMode.FIXED ? 131
-						: 150);
-			} else {
-				cacheSprite[42].drawSprite(frameMode == ScreenMode.FIXED ? 154
-						: frameWidth - 62, frameMode == ScreenMode.FIXED ? 132
-						: 151);
-			}
-			cacheSprite[5].myHeight = (int) (spec * 27 / 100);
-			cacheSprite[5].drawSprite(frameMode == ScreenMode.FIXED ? 157
-					: frameWidth - 58, frameMode == ScreenMode.FIXED ? 135
-					: 155);
-			cacheSprite[14].drawSprite(frameMode == ScreenMode.FIXED ? 157
-					: frameWidth - 58, frameMode == ScreenMode.FIXED ? 135
-					: 155);
-			cacheSprite[55].drawSprite(frameMode == ScreenMode.FIXED ? 162
-					: frameWidth - 53, frameMode == ScreenMode.FIXED ? 140
-					: 160);
-			smallText.method382(getOrbTextColor(spec),
-					frameMode == ScreenMode.FIXED ? 198 : frameWidth - 19,
-					Integer.toString(spec), frameMode == ScreenMode.FIXED ? 158
-							: 177, true);
-		}
-	}
+	private int specialEnabled = 0;
 
 	public boolean isPoisoned, clickedQuickPrayers;
 
-	public final int[] // Perfected (HP ORB, PRAY ORB, RUN Orb)
+	public final int[] // Perfected (Hp, pray and run orb)
 			orbX = { 0, 0, 24 },
 			orbY = { 41, 85, 122 }, orbTextX = { 15, 16, 40 }, orbTextY = { 67,
 					111, 148 }, coloredOrbX = { 27, 27, 51 }, coloredOrbY = {
@@ -13736,88 +13876,6 @@ public class Client extends GameApplet {
 			maximumInterface = { 4017, 4013, 149 },
 			orbIconX = { 33, 30, 58 },
 			orbIconY = { 51, 92, 130 };
-
-	private void loadAllOrbs(int xOffset) {
-		if (Configuration.enableOrbs) {
-			drawSpecialOrb();
-			int[] spriteID = { !isPoisoned && hpHover ? 8 : 7,
-					prayHover ? 8 : 7, runHover ? 8 : 7,
-					sumActive && sumHover ? 8 : 7 }, coloredOrbSprite = { 0,
-					clickedQuickPrayers ? 2 : 1, runClicked ? 4 : 3,
-					sumActive ? 6 : 5 }, orbSprite = { 9, 10,
-					(runClicked ? 12 : 11), 13 };
-			String cEnergy = Widget.interfaceCache[149].defaultText.replaceAll(
-					"%", "");
-			String hp = Widget.interfaceCache[4016].defaultText.replaceAll("%",
-					"");
-			int currentHP = Integer.parseInt(hp), currentEnergy = Integer
-					.parseInt(cEnergy);
-			for (int i = 0; i < 3; i++) {
-				String currentStats = Widget.interfaceCache[currentInterface[i]].defaultText
-						.replaceAll("%", ""), maxStats = Widget.interfaceCache[maximumInterface[i]].defaultText
-						.replaceAll("%", "");
-				int currentLevel = Integer.parseInt(currentStats), maxLevel = Integer
-						.parseInt(maxStats), level = (int) (((double) currentLevel / (double) maxLevel) * 100D);
-				cacheSprite[spriteID[i]].drawSprite(orbX[i] + xOffset, orbY[i]);
-				cacheSprite[coloredOrbSprite[i]].drawSprite(coloredOrbX[i]
-						+ xOffset, coloredOrbY[i]);
-				double percent = (i == 2 ? Configuration.runEnergy ? currentEnergy / 100D
-						: 100
-						: level / 100D), fillHp = 26 * percent, fillPrayer = 26 * percent, fillRun = 26 * percent;
-				double[] fill = { fillHp, fillPrayer, fillRun };
-				int depleteFill = 26 - (int) fill[i];
-				cacheSprite[14].myHeight = depleteFill;
-				try {
-					cacheSprite[14].drawSprite(coloredOrbX[i] + xOffset,
-							coloredOrbY[i]);
-				} catch (Exception e) {
-				}
-				cacheSprite[orbSprite[i]].drawSprite(orbIconX[i] + xOffset,
-						orbIconY[i]);
-				if (Configuration.tenXHp) {
-					smallText
-							.method382(
-									getOrbTextColor(i == 2 ? Configuration.runEnergy ? currentEnergy
-											: 100
-											: level),
-									orbTextX[i] + xOffset,
-									""
-											+ (i == 2 ? Configuration.runEnergy ? cEnergy
-													: 100
-													: i == 0
-															&& Configuration.newDamage ? currentHP * 10
-															: Widget.interfaceCache[currentInterface[i]].defaultText
-																	.replaceAll(
-																			"%",
-																			"")),
-									orbTextY[i], true);
-				} else {
-					smallText
-							.method382(
-									getOrbTextColor(i == 2 ? Configuration.runEnergy ? currentEnergy
-											: 100
-											: level),
-									orbTextX[i] + xOffset,
-									""
-											+ (i == 2 ? Configuration.runEnergy ? cEnergy
-													: 100
-													: i == 0
-															&& Configuration.newDamage ? currentHP * 1
-															: Widget.interfaceCache[currentInterface[i]].defaultText
-																	.replaceAll(
-																			"%",
-																			"")),
-									orbTextY[i], true);
-				}
-			}
-			if (frameMode == ScreenMode.FIXED) {
-				cacheSprite[worldHover ? 54 : 53].drawSprite(202, 20);
-			} else {
-				cacheSprite[worldHover ? 52 : 51].drawSprite(frameWidth - 118,
-						154);
-			}
-		}
-	}
 
 	public int digits = 0;
 
@@ -13874,8 +13932,8 @@ public class Client extends GameApplet {
 	public int xpCounter, xpAddedPos, expAdded;
 
 	private boolean runHover, prayHover, hpHover, prayClicked, counterOn,
-			sumHover, sumActive, counterHover, specialHover, worldHover,
-			autocast, runClicked = true;
+			counterHover, specialHover, worldHover,
+			autocast;
 
 	public int getOrbTextColor(int statusInt) {
 		if (statusInt >= 75 && statusInt <= Integer.MAX_VALUE)
@@ -14088,7 +14146,7 @@ public class Client extends GameApplet {
 		constructedViewport = false;
 		oriented = false;
 		anInt1171 = 1;
-		myUsername = "mod wind";
+		myUsername = "mod seven";
 		myPassword = "test";
 		genericLoadingError = false;
 		reportAbuseInterfaceID = -1;

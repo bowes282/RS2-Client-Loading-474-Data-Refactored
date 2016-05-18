@@ -246,33 +246,6 @@ public class Model extends Renderable {
 				else
 					x[i12] = -1;
 		}
-		///fix's triangle issue, but fucked up - no need, loading all 474- models
-		/*try {
-		for(int i12 = 0; i12 < numTriangles; i12++) {
-			triangleColours2[i12] = nc1.readUShort();
-			if(l1 == 1){
-				anIntArray1637[i12] = nc2.readSignedByte();
-			}
-			if(i2 == 255){
-				anIntArray1638[i12] = nc3.readSignedByte();
-			}
-			if(j2 == 1){
-				anIntArray1639[i12] = nc4.readSignedByte();
-			if(anIntArray1639[i12] < 0)
-				anIntArray1639[i12] = (256+anIntArray1639[i12]);
-			}
-			if(k2 == 1)
-				anIntArray1656[i12] = nc5.readUnsignedByte();
-			if(l2 == 1)
-				D[i12] = (short)(nc6.readUShort() - 1);
-			if(x != null)
-				if(D[i12] != -1)
-					x[i12] = (byte)(nc7.readUnsignedByte() -1);
-			else
-				x[i12] = -1;
-		}
-		} catch (Exception ex) {
-		}*/
 		nc1.currentPosition = k7;
 		nc2.currentPosition = j6;
 		int k12 = 0;
