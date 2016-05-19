@@ -361,7 +361,7 @@ public class Model extends Renderable {
 		if (is[is.length - 1] == -1 && is[is.length - 2] == -1)
 			read622Model(is, modelId);
 		else
-			readOldModel(modelId);
+			decodeOld(modelId);
 		if (newmodel[modelId]) {
 			scale2(4);// 2 is too big -- 3 is almost right
 			if(anIntArray1638 != null) {
@@ -750,7 +750,7 @@ public class Model extends Renderable {
 		anIntArray1633 = facePoint3;
 	}
 
-	private void readOldModel(int i) {
+	private void decodeOld(int i) {	      
 		int j = -870;
 		aBoolean1618 = true;
 		fits_on_single_square = false;

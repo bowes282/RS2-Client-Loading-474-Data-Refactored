@@ -26,7 +26,7 @@ public class Configuration {
 	/**
 	 * Toggles a security feature called RSA to prevent packet sniffers
 	 */
-	public static final boolean ENABLE_RSA = false;
+	public static final boolean ENABLE_RSA = true;
 	
 	/**
 	 * The url that the users will get redirected to after clicking "New User"
@@ -37,8 +37,6 @@ public class Configuration {
 	 * A string which indicates the Client's name.
 	 */
 	public static final String CLIENT_NAME = "RuneScape";
-	
-	public static boolean normalLogin = true;
 	
 	/**
 	 * Displays debug messages on loginscreen and in-game

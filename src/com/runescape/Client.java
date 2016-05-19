@@ -7,6 +7,7 @@ import java.net.*;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.zip.CRC32;
+
 import com.runescape.cache.CacheIndex;
 import com.runescape.cache.CacheUtils;
 import com.runescape.cache.Index;
@@ -66,6 +67,7 @@ import com.runescape.util.SkillConstants;
 import com.runescape.util.StringUtils;
 
 import custom.seven.cache.graphics.RSFont;
+import custom.seven.net.CreateUID;
 import custom.seven.net.NetworkConstants;
 import custom.seven.net.protocol.ProtocolConstants;
 import custom.seven.scene.graphic.Fog;
@@ -5859,7 +5861,7 @@ public class Client extends GameApplet {
                                           }
                                     }
                                     if (inputString.equals("::fps"))
-                                          fpsOn = !fpsOn;
+                                          fpsOn = !fpsOn; 
 
                                     if (inputString.equals("::roofs"))
                                           Configuration.enableRoofs = !Configuration.enableRoofs;
@@ -7371,7 +7373,7 @@ public class Client extends GameApplet {
                          * user is infact the same person becaused off the serial number of their
                          * operating system.
                          */
-                        outgoing.writeString(""); // Custom not found in 317 protocol.
+                        outgoing.writeString(CreateUID.generateUID()); // Custom not found in 317 protocol.
                         outgoing.writeString(name);
                         outgoing.writeString(password);
                         /*
@@ -7406,6 +7408,9 @@ public class Client extends GameApplet {
                         }
 
                         login.writeBytes(outgoing.payload, outgoing.currentPosition, 0);
+                        
+                        System.out.println("login block size: " + login.currentPosition);
+                        
                         outgoing.encryption = new IsaacCipher(seed);
                         for (int index = 0; index < 4; index++)
                               seed[index] += 50;
