@@ -95,8 +95,7 @@ public final class Player extends Mob {
 		return model;
 	}
 
-	public void updatePlayer(Buffer stream)
-	{
+	public void updateAppearance(Buffer stream)	{
 		stream.currentPosition = 0;
 		anInt1702 = stream.readUnsignedByte();
 		headIcon = stream.readUnsignedByte();

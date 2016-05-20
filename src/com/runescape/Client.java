@@ -2952,7 +2952,7 @@ public class Client extends GameApplet {
                   npc.idleAnimation = npc.desc.standAnim;
                   npc.setPos(localPlayer.pathX[0] + i1, localPlayer.pathY[0] + l, j1 == 1);
             }
-            stream.finishBitAccess();
+            stream.disableBitAccess();
       }
 
       public void processGameLoop() {
@@ -3123,8 +3123,9 @@ public class Client extends GameApplet {
                   int k = mobsAwaitingUpdate[j];
                   Player player = players[k];
                   int l = stream.readUnsignedByte();
-                  if ((l & 0x40) != 0)
+                  if ((l & 0x40) != 0) {
                         l += stream.readUnsignedByte() << 8;
+                  }
                   appendPlayerUpdateMask(l, k, stream, player);
             }
       }
@@ -8381,32 +8382,44 @@ public class Client extends GameApplet {
             loadingError = true;
       }
 
-      private void updateOtherPlayerMovement(Buffer stream, int i) {
-            while (stream.bitPosition + 10 < i * 8) {
-                  int j = stream.readBits(11);
-                  if (j == 2047)
+      private void updatePlayerList(Buffer stream, int packetSize) {
+            while (stream.bitPosition + 10 < packetSize * 8) {
+                  int index = stream.readBits(11);                  
+                  if (index == 2047) {
                         break;
-                  if (players[j] == null) {
-                        players[j] = new Player();
-                        if (playerSynchronizationBuffers[j] != null)
-                              players[j].updatePlayer(playerSynchronizationBuffers[j]);
                   }
-                  playerList[playerCount++] = j;
-                  Player player = players[j];
+                  if (players[index] == null) {
+                        players[index] = new Player();
+                        if (playerSynchronizationBuffers[index] != null) {
+                              players[index].updateAppearance(playerSynchronizationBuffers[index]);
+                        }
+                  }
+                  playerList[playerCount++] = index;
+                  Player player = players[index];
                   player.anInt1537 = tick;
-                  int k = stream.readBits(1);
-                  if (k == 1)
-                        mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = j;
-                  int l = stream.readBits(1);
-                  int i1 = stream.readBits(5);
-                  if (i1 > 15)
-                        i1 -= 32;
-                  int j1 = stream.readBits(5);
-                  if (j1 > 15)
-                        j1 -= 32;
-                  player.setPos(localPlayer.pathX[0] + j1, localPlayer.pathY[0] + i1, l == 1);
+                  
+                  int update = stream.readBits(1);
+                  
+                  if (update == 1)
+                        mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = index;
+                  
+                  int discardWalkingQueue = stream.readBits(1);
+                  
+                  int y = stream.readBits(5);
+                  
+                  if (y > 15) {
+                        y -= 32;
+                  }
+                  
+                  int x = stream.readBits(5);
+                  
+                  if (x > 15) {
+                        x -= 32;
+                  }
+                  
+                  player.setPos(localPlayer.pathX[0] + x, localPlayer.pathY[0] + y, discardWalkingQueue == 1);
             }
-            stream.finishBitAccess();
+            stream.disableBitAccess();
       }
 
       public boolean inCircle(int circleX, int circleY, int clickX, int clickY, int radius) {
@@ -9631,7 +9644,7 @@ public class Client extends GameApplet {
                   Buffer appearanceBuffer = new Buffer(data);
                   buffer.readBytes(length, 0, data);
                   playerSynchronizationBuffers[index] = appearanceBuffer;
-                  player.updatePlayer(appearanceBuffer);
+                  player.updateAppearance(appearanceBuffer);
             }
             if ((mask & 2) != 0) {
                   player.faceX = buffer.readLEUShortA();
@@ -11754,7 +11767,7 @@ public class Client extends GameApplet {
             mobsAwaitingUpdateCount = 0;
             updatePlayerMovement(stream);
             method134(stream);
-            updateOtherPlayerMovement(stream, i);
+            updatePlayerList(stream, i);
             refreshUpdateMasks(stream);
             for (int k = 0; k < anInt839; k++) {
                   int l = anIntArray840[k];
@@ -12246,7 +12259,7 @@ public class Client extends GameApplet {
                                           }
                                     }
                               }
-                              incoming.finishBitAccess();
+                              incoming.disableBitAccess();
                               regionX = incoming.readUShort();
                               constructedViewport = true;
                         }

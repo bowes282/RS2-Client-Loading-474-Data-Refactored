@@ -223,7 +223,7 @@ public final class Buffer extends Cacheable {
 		return value;
 	}
 
-	public void finishBitAccess() {
+	public void disableBitAccess() {	      
 		currentPosition = (bitPosition + 7) / 8;
 	}
 
