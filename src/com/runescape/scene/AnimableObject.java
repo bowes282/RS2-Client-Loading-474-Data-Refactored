@@ -62,10 +62,10 @@ public final class AnimableObject extends Renderable {
 	}
 
 	public void method454(int i) {
-		for(anInt1570 += i; anInt1570 > aSpotAnim_1568.animationSequence.method258(anInt1569);) {
-			anInt1570 -= aSpotAnim_1568.animationSequence.method258(anInt1569) + 1;
+		for(anInt1570 += i; anInt1570 > aSpotAnim_1568.animationSequence.duration(anInt1569);) {
+			anInt1570 -= aSpotAnim_1568.animationSequence.duration(anInt1569) + 1;
 			anInt1569++;
-			if(anInt1569 >= aSpotAnim_1568.animationSequence.anInt352 && (anInt1569 < 0 || anInt1569 >= aSpotAnim_1568.animationSequence.anInt352)) {
+			if(anInt1569 >= aSpotAnim_1568.animationSequence.frameCount && (anInt1569 < 0 || anInt1569 >= aSpotAnim_1568.animationSequence.frameCount)) {
 				anInt1569 = 0;
 				aBoolean1567 = true;
 			}

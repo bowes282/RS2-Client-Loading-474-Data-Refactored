@@ -3642,8 +3642,8 @@ public class Client extends GameApplet {
                   Widget class9_1 = Widget.interfaceCache[class9.children[j]];
                   if (class9_1.type == 1)
                         resetAnimation(class9_1.id);
-                  class9_1.anInt246 = 0;
-                  class9_1.anInt208 = 0;
+                  class9_1.currentFrame = 0;
+                  class9_1.lastFrameTime = 0;
             }
       }
 
@@ -8673,9 +8673,9 @@ public class Client extends GameApplet {
             if (fullscreenInterfaceID != -1
                         && (loadingStage == 2 || super.fullGameScreen != null)) {
                   if (loadingStage == 2) {
-                        animateRSInterface(tickDelta, fullscreenInterfaceID);
+                        processWidgetAnimations(tickDelta, fullscreenInterfaceID);
                         if (openInterfaceId != -1) {
-                              animateRSInterface(tickDelta, openInterfaceId);
+                              processWidgetAnimations(tickDelta, openInterfaceId);
                         }
                         tickDelta = 0;
                         resetAllImageProducers();
@@ -8733,7 +8733,7 @@ public class Client extends GameApplet {
                   }
             }
             if (overlayInterfaceId != -1) {
-                  animateRSInterface(tickDelta, overlayInterfaceId);
+                  processWidgetAnimations(tickDelta, overlayInterfaceId);
             }
             drawTabArea();
             if (backDialogueId == -1) {
@@ -8758,7 +8758,7 @@ public class Client extends GameApplet {
                   }
             }
             if (backDialogueId != -1) {
-                  boolean flag2 = animateRSInterface(tickDelta, backDialogueId);
+                  boolean flag2 = processWidgetAnimations(tickDelta, backDialogueId);
                   if (flag2)
                         inputTaken = true;
             }
@@ -9249,14 +9249,13 @@ public class Client extends GameApplet {
                                     // draws clicked spells
                                     sprite.drawSprite(_x, _y, 0xffffff);
                               } else {
-                                    if (sprite != null)
+                                    if (sprite != null) {
                                           if (childInterface.drawsTransparent) {
                                                 sprite.drawTransparentSprite(_x, _y, alpha);
                                           } else {
-                                                // draws all interfaced sprites
-                                                // TODO
                                                 sprite.drawSprite(_x, _y);
                                           }
+                                    }
                               }
                               if (autocast && childInterface.id == autoCastId)
                                     cacheSprite[43].drawSprite(_x - 3, _y - 3);
@@ -9278,7 +9277,7 @@ public class Client extends GameApplet {
                               boolean selected = interfaceIsSelected(childInterface);
                               int emoteAnimation;
                               if (selected)
-                                    emoteAnimation = childInterface.anInt258;
+                                    emoteAnimation = childInterface.secondaryAnimationId;
                               else
                                     emoteAnimation = childInterface.defaultAnimationId;
                               Model model;
@@ -9287,8 +9286,8 @@ public class Client extends GameApplet {
                               } else {
                                     Animation animation = Animation.animations[emoteAnimation];
                                     model = childInterface.method209(
-                                                animation.anIntArray354[childInterface.anInt246],
-                                                animation.anIntArray353[childInterface.anInt246],
+                                                animation.anIntArray354[childInterface.currentFrame],
+                                                animation.anIntArray353[childInterface.currentFrame],
                                                 selected);
                               }
                               if (model != null)
@@ -9828,7 +9827,7 @@ public class Client extends GameApplet {
                               crossY - 8 - offSet);
             }
             if (openWalkableInterface != -1) {
-                  animateRSInterface(tickDelta, openWalkableInterface);
+                  processWidgetAnimations(tickDelta, openWalkableInterface);
                   if (openWalkableInterface == 197 && frameMode != ScreenMode.FIXED) {
                         skullIcons[0].drawSprite(frameWidth - 157, 168);
                         String text = Widget.interfaceCache[199].defaultText.replace("@yel@", "");
@@ -9843,7 +9842,7 @@ public class Client extends GameApplet {
                   }
             }
             if (openInterfaceId != -1) {
-                  animateRSInterface(tickDelta, openInterfaceId);
+                  processWidgetAnimations(tickDelta, openInterfaceId);
                   drawInterface(0, frameMode == ScreenMode.FIXED ? 0 : (frameWidth / 2) - 356,
                               Widget.interfaceCache[openInterfaceId],
                               frameMode == ScreenMode.FIXED ? 0 : (frameHeight / 2) - 230);
@@ -10104,43 +10103,45 @@ public class Client extends GameApplet {
             aClass30_Sub2_Sub1_Sub1_1202 = null;
       }
 
-      private boolean animateRSInterface(int i, int j) {
-            boolean flag1 = false;
-            Widget class9 = Widget.interfaceCache[j];
-            for (int k = 0; k < class9.children.length; k++) {
-                  if (class9.children[k] == -1)
+      private boolean processWidgetAnimations(int tick, int interfaceId) {
+            boolean redrawRequired = false;
+            Widget widget = Widget.interfaceCache[interfaceId];            
+            for (int childIndex = 0; childIndex < widget.children.length; childIndex++) {                  
+                  if (widget.children[childIndex] == -1) {
                         break;
-                  Widget class9_1 = Widget.interfaceCache[class9.children[k]];
-                  if (class9_1.type == 1)
-                        flag1 |= animateRSInterface(i, class9_1.id);
-                  if (class9_1.type == 6
-                              && (class9_1.defaultAnimationId != -1 || class9_1.anInt258 != -1)) {
-                        boolean flag2 = interfaceIsSelected(class9_1);
-                        int l;
-                        if (flag2)
-                              l = class9_1.anInt258;
-                        else
-                              l = class9_1.defaultAnimationId;
-                        if (l != -1) {
-                              Animation animation = Animation.animations[l];
-                              for (class9_1.anInt208 += i; class9_1.anInt208 > animation
-                                          .method258(class9_1.anInt246);) {
-                                    class9_1.anInt208 -= animation.method258(class9_1.anInt246) + 1;
-                                    class9_1.anInt246++;
-                                    if (class9_1.anInt246 >= animation.anInt352) {
-                                          class9_1.anInt246 -= animation.anInt356;
-                                          if (class9_1.anInt246 < 0
-                                                      || class9_1.anInt246 >= animation.anInt352)
-                                                class9_1.anInt246 = 0;
+                  }
+                  
+                  Widget child = Widget.interfaceCache[widget.children[childIndex]];  
+                  
+                  if (child.type == Widget.TYPE_MODEL_LIST) {
+                        redrawRequired |= processWidgetAnimations(tick, child.id);
+                  }
+                  
+                  if (child.type == 6 && (child.defaultAnimationId != -1 || child.secondaryAnimationId != -1)) {
+                        boolean updated = interfaceIsSelected(child); 
+                        
+                        int animationId = updated ? child.secondaryAnimationId : child.defaultAnimationId;
+                        
+                        if (animationId != -1) {
+                              Animation animation = Animation.animations[animationId];
+                              for (child.lastFrameTime += tick; child.lastFrameTime > animation
+                                          .duration(child.currentFrame);) {
+                                    child.lastFrameTime -= animation.duration(child.currentFrame) + 1;
+                                    child.currentFrame++;
+                                    if (child.currentFrame >= animation.frameCount) {
+                                          child.currentFrame -= animation.loopOffset;
+                                          if (child.currentFrame < 0
+                                                      || child.currentFrame >= animation.frameCount)
+                                                child.currentFrame = 0;
                                     }
-                                    flag1 = true;
+                                    redrawRequired = true;
                               }
 
                         }
                   }
             }
 
-            return flag1;
+            return redrawRequired;
       }
 
       private int setCameraLocation() {

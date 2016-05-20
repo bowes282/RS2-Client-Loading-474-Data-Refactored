@@ -49,16 +49,16 @@ public final class SceneObject extends Renderable {
 		int j = -1;
 		if (aAnimation_1607 != null) {
 			int k = Client.tick - anInt1608;
-			if (k > 100 && aAnimation_1607.anInt356 > 0) {
+			if (k > 100 && aAnimation_1607.loopOffset > 0) {
 				k = 100;
 			}
-			while (k > aAnimation_1607.method258(anInt1599)) {
-				k -= aAnimation_1607.method258(anInt1599);
+			while (k > aAnimation_1607.duration(anInt1599)) {
+				k -= aAnimation_1607.duration(anInt1599);
 				anInt1599++;
-				if (anInt1599 < aAnimation_1607.anInt352)
+				if (anInt1599 < aAnimation_1607.frameCount)
 					continue;
-				anInt1599 -= aAnimation_1607.anInt356;
-				if (anInt1599 >= 0 && anInt1599 < aAnimation_1607.anInt352)
+				anInt1599 -= aAnimation_1607.loopOffset;
+				if (anInt1599 >= 0 && anInt1599 < aAnimation_1607.frameCount)
 					continue;
 				aAnimation_1607 = null;
 				break;
@@ -92,9 +92,9 @@ public final class SceneObject extends Renderable {
 			aAnimation_1607 = Animation.animations[l1];
 			anInt1599 = 0;
 			anInt1608 = Client.tick;
-			if (flag && aAnimation_1607.anInt356 != -1) {
-				anInt1599 = (int) (Math.random() * (double) aAnimation_1607.anInt352);
-				anInt1608 -= (int) (Math.random() * (double) aAnimation_1607.method258(anInt1599));
+			if (flag && aAnimation_1607.loopOffset != -1) {
+				anInt1599 = (int) (Math.random() * (double) aAnimation_1607.frameCount);
+				anInt1608 -= (int) (Math.random() * (double) aAnimation_1607.duration(anInt1599));
 			}
 		}
 		ObjectDefinition objectDef = ObjectDefinition.lookup(anInt1610);

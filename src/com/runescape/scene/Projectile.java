@@ -99,10 +99,10 @@ public final class Projectile extends Renderable {
 		anInt1595 = (int)(Math.atan2(aDouble1574, aDouble1575) * 325.94900000000001D) + 1024 & 0x7ff;
 		anInt1596 = (int)(Math.atan2(aDouble1577, aDouble1576) * 325.94900000000001D) & 0x7ff;
 		if(aSpotAnim_1592.animationSequence != null) {
-			for(anInt1594 += i; anInt1594 > aSpotAnim_1592.animationSequence.method258(anInt1593);) {
-				anInt1594 -= aSpotAnim_1592.animationSequence.method258(anInt1593) + 1;
+			for(anInt1594 += i; anInt1594 > aSpotAnim_1592.animationSequence.duration(anInt1593);) {
+				anInt1594 -= aSpotAnim_1592.animationSequence.duration(anInt1593) + 1;
 				anInt1593++;
-				if(anInt1593 >= aSpotAnim_1592.animationSequence.anInt352) {
+				if(anInt1593 >= aSpotAnim_1592.animationSequence.frameCount) {
 					anInt1593 = 0;
 				}
 			}

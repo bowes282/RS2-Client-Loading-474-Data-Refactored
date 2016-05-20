@@ -168,7 +168,7 @@ public class Mob extends Renderable {
                     || animationDelay != 0
                     || emoteTimeRemaining
                                 + 1 > Animation.animations[emoteAnimation]
-                                            .method258(displayedEmoteFrames)) {
+                                            .duration(displayedEmoteFrames)) {
               int remaining = endForceMovement - startForceMovement;              
               int elapsed = Client.tick - startForceMovement;              
               int initialX = this.initialX * 128 + size * 64;              
@@ -385,9 +385,9 @@ public class Mob extends Renderable {
               Animation animation = Animation.animations[movementAnimation];
               anInt1519++;
               
-              if (displayedMovementFrames < animation.anInt352
+              if (displayedMovementFrames < animation.frameCount
                           && anInt1519 > animation
-                                      .method258(displayedMovementFrames)) {
+                                      .duration(displayedMovementFrames)) {
                     anInt1519 = 1;
                     displayedMovementFrames++;
                     nextIdleAnimationFrame++;                    
@@ -395,14 +395,14 @@ public class Mob extends Renderable {
               
               nextIdleAnimationFrame = displayedMovementFrames + 1;
               
-              if (nextIdleAnimationFrame >= animation.anInt352) {
+              if (nextIdleAnimationFrame >= animation.frameCount) {
                     
-                    if (nextIdleAnimationFrame >= animation.anInt352) {
+                    if (nextIdleAnimationFrame >= animation.frameCount) {
                           nextIdleAnimationFrame = 0;
                     }
               }
               
-              if (displayedMovementFrames >= animation.anInt352) {
+              if (displayedMovementFrames >= animation.frameCount) {
                     anInt1519 = 1;
                     displayedMovementFrames = 0;
               }
@@ -411,19 +411,19 @@ public class Mob extends Renderable {
               if (currentAnimation < 0)
                     currentAnimation = 0;
               Animation animation_1 = Graphic.cache[graphic].animationSequence;
-              for (anInt1522++; currentAnimation < animation_1.anInt352
-                          && anInt1522 > animation_1.method258(
+              for (anInt1522++; currentAnimation < animation_1.frameCount
+                          && anInt1522 > animation_1.duration(
                                       currentAnimation); currentAnimation++)
-                    anInt1522 -= animation_1.method258(currentAnimation);
+                    anInt1522 -= animation_1.duration(currentAnimation);
 
-              if (currentAnimation >= animation_1.anInt352
+              if (currentAnimation >= animation_1.frameCount
                           && (currentAnimation < 0
-                                      || currentAnimation >= animation_1.anInt352))
+                                      || currentAnimation >= animation_1.frameCount))
                     graphic = -1;
               nextGraphicsAnimationFrame = currentAnimation + 1;
-              if (nextGraphicsAnimationFrame >= animation_1.anInt352) {
+              if (nextGraphicsAnimationFrame >= animation_1.frameCount) {
                     if (nextGraphicsAnimationFrame < 0
-                                || nextGraphicsAnimationFrame >= animation_1.anInt352)
+                                || nextGraphicsAnimationFrame >= animation_1.frameCount)
                           graphic = -1;
               }
         }
@@ -441,34 +441,34 @@ public class Mob extends Renderable {
         }
         if (emoteAnimation != -1 && animationDelay == 0) {
               Animation animation_3 = Animation.animations[emoteAnimation];
-              for (emoteTimeRemaining++; displayedEmoteFrames < animation_3.anInt352
-                          && emoteTimeRemaining > animation_3.method258(
+              for (emoteTimeRemaining++; displayedEmoteFrames < animation_3.frameCount
+                          && emoteTimeRemaining > animation_3.duration(
                                       displayedEmoteFrames); displayedEmoteFrames++)
                     emoteTimeRemaining -=
-                                animation_3.method258(displayedEmoteFrames);
+                                animation_3.duration(displayedEmoteFrames);
 
-              if (displayedEmoteFrames >= animation_3.anInt352) {
-                    displayedEmoteFrames -= animation_3.anInt356;
+              if (displayedEmoteFrames >= animation_3.frameCount) {
+                    displayedEmoteFrames -= animation_3.loopOffset;
                     currentAnimationLoops++;
                     
                     if (currentAnimationLoops >= animation_3.anInt362) {
                           emoteAnimation = -1;
                     }
                     
-                    if (displayedEmoteFrames < 0 || displayedEmoteFrames >= animation_3.anInt352) {
+                    if (displayedEmoteFrames < 0 || displayedEmoteFrames >= animation_3.frameCount) {
                           emoteAnimation = -1;
                     }
               }
               
               nextAnimationFrame = displayedEmoteFrames + 1;
               
-              if (nextAnimationFrame >= animation_3.anInt352) {
+              if (nextAnimationFrame >= animation_3.frameCount) {
                     
                     if (currentAnimationLoops >= animation_3.anInt362) {
                           nextAnimationFrame = displayedEmoteFrames + 1;
                     }
                     
-                    if (nextAnimationFrame < 0 || nextAnimationFrame >= animation_3.anInt352) {
+                    if (nextAnimationFrame < 0 || nextAnimationFrame >= animation_3.frameCount) {
                           nextAnimationFrame = displayedEmoteFrames;
                     }
                     

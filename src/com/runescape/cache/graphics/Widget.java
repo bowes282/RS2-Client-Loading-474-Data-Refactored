@@ -197,9 +197,9 @@ public final class Widget {
 					widget.defaultAnimationId = -1;
 				content = buffer.readUnsignedByte();
 				if (content != 0)
-					widget.anInt258 = (content - 1 << 8) + buffer.readUnsignedByte();
+					widget.secondaryAnimationId = (content - 1 << 8) + buffer.readUnsignedByte();
 				else
-					widget.anInt258 = -1;
+					widget.secondaryAnimationId = -1;
 				widget.modelZoom = buffer.readUShort();
 				widget.modelRotation1 = buffer.readUShort();
 				widget.modelRotation2 = buffer.readUShort();
@@ -957,7 +957,7 @@ public final class Widget {
 		t.modelRotation1 = 150;
 		t.modelRotation2 = 0;
 		t.defaultAnimationId = -1;
-		t.anInt258 = -1;
+		t.secondaryAnimationId = -1;
 	}
 
 	public static void edgevilleHomeTeleport(GameFont[] TDA) {
@@ -2053,7 +2053,8 @@ public final class Widget {
 	public static CacheArchive interfaceLoader;
 	public boolean drawsTransparent;
 	public Sprite disabledSprite;
-	public int anInt208;
+	public int lastFrameTime;
+	
 	public Sprite sprites[];
 	public static Widget interfaceCache[];
 	public int scriptDefaults[];
@@ -2088,7 +2089,7 @@ public final class Widget {
 	public GameFont textDrawingAreas;
 	public int spritePaddingY;
 	public int scriptOperators[];
-	public int anInt246;
+	public int currentFrame;	
 	public int spritesY[];
 	public String defaultText;
 	public boolean hasActions;
@@ -2099,7 +2100,8 @@ public final class Widget {
 	private int anInt255;
 	private int anInt256;
 	public int defaultAnimationId;
-	public int anInt258;
+	public int secondaryAnimationId;
+	
 	public boolean aBoolean259;
 	public Sprite enabledSprite;
 	public int scrollMax;

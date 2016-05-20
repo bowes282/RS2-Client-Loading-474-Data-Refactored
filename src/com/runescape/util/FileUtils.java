@@ -24,6 +24,8 @@ import java.util.zip.CRC32;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import javax.imageio.ImageIO;
+
 import com.runescape.sign.SignLink;
 
 public final class FileUtils { 
@@ -34,6 +36,20 @@ public final class FileUtils {
             g2.drawImage(image, 0, 0, null);
             g2.dispose();
             return bufferedImage;
+      }
+      
+      /**
+       * Converts an array of bytes to a {@link BufferedImage}.
+       * 
+       * @param data
+       *    The array of pixels.
+       * 
+       * @return The newly created image.
+       */
+      public static BufferedImage byteArrayToImage(byte[] data) throws IOException {
+            ByteArrayInputStream in = new ByteArrayInputStream(data);
+            BufferedImage image = ImageIO.read(in);
+            return image;
       }
       
       public static Image makeColorTransparent(BufferedImage im, final Color color) {
