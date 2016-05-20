@@ -2,6 +2,7 @@ package com.runescape.entity;
 
 import com.runescape.Client;
 import com.runescape.cache.anim.Animation;
+import com.runescape.cache.anim.Graphic;
 
 public class Mob extends Renderable {
 
@@ -43,7 +44,7 @@ public class Mob extends Renderable {
 	public int faceX;
 	public int faceY;
 	public int size;	
-	public boolean aBoolean1541;
+	public boolean animationStretches;
 	public int anInt1542;
 	public int initialX;
 	public int destinationX;
@@ -83,7 +84,7 @@ public class Mob extends Renderable {
 		loopCycleStatus = -1000;
 		textCycle = 100;
 		size = 1;
-		aBoolean1541 = false;
+		animationStretches = false;
 		pathRun = new boolean[10];
 		walkAnimIndex = -1;
 		turn180AnimIndex = -1;
@@ -371,6 +372,115 @@ public class Mob extends Renderable {
 		pathY[0] = y;
 		pathRun[0] = run;
 	}
+	
+  public void updateAnimation() {
+        animationStretches = false;  
+        
+        if (movementAnimation != -1) {
+              
+              if (movementAnimation > Animation.animations.length) {
+                    movementAnimation = 0;
+              }
+              
+              Animation animation = Animation.animations[movementAnimation];
+              anInt1519++;
+              
+              if (displayedMovementFrames < animation.anInt352
+                          && anInt1519 > animation
+                                      .method258(displayedMovementFrames)) {
+                    anInt1519 = 1;
+                    displayedMovementFrames++;
+                    nextIdleAnimationFrame++;                    
+              }
+              
+              nextIdleAnimationFrame = displayedMovementFrames + 1;
+              
+              if (nextIdleAnimationFrame >= animation.anInt352) {
+                    
+                    if (nextIdleAnimationFrame >= animation.anInt352) {
+                          nextIdleAnimationFrame = 0;
+                    }
+              }
+              
+              if (displayedMovementFrames >= animation.anInt352) {
+                    anInt1519 = 1;
+                    displayedMovementFrames = 0;
+              }
+        }
+        if (graphic != -1 && Client.tick >= graphicDelay) {
+              if (currentAnimation < 0)
+                    currentAnimation = 0;
+              Animation animation_1 = Graphic.cache[graphic].animationSequence;
+              for (anInt1522++; currentAnimation < animation_1.anInt352
+                          && anInt1522 > animation_1.method258(
+                                      currentAnimation); currentAnimation++)
+                    anInt1522 -= animation_1.method258(currentAnimation);
+
+              if (currentAnimation >= animation_1.anInt352
+                          && (currentAnimation < 0
+                                      || currentAnimation >= animation_1.anInt352))
+                    graphic = -1;
+              nextGraphicsAnimationFrame = currentAnimation + 1;
+              if (nextGraphicsAnimationFrame >= animation_1.anInt352) {
+                    if (nextGraphicsAnimationFrame < 0
+                                || nextGraphicsAnimationFrame >= animation_1.anInt352)
+                          graphic = -1;
+              }
+        }
+        if (emoteAnimation != -1 && animationDelay <= 1) {
+              if (emoteAnimation >= Animation.animations.length) {
+                    emoteAnimation = -1;
+              }
+              Animation animation_2 = Animation.animations[emoteAnimation];
+              if (animation_2.anInt363 == 1 && anInt1542 > 0
+                          && startForceMovement <= Client.tick
+                          && endForceMovement < Client.tick) {
+                    animationDelay = 1;
+                    return;
+              }
+        }
+        if (emoteAnimation != -1 && animationDelay == 0) {
+              Animation animation_3 = Animation.animations[emoteAnimation];
+              for (emoteTimeRemaining++; displayedEmoteFrames < animation_3.anInt352
+                          && emoteTimeRemaining > animation_3.method258(
+                                      displayedEmoteFrames); displayedEmoteFrames++)
+                    emoteTimeRemaining -=
+                                animation_3.method258(displayedEmoteFrames);
+
+              if (displayedEmoteFrames >= animation_3.anInt352) {
+                    displayedEmoteFrames -= animation_3.anInt356;
+                    currentAnimationLoops++;
+                    
+                    if (currentAnimationLoops >= animation_3.anInt362) {
+                          emoteAnimation = -1;
+                    }
+                    
+                    if (displayedEmoteFrames < 0 || displayedEmoteFrames >= animation_3.anInt352) {
+                          emoteAnimation = -1;
+                    }
+              }
+              
+              nextAnimationFrame = displayedEmoteFrames + 1;
+              
+              if (nextAnimationFrame >= animation_3.anInt352) {
+                    
+                    if (currentAnimationLoops >= animation_3.anInt362) {
+                          nextAnimationFrame = displayedEmoteFrames + 1;
+                    }
+                    
+                    if (nextAnimationFrame < 0 || nextAnimationFrame >= animation_3.anInt352) {
+                          nextAnimationFrame = displayedEmoteFrames;
+                    }
+                    
+              }
+              animationStretches = animation_3.stretches;              
+        }
+        
+        if (animationDelay > 0) {
+              animationDelay--;
+        }
+        
+  }
 
 	public int entScreenX;
 	public int entScreenY;

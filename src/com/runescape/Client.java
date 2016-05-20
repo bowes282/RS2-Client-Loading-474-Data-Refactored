@@ -1272,7 +1272,7 @@ public class Client extends GameApplet {
                   if (!npc.desc.clickable)
                         k += 0x80000000;
                   scene.method285(plane, npc.orientation, method42(plane, npc.y, npc.x), k, npc.y,
-                              (npc.size - 1) * 64 + 60, npc.x, npc, npc.aBoolean1541);
+                              (npc.size - 1) * 64 + 60, npc.x, npc, npc.animationStretches);
             }
       }
 
@@ -3006,7 +3006,7 @@ public class Client extends GameApplet {
                   }
                   player.anInt1709 = method42(plane, player.y, player.x);
                   scene.method285(plane, player.orientation, player.anInt1709, i1, player.y, 60,
-                              player.x, player, player.aBoolean1541);
+                              player.x, player, player.animationStretches);
             }
       }
 
@@ -8592,7 +8592,7 @@ public class Client extends GameApplet {
                   mob.nextStep();                  
             }
             appendFocusDestination(mob);
-            updateAnimation(mob);            
+            mob.updateAnimation();            
       }
 
       private void appendFocusDestination(Mob entity) {
@@ -8651,92 +8651,7 @@ public class Client extends GameApplet {
             }
       }
 
-      public void updateAnimation(Mob entity) {
-            entity.aBoolean1541 = false;
-            if (entity.movementAnimation != -1) {
-                  if (entity.movementAnimation > Animation.animations.length)
-                        entity.movementAnimation = 0;
-                  Animation animation = Animation.animations[entity.movementAnimation];
-                  entity.anInt1519++;
-                  if (entity.displayedMovementFrames < animation.anInt352
-                              && entity.anInt1519 > animation
-                                          .method258(entity.displayedMovementFrames)) {
-                        entity.anInt1519 = 1;
-                        entity.displayedMovementFrames++;
-                        entity.nextIdleAnimationFrame++;
-                  }
-                  entity.nextIdleAnimationFrame = entity.displayedMovementFrames + 1;
-                  if (entity.nextIdleAnimationFrame >= animation.anInt352) {
-                        if (entity.nextIdleAnimationFrame >= animation.anInt352)
-                              entity.nextIdleAnimationFrame = 0;
-                  }
-                  if (entity.displayedMovementFrames >= animation.anInt352) {
-                        entity.anInt1519 = 1;
-                        entity.displayedMovementFrames = 0;
-                  }
-            }
-            if (entity.graphic != -1 && tick >= entity.graphicDelay) {
-                  if (entity.currentAnimation < 0)
-                        entity.currentAnimation = 0;
-                  Animation animation_1 = Graphic.cache[entity.graphic].animationSequence;
-                  for (entity.anInt1522++; entity.currentAnimation < animation_1.anInt352
-                              && entity.anInt1522 > animation_1.method258(
-                                          entity.currentAnimation); entity.currentAnimation++)
-                        entity.anInt1522 -= animation_1.method258(entity.currentAnimation);
 
-                  if (entity.currentAnimation >= animation_1.anInt352
-                              && (entity.currentAnimation < 0
-                                          || entity.currentAnimation >= animation_1.anInt352))
-                        entity.graphic = -1;
-                  entity.nextGraphicsAnimationFrame = entity.currentAnimation + 1;
-                  if (entity.nextGraphicsAnimationFrame >= animation_1.anInt352) {
-                        if (entity.nextGraphicsAnimationFrame < 0
-                                    || entity.nextGraphicsAnimationFrame >= animation_1.anInt352)
-                              entity.graphic = -1;
-                  }
-            }
-            if (entity.emoteAnimation != -1 && entity.animationDelay <= 1) {
-                  if (entity.emoteAnimation >= Animation.animations.length) {
-                        entity.emoteAnimation = -1;
-                  }
-                  Animation animation_2 = Animation.animations[entity.emoteAnimation];
-                  if (animation_2.anInt363 == 1 && entity.anInt1542 > 0
-                              && entity.startForceMovement <= tick
-                              && entity.endForceMovement < tick) {
-                        entity.animationDelay = 1;
-                        return;
-                  }
-            }
-            if (entity.emoteAnimation != -1 && entity.animationDelay == 0) {
-                  Animation animation_3 = Animation.animations[entity.emoteAnimation];
-                  for (entity.emoteTimeRemaining++; entity.displayedEmoteFrames < animation_3.anInt352
-                              && entity.emoteTimeRemaining > animation_3.method258(
-                                          entity.displayedEmoteFrames); entity.displayedEmoteFrames++)
-                        entity.emoteTimeRemaining -=
-                                    animation_3.method258(entity.displayedEmoteFrames);
-
-                  if (entity.displayedEmoteFrames >= animation_3.anInt352) {
-                        entity.displayedEmoteFrames -= animation_3.anInt356;
-                        entity.currentAnimationLoops++;
-                        if (entity.currentAnimationLoops >= animation_3.anInt362)
-                              entity.emoteAnimation = -1;
-                        if (entity.displayedEmoteFrames < 0
-                                    || entity.displayedEmoteFrames >= animation_3.anInt352)
-                              entity.emoteAnimation = -1;
-                  }
-                  entity.nextAnimationFrame = entity.displayedEmoteFrames + 1;
-                  if (entity.nextAnimationFrame >= animation_3.anInt352) {
-                        if (entity.currentAnimationLoops >= animation_3.anInt362)
-                              entity.nextAnimationFrame = entity.displayedEmoteFrames + 1;
-                        if (entity.nextAnimationFrame < 0
-                                    || entity.nextAnimationFrame >= animation_3.anInt352)
-                              entity.nextAnimationFrame = entity.displayedEmoteFrames;
-                  }
-                  entity.aBoolean1541 = animation_3.aBoolean358;
-            }
-            if (entity.animationDelay > 0)
-                  entity.animationDelay--;
-      }
 
       private void drawGameScreen() {
             if (fullscreenInterfaceID != -1

@@ -11,7 +11,7 @@ public final class Animation {
     public int[] anIntArray355;
     public int anInt356;
     public int anIntArray357[];
-    public boolean aBoolean358;
+    public boolean stretches;
     public int anInt359;
     public int anInt360;
     public int anInt361;
@@ -23,7 +23,7 @@ public final class Animation {
     
     private Animation() {
         anInt356 = -1;
-        aBoolean358 = false;
+        stretches = false;
         anInt359 = 5;
         anInt360 = -1;
         anInt361 = -1;
@@ -193,7 +193,7 @@ public final class Animation {
 				}
 				anIntArray357[k] = 0x98967f;
 			} else if (i == 4) {
-				aBoolean358 = true;
+				stretches = true;
 			} else if (i == 5) {
 				anInt359 = stream.readUnsignedByte();
 			} else if (i == 6) {
