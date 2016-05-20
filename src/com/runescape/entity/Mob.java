@@ -40,7 +40,7 @@ public class Mob extends Renderable {
 	public int currentHealth;
 	public int maxHealth;
 	public int textCycle;
-	public int anInt1537;
+	public int time;	
 	public int faceX;
 	public int faceY;
 	public int size;	

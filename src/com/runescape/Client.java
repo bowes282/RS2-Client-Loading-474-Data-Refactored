@@ -1767,14 +1767,14 @@ public class Client extends GameApplet {
       }
 
       private void updateNPCs(Buffer stream, int i) {
-            anInt839 = 0;
+            removedMobCount = 0;
             mobsAwaitingUpdateCount = 0;
             method139(stream);
             updateNPCMovement(i, stream);
             npcUpdateMask(stream);
-            for (int k = 0; k < anInt839; k++) {
-                  int l = anIntArray840[k];
-                  if (npcs[l].anInt1537 != tick) {
+            for (int k = 0; k < removedMobCount; k++) {
+                  int l = removedMobs[k];
+                  if (npcs[l].time != tick) {
                         npcs[l].desc = null;
                         npcs[l] = null;
                   }
@@ -2931,7 +2931,7 @@ public class Client extends GameApplet {
                         npcs[k] = new Npc();
                   Npc npc = npcs[k];
                   npcIndices[npcCount++] = k;
-                  npc.anInt1537 = tick;
+                  npc.time = tick;
                   int l = stream.readBits(5);
                   if (l > 15)
                         l -= 32;
@@ -3118,15 +3118,18 @@ public class Client extends GameApplet {
             return false;
       }
 
-      private void refreshUpdateMasks(Buffer stream) {
-            for (int j = 0; j < mobsAwaitingUpdateCount; j++) {
-                  int k = mobsAwaitingUpdate[j];
-                  Player player = players[k];
-                  int l = stream.readUnsignedByte();
-                  if ((l & 0x40) != 0) {
-                        l += stream.readUnsignedByte() << 8;
+      private void parsePlayerSynchronizationMask(Buffer stream) {            
+            for (int count = 0; count < mobsAwaitingUpdateCount; count++) {                  
+                  int index = mobsAwaitingUpdate[count];                  
+                  Player player = players[index];
+                  
+                  int mask = stream.readUnsignedByte();
+                  
+                  if ((mask & 0x40) != 0) {
+                        mask += stream.readUnsignedByte() << 8;
                   }
-                  appendPlayerUpdateMask(l, k, stream, player);
+                  
+                  appendPlayerUpdateMask(mask, index, stream, player);                  
             }
       }
 
@@ -5678,7 +5681,7 @@ public class Client extends GameApplet {
             playerList = null;
             mobsAwaitingUpdate = null;
             playerSynchronizationBuffers = null;
-            anIntArray840 = null;
+            removedMobs = null;
             npcs = null;
             npcIndices = null;
             groundItems = null;
@@ -8396,7 +8399,7 @@ public class Client extends GameApplet {
                   }
                   playerList[playerCount++] = index;
                   Player player = players[index];
-                  player.anInt1537 = tick;
+                  player.time = tick;
                   
                   int update = stream.readBits(1);
                   
@@ -10037,7 +10040,7 @@ public class Client extends GameApplet {
             }
       }
 
-      private void updatePlayerMovement(Buffer stream) {
+      private void updateLocalPlayerMovement(Buffer stream) {
             stream.initBitAccess();
             int update = stream.readBits(1);
             if (update == 0)
@@ -11049,51 +11052,64 @@ public class Client extends GameApplet {
             flameRightBackground.drawGraphics(0, super.graphics, 637);
       }
 
-      private void method134(Buffer stream) {
-            int j = stream.readBits(8);
-            if (j < playerCount) {
-                  for (int k = j; k < playerCount; k++)
-                        anIntArray840[anInt839++] = playerList[k];
-
+      private void updateOtherPlayerMovement(Buffer stream) {
+            int count = stream.readBits(8);
+            
+            if (count < playerCount) {
+                  for (int index = count; index < playerCount; index++) {                        
+                        removedMobs[removedMobCount++] = playerList[index];
+                  }
             }
-            if (j > playerCount) {
+            if (count > playerCount) {
                   SignLink.reporterror(myUsername + " Too many players");
                   throw new RuntimeException("eek");
             }
             playerCount = 0;
-            for (int l = 0; l < j; l++) {
-                  int i1 = playerList[l];
-                  Player player = players[i1];
-                  int j1 = stream.readBits(1);
-                  if (j1 == 0) {
-                        playerList[playerCount++] = i1;
-                        player.anInt1537 = tick;
-                  } else {
-                        int k1 = stream.readBits(2);
-                        if (k1 == 0) {
-                              playerList[playerCount++] = i1;
-                              player.anInt1537 = tick;
-                              mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = i1;
-                        } else if (k1 == 1) {
-                              playerList[playerCount++] = i1;
-                              player.anInt1537 = tick;
-                              int l1 = stream.readBits(3);
-                              player.moveInDir(false, l1);
-                              int j2 = stream.readBits(1);
-                              if (j2 == 1)
-                                    mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = i1;
-                        } else if (k1 == 2) {
-                              playerList[playerCount++] = i1;
-                              player.anInt1537 = tick;
-                              int i2 = stream.readBits(3);
-                              player.moveInDir(true, i2);
-                              int k2 = stream.readBits(3);
-                              player.moveInDir(true, k2);
-                              int l2 = stream.readBits(1);
-                              if (l2 == 1)
-                                    mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = i1;
-                        } else if (k1 == 3)
-                              anIntArray840[anInt839++] = i1;
+            for (int globalIndex = 0; globalIndex < count; globalIndex++) {                   
+                  int index = playerList[globalIndex];                  
+                  Player player = players[index];
+                  
+                  int updateRequired = stream.readBits(1);
+                  
+                  if (updateRequired == 0) {
+                        playerList[playerCount++] = index;
+                        player.time = tick;
+                  } else {                        
+                        int movementType = stream.readBits(2);
+                        if (movementType == 0) {
+                              playerList[playerCount++] = index;
+                              player.time = tick;
+                              mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = index;
+                        } else if (movementType == 1) {
+                              playerList[playerCount++] = index;
+                              player.time = tick;
+                              
+                              int direction = stream.readBits(3);
+                              
+                              player.moveInDir(false, direction);
+                              
+                              int update = stream.readBits(1);
+                              
+                              if (update == 1) {
+                                    mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = index;
+                              }
+                        } else if (movementType == 2) {
+                              playerList[playerCount++] = index;
+                              player.time = tick;
+                              
+                              int firstDirection = stream.readBits(3);
+                              player.moveInDir(true, firstDirection);
+                              
+                              int secondDirection = stream.readBits(3);
+                              player.moveInDir(true, secondDirection);
+                              
+                              int update = stream.readBits(1);
+                              if (update == 1) {
+                                    mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = index;
+                              }
+                        } else if (movementType == 3) {
+                              removedMobs[removedMobCount++] = index;
+                        }
                   }
             }
       }
@@ -11551,7 +11567,7 @@ public class Client extends GameApplet {
             int k = stream.readBits(8);
             if (k < npcCount) {
                   for (int l = k; l < npcCount; l++)
-                        anIntArray840[anInt839++] = npcIndices[l];
+                        removedMobs[removedMobCount++] = npcIndices[l];
 
             }
             if (k > npcCount) {
@@ -11565,16 +11581,16 @@ public class Client extends GameApplet {
                   int k1 = stream.readBits(1);
                   if (k1 == 0) {
                         npcIndices[npcCount++] = j1;
-                        npc.anInt1537 = tick;
+                        npc.time = tick;
                   } else {
                         int l1 = stream.readBits(2);
                         if (l1 == 0) {
                               npcIndices[npcCount++] = j1;
-                              npc.anInt1537 = tick;
+                              npc.time = tick;
                               mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = j1;
                         } else if (l1 == 1) {
                               npcIndices[npcCount++] = j1;
-                              npc.anInt1537 = tick;
+                              npc.time = tick;
                               int i2 = stream.readBits(3);
                               npc.moveInDir(false, i2);
                               int k2 = stream.readBits(1);
@@ -11582,7 +11598,7 @@ public class Client extends GameApplet {
                                     mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = j1;
                         } else if (l1 == 2) {
                               npcIndices[npcCount++] = j1;
-                              npc.anInt1537 = tick;
+                              npc.time = tick;
                               int j2 = stream.readBits(3);
                               npc.moveInDir(true, j2);
                               int l2 = stream.readBits(3);
@@ -11591,7 +11607,7 @@ public class Client extends GameApplet {
                               if (i3 == 1)
                                     mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = j1;
                         } else if (l1 == 3)
-                              anIntArray840[anInt839++] = j1;
+                              removedMobs[removedMobCount++] = j1;
                   }
             }
 
@@ -11762,22 +11778,22 @@ public class Client extends GameApplet {
             }
       }
 
-      private void updatePlayers(int i, Buffer stream) {
-            anInt839 = 0;
+      private void updatePlayers(int packetSize, Buffer stream) {             
+            removedMobCount = 0;            
             mobsAwaitingUpdateCount = 0;
-            updatePlayerMovement(stream);
-            method134(stream);
-            updatePlayerList(stream, i);
-            refreshUpdateMasks(stream);
-            for (int k = 0; k < anInt839; k++) {
-                  int l = anIntArray840[k];
-                  if (players[l].anInt1537 != tick)
+            updateLocalPlayerMovement(stream);            
+            updateOtherPlayerMovement(stream);            
+            updatePlayerList(stream, packetSize);
+            parsePlayerSynchronizationMask(stream);
+            for (int k = 0; k < removedMobCount; k++) {
+                  int l = removedMobs[k];
+                  if (players[l].time != tick)
                         players[l] = null;
             }
 
-            if (stream.currentPosition != i) {
+            if (stream.currentPosition != packetSize) {
                   SignLink.reporterror("Error packet size mismatch in getplayer pos:"
-                              + stream.currentPosition + " psize:" + i);
+                              + stream.currentPosition + " psize:" + packetSize);
                   throw new RuntimeException("eek");
             }
             for (int i1 = 0; i1 < playerCount; i1++)
@@ -12105,8 +12121,6 @@ public class Client extends GameApplet {
                               defaultText = incoming.readString();
                               clanname = incoming.readString();
                               rights = incoming.readUShort();
-                              // defaultText = TextInput.processText(defaultText);
-                              // defaultText = Censor.doCensor(defaultText);
                               System.out.println(clanname);
                               pushMessage(defaultText, 16, name);
                         } catch (Exception e) {
@@ -13489,7 +13503,7 @@ public class Client extends GameApplet {
             chatBuffer = new Buffer(new byte[5000]);
             npcs = new Npc[16384];
             npcIndices = new int[16384];
-            anIntArray840 = new int[1000];
+            removedMobs = new int[1000];
             login = Buffer.create();
             aBoolean848 = true;
             openInterfaceId = -1;
@@ -13651,8 +13665,8 @@ public class Client extends GameApplet {
       private Npc[] npcs;
       private int npcCount;
       private int[] npcIndices;
-      private int anInt839;
-      private int[] anIntArray840;
+      private int removedMobCount;
+      private int[] removedMobs;
       private int lastOpcode;
       private int secondLastOpcode;
       private int thirdLastOpcode;
