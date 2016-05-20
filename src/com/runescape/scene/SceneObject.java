@@ -48,7 +48,7 @@ public final class SceneObject extends Renderable {
 	public Model getRotatedModel() {
 		int j = -1;
 		if (aAnimation_1607 != null) {
-			int k = Client.loopCycle - anInt1608;
+			int k = Client.tick - anInt1608;
 			if (k > 100 && aAnimation_1607.anInt356 > 0) {
 				k = 100;
 			}
@@ -63,7 +63,7 @@ public final class SceneObject extends Renderable {
 				aAnimation_1607 = null;
 				break;
 			}
-			anInt1608 = Client.loopCycle - k;
+			anInt1608 = Client.tick - k;
 			if (aAnimation_1607 != null) {
 				j = aAnimation_1607.anIntArray353[anInt1599];
 			}
@@ -91,7 +91,7 @@ public final class SceneObject extends Renderable {
 		if (l1 != -1) {
 			aAnimation_1607 = Animation.animations[l1];
 			anInt1599 = 0;
-			anInt1608 = Client.loopCycle;
+			anInt1608 = Client.tick;
 			if (flag && aAnimation_1607.anInt356 != -1) {
 				anInt1599 = (int) (Math.random() * (double) aAnimation_1607.anInt352);
 				anInt1608 -= (int) (Math.random() * (double) aAnimation_1607.method258(anInt1599));

@@ -6,7 +6,7 @@ import com.runescape.cache.anim.Graphic;
 import com.runescape.cache.def.NpcDefinition;
 import com.runescape.entity.model.Model;
 
-public final class Npc extends Entity {
+public final class Npc extends Mob {
 
 	public NpcDefinition desc;
 
@@ -14,7 +14,7 @@ public final class Npc extends Entity {
 		if (super.emoteAnimation >= 0 && super.animationDelay == 0) {
 			int emote = Animation.animations[super.emoteAnimation].anIntArray353[super.displayedEmoteFrames];
 			int movement = -1;
-			if (super.movementAnimation >= 0 && super.movementAnimation != super.standAnimIndex)
+			if (super.movementAnimation >= 0 && super.movementAnimation != super.idleAnimation)
 				movement = Animation.animations[super.movementAnimation].anIntArray353[super.displayedMovementFrames];
 			return desc.getAnimatedModel(movement, emote,
 					Animation.animations[super.emoteAnimation].anIntArray357);
@@ -32,8 +32,8 @@ public final class Npc extends Entity {
 		if (animatedModel == null)
 			return null;
 		super.height = animatedModel.modelHeight;
-		if (super.gfxId != -1 && super.currentAnimation != -1) {
-			Graphic spotAnim = Graphic.cache[super.gfxId];
+		if (super.graphic != -1 && super.currentAnimation != -1) {
+			Graphic spotAnim = Graphic.cache[super.graphic];
 			Model graphicModel = spotAnim.getModel();
 			if (graphicModel != null) {
 				int frame = spotAnim.animationSequence.anIntArray353[super.currentAnimation];
@@ -53,7 +53,7 @@ public final class Npc extends Entity {
 				animatedModel = new Model(models);
 			}
 		}
-		if (desc.boundDim == 1)
+		if (desc.size == 1)
 			animatedModel.fits_on_single_square = true;
 		return animatedModel;
 	}

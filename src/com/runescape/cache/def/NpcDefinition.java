@@ -25,7 +25,7 @@ public final class NpcDefinition {
 	public String name;
 	public String actions[];
 	public int walkAnim;
-	public byte boundDim;
+	public byte size;
 	public int[] recolourTarget;
 	public static int[] streamIndices;
 	public int[] aditionalModels;
@@ -196,7 +196,7 @@ public final class NpcDefinition {
 		empty.method466();
 		empty.faceGroups = null;
 		empty.vertexGroups = null;
-		if (boundDim == 1)
+		if (size == 1)
 			empty.fits_on_single_square = true;
 		return empty;
 	}
@@ -251,7 +251,7 @@ public final class NpcDefinition {
 		model_1.method466();
 		model_1.faceGroups = null;
 		model_1.vertexGroups = null;
-		if (boundDim == 1)
+		if (size == 1)
 			model_1.fits_on_single_square = true;
 		return model_1;
 	}
@@ -272,7 +272,7 @@ public final class NpcDefinition {
 			else if (opCode == 3)
 				description = stream.readBytes();
 			else if (opCode == 12)
-				boundDim = stream.readSignedByte();
+			      size = stream.readSignedByte();
 			else if (opCode == 13)
 				standAnim = stream.readUShort();
 			else if (opCode == 14)
@@ -355,7 +355,7 @@ public final class NpcDefinition {
 		combatLevel = -1;
 		anInt64 = 1834;
 		walkAnim = -1;
-		boundDim = 1;
+		size = 1;
 		headIcon = -1;
 		standAnim = -1;
 		interfaceType = -1L;

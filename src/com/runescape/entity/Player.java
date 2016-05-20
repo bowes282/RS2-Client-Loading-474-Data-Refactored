@@ -11,7 +11,7 @@ import com.runescape.entity.model.Model;
 import com.runescape.io.Buffer;
 import com.runescape.util.StringUtils;
 
-public final class Player extends Entity {
+public final class Player extends Mob {
 	
 	public String clanName = "None";
 
@@ -25,8 +25,8 @@ public final class Player extends Entity {
 		model.fits_on_single_square = true;
 		if(aBoolean1699)
 			return model;
-		if(super.gfxId != -1 && super.currentAnimation != -1) {
-			Graphic spotAnim = Graphic.cache[super.gfxId];
+		if(super.graphic != -1 && super.currentAnimation != -1) {
+			Graphic spotAnim = Graphic.cache[super.graphic];
 			Model model_2 = spotAnim.getModel();
 			if(model_2 != null) {
 				Model model_3 = new Model(true, Frame.method532(super.currentAnimation), false, model_2);
@@ -51,38 +51,38 @@ public final class Player extends Entity {
 		}
 		if(aModel_1714 != null)
 		{
-			if(Client.loopCycle >= anInt1708)
+			if(Client.tick >= anInt1708)
 				aModel_1714 = null;
-			if(Client.loopCycle >= anInt1707 && Client.loopCycle < anInt1708)
+			if(Client.tick >= anInt1707 && Client.tick < anInt1708)
 			{
 				Model model_1 = aModel_1714;
 				model_1.translate(anInt1711 - super.x, anInt1712 - anInt1709, anInt1713 - super.y);
-				if(super.turnDirection == 512)
+				if(super.nextStepOrientation == 512)
 				{
 					model_1.method473();
 					model_1.method473();
 					model_1.method473();
 				} else
-				if(super.turnDirection == 1024)
+				if(super.nextStepOrientation == 1024)
 				{
 					model_1.method473();
 					model_1.method473();
 				} else
-				if(super.turnDirection == 1536)
+				if(super.nextStepOrientation == 1536)
 					model_1.method473();
 				Model aclass30_sub2_sub4_sub6s[] = {
 						model, model_1
 				};
 				model = new Model(aclass30_sub2_sub4_sub6s);
-				if(super.turnDirection == 512)
+				if(super.nextStepOrientation == 512)
 					model_1.method473();
 				else
-				if(super.turnDirection == 1024)
+				if(super.nextStepOrientation == 1024)
 				{
 					model_1.method473();
 					model_1.method473();
 				} else
-				if(super.turnDirection == 1536)
+				if(super.nextStepOrientation == 1536)
 				{
 					model_1.method473();
 					model_1.method473();
@@ -135,9 +135,9 @@ public final class Player extends Entity {
 			anIntArray1700[l] = j1;
 		}
 
-		super.standAnimIndex = stream.readUShort();
-		if(super.standAnimIndex == 65535)
-			super.standAnimIndex = -1;
+		super.idleAnimation = stream.readUShort();
+		if(super.idleAnimation == 65535)
+			super.idleAnimation = -1;
 		super.standTurnAnimIndex = stream.readUShort();
 		if(super.standTurnAnimIndex == 65535)
 			super.standTurnAnimIndex = -1;
@@ -221,7 +221,7 @@ public final class Player extends Entity {
 			nextFrame = animation.anIntArray353[super.nextAnimationFrame];
 			cycle1 = animation.anIntArray355[super.displayedEmoteFrames];
 			cycle2 = super.emoteTimeRemaining;
-			if(super.movementAnimation >= 0 && super.movementAnimation != super.standAnimIndex)
+			if(super.movementAnimation >= 0 && super.movementAnimation != super.idleAnimation)
 				i1 = Animation.animations[super.movementAnimation].anIntArray353[super.displayedMovementFrames];
 			if(animation.anInt360 >= 0)
 			{
