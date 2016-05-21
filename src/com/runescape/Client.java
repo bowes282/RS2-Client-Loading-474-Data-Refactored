@@ -528,9 +528,17 @@ public class Client extends GameApplet {
                   newBoldFont.drawCenteredString(clickToContinueString, 259, 60 + yOffset, 0, -1);
                   newBoldFont.drawCenteredString("Click to continue", 259, 80 + yOffset, 128, -1);
             } else if (backDialogueId != -1) {
+                  try {
                   drawInterface(0, 20, Widget.interfaceCache[backDialogueId], 20 + yOffset);
+                  } catch (Exception ex) {
+                        
+                  }
             } else if (dialogueId != -1) {
+                  try {
                   drawInterface(0, 20, Widget.interfaceCache[dialogueId], 20 + yOffset);
+                  } catch (Exception ex) {
+                        
+                  }
             } else if (showChatComponents) {
                   int j77 = -3;
                   int j = 0;
@@ -958,22 +966,22 @@ public class Client extends GameApplet {
                   }
 
                   MapRegion objectManager = new MapRegion(tileFlags, tileHeights);
-                  int k2 = aByteArrayArray1183.length;
+                  int k2 = localRegionMapData.length;
                   outgoing.writeOpCode(0);
                   if (!constructedViewport) {
                         for (int i3 = 0; i3 < k2; i3++) {
-                              int i4 = (anIntArray1234[i3] >> 8) * 64 - regionBaseX;
-                              int k5 = (anIntArray1234[i3] & 0xff) * 64 - regionBaseY;
-                              byte abyte0[] = aByteArrayArray1183[i3];
+                              int i4 = (localRegionIds[i3] >> 8) * 64 - regionBaseX;
+                              int k5 = (localRegionIds[i3] & 0xff) * 64 - regionBaseY;
+                              byte abyte0[] = localRegionMapData[i3];
                               if (abyte0 != null)
-                                    objectManager.method180(abyte0, k5, i4, (anInt1069 - 6) * 8,
-                                                (anInt1070 - 6) * 8, collisionMaps);
+                                    objectManager.method180(abyte0, k5, i4, (this.regionX - 6) * 8,
+                                                (this.regionY - 6) * 8, collisionMaps);
                         }
                         for (int j4 = 0; j4 < k2; j4++) {
-                              int l5 = (anIntArray1234[j4] >> 8) * 64 - regionBaseX;
-                              int k7 = (anIntArray1234[j4] & 0xff) * 64 - regionBaseY;
-                              byte abyte2[] = aByteArrayArray1183[j4];
-                              if (abyte2 == null && anInt1070 < 800)
+                              int l5 = (localRegionIds[j4] >> 8) * 64 - regionBaseX;
+                              int k7 = (localRegionIds[j4] & 0xff) * 64 - regionBaseY;
+                              byte abyte2[] = localRegionMapData[j4];
+                              if (abyte2 == null && this.regionY < 800)
                                     objectManager.method174(k7, 64, 64, l5);
                         }
                         anInt1097++;
@@ -984,10 +992,10 @@ public class Client extends GameApplet {
                         }
                         outgoing.writeOpCode(0);
                         for (int i6 = 0; i6 < k2; i6++) {
-                              byte abyte1[] = aByteArrayArray1247[i6];
+                              byte abyte1[] = localRegionLandscapeData[i6];
                               if (abyte1 != null) {
-                                    int l8 = (anIntArray1234[i6] >> 8) * 64 - regionBaseX;
-                                    int k9 = (anIntArray1234[i6] & 0xff) * 64 - regionBaseY;
+                                    int l8 = (localRegionIds[i6] >> 8) * 64 - regionBaseX;
+                                    int k9 = (localRegionIds[i6] & 0xff) * 64 - regionBaseY;
                                     objectManager.method190(l8, collisionMaps, k9, scene, abyte1);
                               }
                         }
@@ -997,7 +1005,7 @@ public class Client extends GameApplet {
                         for (int j3 = 0; j3 < 4; j3++) {
                               for (int k4 = 0; k4 < 13; k4++) {
                                     for (int j6 = 0; j6 < 13; j6++) {
-                                          int l7 = anIntArrayArrayArray1129[j3][k4][j6];
+                                          int l7 = localRegions[j3][k4][j6];
                                           if (l7 != -1) {
                                                 int i9 = l7 >> 24 & 3;
                                                 int l9 = l7 >> 1 & 3;
@@ -1005,13 +1013,13 @@ public class Client extends GameApplet {
                                                 int l10 = l7 >> 3 & 0x7ff;
                                                 int j11 = (j10 / 8 << 8) + l10 / 8;
                                                 for (int l11 =
-                                                            0; l11 < anIntArray1234.length; l11++) {
-                                                      if (anIntArray1234[l11] != j11
-                                                                  || aByteArrayArray1183[l11] == null)
+                                                            0; l11 < localRegionIds.length; l11++) {
+                                                      if (localRegionIds[l11] != j11
+                                                                  || localRegionMapData[l11] == null)
                                                             continue;
                                                       objectManager.method179(i9, l9, collisionMaps,
                                                                   k4 * 8, (j10 & 7) * 8,
-                                                                  aByteArrayArray1183[l11],
+                                                                  localRegionMapData[l11],
                                                                   (l10 & 7) * 8, j3, j6 * 8);
                                                       break;
                                                 }
@@ -1022,7 +1030,7 @@ public class Client extends GameApplet {
                         }
                         for (int l4 = 0; l4 < 13; l4++) {
                               for (int k6 = 0; k6 < 13; k6++) {
-                                    int i8 = anIntArrayArrayArray1129[0][l4][k6];
+                                    int i8 = localRegions[0][l4][k6];
                                     if (i8 == -1)
                                           objectManager.method174(k6 * 8, 8, 8, l4 * 8);
                               }
@@ -1032,7 +1040,7 @@ public class Client extends GameApplet {
                         for (int l6 = 0; l6 < 4; l6++) {
                               for (int j8 = 0; j8 < 13; j8++) {
                                     for (int j9 = 0; j9 < 13; j9++) {
-                                          int i10 = anIntArrayArrayArray1129[l6][j8][j9];
+                                          int i10 = localRegions[l6][j8][j9];
                                           if (i10 != -1) {
                                                 int k10 = i10 >> 24 & 3;
                                                 int i11 = i10 >> 1 & 3;
@@ -1040,13 +1048,13 @@ public class Client extends GameApplet {
                                                 int i12 = i10 >> 3 & 0x7ff;
                                                 int j12 = (k11 / 8 << 8) + i12 / 8;
                                                 for (int k12 =
-                                                            0; k12 < anIntArray1234.length; k12++) {
-                                                      if (anIntArray1234[k12] != j12
-                                                                  || aByteArrayArray1247[k12] == null)
+                                                            0; k12 < localRegionIds.length; k12++) {
+                                                      if (localRegionIds[k12] != j12
+                                                                  || localRegionLandscapeData[k12] == null)
                                                             continue;
                                                       objectManager.method183(collisionMaps, scene,
                                                                   k10, j8 * 8, (i12 & 7) * 8, l6,
-                                                                  aByteArrayArray1247[k12],
+                                                                  localRegionLandscapeData[k12],
                                                                   (k11 & 7) * 8, i11, j9 * 8);
                                                       break;
                                                 }
@@ -1103,10 +1111,10 @@ public class Client extends GameApplet {
             System.gc();
             Rasterizer.method367();
             resourceProvider.clearExtras();
-            int k = (anInt1069 - 6) / 8 - 1;
-            int j1 = (anInt1069 + 6) / 8 + 1;
-            int i2 = (anInt1070 - 6) / 8 - 1;
-            int l2 = (anInt1070 + 6) / 8 + 1;
+            int k = (this.regionX - 6) / 8 - 1;
+            int j1 = (this.regionX + 6) / 8 + 1;
+            int i2 = (this.regionY - 6) / 8 - 1;
+            int l2 = (this.regionY + 6) / 8 + 1;
             if (inPlayerOwnedHouse) {
                   k = 49;
                   j1 = 50;
@@ -2589,10 +2597,14 @@ public class Client extends GameApplet {
                         x = frameWidth - 197;
                         y = frameWidth >= 1000 ? frameHeight - 303 : frameHeight - 340;
                   }
+                  try {
                   if (overlayInterfaceId != -1) {
                         drawInterface(0, x, Widget.interfaceCache[overlayInterfaceId], y);
                   } else if (tabInterfaceIDs[tabId] != -1) {
                         drawInterface(0, x, Widget.interfaceCache[tabInterfaceIDs[tabId]], y);
+                  }
+                  } catch (Exception ex) {
+                        
                   }
             }
             if (menuOpen) {
@@ -3373,16 +3385,16 @@ public class Client extends GameApplet {
                   gameScreenImageProducer.drawGraphics(frameMode == ScreenMode.FIXED ? 4 : 0,
                               super.graphics, frameMode == ScreenMode.FIXED ? 4 : 0);
                   loadingStage = 1;
-                  aLong824 = System.currentTimeMillis();
+                  loadingStartTime = System.currentTimeMillis();
             }
             if (loadingStage == 1) {
                   int j = method54();
-                  if (j != 0 && System.currentTimeMillis() - aLong824 > 0x57e40L) {
+                  if (j != 0 && System.currentTimeMillis() - loadingStartTime > 0x57e40L) {
                         SignLink.reporterror(myUsername + " glcfb " + serverSeed + "," + j + ","
                                     + lowMemory + "," + indices[0] + ","
-                                    + resourceProvider.remaining() + "," + plane + "," + anInt1069
-                                    + "," + anInt1070);
-                        aLong824 = System.currentTimeMillis();
+                                    + resourceProvider.remaining() + "," + plane + "," + this.regionX
+                                    + "," + this.regionY);
+                        loadingStartTime = System.currentTimeMillis();
                   }
             }
             if (loadingStage == 2 && plane != anInt985) {
@@ -3392,18 +3404,18 @@ public class Client extends GameApplet {
       }
 
       private int method54() {
-            for (int i = 0; i < aByteArrayArray1183.length; i++) {
-                  if (aByteArrayArray1183[i] == null && anIntArray1235[i] != -1)
+            for (int i = 0; i < localRegionMapData.length; i++) {
+                  if (localRegionMapData[i] == null && localRegionMapIds[i] != -1)
                         return -1;
-                  if (aByteArrayArray1247[i] == null && anIntArray1236[i] != -1)
+                  if (localRegionLandscapeData[i] == null && localRegionLandscapeIds[i] != -1)
                         return -2;
             }
             boolean flag = true;
-            for (int j = 0; j < aByteArrayArray1183.length; j++) {
-                  byte abyte0[] = aByteArrayArray1247[j];
+            for (int j = 0; j < localRegionMapData.length; j++) {
+                  byte abyte0[] = localRegionLandscapeData[j];
                   if (abyte0 != null) {
-                        int k = (anIntArray1234[j] >> 8) * 64 - regionBaseX;
-                        int l = (anIntArray1234[j] & 0xff) * 64 - regionBaseY;
+                        int k = (localRegionIds[j] >> 8) * 64 - regionBaseX;
+                        int l = (localRegionIds[j] & 0xff) * 64 - regionBaseY;
                         if (constructedViewport) {
                               k = 10;
                               l = 10;
@@ -3552,18 +3564,18 @@ public class Client extends GameApplet {
                                     && resource.buffer != null)
                               saveMidi(fadeMusic, resource.buffer);
                         if (resource.dataType == 3 && loadingStage == 1) {
-                              for (int i = 0; i < aByteArrayArray1183.length; i++) {
-                                    if (anIntArray1235[i] == resource.ID) {
-                                          aByteArrayArray1183[i] = resource.buffer;
+                              for (int i = 0; i < localRegionMapData.length; i++) {
+                                    if (localRegionMapIds[i] == resource.ID) {
+                                          localRegionMapData[i] = resource.buffer;
                                           if (resource.buffer == null)
-                                                anIntArray1235[i] = -1;
+                                                localRegionMapIds[i] = -1;
                                           break;
                                     }
-                                    if (anIntArray1236[i] != resource.ID)
+                                    if (localRegionLandscapeIds[i] != resource.ID)
                                           continue;
-                                    aByteArrayArray1247[i] = resource.buffer;
+                                    localRegionLandscapeData[i] = resource.buffer;
                                     if (resource.buffer == null)
-                                          anIntArray1236[i] = -1;
+                                          localRegionLandscapeIds[i] = -1;
                                     break;
                               }
 
@@ -5638,11 +5650,11 @@ public class Client extends GameApplet {
             outgoing = null;
             login = null;
             incoming = null;
-            anIntArray1234 = null;
-            aByteArrayArray1183 = null;
-            aByteArrayArray1247 = null;
-            anIntArray1235 = null;
-            anIntArray1236 = null;
+            localRegionIds = null;
+            localRegionMapData = null;
+            localRegionLandscapeData = null;
+            localRegionMapIds = null;
+            localRegionLandscapeIds = null;
             tileHeights = null;
             tileFlags = null;
             scene = null;
@@ -5868,8 +5880,27 @@ public class Client extends GameApplet {
                                                       inputTaken = true;
                                           }
                                     }
-                                    if (inputString.equals("::fps"))
+                                    if (inputString.equals("::fps")) {
                                           fpsOn = !fpsOn; 
+                                    }
+                                    
+                                    // can open interfaces without it crashing
+                                    if (inputString.startsWith("::int")) {
+                                          String[] split = inputString.split(" ");
+                                          
+                                          try {
+                                          int interfaceId = Integer.parseInt(split[1]);
+                                          
+                                          Client.openInterfaceId = interfaceId;
+                                          
+                                          System.out.println("opening interfaceId: " + interfaceId);
+                                          
+                                          } catch (Exception ex) {
+                                                continue;
+                                          }
+                                          
+
+                                    }
 
                                     if (inputString.equals("::roofs"))
                                           Configuration.enableRoofs = !Configuration.enableRoofs;
@@ -7597,7 +7628,7 @@ public class Client extends GameApplet {
                         systemUpdateTime = 0;
                         menuActionRow = 0;
                         menuOpen = false;
-                        aLong824 = System.currentTimeMillis();
+                        loadingStartTime = System.currentTimeMillis();
                         return;
                   }
                   if (response == 16) {
@@ -8673,9 +8704,13 @@ public class Client extends GameApplet {
             if (fullscreenInterfaceID != -1
                         && (loadingStage == 2 || super.fullGameScreen != null)) {
                   if (loadingStage == 2) {
+                        try {
                         processWidgetAnimations(tickDelta, fullscreenInterfaceID);
                         if (openInterfaceId != -1) {
                               processWidgetAnimations(tickDelta, openInterfaceId);
+                        }
+                        } catch(Exception ex) {
+                              
                         }
                         tickDelta = 0;
                         resetAllImageProducers();
@@ -8690,7 +8725,11 @@ public class Client extends GameApplet {
                                     rsInterface_1.width = 765;
                                     rsInterface_1.height = 503;
                               }
+                              try {
                               drawInterface(0, 0, rsInterface_1, 8);
+                              } catch(Exception ex) {
+                                    
+                              }
                         }
                         Widget rsInterface = Widget.interfaceCache[fullscreenInterfaceID];
                         if (rsInterface.width == 512 && rsInterface.height == 334
@@ -8698,7 +8737,11 @@ public class Client extends GameApplet {
                               rsInterface.width = 765;
                               rsInterface.height = 503;
                         }
+                        try {
                         drawInterface(0, 0, rsInterface, 8);
+                        } catch (Exception ex) {
+                              
+                        }
                         if (!menuOpen) {
                               processRightClick();
                               drawTooltip();
@@ -8733,7 +8776,11 @@ public class Client extends GameApplet {
                   }
             }
             if (overlayInterfaceId != -1) {
+                  try {
                   processWidgetAnimations(tickDelta, overlayInterfaceId);
+                  } catch (Exception ex) {
+                        
+                  }
             }
             drawTabArea();
             if (backDialogueId == -1) {
@@ -8758,9 +8805,16 @@ public class Client extends GameApplet {
                   }
             }
             if (backDialogueId != -1) {
-                  boolean flag2 = processWidgetAnimations(tickDelta, backDialogueId);
-                  if (flag2)
+                  boolean flag2 = false;
+                  
+                  try {
+                  flag2 = processWidgetAnimations(tickDelta, backDialogueId);
+                  } catch(Exception ex) {
+                        
+                  }
+                  if (flag2) {
                         inputTaken = true;
+                  }
             }
             if (atInventoryInterfaceType == 3)
                   inputTaken = true;
@@ -8858,9 +8912,9 @@ public class Client extends GameApplet {
             Raster.drawPixels(1, yPos - 1, xPos, 0x2E2B23, 175);
             Raster.drawPixels(1, yPos + 69, xPos, 0x2E2B23, 175);
             Raster.method335(0, yPos, 174, 68, 220, xPos);
-      }
+      }      
 
-      private void drawInterface(int scroll_y, int x, Widget rsInterface, int y) {
+      private void drawInterface(int scroll_y, int x, Widget rsInterface, int y) throws Exception {
             if (rsInterface == null)
                   rsInterface = Widget.interfaceCache[21356];
             if (rsInterface.type != 0 || rsInterface.children == null)
@@ -9752,7 +9806,7 @@ public class Client extends GameApplet {
                   }
             } catch (Exception _ex) {
                   SignLink.reporterror("glfc_ex " + localPlayer.x + "," + localPlayer.y + ","
-                              + anInt1014 + "," + anInt1015 + "," + anInt1069 + "," + anInt1070
+                              + anInt1014 + "," + anInt1015 + "," + this.regionX + "," + this.regionY
                               + "," + regionBaseX + "," + regionBaseY);
                   throw new RuntimeException("eek");
             }
@@ -9826,7 +9880,7 @@ public class Client extends GameApplet {
                   crosses[4 + crossIndex / 100].drawSprite(crossX - 8 - offSet,
                               crossY - 8 - offSet);
             }
-            if (openWalkableInterface != -1) {
+            if (openWalkableInterface != -1) {try {
                   processWidgetAnimations(tickDelta, openWalkableInterface);
                   if (openWalkableInterface == 197 && frameMode != ScreenMode.FIXED) {
                         skullIcons[0].drawSprite(frameWidth - 157, 168);
@@ -9840,12 +9894,19 @@ public class Client extends GameApplet {
                                     Widget.interfaceCache[openWalkableInterface],
                                     frameMode == ScreenMode.FIXED ? 0 : (frameHeight / 2) - 230);
                   }
+            } catch (Exception ex) {
+                  
+            }
             }
             if (openInterfaceId != -1) {
+                  try {
                   processWidgetAnimations(tickDelta, openInterfaceId);
                   drawInterface(0, frameMode == ScreenMode.FIXED ? 0 : (frameWidth / 2) - 356,
                               Widget.interfaceCache[openInterfaceId],
                               frameMode == ScreenMode.FIXED ? 0 : (frameHeight / 2) - 230);
+                  } catch (Exception ex) {
+                        
+                  }
             }
             if (!menuOpen) {
                   processRightClick();
@@ -10041,38 +10102,49 @@ public class Client extends GameApplet {
 
       private void updateLocalPlayerMovement(Buffer stream) {
             stream.initBitAccess();
+            
             int update = stream.readBits(1);
-            if (update == 0)
+            
+            if (update == 0) {
                   return;
+            }
+            
             int type = stream.readBits(2);
+            
             if (type == 0) {
                   mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = internalLocalPlayerIndex;
-                  return;
             }
             if (type == 1) {
                   int direction = stream.readBits(3);
                   localPlayer.moveInDir(false, direction);
                   int updateRequired = stream.readBits(1);
-                  if (updateRequired == 1)
+                  
+                  if (updateRequired == 1) {
                         mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = internalLocalPlayerIndex;
-                  return;
+                  }
             }
             if (type == 2) {
                   int firstDirection = stream.readBits(3);
                   localPlayer.moveInDir(true, firstDirection);
+                  
                   int secondDirection = stream.readBits(3);
                   localPlayer.moveInDir(true, secondDirection);
+                  
                   int updateRequired = stream.readBits(1);
-                  if (updateRequired == 1)
+                  
+                  if (updateRequired == 1) {
                         mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = internalLocalPlayerIndex;
-                  return;
+                  }
             }
             if (type == 3) {
                   plane = stream.readBits(2);
                   int teleport = stream.readBits(1);
                   int updateRequired = stream.readBits(1);
-                  if (updateRequired == 1)
+                  
+                  if (updateRequired == 1) {
                         mobsAwaitingUpdate[mobsAwaitingUpdateCount++] = internalLocalPlayerIndex;
+                  }
+                  
                   int y = stream.readBits(7);
                   int x = stream.readBits(7);
                   localPlayer.setPos(x, y, teleport == 1);
@@ -10103,7 +10175,7 @@ public class Client extends GameApplet {
             aClass30_Sub2_Sub1_Sub1_1202 = null;
       }
 
-      private boolean processWidgetAnimations(int tick, int interfaceId) {
+      private boolean processWidgetAnimations(int tick, int interfaceId) throws Exception {
             boolean redrawRequired = false;
             Widget widget = Widget.interfaceCache[interfaceId];            
             for (int childIndex = 0; childIndex < widget.children.length; childIndex++) {                  
@@ -10287,7 +10359,6 @@ public class Client extends GameApplet {
       }
 
       public final void requestCrcs() {
-            System.out.println("0");
             int delay = 5;
             archiveCRCs[8] = 0;
             int k = 0;
@@ -10423,15 +10494,21 @@ public class Client extends GameApplet {
 
                               }
                         }
-                        if (instruction == 11)
+                        
+                        if (instruction == 11) {
                               value = runEnergy;
-                        if (instruction == 12)
+                        }
+                        
+                        if (instruction == 12) {
                               value = weight;
+                        }
+                        
                         if (instruction == 13) {
                               int bool = settings[script[counter++]];
                               int shift = script[counter++];
                               value = (bool & 1 << shift) == 0 ? 0 : 1;
                         }
+                        
                         if (instruction == 14) {
                               int index = script[counter++];
                               VariableBits bits = VariableBits.cache[index];
@@ -10441,27 +10518,48 @@ public class Client extends GameApplet {
                               int mask = BIT_MASKS[high - low];
                               value = settings[setting] >> low & mask;
                         }
-                        if (instruction == 15)
+                        
+                        if (instruction == 15) {
                               next = 1;
-                        if (instruction == 16)
+                        }
+                        
+                        if (instruction == 16) {
                               next = 2;
-                        if (instruction == 17)
+                        }
+                        
+                        if (instruction == 17) {
                               next = 3;
-                        if (instruction == 18)
+                        }
+                        
+                        if (instruction == 18) {
                               value = (localPlayer.x >> 7) + regionBaseX;
-                        if (instruction == 19)
+                        }
+                        
+                        if (instruction == 19) {
                               value = (localPlayer.y >> 7) + regionBaseY;
-                        if (instruction == 20)
+                        }
+                        
+                        if (instruction == 20) {
                               value = script[counter++];
+                        }
+                        
                         if (next == 0) {
-                              if (operator == 0)
+                              
+                              if (operator == 0) {
                                     accumulator += value;
-                              if (operator == 1)
+                              }
+                              
+                              if (operator == 1) {
                                     accumulator -= value;
-                              if (operator == 2 && value != 0)
+                              }
+                              
+                              if (operator == 2 && value != 0) {
                                     accumulator /= value;
-                              if (operator == 3)
+                              }
+                              
+                              if (operator == 3) {
                                     accumulator *= value;
+                              }
                               operator = 0;
                         } else {
                               operator = next;
@@ -11786,10 +11884,12 @@ public class Client extends GameApplet {
             updateOtherPlayerMovement(stream);            
             updatePlayerList(stream, packetSize);
             parsePlayerSynchronizationMask(stream);
-            for (int k = 0; k < removedMobCount; k++) {
-                  int l = removedMobs[k];
-                  if (players[l].time != tick)
-                        players[l] = null;
+            for (int count = 0; count < removedMobCount; count++) {                  
+                  int index = removedMobs[count];  
+                  
+                  if (players[index].time != tick) {
+                        players[index] = null;
+                  }
             }
 
             if (stream.currentPosition != packetSize) {
@@ -11797,12 +11897,13 @@ public class Client extends GameApplet {
                               + stream.currentPosition + " psize:" + packetSize);
                   throw new RuntimeException("eek");
             }
-            for (int i1 = 0; i1 < playerCount; i1++)
-                  if (players[playerList[i1]] == null) {
-                        SignLink.reporterror(myUsername + " null entry in pl list - pos:" + i1
+            for (int count = 0; count < playerCount; count++) {                  
+                  if (players[playerList[count]] == null) {
+                        SignLink.reporterror(myUsername + " null entry in pl list - pos:" + count
                                     + " size:" + playerCount);
                         throw new RuntimeException("eek");
                   }
+            }
 
       }
 
@@ -12252,25 +12353,26 @@ public class Client extends GameApplet {
 
                   if (opcode == PacketConstants.SEND_MAP_REGION
                               || opcode == PacketConstants.SEND_REGION_MAP_REGION) {
-                        int regionX = anInt1069;
-                        int regionY = anInt1070;
+                        int regionX = this.regionX;                        
+                        int regionY = this.regionY;
                         if (opcode == 73) {
                               regionX = incoming.readUShortA();
                               regionY = incoming.readUShort();
                               constructedViewport = false;
-                        }
-                        if (opcode == 241) {
+                        } else if (opcode == 241) {
                               regionY = incoming.readUShortA();
                               incoming.initBitAccess();
-                              for (int j16 = 0; j16 < 4; j16++) {
-                                    for (int l20 = 0; l20 < 13; l20++) {
-                                          for (int j23 = 0; j23 < 13; j23++) {
-                                                int i26 = incoming.readBits(1);
-                                                if (i26 == 1)
-                                                      anIntArrayArrayArray1129[j16][l20][j23] =
-                                                                  incoming.readBits(26);
-                                                else
-                                                      anIntArrayArrayArray1129[j16][l20][j23] = -1;
+                              for (int z = 0; z < 4; z++) {                                    
+                                    for (int x = 0; x < 13; x++) {                                          
+                                          for (int y = 0; y < 13; y++) {  
+                                                
+                                                int visible = incoming.readBits(1);
+                                                
+                                                if (visible == 1) {                                                      
+                                                      localRegions[z][x][y] = incoming.readBits(26);
+                                                } else {
+                                                      localRegions[z][x][y] = -1;
+                                                }
                                           }
                                     }
                               }
@@ -12278,172 +12380,187 @@ public class Client extends GameApplet {
                               regionX = incoming.readUShort();
                               constructedViewport = true;
                         }
-                        if (anInt1069 == regionX && anInt1070 == regionY && loadingStage == 2) {
+                        if (this.regionX == regionX && this.regionY == regionY && loadingStage == 2) {
                               opcode = -1;
                               return true;
                         }
-                        anInt1069 = regionX;
-                        anInt1070 = regionY;
-                        regionBaseX = (anInt1069 - 6) * 8;
-                        regionBaseY = (anInt1070 - 6) * 8;
-                        inPlayerOwnedHouse = (anInt1069 / 8 == 48 || anInt1069 / 8 == 49)
-                                    && anInt1070 / 8 == 48;
-                        if (anInt1069 / 8 == 48 && anInt1070 / 8 == 148)
+                        this.regionX = regionX;
+                        this.regionY = regionY;
+                        regionBaseX = (this.regionX - 6) * 8;
+                        regionBaseY = (this.regionY - 6) * 8;
+                        inPlayerOwnedHouse = (this.regionX / 8 == 48 || this.regionX / 8 == 49)
+                                    && this.regionY / 8 == 48;
+                        if (this.regionX / 8 == 48 && this.regionY / 8 == 148)
                               inPlayerOwnedHouse = true;
-                        loadingStage = 1;
-                        aLong824 = System.currentTimeMillis();
+                        loadingStage = 1;                       
+                        loadingStartTime = System.currentTimeMillis();
                         gameScreenImageProducer.initDrawingArea();
                         drawLoadingMessages(1, "Loading - please wait.", null);
                         gameScreenImageProducer.drawGraphics(frameMode == ScreenMode.FIXED ? 4 : 0,
                                     super.graphics, frameMode == ScreenMode.FIXED ? 4 : 0);
                         if (opcode == 73) {
-                              int k16 = 0;
-                              for (int i21 = (anInt1069 - 6) / 8; i21 <= (anInt1069 + 6)
-                                          / 8; i21++) {
-                                    for (int k23 = (anInt1070 - 6) / 8; k23 <= (anInt1070 + 6)
-                                                / 8; k23++)
-                                          k16++;
+                              int regionCount = 0;                                
+                              for (int x = (this.regionX - 6) / 8; x <= (this.regionX + 6)
+                                          / 8; x++) {
+                                    for (int y = (this.regionY - 6) / 8; y <= (this.regionY + 6)
+                                                / 8; y++)
+                                          regionCount++;
                               }
-                              aByteArrayArray1183 = new byte[k16][];
-                              aByteArrayArray1247 = new byte[k16][];
-                              anIntArray1234 = new int[k16];
-                              anIntArray1235 = new int[k16];
-                              anIntArray1236 = new int[k16];
-                              k16 = 0;
-                              for (int l23 = (anInt1069 - 6) / 8; l23 <= (anInt1069 + 6)
-                                          / 8; l23++) {
-                                    for (int j26 = (anInt1070 - 6) / 8; j26 <= (anInt1070 + 6)
-                                                / 8; j26++) {
-                                          anIntArray1234[k16] = (l23 << 8) + j26;
-                                          if (inPlayerOwnedHouse && (j26 == 49 || j26 == 149
-                                                      || j26 == 147 || l23 == 50
-                                                      || l23 == 49 && j26 == 47)) {
-                                                anIntArray1235[k16] = -1;
-                                                anIntArray1236[k16] = -1;
-                                                k16++;
-                                          } else {
-                                                int k28 = anIntArray1235[k16] =
-                                                            resourceProvider.resolve(0, j26, l23);
-                                                if (k28 != -1)
-                                                      resourceProvider.provide(3, k28);
-                                                int j30 = anIntArray1236[k16] =
-                                                            resourceProvider.resolve(1, j26, l23);
-                                                if (j30 != -1)
-                                                      resourceProvider.provide(3, j30);
-                                                k16++;
+                              localRegionMapData = new byte[regionCount][];                              
+                              localRegionLandscapeData = new byte[regionCount][];                              
+                              localRegionIds = new int[regionCount];                              
+                              localRegionMapIds = new int[regionCount];                              
+                              localRegionLandscapeIds = new int[regionCount];                              
+                              regionCount = 0;                              
+                              
+                              for (int x = (this.regionX - 6) / 8; x <= (this.regionX + 6)
+                                          / 8; x++) {
+                                    for (int y = (this.regionY - 6) / 8; y <= (this.regionY + 6)
+                                                / 8; y++) {
+                                          localRegionIds[regionCount] = (x << 8) + y;
+                                          if (inPlayerOwnedHouse && (y == 49 || y == 149
+                                                      || y == 147 || x == 50
+                                                      || x == 49 && y == 47)) {
+                                                localRegionMapIds[regionCount] = -1;
+                                                localRegionLandscapeIds[regionCount] = -1;
+                                                regionCount++;                                                
+                                          } else {                                                
+                                                int map = localRegionMapIds[regionCount] =
+                                                            resourceProvider.resolve(0, y, x);
+                                                if (map != -1) {
+                                                      resourceProvider.provide(3, map);
+                                                }
+                                                
+                                                int landscape = localRegionLandscapeIds[regionCount] =
+                                                            resourceProvider.resolve(1, y, x);
+                                                if (landscape != -1) {
+                                                      resourceProvider.provide(3, landscape);
+                                                }
+                                                regionCount++;
                                           }
                                     }
                               }
                         }
                         if (opcode == 241) {
-                              int l16 = 0;
-                              int ai[] = new int[676];
-                              for (int i24 = 0; i24 < 4; i24++) {
-                                    for (int k26 = 0; k26 < 13; k26++) {
-                                          for (int l28 = 0; l28 < 13; l28++) {
-                                                int k30 = anIntArrayArrayArray1129[i24][k26][l28];
-                                                if (k30 != -1) {
-                                                      int k31 = k30 >> 14 & 0x3ff;
-                                                      int i32 = k30 >> 3 & 0x7ff;
-                                                      int k32 = (k31 / 8 << 8) + i32 / 8;
-                                                      for (int j33 = 0; j33 < l16; j33++) {
-                                                            if (ai[j33] != k32)
+                              int regionCount = 0;
+                              
+                              int regionIds[] = new int[676];
+                              
+                              for (int z = 0; z < 4; z++) {                                    
+                                    for (int x = 0; x < 13; x++) {                                          
+                                          for (int y = 0; y < 13; y++) { 
+                                                
+                                                int data = localRegions[z][x][y];
+                                                
+                                                if (data != -1) {                                                       
+                                                      int constructedRegionX = data >> 14 & 0x3ff;
+                                                      int constructedRegionY = data >> 3 & 0x7ff;
+                                                      int region = (constructedRegionX / 8 << 8) + constructedRegionY / 8;
+                                                      for (int index = 0; index < regionCount; index++) {
+                                                            if (regionIds[index] != region) {
                                                                   continue;
-                                                            k32 = -1;
-
+                                                            }
+                                                            region = -1;
+                                                            break;
                                                       }
-                                                      if (k32 != -1)
-                                                            ai[l16++] = k32;
+                                                      if (region != -1) {
+                                                            regionIds[regionCount++] = region;
+                                                      }
                                                 }
                                           }
                                     }
                               }
-                              aByteArrayArray1183 = new byte[l16][];
-                              aByteArrayArray1247 = new byte[l16][];
-                              anIntArray1234 = new int[l16];
-                              anIntArray1235 = new int[l16];
-                              anIntArray1236 = new int[l16];
-                              for (int l26 = 0; l26 < l16; l26++) {
-                                    int i29 = anIntArray1234[l26] = ai[l26];
-                                    int l30 = i29 >> 8 & 0xff;
-                                    int l31 = i29 & 0xff;
-                                    int j32 = anIntArray1235[l26] =
-                                                resourceProvider.resolve(0, l31, l30);
-                                    if (j32 != -1)
-                                          resourceProvider.provide(3, j32);
-                                    int i33 = anIntArray1236[l26] =
-                                                resourceProvider.resolve(1, l31, l30);
-                                    if (i33 != -1)
-                                          resourceProvider.provide(3, i33);
+                              localRegionMapData = new byte[regionCount][];
+                              localRegionLandscapeData = new byte[regionCount][];
+                              localRegionIds = new int[regionCount];
+                              localRegionMapIds = new int[regionCount];
+                              localRegionLandscapeIds = new int[regionCount];
+                              for (int index = 0; index < regionCount; index++) {                                    
+                                    int id = localRegionIds[index] = regionIds[index];                                    
+                                    int constructedRegionX = id >> 8 & 0xff;                                
+                                    int constructedRegionY = id & 0xff;                                    
+                                    int map = localRegionMapIds[index] = resourceProvider.resolve(0, constructedRegionY, constructedRegionX);
+                                    
+                                    if (map != -1) {
+                                          resourceProvider.provide(3, map);
+                                    }                                    
+                                    
+                                    int landscape = localRegionLandscapeIds[index] = resourceProvider.resolve(1, constructedRegionY, constructedRegionX);
+                                    
+                                    if (landscape != -1) {
+                                          resourceProvider.provide(3, landscape);
+                                    }
+                                    
                               }
                         }
-                        int i17 = regionBaseX - anInt1036;
-                        int j21 = regionBaseY - anInt1037;
-                        anInt1036 = regionBaseX;
-                        anInt1037 = regionBaseY;
-                        for (int j24 = 0; j24 < 16384; j24++) {
-                              Npc npc = npcs[j24];
+                        int dx = regionBaseX - previousAbsoluteX;                         
+                        int dy = regionBaseY - previousAbsoluteY;                         
+                        previousAbsoluteX = regionBaseX;
+                        previousAbsoluteY = regionBaseY;
+                        for (int index = 0; index < 16384; index++) {                              
+                              Npc npc = npcs[index];
                               if (npc != null) {
-                                    for (int j29 = 0; j29 < 10; j29++) {
-                                          npc.pathX[j29] -= i17;
-                                          npc.pathY[j29] -= j21;
+                                    for (int point = 0; point < 10; point++) {                                          
+                                          npc.pathX[point] -= dx;
+                                          npc.pathY[point] -= dy;
                                     }
-                                    npc.x -= i17 * 128;
-                                    npc.y -= j21 * 128;
+                                    npc.x -= dx * 128;
+                                    npc.y -= dy * 128;
                               }
                         }
-                        for (int i27 = 0; i27 < maxPlayers; i27++) {
-                              Player player = players[i27];
+                        for (int index = 0; index < maxPlayers; index++) {                              
+                              Player player = players[index];
                               if (player != null) {
-                                    for (int i31 = 0; i31 < 10; i31++) {
-                                          player.pathX[i31] -= i17;
-                                          player.pathY[i31] -= j21;
+                                    for (int point = 0; point < 10; point++) {                                          
+                                          player.pathX[point] -= dx;
+                                          player.pathY[point] -= dy;
                                     }
-                                    player.x -= i17 * 128;
-                                    player.y -= j21 * 128;
+                                    player.x -= dx * 128;
+                                    player.y -= dy * 128;
                               }
                         }
                         validLocalMap = true;
-                        byte byte1 = 0;
-                        byte byte2 = 104;
-                        byte byte3 = 1;
-                        if (i17 < 0) {
-                              byte1 = 103;
-                              byte2 = -1;
-                              byte3 = -1;
+                        byte startX = 0;                        
+                        byte endX = 104;                        
+                        byte stepX = 1;                        
+                        if (dx < 0) {
+                              startX = 103;
+                              endX = -1;
+                              stepX = -1;
                         }
-                        byte byte4 = 0;
-                        byte byte5 = 104;
-                        byte byte6 = 1;
-                        if (j21 < 0) {
-                              byte4 = 103;
-                              byte5 = -1;
-                              byte6 = -1;
+                        byte startY = 0;                        
+                        byte endY = 104;                        
+                        byte stepY = 1;  
+                        
+                        if (dy < 0) {
+                              startY = 103;
+                              endY = -1;
+                              stepY = -1;
                         }
-                        for (int k33 = byte1; k33 != byte2; k33 += byte3) {
-                              for (int l33 = byte4; l33 != byte5; l33 += byte6) {
-                                    int i34 = k33 + i17;
-                                    int j34 = l33 + j21;
-                                    for (int k34 = 0; k34 < 4; k34++)
-                                          if (i34 >= 0 && j34 >= 0 && i34 < 104 && j34 < 104)
-                                                groundItems[k34][k33][l33] =
-                                                            groundItems[k34][i34][j34];
-                                          else
-                                                groundItems[k34][k33][l33] = null;
+                        for (int x = startX; x != endX; x += stepX) {                              
+                              for (int y = startY; y != endY; y += stepY) {                                    
+                                    int shiftedX = x + dx;                                    
+                                    int shiftedY = y + dy;                                    
+                                    for (int plane = 0; plane < 4; plane++)                                          
+                                          if (shiftedX >= 0 && shiftedY >= 0 && shiftedX < 104 && shiftedY < 104) {
+                                                groundItems[plane][x][y] = groundItems[plane][shiftedX][shiftedY];
+                                          } else {
+                                                groundItems[plane][x][y] = null;
+                                          }
                               }
-                        }
-                        for (SpawnedObject class30_sub1_1 = (SpawnedObject) spawns
-                                    .reverseGetFirst(); class30_sub1_1 != null; class30_sub1_1 =
+                        }                        
+                        for (SpawnedObject object = (SpawnedObject) spawns
+                                    .reverseGetFirst(); object != null; object =
                                                 (SpawnedObject) spawns.reverseGetNext()) {
-                              class30_sub1_1.x -= i17;
-                              class30_sub1_1.y -= j21;
-                              if (class30_sub1_1.x < 0 || class30_sub1_1.y < 0
-                                          || class30_sub1_1.x >= 104 || class30_sub1_1.y >= 104)
-                                    class30_sub1_1.unlink();
+                              object.x -= dx;
+                              object.y -= dy;
+                              if (object.x < 0 || object.y < 0
+                                          || object.x >= 104 || object.y >= 104)
+                                    object.unlink();
                         }
                         if (destinationX != 0) {
-                              destinationX -= i17;
-                              destY -= j21;
+                              destinationX -= dx;
+                              destY -= dy;
                         }
                         oriented = false;
                         opcode = -1;
@@ -13595,7 +13712,7 @@ public class Client extends GameApplet {
             aString1121 = "";
             atPlayerActions = new String[5];
             atPlayerArray = new boolean[5];
-            anIntArrayArrayArray1129 = new int[4][13][13];
+            localRegions = new int[4][13][13];
             anInt1132 = 2;
             minimapHint = new Sprite[1000];
             inPlayerOwnedHouse = false;
@@ -13653,7 +13770,7 @@ public class Client extends GameApplet {
       private ProducingGraphicsBuffer leftFrame;
       private ProducingGraphicsBuffer topFrame;
       private int ignoreCount;
-      private long aLong824;
+      private long loadingStartTime;
       private int[][] anIntArrayArray825;
       private int[] friendsNodeIDs;
       private Deque[][][] groundItems;
@@ -13826,8 +13943,8 @@ public class Client extends GameApplet {
       private Sprite[] mapFunctions;
       private int regionBaseX;
       private int regionBaseY;
-      private int anInt1036;
-      private int anInt1037;
+      private int previousAbsoluteX;
+      private int previousAbsoluteY;
       private int loginFailures;
       private int anInt1039;
       private int anInt1040;
@@ -13855,8 +13972,8 @@ public class Client extends GameApplet {
       private int mouseInvInterfaceIndex;
       private int lastActiveInvInterface;
       public ResourceProvider resourceProvider;
-      private int anInt1069;
-      private int anInt1070;
+      private int regionX;      
+      private int regionY;      
       private int anInt1071;
       private int[] minimapHintX;
       private int[] minimapHintY;
@@ -13912,7 +14029,7 @@ public class Client extends GameApplet {
       public static Player localPlayer;
       private final String[] atPlayerActions;
       private final boolean[] atPlayerArray;
-      private final int[][][] anIntArrayArrayArray1129;
+      private final int[][][] localRegions;
       public static final int[] tabInterfaceIDs =
                   {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
       private int cameraY;
@@ -13960,7 +14077,7 @@ public class Client extends GameApplet {
       private static int[] anIntArray1180;
       private static int[] anIntArray1181;
       private static int[] anIntArray1182;
-      private byte[][] aByteArrayArray1183;
+      private byte[][] localRegionMapData;
       private int anInt1184;
       private int cameraHorizontal;
       private int anInt1186;
@@ -14001,9 +14118,9 @@ public class Client extends GameApplet {
       private final int[] minimapLineWidth;
       private CollisionMap[] collisionMaps;
       public static int BIT_MASKS[];
-      private int[] anIntArray1234;
-      private int[] anIntArray1235;
-      private int[] anIntArray1236;
+      private int[] localRegionIds;
+      private int[] localRegionMapIds;
+      private int[] localRegionLandscapeIds;
       private int anInt1237;
       private int anInt1238;
       public final int anInt1239 = 100;
@@ -14014,7 +14131,7 @@ public class Client extends GameApplet {
       private int atInventoryInterface;
       private int atInventoryIndex;
       private int atInventoryInterfaceType;
-      private byte[][] aByteArrayArray1247;
+      private byte[][] localRegionLandscapeData;
       private int tradeMode;
       private int anInt1249;
       private final int[] soundDelay;
