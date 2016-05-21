@@ -2,23 +2,34 @@ package com.runescape.cache.anim;
 import com.runescape.io.Buffer;
 
 public final class FrameBase {
+      
+      /**
+       * The type of each transformation.
+       */
+      public final int[] transformationType;
+      
+      
+      public final int[][] labels;
 
-	public FrameBase(Buffer stream) {
-		int anInt341 = stream.readUnsignedByte();
-		anIntArray342 = new int[anInt341];
-		anIntArrayArray343 = new int[anInt341][];
-		for (int j = 0; j < anInt341; j++)
-			anIntArray342[j] = stream.readUnsignedByte();
+	public FrameBase(Buffer stream) {	      
+		int count = stream.readUnsignedByte();
+		transformationType = new int[count];	
+		
+		labels = new int[count][];		
+		for (int index = 0; index < count; index++) {		      
+			transformationType[index] = stream.readUnsignedByte();
+		}
 
-		for (int j = 0; j < anInt341; j++)
-			anIntArrayArray343[j] = new int[stream.readUnsignedByte()];
+		for (int label = 0; label < count; label++) {		      
+			labels[label] = new int[stream.readUnsignedByte()];
+		}
 
-		for (int j = 0; j < anInt341; j++)
-			for (int l = 0; l < anIntArrayArray343[j].length; l++)
-				anIntArrayArray343[j][l] = stream.readUnsignedByte();
+		for (int label = 0; label < count; label++) {     
+			for (int index = 0; index < labels[label].length; index++) {			      
+				labels[label][index] = stream.readUnsignedByte();
+			}
+		}
 
 	}
 
-	public final int[] anIntArray342;
-	public final int[][] anIntArrayArray343;
 }

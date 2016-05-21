@@ -1586,7 +1586,7 @@ public class Model extends Renderable {
 			if (nextAnimation == null || list2 == null) {
 				for (int i_263_ = 0; i_263_ < currentAnimation.anInt638; i_263_++) {
 					int i_264_ = currentAnimation.anIntArray639[i_263_];
-					method472(list1.anIntArray342[i_264_], list1.anIntArrayArray343[i_264_],
+					method472(list1.transformationType[i_264_], list1.labels[i_264_],
 							currentAnimation.anIntArray640[i_263_],
 							currentAnimation.anIntArray641[i_263_],
 							currentAnimation.anIntArray642[i_263_]);
@@ -1595,15 +1595,15 @@ public class Model extends Renderable {
 			} else {
 				for (int i1 = 0; i1 < currentAnimation.anInt638; i1++) {
 					int n1 = currentAnimation.anIntArray639[i1];
-					int opcode = list1.anIntArray342[n1];
-					int[] skin = list1.anIntArrayArray343[n1];
+					int opcode = list1.transformationType[n1];
+					int[] skin = list1.labels[n1];
 					int x = currentAnimation.anIntArray640[i1];
 					int y = currentAnimation.anIntArray641[i1];
 					int z = currentAnimation.anIntArray642[i1];
 					boolean found = false;
 					for (int i2 = 0; i2 < nextAnimation.anInt638; i2++) {
 						int n2 = nextAnimation.anIntArray639[i2];
-						if (list2.anIntArrayArray343[n2].equals(skin)) {
+						if (list2.labels[n2].equals(skin)) {
 							if (opcode != 2) {
 								x += (nextAnimation.anIntArray640[i2] - x) * cycle
 										/ end;
@@ -1685,7 +1685,7 @@ public class Model extends Renderable {
 		anInt1683 = 0;
 		for (int k = 0; k < class36.anInt638; k++) {
 			int l = class36.anIntArray639[k];
-			method472(class18.anIntArray342[l], class18.anIntArrayArray343[l],
+			method472(class18.transformationType[l], class18.labels[l],
 					class36.anIntArray640[k], class36.anIntArray641[k],
 					class36.anIntArray642[k]);
 		}
@@ -1717,9 +1717,9 @@ public class Model extends Renderable {
 			int k1;
 			for (k1 = class36.anIntArray639[j1]; k1 > i1; i1 = ai[l++])
 				;
-			if (k1 != i1 || class18.anIntArray342[k1] == 0)
-				method472(class18.anIntArray342[k1],
-						class18.anIntArrayArray343[k1],
+			if (k1 != i1 || class18.transformationType[k1] == 0)
+				method472(class18.transformationType[k1],
+						class18.labels[k1],
 						class36.anIntArray640[j1], class36.anIntArray641[j1],
 						class36.anIntArray642[j1]);
 		}
@@ -1733,9 +1733,9 @@ public class Model extends Renderable {
 			int i2;
 			for (i2 = class36_1.anIntArray639[l1]; i2 > i1; i1 = ai[l++])
 				;
-			if (i2 == i1 || class18.anIntArray342[i2] == 0)
-				method472(class18.anIntArray342[i2],
-						class18.anIntArrayArray343[i2],
+			if (i2 == i1 || class18.transformationType[i2] == 0)
+				method472(class18.transformationType[i2],
+						class18.labels[i2],
 						class36_1.anIntArray640[l1],
 						class36_1.anIntArray641[l1],
 						class36_1.anIntArray642[l1]);
