@@ -5,7 +5,7 @@ import com.runescape.scene.SceneGraph;
 
 public final class Rasterizer extends Raster {
 
-	public static void nullLoader()
+	public static void clear()
 	{
 		anIntArray1468 = null;
 		anIntArray1468 = null;

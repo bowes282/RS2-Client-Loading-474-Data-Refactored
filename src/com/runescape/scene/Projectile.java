@@ -59,7 +59,7 @@ public final class Projectile extends Renderable {
 		if(aSpotAnim_1592.animationSequence != null) {
 			j = aSpotAnim_1592.animationSequence.primaryFrames[anInt1593];
 		}
-		Model model_1 = new Model(true, Frame.method532(j), false, model);
+		Model model_1 = new Model(true, Frame.isInvalid(j), false, model);
 		if(j != -1) {
 			model_1.skin();
 			model_1.apply(j);

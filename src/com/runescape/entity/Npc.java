@@ -37,7 +37,7 @@ public final class Npc extends Mob {
 			Model graphicModel = spotAnim.getModel();
 			if (graphicModel != null) {
 				int frame = spotAnim.animationSequence.primaryFrames[super.currentAnimation];
-				Model model = new Model(true, Frame.method532(frame),
+				Model model = new Model(true, Frame.isInvalid(frame),
 						false, graphicModel);
 				model.translate(0, -super.graphicHeight, 0);
 				model.skin();

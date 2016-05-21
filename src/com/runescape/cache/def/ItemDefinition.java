@@ -10,7 +10,7 @@ import com.runescape.net.CacheArchive;
 
 public final class ItemDefinition {
 
-	public static void clearCache() {
+	public static void clear() {
 		models = null;
 		sprites = null;
 		streamIndices = null;

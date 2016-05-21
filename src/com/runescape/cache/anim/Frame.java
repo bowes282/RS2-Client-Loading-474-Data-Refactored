@@ -1,128 +1,146 @@
 package com.runescape.cache.anim;
+import java.util.Hashtable;
+
 import com.runescape.Client;
 import com.runescape.io.Buffer;
 
 public final class Frame {
 
-	public static java.util.Hashtable<Integer, Frame> frameList = new java.util.Hashtable<Integer, Frame>();
+	public static Hashtable<Integer, Frame> frameList = new Hashtable<Integer, Frame>();
 
-	public static void load(byte abyte0[], int fileId) {
-		Buffer stream = new Buffer(abyte0);
-		stream.currentPosition = abyte0.length - 12;
-		int i = stream.readInt();
-		int j = stream.readInt();
-		int k = stream.readInt();
-		int i1 = 0;
-		Buffer stream_1 = new Buffer(abyte0);
-		stream_1.currentPosition = i1;
-		i1 += i + 4;
-		Buffer stream_2 = new Buffer(abyte0);
-		stream_2.currentPosition = i1;
-		i1 += j;
-		Buffer stream_3 = new Buffer(abyte0);
-		stream_3.currentPosition = i1;
-		i1 += k;
-		Buffer stream_4 = new Buffer(abyte0);
-		stream_4.currentPosition = i1;
-		FrameBase class18 = new FrameBase(stream_4);
-		int k1 = stream_1.readInt();
-		int ai[] = new int[500];
-		int ai1[] = new int[500];
-		int ai2[] = new int[500];
-		int ai3[] = new int[500];
-		for (int l1 = 0; l1 < k1; l1++) {
-			int i2 = stream_1.readInt();
-			Frame class36 = new Frame();
-			frameList.put(new Integer((fileId << 16) + i2), class36);
-			class36.aClass18_637 = class18;
-			int j2 = stream_1.readUnsignedByte();
-			int k2 = -1;
-			int l2 = 0;
-			for (int i3 = 0; i3 < j2; i3++) {
-				int j3 = stream_2.readUnsignedByte();
-				if (j3 > 0) {
-					if (class18.transformationType[i3] != 0) {
-						for (int l3 = i3 - 1; l3 > k2; l3--) {
-							if (class18.transformationType[l3] != 0)
+	public static void load(byte data[], int fileId) {	      
+		Buffer buffer = new Buffer(data);		
+		buffer.currentPosition = data.length - 12;
+		
+		int i = buffer.readInt();
+		int j = buffer.readInt();
+		int k = buffer.readInt();
+		
+		int offset = 0;
+		
+		Buffer head = new Buffer(data);		
+		head.currentPosition = offset;
+		offset += i + 4;
+		Buffer stream_2 = new Buffer(data);
+		stream_2.currentPosition = offset;
+		offset += j;
+		Buffer stream_3 = new Buffer(data);
+		stream_3.currentPosition = offset;
+		offset += k;
+		Buffer stream_4 = new Buffer(data);
+		stream_4.currentPosition = offset;
+		
+		FrameBase base = new FrameBase(stream_4);
+		
+		int frameCount = head.readInt();		
+		int translationIndices[] = new int[500];		
+		int transformX[] = new int[500];		
+		int transformY[] = new int[500];		
+		int transformZ[] = new int[500];		
+		for (int frameIndex = 0; frameIndex < frameCount; frameIndex++) {		      
+			int id = head.readInt();			
+			Frame frame = new Frame();			
+			frameList.put(new Integer((fileId << 16) + id), frame);
+			frame.base = base;
+			int transformations = head.readUnsignedByte();			
+			int lastIndex = -1;			
+			int transformation = 0;
+			for (int index = 0; index < transformations; index++) {			      
+				int attribute = stream_2.readUnsignedByte();				
+				if (attribute > 0) {
+					if (base.transformationType[index] != 0) {
+						for (int next = index - 1; next > lastIndex; next--) {						      
+							if (base.transformationType[next] != 0)
 								continue;
-							ai[l2] = l3;
-							ai1[l2] = 0;
-							ai2[l2] = 0;
-							ai3[l2] = 0;
-							l2++;
+							translationIndices[transformation] = next;
+							transformX[transformation] = 0;
+							transformY[transformation] = 0;
+							transformZ[transformation] = 0;
+							transformation++;
 							break;
 						}
 
 					}
-					ai[l2] = i3;
+					translationIndices[transformation] = index;
+					
 					char c = '\0';
-					if (class18.transformationType[i3] == 3)
+					
+					if (base.transformationType[index] == 3) {
 						c = '\200';
-					if ((j3 & 1) != 0)
-						ai1[l2] = stream_3.readSmart();
-					else
-						ai1[l2] = c;
-					if ((j3 & 2) != 0)
-						ai2[l2] = stream_3.readSmart();
-					else
-						ai2[l2] = c;
-					if ((j3 & 4) != 0)
-						ai3[l2] = stream_3.readSmart();
-					else
-						ai3[l2] = c;
-					k2 = i3;
-					l2++;
+					}
+					
+					if ((attribute & 1) != 0) {
+						transformX[transformation] = stream_3.readSmart();
+					} else {
+						transformX[transformation] = c;
+					}
+					
+					if ((attribute & 2) != 0) {
+						transformY[transformation] = stream_3.readSmart();
+					}	else {
+						transformY[transformation] = c;
+					}
+					
+					if ((attribute & 4) != 0) {
+						transformZ[transformation] = stream_3.readSmart();
+					}	else {
+						transformZ[transformation] = c;
+					}
+					
+					lastIndex = index;
+					transformation++;
 				}
 			}
 
-			class36.anInt638 = l2;
-			class36.anIntArray639 = new int[l2];
-			class36.anIntArray640 = new int[l2];
-			class36.anIntArray641 = new int[l2];
-			class36.anIntArray642 = new int[l2];
-			for (int k3 = 0; k3 < l2; k3++) {
-				class36.anIntArray639[k3] = ai[k3];
-				class36.anIntArray640[k3] = ai1[k3];
-				class36.anIntArray641[k3] = ai2[k3];
-				class36.anIntArray642[k3] = ai3[k3];
+			frame.transformationCount = transformation;
+			frame.transformationIndices = new int[transformation];
+			frame.transformX = new int[transformation];
+			frame.transformY = new int[transformation];
+			frame.transformZ = new int[transformation];
+			
+			for (int index = 0; index < transformation; index++) {				      
+				frame.transformationIndices[index] = translationIndices[index];
+				frame.transformX[index] = transformX[index];
+				frame.transformY[index] = transformY[index];
+				frame.transformZ[index] = transformZ[index];
 			}
 
 		}
 
 	}
 
-	public static void nullLoader() {
+	public static void clear() {
 		frameList = null;
 	}
 
-	public static Frame method531(int j) {
+	public static Frame method531(int frameId) {	      
 		try {
-			int fileId = j >> 16;
-			Frame class36 = (Frame) frameList.get(new Integer(j));
-			if (class36 == null) {
+			int fileId = frameId >> 16;			
+			Frame frame = (Frame) frameList.get(new Integer(frameId));
+			if (frame == null) {
 				Client.instance.resourceProvider.provide(1, fileId);
 				return null;
 			} else
-				return class36;
-		} catch (Exception e) {
-			e.printStackTrace();
+				return frame;
+		} catch (Exception ex) {		      
+			ex.printStackTrace();
 		}
 		return null;
 	}
 
-	public static boolean method532(int i) {
-		return i == -1;
+	public static boolean isInvalid(int frame) {	      
+		return frame == -1;		
 	}
 
 	public Frame() {
 	}
 
-	public int anInt636;
-	public FrameBase aClass18_637;
-	public int anInt638;
-	public int anIntArray639[];
-	public int anIntArray640[];
-	public int anIntArray641[];
-	public int anIntArray642[];
+	public int duration;	
+	public FrameBase base;
+	public int transformationCount;	
+	public int transformationIndices[];	
+	public int transformX[];	
+	public int transformY[];	
+	public int transformZ[];	
 
 }

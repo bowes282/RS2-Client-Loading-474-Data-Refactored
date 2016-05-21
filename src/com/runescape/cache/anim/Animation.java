@@ -189,7 +189,7 @@ public final class Animation {
             Frame frame = Frame.method531(primaryFrames[frameId]);   
             
             if(frame != null) {
-                duration = durations[frameId] = frame.anInt636;
+                duration = durations[frameId] = frame.duration;
             }
             
         }

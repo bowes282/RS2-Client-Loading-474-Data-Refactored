@@ -183,7 +183,7 @@ public final class ObjectDefinition {
 			archive.loadExtra(modelIds[index] & 0xffff, 0);
 	}
 
-	public static void nullLoader() {
+	public static void clear() {
 		baseModels = null;
 		models = null;
 		streamIndices = null;
@@ -342,7 +342,7 @@ public final class ObjectDefinition {
 		boolean flag2;
 		flag2 = translateX != 0 || translateY != 0 || translateZ != 0;
 		Model model_3 = new Model(modifiedModelColors == null,
-				Frame.method532(k), l == 0 && k == -1 && !flag
+				Frame.isInvalid(k), l == 0 && k == -1 && !flag
 						&& !flag2, model);
 		if (k != -1) {
 			model_3.skin();

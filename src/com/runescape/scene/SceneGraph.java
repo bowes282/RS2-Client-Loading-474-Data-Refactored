@@ -33,7 +33,7 @@ public final class SceneGraph {
 		initToNull();
 	}
 
-	public static void nullLoader() {
+	public static void clear() {
 		aClass28Array462 = null;
 		anIntArray473 = null;
 		aClass47ArrayArray474 = null;

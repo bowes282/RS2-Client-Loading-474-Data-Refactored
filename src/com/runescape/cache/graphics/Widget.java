@@ -2036,7 +2036,7 @@ public final class Widget {
 			return null;
 		if (k == -1 && j == -1 && model.anIntArray1640 == null)
 			return model;
-		Model model_1 = new Model(true, Frame.method532(k) & Frame.method532(j), false, model);
+		Model model_1 = new Model(true, Frame.isInvalid(k) & Frame.isInvalid(j), false, model);
 		if (k != -1 || j != -1)
 			model_1.skin();
 		if (k != -1)

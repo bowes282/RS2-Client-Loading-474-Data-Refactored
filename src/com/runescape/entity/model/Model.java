@@ -11,7 +11,7 @@ import com.runescape.scene.SceneGraph;
 
 public class Model extends Renderable {
 
-	public static void nullLoader() {
+	public static void clear() {	      
 		aClass21Array1661 = null;
 		aBooleanArray1663 = null;
 		aBooleanArray1664 = null;
@@ -1571,7 +1571,7 @@ public class Model extends Renderable {
 		}
 		if (vertexGroups != null && frame != -1) {
 			Frame currentAnimation = Frame.method531(frame);
-			FrameBase list1 = currentAnimation.aClass18_637;
+			FrameBase list1 = currentAnimation.base;
 			anInt1681 = 0;
 			anInt1682 = 0;
 			anInt1683 = 0;
@@ -1579,45 +1579,45 @@ public class Model extends Renderable {
 			FrameBase list2 = null;
 			if (nextFrame != -1) {
 				nextAnimation = Frame.method531(nextFrame);
-				if (nextAnimation.aClass18_637 != list1)
+				if (nextAnimation.base != list1)
 					nextAnimation = null;
-				list2 = nextAnimation.aClass18_637;
+				list2 = nextAnimation.base;
 			}
 			if (nextAnimation == null || list2 == null) {
-				for (int i_263_ = 0; i_263_ < currentAnimation.anInt638; i_263_++) {
-					int i_264_ = currentAnimation.anIntArray639[i_263_];
+				for (int i_263_ = 0; i_263_ < currentAnimation.transformationCount; i_263_++) {
+					int i_264_ = currentAnimation.transformationIndices[i_263_];
 					method472(list1.transformationType[i_264_], list1.labels[i_264_],
-							currentAnimation.anIntArray640[i_263_],
-							currentAnimation.anIntArray641[i_263_],
-							currentAnimation.anIntArray642[i_263_]);
+							currentAnimation.transformX[i_263_],
+							currentAnimation.transformY[i_263_],
+							currentAnimation.transformZ[i_263_]);
 
 				}
 			} else {
-				for (int i1 = 0; i1 < currentAnimation.anInt638; i1++) {
-					int n1 = currentAnimation.anIntArray639[i1];
+				for (int i1 = 0; i1 < currentAnimation.transformationCount; i1++) {
+					int n1 = currentAnimation.transformationIndices[i1];
 					int opcode = list1.transformationType[n1];
 					int[] skin = list1.labels[n1];
-					int x = currentAnimation.anIntArray640[i1];
-					int y = currentAnimation.anIntArray641[i1];
-					int z = currentAnimation.anIntArray642[i1];
+					int x = currentAnimation.transformX[i1];
+					int y = currentAnimation.transformY[i1];
+					int z = currentAnimation.transformZ[i1];
 					boolean found = false;
-					for (int i2 = 0; i2 < nextAnimation.anInt638; i2++) {
-						int n2 = nextAnimation.anIntArray639[i2];
+					for (int i2 = 0; i2 < nextAnimation.transformationCount; i2++) {
+						int n2 = nextAnimation.transformationIndices[i2];
 						if (list2.labels[n2].equals(skin)) {
 							if (opcode != 2) {
-								x += (nextAnimation.anIntArray640[i2] - x) * cycle
+								x += (nextAnimation.transformX[i2] - x) * cycle
 										/ end;
-								y += (nextAnimation.anIntArray641[i2] - y) * cycle
+								y += (nextAnimation.transformY[i2] - y) * cycle
 										/ end;
-								z += (nextAnimation.anIntArray642[i2] - z) * cycle
+								z += (nextAnimation.transformZ[i2] - z) * cycle
 										/ end;
 							} else {
 								x &= 0xff;
 								y &= 0xff;
 								z &= 0xff;
-								int dx = nextAnimation.anIntArray640[i2] - x & 0xff;
-								int dy = nextAnimation.anIntArray641[i2] - y & 0xff;
-								int dz = nextAnimation.anIntArray642[i2] - z & 0xff;
+								int dx = nextAnimation.transformX[i2] - x & 0xff;
+								int dy = nextAnimation.transformY[i2] - y & 0xff;
+								int dz = nextAnimation.transformZ[i2] - z & 0xff;
 								if (dx >= 128) {
 									dx -= 256;
 								}
@@ -1679,15 +1679,15 @@ public class Model extends Renderable {
 		Frame class36 = Frame.method531(i);
 		if (class36 == null)
 			return;
-		FrameBase class18 = class36.aClass18_637;
+		FrameBase class18 = class36.base;
 		anInt1681 = 0;
 		anInt1682 = 0;
 		anInt1683 = 0;
-		for (int k = 0; k < class36.anInt638; k++) {
-			int l = class36.anIntArray639[k];
+		for (int k = 0; k < class36.transformationCount; k++) {
+			int l = class36.transformationIndices[k];
 			method472(class18.transformationType[l], class18.labels[l],
-					class36.anIntArray640[k], class36.anIntArray641[k],
-					class36.anIntArray642[k]);
+					class36.transformX[k], class36.transformY[k],
+					class36.transformZ[k]);
 		}
 
 	}
@@ -1707,21 +1707,21 @@ public class Model extends Renderable {
 			apply(k);
 			return;
 		}
-		FrameBase class18 = class36.aClass18_637;
+		FrameBase class18 = class36.base;
 		anInt1681 = 0;
 		anInt1682 = 0;
 		anInt1683 = 0;
 		int l = 0;
 		int i1 = ai[l++];
-		for (int j1 = 0; j1 < class36.anInt638; j1++) {
+		for (int j1 = 0; j1 < class36.transformationCount; j1++) {
 			int k1;
-			for (k1 = class36.anIntArray639[j1]; k1 > i1; i1 = ai[l++])
+			for (k1 = class36.transformationIndices[j1]; k1 > i1; i1 = ai[l++])
 				;
 			if (k1 != i1 || class18.transformationType[k1] == 0)
 				method472(class18.transformationType[k1],
 						class18.labels[k1],
-						class36.anIntArray640[j1], class36.anIntArray641[j1],
-						class36.anIntArray642[j1]);
+						class36.transformX[j1], class36.transformY[j1],
+						class36.transformZ[j1]);
 		}
 
 		anInt1681 = 0;
@@ -1729,16 +1729,16 @@ public class Model extends Renderable {
 		anInt1683 = 0;
 		l = 0;
 		i1 = ai[l++];
-		for (int l1 = 0; l1 < class36_1.anInt638; l1++) {
+		for (int l1 = 0; l1 < class36_1.transformationCount; l1++) {
 			int i2;
-			for (i2 = class36_1.anIntArray639[l1]; i2 > i1; i1 = ai[l++])
+			for (i2 = class36_1.transformationIndices[l1]; i2 > i1; i1 = ai[l++])
 				;
 			if (i2 == i1 || class18.transformationType[i2] == 0)
 				method472(class18.transformationType[i2],
 						class18.labels[i2],
-						class36_1.anIntArray640[l1],
-						class36_1.anIntArray641[l1],
-						class36_1.anIntArray642[l1]);
+						class36_1.transformX[l1],
+						class36_1.transformY[l1],
+						class36_1.transformZ[l1]);
 		}
 
 	}

@@ -5726,9 +5726,9 @@ public class Client extends GameApplet {
             aRSImageProducer_1115 = null;
             multiOverlay = null;
             nullLoader();
-            ObjectDefinition.nullLoader();
-            NpcDefinition.nullLoader();
-            ItemDefinition.clearCache();
+            ObjectDefinition.clear();
+            NpcDefinition.clear();
+            ItemDefinition.clear();
             Floor.cache = null;
             IdentityKit.kits = null;
             Widget.interfaceCache = null;
@@ -5738,10 +5738,10 @@ public class Client extends GameApplet {
             VariableParameter.parameters = null;
             super.fullGameScreen = null;
             Player.models = null;
-            Rasterizer.nullLoader();
-            SceneGraph.nullLoader();
-            Model.nullLoader();
-            Frame.nullLoader();
+            Rasterizer.clear();
+            SceneGraph.clear();
+            Model.clear();
+            Frame.clear();
             System.gc();
       }
 

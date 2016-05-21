@@ -137,7 +137,7 @@ public final class NpcDefinition {
 		System.out.println("Loaded: " + totalNPCs + " Npcs");
 	}
 
-	public static void nullLoader() {
+	public static void clear() {
 		modelCache = null;
 		streamIndices = null;
 		cache = null;
@@ -183,8 +183,8 @@ public final class NpcDefinition {
 		}
 		Model empty = Model.EMPTY_MODEL;
 		empty.method464(model,
-				Frame.method532(frame) & Frame.method532(j)
-						& Frame.method532(nextFrame));
+				Frame.isInvalid(frame) & Frame.isInvalid(j)
+						& Frame.isInvalid(nextFrame));
 		if (frame != -1 && j != -1)
 			empty.method471(ai, j, frame);
 		else if (frame != -1 && nextFrame != -1)
@@ -240,8 +240,8 @@ public final class NpcDefinition {
 			modelCache.put(model, interfaceType);
 		}
 		Model model_1 = Model.EMPTY_MODEL;
-		model_1.method464(model, Frame.method532(secondaryFrame)
-				& Frame.method532(primaryFrame));
+		model_1.method464(model, Frame.isInvalid(secondaryFrame)
+				& Frame.isInvalid(primaryFrame));
 		if (secondaryFrame != -1 && primaryFrame != -1)
 			model_1.method471(interleaveOrder, primaryFrame, secondaryFrame);
 		else if (secondaryFrame != -1)

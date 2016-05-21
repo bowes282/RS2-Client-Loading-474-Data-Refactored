@@ -30,7 +30,7 @@ public final class Player extends Mob {
                   Graphic spotAnim = Graphic.cache[super.graphic];
                   Model model_2 = spotAnim.getModel();
                   if (model_2 != null) {
-                        Model model_3 = new Model(true, Frame.method532(super.currentAnimation),
+                        Model model_3 = new Model(true, Frame.isInvalid(super.currentAnimation),
                                     false, model_2);
                         int nextFrame =
                                     spotAnim.animationSequence.primaryFrames[super.nextGraphicsAnimationFrame];
@@ -312,7 +312,7 @@ public final class Player extends Mob {
             if (aBoolean1699)
                   return model_1;
             Model model_2 = Model.EMPTY_MODEL;
-            model_2.method464(model_1, Frame.method532(currentFrame) & Frame.method532(i1));
+            model_2.method464(model_1, Frame.isInvalid(currentFrame) & Frame.isInvalid(i1));
             if (currentFrame != -1 && i1 != -1)
                   model_2.method471(Animation.animations[super.emoteAnimation].interleaveOrder, i1,
                               currentFrame);
