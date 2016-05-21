@@ -5,21 +5,56 @@ import com.runescape.net.CacheArchive;
 public final class Animation {
 	
     public static Animation animations[];
-    public int frameCount;    
+    
+    /**
+     * The amount of frames in this Animation.
+     */
+    public int frameCount;  
+    
+    /**
+     * The primary frame ids of this Animation.
+     */
     public int primaryFrames[];
+    
+    /**
+     * The secondary frame ids of this Animation.
+     */
     public int secondaryFrames[];
+    
+    /**
+     * The duration of each frame in this Animation.
+     */
     public int[] durations;
+    
+    /**
+     * The amount of frames subtracted to restart the loop.
+     */
     public int loopOffset;    
     public int interleaveOrder[];
     public boolean stretches;
     public int priority;
+    
+    /**
+     * Indicates whether or not this player's shield will be displayed whilst this animation is played.
+     */
     public int playerOffhand;
+    
+    /**
+     * Indicates whether or not this player's weapon will be displayed whilst this animation is played.
+     */
     public int playerMainhand;
+    
+    /**
+     * The maximum times this animation will loop.
+     */
     public int maximumLoops;
+    
+    /**
+     * The animation precedence (will this animation 'override' other animations or will this one yield).
+     */
     public int animatingPrecedence;
     public int walkingPrecedence;
     public int replayMode;
-    public static int anInt367;
     
     private Animation() {
         loopOffset = -1;
@@ -148,18 +183,18 @@ public final class Animation {
         }
     }
 
-    public int duration(int i) {          
-        int j = durations[i];
-        if(j == 0) {
-            Frame class36 = Frame.method531(primaryFrames[i]);
-            if(class36 != null) {
-                j = durations[i] = class36.anInt636;
+    public int duration(int frameId) {
+        int duration = durations[frameId];        
+        if(duration == 0) {
+            Frame frame = Frame.method531(primaryFrames[frameId]);   
+            
+            if(frame != null) {
+                duration = durations[frameId] = frame.anInt636;
             }
+            
         }
-        if(j == 0) {
-            j = 1;
-        }
-        return j;
+        
+        return duration == 0 ? 1 : duration;
     }
 
 	public void decode(Buffer stream) {
@@ -243,4 +278,5 @@ public final class Animation {
 			walkingPrecedence = 0;
 		}
 	}
+	
 }
