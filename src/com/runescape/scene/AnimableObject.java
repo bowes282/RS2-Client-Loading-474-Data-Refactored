@@ -32,7 +32,7 @@ public final class AnimableObject extends Renderable {
 		if(model == null) {
 			return null;
 		}
-		int j = aSpotAnim_1568.animationSequence.anIntArray353[anInt1569];
+		int j = aSpotAnim_1568.animationSequence.primaryFrames[anInt1569];
 		Model model_1 = new Model(true, Frame.method532(j), false, model);
 		if(!aBoolean1567) {
 			model_1.skin();

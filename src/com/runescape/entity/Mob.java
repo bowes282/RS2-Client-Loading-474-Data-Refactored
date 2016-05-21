@@ -93,7 +93,7 @@ public class Mob extends Renderable {
 	}
 
 	public final void setPos(int x, int y, boolean flag) {
-		if (emoteAnimation != -1 && Animation.animations[emoteAnimation].anInt364 == 1)
+		if (emoteAnimation != -1 && Animation.animations[emoteAnimation].walkingPrecedence == 1)
 			emoteAnimation = -1;
 		if (!flag) {
 			int dx = x - pathX[0];
@@ -209,11 +209,11 @@ public class Mob extends Renderable {
         
         if (emoteAnimation != -1 && animationDelay == 0) {
               Animation animation = Animation.animations[emoteAnimation];
-              if (anInt1542 > 0 && animation.anInt363 == 0) {
+              if (anInt1542 > 0 && animation.animatingPrecedence == 0) {
                     anInt1503++;
                     return;
               }
-              if (anInt1542 <= 0 && animation.anInt364 == 0) {
+              if (anInt1542 <= 0 && animation.walkingPrecedence == 0) {
                     anInt1503++;
                     return;
               }
@@ -359,7 +359,7 @@ public class Mob extends Renderable {
 			x++;
 			y--;
 		}
-		if (emoteAnimation != -1 && Animation.animations[emoteAnimation].anInt364 == 1)
+		if (emoteAnimation != -1 && Animation.animations[emoteAnimation].walkingPrecedence == 1)
 			emoteAnimation = -1;
 		if (remainingPath < 9)
 			remainingPath++;
@@ -432,7 +432,7 @@ public class Mob extends Renderable {
                     emoteAnimation = -1;
               }
               Animation animation_2 = Animation.animations[emoteAnimation];
-              if (animation_2.anInt363 == 1 && anInt1542 > 0
+              if (animation_2.animatingPrecedence == 1 && anInt1542 > 0
                           && startForceMovement <= Client.tick
                           && endForceMovement < Client.tick) {
                     animationDelay = 1;
@@ -451,7 +451,7 @@ public class Mob extends Renderable {
                     displayedEmoteFrames -= animation_3.loopOffset;
                     currentAnimationLoops++;
                     
-                    if (currentAnimationLoops >= animation_3.anInt362) {
+                    if (currentAnimationLoops >= animation_3.maximumLoops) {
                           emoteAnimation = -1;
                     }
                     
@@ -464,7 +464,7 @@ public class Mob extends Renderable {
               
               if (nextAnimationFrame >= animation_3.frameCount) {
                     
-                    if (currentAnimationLoops >= animation_3.anInt362) {
+                    if (currentAnimationLoops >= animation_3.maximumLoops) {
                           nextAnimationFrame = displayedEmoteFrames + 1;
                     }
                     

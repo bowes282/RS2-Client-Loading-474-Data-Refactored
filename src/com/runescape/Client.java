@@ -3091,8 +3091,8 @@ public class Client extends GameApplet {
                   int k1 = contentType & 1;
                   int j2 = characterDesignColours[l];
                   if (k1 == 0 && --j2 < 0)
-                        j2 = anIntArrayArray1003[l].length - 1;
-                  if (k1 == 1 && ++j2 >= anIntArrayArray1003[l].length)
+                        j2 = PLAYER_BODY_RECOLOURS[l].length - 1;
+                  if (k1 == 1 && ++j2 >= PLAYER_BODY_RECOLOURS[l].length)
                         j2 = 0;
                   characterDesignColours[l] = j2;
                   aBoolean1031 = true;
@@ -6457,15 +6457,15 @@ public class Client extends GameApplet {
                         Model model = new Model(i2, aclass30_sub2_sub4_sub6s);
                         for (int l2 = 0; l2 < 5; l2++)
                               if (characterDesignColours[l2] != 0) {
-                                    model.recolor(anIntArrayArray1003[l2][0],
-                                                anIntArrayArray1003[l2][characterDesignColours[l2]]);
+                                    model.recolor(PLAYER_BODY_RECOLOURS[l2][0],
+                                                PLAYER_BODY_RECOLOURS[l2][characterDesignColours[l2]]);
                                     if (l2 == 1)
                                           model.recolor(anIntArray1204[0],
                                                       anIntArray1204[characterDesignColours[l2]]);
                               }
 
                         model.skin();
-                        model.apply(Animation.animations[localPlayer.idleAnimation].anIntArray353[0]);
+                        model.apply(Animation.animations[localPlayer.idleAnimation].primaryFrames[0]);
                         model.light(64, 850, -30, -50, -30, true);
                         widget.defaultMediaType = 5;
                         widget.defaultMedia = 0;
@@ -6483,15 +6483,15 @@ public class Client extends GameApplet {
                         Model characterDisplay = localPlayer.method452();
                         for (int l2 = 0; l2 < 5; l2++)
                               if (characterDesignColours[l2] != 0) {
-                                    characterDisplay.recolor(anIntArrayArray1003[l2][0],
-                                                anIntArrayArray1003[l2][characterDesignColours[l2]]);
+                                    characterDisplay.recolor(PLAYER_BODY_RECOLOURS[l2][0],
+                                                PLAYER_BODY_RECOLOURS[l2][characterDesignColours[l2]]);
                                     if (l2 == 1)
                                           characterDisplay.recolor(anIntArray1204[0],
                                                       anIntArray1204[characterDesignColours[l2]]);
                               }
                         int staticFrame = localPlayer.idleAnimation;
                         characterDisplay.skin();
-                        characterDisplay.apply(Animation.animations[staticFrame].anIntArray353[0]);
+                        characterDisplay.apply(Animation.animations[staticFrame].primaryFrames[0]);
                         // characterDisplay.light(64, 850, -30, -50, -30, true);
                         rsInterface.defaultMediaType = 5;
                         rsInterface.defaultMedia = 0;
@@ -7914,7 +7914,7 @@ public class Client extends GameApplet {
                               i1 = -1;
                         int i2 = stream.readUnsignedByte();
                         if (i1 == npc.emoteAnimation && i1 != -1) {
-                              int l2 = Animation.animations[i1].anInt365;
+                              int l2 = Animation.animations[i1].replayMode;
                               if (l2 == 1) {
                                     npc.displayedEmoteFrames = 0;
                                     npc.emoteTimeRemaining = 0;
@@ -7924,7 +7924,7 @@ public class Client extends GameApplet {
                               if (l2 == 2)
                                     npc.currentAnimationLoops = 0;
                         } else if (i1 == -1 || npc.emoteAnimation == -1
-                                    || Animation.animations[i1].anInt359 >= Animation.animations[npc.emoteAnimation].anInt359) {
+                                    || Animation.animations[i1].priority >= Animation.animations[npc.emoteAnimation].priority) {
                               npc.emoteAnimation = i1;
                               npc.displayedEmoteFrames = 0;
                               npc.emoteTimeRemaining = 0;
@@ -9340,8 +9340,8 @@ public class Client extends GameApplet {
                               } else {
                                     Animation animation = Animation.animations[emoteAnimation];
                                     model = childInterface.method209(
-                                                animation.anIntArray354[childInterface.currentFrame],
-                                                animation.anIntArray353[childInterface.currentFrame],
+                                                animation.secondaryFrames[childInterface.currentFrame],
+                                                animation.primaryFrames[childInterface.currentFrame],
                                                 selected);
                               }
                               if (model != null)
@@ -9618,7 +9618,7 @@ public class Client extends GameApplet {
                         animation = -1;
                   int delay = buffer.readNegUByte();
                   if (animation == player.emoteAnimation && animation != -1) {
-                        int replayMode = Animation.animations[animation].anInt365;
+                        int replayMode = Animation.animations[animation].replayMode;
                         if (replayMode == 1) {
                               player.displayedEmoteFrames = 0;
                               player.emoteTimeRemaining = 0;
@@ -9628,7 +9628,7 @@ public class Client extends GameApplet {
                         if (replayMode == 2)
                               player.currentAnimationLoops = 0;
                   } else if (animation == -1 || player.emoteAnimation == -1
-                              || Animation.animations[animation].anInt359 >= Animation.animations[player.emoteAnimation].anInt359) {
+                              || Animation.animations[animation].priority >= Animation.animations[player.emoteAnimation].priority) {
                         player.emoteAnimation = animation;
                         player.displayedEmoteFrames = 0;
                         player.emoteTimeRemaining = 0;
@@ -12204,8 +12204,8 @@ public class Client extends GameApplet {
                         Widget.interfaceCache[playerHeadModelId].defaultMediaType = 3;
                         if (localPlayer.desc == null)
                               Widget.interfaceCache[playerHeadModelId].defaultMedia =
-                                          (localPlayer.anIntArray1700[0] << 25)
-                                                      + (localPlayer.anIntArray1700[4] << 20)
+                                          (localPlayer.appearanceColors[0] << 25)
+                                                      + (localPlayer.appearanceColors[4] << 20)
                                                       + (localPlayer.equipment[0] << 15)
                                                       + (localPlayer.equipment[8] << 10)
                                                       + (localPlayer.equipment[11] << 5)
@@ -13909,7 +13909,7 @@ public class Client extends GameApplet {
       private int anInt999;
       private IsaacCipher encryption;
       private Sprite multiOverlay;
-      public static final int[][] anIntArrayArray1003 = {
+      public static final int[][] PLAYER_BODY_RECOLOURS = {                  
                   {6798, 107, 10283, 16, 4797, 7744, 5799, 4634, 33697, 22433, 2983, 54193},
                   {8741, 12, 64030, 43162, 7735, 8404, 1701, 38430, 24094, 10153, 56621, 4783, 1341,
                               16578, 35003, 25239},

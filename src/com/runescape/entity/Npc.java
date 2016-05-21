@@ -12,16 +12,16 @@ public final class Npc extends Mob {
 
 	private Model getAnimatedModel() {
 		if (super.emoteAnimation >= 0 && super.animationDelay == 0) {
-			int emote = Animation.animations[super.emoteAnimation].anIntArray353[super.displayedEmoteFrames];
+			int emote = Animation.animations[super.emoteAnimation].primaryFrames[super.displayedEmoteFrames];
 			int movement = -1;
 			if (super.movementAnimation >= 0 && super.movementAnimation != super.idleAnimation)
-				movement = Animation.animations[super.movementAnimation].anIntArray353[super.displayedMovementFrames];
+				movement = Animation.animations[super.movementAnimation].primaryFrames[super.displayedMovementFrames];
 			return desc.getAnimatedModel(movement, emote,
-					Animation.animations[super.emoteAnimation].anIntArray357);
+					Animation.animations[super.emoteAnimation].interleaveOrder);
 		}
 		int movement = -1;
 		if (super.movementAnimation >= 0)
-			movement = Animation.animations[super.movementAnimation].anIntArray353[super.displayedMovementFrames];
+			movement = Animation.animations[super.movementAnimation].primaryFrames[super.displayedMovementFrames];
 		return desc.getAnimatedModel(-1, movement, null);
 	}
 
@@ -36,7 +36,7 @@ public final class Npc extends Mob {
 			Graphic spotAnim = Graphic.cache[super.graphic];
 			Model graphicModel = spotAnim.getModel();
 			if (graphicModel != null) {
-				int frame = spotAnim.animationSequence.anIntArray353[super.currentAnimation];
+				int frame = spotAnim.animationSequence.primaryFrames[super.currentAnimation];
 				Model model = new Model(true, Frame.method532(frame),
 						false, graphicModel);
 				model.translate(0, -super.graphicHeight, 0);
