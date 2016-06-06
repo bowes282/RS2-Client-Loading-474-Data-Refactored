@@ -1,11 +1,11 @@
 package custom.seven.cache.graphics;
 import java.awt.Color;
 
+import com.runescape.cache.Archive;
 import com.runescape.cache.graphics.Sprite;
 import com.runescape.cache.graphics.rsDrawingArea;
 import com.runescape.draw.Raster;
 import com.runescape.io.Buffer;
-import com.runescape.net.CacheArchive;
 
 public class RSFont extends Raster {
 
@@ -59,7 +59,7 @@ public class RSFont extends Raster {
     public static int transparency;
     public static int textColor;
 
-    public RSFont(boolean TypeFont, String s, CacheArchive archive) {
+    public RSFont(boolean TypeFont, String s, Archive archive) {
         fontPixels = new byte[256][];
         characterWidths = new int[256];
         characterHeights = new int[256];

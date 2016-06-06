@@ -2,12 +2,12 @@ package com.runescape.cache.def;
 
 import java.io.IOException;
 import com.runescape.Client;
+import com.runescape.cache.Archive;
 import com.runescape.cache.anim.Frame;
 import com.runescape.cache.config.VariableBits;
 import com.runescape.collection.ReferenceCache;
 import com.runescape.entity.model.Model;
 import com.runescape.io.Buffer;
-import com.runescape.net.CacheArchive;
 import com.runescape.net.requester.ResourceProvider;
 
 public final class ObjectDefinition {
@@ -191,7 +191,7 @@ public final class ObjectDefinition {
 		stream = null;
 	}
 
-	public static void unpackConfig(CacheArchive streamLoader) throws IOException {
+	public static void unpackConfig(Archive streamLoader) throws IOException {
 		stream = new Buffer(streamLoader.getEntry("loc.dat"));
 		Buffer stream = new Buffer(streamLoader.getEntry("loc.idx"));
 		int totalObjects = stream.readUShort();

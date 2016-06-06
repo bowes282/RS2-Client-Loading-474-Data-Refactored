@@ -1,12 +1,12 @@
 package com.runescape.cache.def;
 
+import com.runescape.cache.Archive;
 import com.runescape.cache.graphics.Sprite;
 import com.runescape.collection.ReferenceCache;
 import com.runescape.draw.Raster;
 import com.runescape.draw.Rasterizer;
 import com.runescape.entity.model.Model;
 import com.runescape.io.Buffer;
-import com.runescape.net.CacheArchive;
 
 public final class ItemDefinition {
 
@@ -35,7 +35,7 @@ public final class ItemDefinition {
 		return cached;
 	}
 
-	public static void unpackConfig(CacheArchive archive) {
+	public static void unpackConfig(Archive archive) {
 		item_data = new Buffer(archive.getEntry("obj.dat"));
 		Buffer stream = new Buffer(archive.getEntry("obj.idx"));
 		item_count = stream.readUShort() + 21;

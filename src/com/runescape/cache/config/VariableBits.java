@@ -1,10 +1,10 @@
 package com.runescape.cache.config;
+import com.runescape.cache.Archive;
 import com.runescape.io.Buffer;
-import com.runescape.net.CacheArchive;
 
 public final class VariableBits {
 
-	public static void unpackConfig(CacheArchive streamLoader)
+	public static void unpackConfig(Archive streamLoader)
 	{
 		Buffer stream = new Buffer(streamLoader.getEntry("varbit.dat"));
 		int size = stream.readUShort();

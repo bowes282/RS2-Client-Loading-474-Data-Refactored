@@ -1,10 +1,10 @@
 package com.runescape.scene.object.tile;
+import com.runescape.cache.Archive;
 import com.runescape.io.Buffer;
-import com.runescape.net.CacheArchive;
 
 public final class Floor {
 
-	public static void unpackConfig(CacheArchive streamLoader)
+	public static void unpackConfig(Archive streamLoader)
 	{
 		Buffer stream = new Buffer(streamLoader.getEntry("flo.dat"));
 		int cacheSize = stream.readUShort();

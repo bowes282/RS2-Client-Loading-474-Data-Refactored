@@ -1,6 +1,6 @@
 package com.runescape.draw;
-import com.runescape.cache.graphics.Background;
-import com.runescape.net.CacheArchive;
+import com.runescape.cache.Archive;
+import com.runescape.cache.graphics.IndexedImage;
 import com.runescape.scene.SceneGraph;
 
 public final class Rasterizer extends Raster {
@@ -66,17 +66,17 @@ public final class Rasterizer extends Raster {
 		}
 	}
 
-	public static void method368(CacheArchive streamLoader)
+	public static void method368(Archive streamLoader)
 	{
 		anInt1473 = 0;
 		for(int j = 0; j < 51; j++)
 			try
 			{
-				aBackgroundArray1474s[j] = new Background(streamLoader, String.valueOf(j), 0);
-				if(lowMem && aBackgroundArray1474s[j].anInt1456 == 128)
-					aBackgroundArray1474s[j].method356();
+				aBackgroundArray1474s[j] = new IndexedImage(streamLoader, String.valueOf(j), 0);
+				if(lowMem && aBackgroundArray1474s[j].resizeWidth == 128)
+					aBackgroundArray1474s[j].downscale();
 				else
-					aBackgroundArray1474s[j].method357();
+					aBackgroundArray1474s[j].resize();
 				anInt1473++;
 			}
 			catch(Exception _ex) { }
@@ -143,14 +143,14 @@ public final class Rasterizer extends Raster {
 			anIntArrayArray1479[target] = null;
 		}
 		anIntArrayArray1479[textureId] = texels;
-		Background background = aBackgroundArray1474s[textureId];
+		IndexedImage background = aBackgroundArray1474s[textureId];
 		int texturePalette[] = anIntArrayArray1483[textureId];
 		if(lowMem)
 		{
 			aBooleanArray1475[textureId] = false;
 			for(int i1 = 0; i1 < 4096; i1++)
 			{
-				int i2 = texels[i1] = texturePalette[background.aByteArray1450[i1]] & 0xf8f8ff;
+				int i2 = texels[i1] = texturePalette[background.raster[i1]] & 0xf8f8ff;
 				if(i2 == 0)
 					aBooleanArray1475[textureId] = true;
 				texels[4096 + i1] = i2 - (i2 >>> 3) & 0xf8f8ff;
@@ -160,19 +160,19 @@ public final class Rasterizer extends Raster {
 
 		} else
 		{
-			if(background.anInt1452 == 64)
+			if(background.width == 64)
 			{
 				for(int j1 = 0; j1 < 128; j1++)
 				{
 					for(int j2 = 0; j2 < 128; j2++)
-						texels[j2 + (j1 << 7)] = texturePalette[background.aByteArray1450[(j2 >> 1) + ((j1 >> 1) << 6)]];
+						texels[j2 + (j1 << 7)] = texturePalette[background.raster[(j2 >> 1) + ((j1 >> 1) << 6)]];
 
 				}
 
 			} else
 			{
 				for(int k1 = 0; k1 < 16384; k1++)
-					texels[k1] = texturePalette[background.aByteArray1450[k1]];
+					texels[k1] = texturePalette[background.raster[k1]];
 
 			}
 			aBooleanArray1475[textureId] = false;
@@ -265,7 +265,7 @@ public final class Rasterizer extends Raster {
 		for(int textureId = 0; textureId < 51; textureId++)
 			if(aBackgroundArray1474s[textureId] != null)
 			{
-				int palette[] = aBackgroundArray1474s[textureId].anIntArray1451;
+				int palette[] = aBackgroundArray1474s[textureId].palette;
 				anIntArrayArray1483[textureId] = new int[palette.length];
 				for(int colourId = 0; colourId < palette.length; colourId++)
 				{
@@ -2745,7 +2745,7 @@ public final class Rasterizer extends Raster {
 	public static int COSINE[];
 	public static int anIntArray1472[];
 	private static int anInt1473;
-	public static Background aBackgroundArray1474s[] = new Background[51];
+	public static IndexedImage aBackgroundArray1474s[] = new IndexedImage[51];
 	private static boolean[] aBooleanArray1475 = new boolean[51];
 	private static int[] anIntArray1476 = new int[51];
 	private static int anInt1477;

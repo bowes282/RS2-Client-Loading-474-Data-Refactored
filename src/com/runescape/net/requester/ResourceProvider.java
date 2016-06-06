@@ -4,10 +4,10 @@ import java.net.Socket;
 import java.util.zip.GZIPInputStream;
 
 import com.runescape.Client;
+import com.runescape.cache.Archive;
 import com.runescape.collection.Deque;
 import com.runescape.collection.Queue;
 import com.runescape.io.Buffer;
-import com.runescape.net.CacheArchive;
 import com.runescape.sign.SignLink;
 
 public final class ResourceProvider extends Provider implements Runnable {
@@ -149,7 +149,7 @@ public final class ResourceProvider extends Provider implements Runnable {
 
 	public int mapAmount = 0;
 
-	public void initialize(CacheArchive archive, Client client) {
+	public void initialize(Archive archive, Client client) {
 		byte[] mapData = archive.getEntry("map_index");
 		Buffer stream2 = new Buffer(mapData);
 		int j1 = mapData.length / 6;

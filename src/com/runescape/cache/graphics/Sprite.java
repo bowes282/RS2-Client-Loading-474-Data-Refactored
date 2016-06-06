@@ -5,9 +5,9 @@ import java.awt.image.PixelGrabber;
 import javax.swing.ImageIcon;
 
 import com.runescape.Client;
+import com.runescape.cache.Archive;
 import com.runescape.draw.Raster;
 import com.runescape.io.Buffer;
-import com.runescape.net.CacheArchive;
 import com.runescape.sign.SignLink;
 import com.runescape.util.FileUtils;
 
@@ -193,7 +193,8 @@ public final class Sprite extends Raster {
 				myPixels[index] = 0;
 	}
 
-	public Sprite(CacheArchive streamLoader, String s, int i) {
+	public Sprite(Archive streamLoader, String s, int i) {
+		System.out.println("index: " + i + " " + s + ".dat");
 		Buffer stream = new Buffer(streamLoader.getEntry(s + ".dat"));
 		Buffer stream_1 = new Buffer(streamLoader.getEntry("index.dat"));
 		stream_1.currentPosition = stream.readUShort();
@@ -706,7 +707,7 @@ public final class Sprite extends Raster {
 		}
 	}
 
-	public void method354(Background background, int i, int j) {
+	public void method354(IndexedImage background, int i, int j) {
 		j += drawOffsetX;
 		i += drawOffsetY;
 		int k = j + i * Raster.width;
@@ -740,7 +741,7 @@ public final class Sprite extends Raster {
 			k1 += k2;
 		}
 		if (!(j1 <= 0 || i1 <= 0)) {
-			method355(myPixels, j1, background.aByteArray1450, i1, Raster.pixels, 0, k1, k, l1, l);
+			method355(myPixels, j1, background.raster, i1, Raster.pixels, 0, k1, k, l1, l);
 		}
 	}
 	

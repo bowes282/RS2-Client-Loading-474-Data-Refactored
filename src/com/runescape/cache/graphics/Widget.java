@@ -1,12 +1,12 @@
 package com.runescape.cache.graphics;
 import com.runescape.Client;
+import com.runescape.cache.Archive;
 import com.runescape.cache.anim.Frame;
 import com.runescape.cache.def.ItemDefinition;
 import com.runescape.cache.def.NpcDefinition;
 import com.runescape.collection.ReferenceCache;
 import com.runescape.entity.model.Model;
 import com.runescape.io.Buffer;
-import com.runescape.net.CacheArchive;
 import com.runescape.util.StringUtils;
 
 /**
@@ -40,7 +40,7 @@ public final class Widget {
 		inventoryAmounts[j] = id;
 	}
 
-	public static void load(CacheArchive interfaces, GameFont textDrawingAreas[], CacheArchive graphics) {
+	public static void load(Archive interfaces, GameFont textDrawingAreas[], Archive graphics) {
 		spriteCache = new ReferenceCache(50000);
 		Buffer buffer = new Buffer(interfaces.getEntry("data"));
 		int defaultParentId = -1;
@@ -2002,7 +2002,7 @@ public final class Widget {
 		return model;
 	}
 
-	private static Sprite method207(int i, CacheArchive streamLoader, String s) {
+	private static Sprite method207(int i, Archive streamLoader, String s) {
 		long l = (StringUtils.hashSpriteName(s) << 8) + (long) i;
 		Sprite sprite = (Sprite) spriteCache.get(l);
 		if (sprite != null)
@@ -2050,7 +2050,7 @@ public final class Widget {
 	public Widget() {
 	}
 
-	public static CacheArchive interfaceLoader;
+	public static Archive interfaceLoader;
 	public boolean drawsTransparent;
 	public Sprite disabledSprite;
 	public int lastFrameTime;

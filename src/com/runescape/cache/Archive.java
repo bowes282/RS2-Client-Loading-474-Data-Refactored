@@ -1,4 +1,4 @@
-package com.runescape.net;
+package com.runescape.cache;
 
 import java.io.InputStream;
 
@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.File;
 
-public final class CacheArchive {
+public final class Archive {
 	
 	/**
 	 * The buffer containing the decompressed data in this Archive.
@@ -38,7 +38,7 @@ public final class CacheArchive {
 	 */
 	private final boolean extracted;
 
-	public CacheArchive(byte data[]) {
+	public Archive(byte data[]) {
 		Buffer buffer = new Buffer(data);
 		int length = buffer.readTriByte();
 		int decompressedLength = buffer.readTriByte();

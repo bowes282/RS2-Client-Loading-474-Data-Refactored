@@ -56,6 +56,15 @@ public class PacketConstants {
 	
 	public static final int PLAY_SOUND_EFFECT = 174;
 	
+	/**
+	 * This array is interesting, it's never used and it has interesting properites.
+	 * 
+	 *  It's never used and has a lenght of 257.
+	 *  
+	 *  This is was used to map obfusticated packet opcodes with their actual opcodes.
+	 *  
+	 *  In 400+ they switched to using constants instead to make it more difficult.
+	 */
 	public static final int[] anIntArray552 = {
 			6, 21, 25, 33, 254, 127, 183, 87, 216, 215, 
 			211, 48, 15, 195, 149, 233, 162, 102, 104, 179, 

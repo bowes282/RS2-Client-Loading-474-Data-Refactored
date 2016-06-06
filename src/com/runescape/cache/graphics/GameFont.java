@@ -2,13 +2,13 @@ package com.runescape.cache.graphics;
 
 import java.util.Random;
 
+import com.runescape.cache.Archive;
 import com.runescape.draw.Raster;
 import com.runescape.io.Buffer;
-import com.runescape.net.CacheArchive;
 
 public final class GameFont extends Raster {
 
-	public GameFont(boolean flag, String s, CacheArchive streamLoader) {
+	public GameFont(boolean flag, String s, Archive streamLoader) {
 	aByteArrayArray1491 = new byte[256][];
 	anIntArray1492 = new int[256];
 	anIntArray1493 = new int[256];
@@ -41,8 +41,8 @@ public final class GameFont extends Raster {
 					aByteArrayArray1491[l][j2 + l2 * i1] = stream.readSignedByte();
 				}
 			}
-			if(j1 > anInt1497 && l < 128)
-				anInt1497 = j1;
+			if(j1 > verticalSpace && l < 128)
+				verticalSpace = j1;
 			anIntArray1494[l] = 1;
 			anIntArray1496[l] = i1 + 2;
 			int k2 = 0;
@@ -105,7 +105,7 @@ public final class GameFont extends Raster {
 	public void render(int i, String s, int j, int l) {
 		if(s == null)
 			return;
-		j -= anInt1497;
+		j -= verticalSpace;
 		for(int i1 = 0; i1 < s.length(); i1++) {
 			char c = s.charAt(i1);
 			if(c != ' ')
@@ -118,7 +118,7 @@ public final class GameFont extends Raster {
 		if(s == null)
 			return;
 		j -= method384(s) / 2;
-		l -= anInt1497;
+		l -= verticalSpace;
 		for(int i1 = 0; i1 < s.length(); i1++) {
 			char c = s.charAt(i1);
 			if(c != ' ')
@@ -131,7 +131,7 @@ public final class GameFont extends Raster {
 		if(s == null)
 			return;
 		i -= method384(s) / 2;
-		k -= anInt1497;
+		k -= verticalSpace;
 		for(int i1 = 0; i1 < s.length(); i1++) {
 			char c = s.charAt(i1);
 			if(c != ' ')
@@ -147,7 +147,7 @@ public final class GameFont extends Raster {
 		if(d < 0.0D)
 			d = 0.0D;
 		l -= method384(s) / 2;
-		k -= anInt1497;
+		k -= verticalSpace;
 		for(int k1 = 0; k1 < s.length(); k1++) {
 			char c = s.charAt(k1);
 			if(c != ' ')
@@ -161,7 +161,7 @@ public final class GameFont extends Raster {
 		int l = i;
 		if(s == null)
 			return;
-		k -= anInt1497;
+		k -= verticalSpace;
 		for(int i1 = 0; i1 < s.length(); i1++)
 			if(s.charAt(i1) == '@' && i1 + 4 < s.length() && s.charAt(i1 + 4) == '@') {
 				int j1 = getColorByName(s.substring(i1 + 1, i1 + 4));
@@ -178,7 +178,7 @@ public final class GameFont extends Raster {
 				i += anIntArray1496[c];
 			}
 		if(aBoolean1499)
-			Raster.method339(k + (int)((double)anInt1497 * 0.69999999999999996D), 0x800000, i - l, l);
+			Raster.method339(k + (int)((double)verticalSpace * 0.69999999999999996D), 0x800000, i - l, l);
 	}
 
 	public void method390(int i, int j, String s, int k, int i1) {
@@ -186,7 +186,7 @@ public final class GameFont extends Raster {
 			return;
 		aRandom1498.setSeed(k);
 		int j1 = 192 + (aRandom1498.nextInt() & 0x1f);
-		i1 -= anInt1497;
+		i1 -= verticalSpace;
 		for(int k1 = 0; k1 < s.length(); k1++)
 			if(s.charAt(k1) == '@' && k1 + 4 < s.length() && s.charAt(k1 + 4) == '@') {
 				int l1 = getColorByName(s.substring(k1 + 1, k1 + 4));
@@ -375,7 +375,7 @@ public final class GameFont extends Raster {
 	public int[] anIntArray1494;
 	public int[] anIntArray1495;
 	public int[] anIntArray1496;
-	public int anInt1497;
+	public int verticalSpace;	
 	public Random aRandom1498;
 	public boolean aBoolean1499;
 }

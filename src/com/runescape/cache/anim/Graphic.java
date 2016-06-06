@@ -1,12 +1,12 @@
 package com.runescape.cache.anim;
+import com.runescape.cache.Archive;
 import com.runescape.collection.ReferenceCache;
 import com.runescape.entity.model.Model;
 import com.runescape.io.Buffer;
-import com.runescape.net.CacheArchive;
 
 public final class Graphic {
 
-	public static void unpackConfig(CacheArchive streamLoader) {
+	public static void unpackConfig(Archive streamLoader) {
 		Buffer stream = new Buffer(streamLoader.getEntry("spotanim.dat"));
 		int length = stream.readUShort();
 		if (cache == null)
@@ -21,26 +21,26 @@ public final class Graphic {
 
 	public void readValues(Buffer stream) {
 		do {
-			int opCode = stream.readUnsignedByte();
-			if (opCode == 0)
+			int opcode = stream.readUnsignedByte();			
+			if (opcode == 0)
 				return;
-			if (opCode == 1)
+			if (opcode == 1)
 				modelId = stream.readUShort();
-			else if (opCode == 2) {
+			else if (opcode == 2) {
 				animationId = stream.readUShort();
 				if (Animation.animations != null)
 					animationSequence = Animation.animations[animationId];
-			} else if (opCode == 4)
+			} else if (opcode == 4)
 				resizeXY = stream.readUShort();
-			else if (opCode == 5)
+			else if (opcode == 5)
 				resizeZ = stream.readUShort();
-			else if (opCode == 6)
+			else if (opcode == 6)
 				rotation = stream.readUShort();
-			else if (opCode == 7)
+			else if (opcode == 7)
 				modelBrightness = stream.readUnsignedByte();
-			else if (opCode == 8)
+			else if (opcode == 8)
 				modelShadow = stream.readUnsignedByte();
-			else if (opCode == 40) {
+			else if (opcode == 40) {
 				int j = stream.readUnsignedByte();
 				for (int k = 0; k < j; k++) {
 					originalModelColours[k] = stream.readUShort();
@@ -48,7 +48,7 @@ public final class Graphic {
 				}
 			} else
 				System.out.println("Error unrecognised spotanim config code: "
-						+ opCode);
+						+ opcode);
 		} while (true);
 	}
 

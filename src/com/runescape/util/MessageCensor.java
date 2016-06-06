@@ -1,7 +1,7 @@
 package com.runescape.util;
 
+import com.runescape.cache.Archive;
 import com.runescape.io.Buffer;
-import com.runescape.net.CacheArchive;
 
 public final class MessageCensor {
 
@@ -14,24 +14,24 @@ public final class MessageCensor {
 	private static final String[] exceptions = { "cook", "cook's", "cooks",
 			"seeks", "sheet", "woop", "woops", "faq", "noob", "noobs" };
 
-	public static void load(CacheArchive archive) {
+	public static void load(Archive archive) {
 		Buffer fragments = new Buffer(
 				archive.getEntry("fragmentsenc.txt"));
 		Buffer bad = new Buffer(archive.getEntry("badenc.txt"));
 		Buffer domain = new Buffer(archive.getEntry("domainenc.txt"));
 		Buffer tldlist = new Buffer(archive.getEntry("tldlist.txt"));
-		readValues(fragments, bad, domain, tldlist);
+		decode(fragments, bad, domain, tldlist);		
 	}
 
-	private static void readValues(Buffer fragments, Buffer badenc,
+	private static void decode(Buffer fragments, Buffer badenc,
 			Buffer domainenc, Buffer tldlist) {
-		readBadEnc(badenc);
-		readDomainEnc(domainenc);
-		readFragmentsEnc(fragments);
-		readTldList(tldlist);
+		decodeBadEnc(badenc);		
+		decodeDomainEnc(domainenc);
+		decodeFragmentsEnc(fragments);		
+		decodeTldList(tldlist);		
 	}
 
-	private static void readTldList(Buffer stream) {
+	private static void decodeTldList(Buffer stream) {
 		int i = stream.readInt();
 		tldList = new char[i][];
 		tlds = new int[i];
@@ -46,20 +46,20 @@ public final class MessageCensor {
 
 	}
 
-	private static void readBadEnc(Buffer stream) {
+	private static void decodeBadEnc(Buffer stream) {
 		int j = stream.readInt();
 		badWords = new char[j][];
 		badEncoding = new byte[j][][];
 		initBad(stream, badWords, badEncoding);
 	}
 
-	private static void readDomainEnc(Buffer stream) {
+	private static void decodeDomainEnc(Buffer stream) {		
 		int i = stream.readInt();
 		domains = new char[i][];
 		initDomains(domains, stream);
 	}
 
-	private static void readFragmentsEnc(Buffer stream) {
+	private static void decodeFragmentsEnc(Buffer stream) {
 		fragments = new int[stream.readInt()];
 		for (int i = 0; i < fragments.length; i++)
 			fragments[i] = stream.readUShort();

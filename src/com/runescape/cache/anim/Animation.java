@@ -1,6 +1,6 @@
 package com.runescape.cache.anim;
+import com.runescape.cache.Archive;
 import com.runescape.io.Buffer;
-import com.runescape.net.CacheArchive;
 
 public final class Animation {
 	
@@ -68,7 +68,7 @@ public final class Animation {
         replayMode = 1; 
     }
 
-    public static void unpackConfig(CacheArchive streamLoader)  {
+    public static void unpackConfig(Archive streamLoader)  {
 		Buffer stream = new Buffer(streamLoader.getEntry("seq.dat"));
         int length = stream.readUShort();
         if(animations == null) {
