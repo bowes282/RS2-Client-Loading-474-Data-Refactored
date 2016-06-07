@@ -260,9 +260,9 @@ public final class ItemDefinition {
 				return null;
 		}
 		Sprite enabledSprite = new Sprite(32, 32);
-		int centerX = Rasterizer.textureInt1;
-		int centerY = Rasterizer.textureInt2;
-		int lineOffsets[] = Rasterizer.anIntArray1472;
+		int centerX = Rasterizer.originViewX;
+		int centerY = Rasterizer.originViewY;
+		int lineOffsets[] = Rasterizer.scanOffsets;
 		int pixels[] = Raster.pixels;
 		float depthBuffer[] = Raster.depthBuffer;
 		int width = Raster.width;
@@ -275,7 +275,7 @@ public final class ItemDefinition {
 		Raster.initDrawingArea(32, 32, enabledSprite.myPixels,
 				new float[32 * 32]);
 		Raster.method336(32, 0, 0, 0, 32);
-		Rasterizer.method364();
+		Rasterizer.useViewport();
 		int k3 = itemDef.model_zoom;
 		if (outlineColor == -1)
 			k3 = (int) ((double) k3 * 1.5D);
@@ -348,9 +348,9 @@ public final class ItemDefinition {
 			sprites.put(enabledSprite, itemId);
 		Raster.initDrawingArea(height, width, pixels, depthBuffer);
 		Raster.setDrawingArea(vp_bottom, vp_left, vp_right, vp_top);
-		Rasterizer.textureInt1 = centerX;
-		Rasterizer.textureInt2 = centerY;
-		Rasterizer.anIntArray1472 = lineOffsets;
+		Rasterizer.originViewX = centerX;
+		Rasterizer.originViewY = centerY;
+		Rasterizer.scanOffsets = lineOffsets;
 		Rasterizer.aBoolean1464 = true;
 		if (itemDef.stackable)
 			enabledSprite.maxWidth = 33;

@@ -194,7 +194,6 @@ public final class Sprite extends Raster {
 	}
 
 	public Sprite(Archive streamLoader, String s, int i) {
-		System.out.println("index: " + i + " " + s + ".dat");
 		Buffer stream = new Buffer(streamLoader.getEntry(s + ".dat"));
 		Buffer stream_1 = new Buffer(streamLoader.getEntry("index.dat"));
 		stream_1.currentPosition = stream.readUShort();

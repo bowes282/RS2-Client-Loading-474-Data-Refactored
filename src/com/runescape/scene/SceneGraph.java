@@ -1479,14 +1479,14 @@ public final class SceneGraph {
 		k4 = l4;
 		if (j3 < 50)
 			return;
-		int i5 = Rasterizer.textureInt1 + (i2 << viewDistance) / k2;
-		int j5 = Rasterizer.textureInt2 + (l3 << viewDistance) / k2;
-		int k5 = Rasterizer.textureInt1 + (i3 << viewDistance) / j2;
-		int l5 = Rasterizer.textureInt2 + (i4 << viewDistance) / j2;
-		int i6 = Rasterizer.textureInt1 + (l2 << viewDistance) / k3;
-		int j6 = Rasterizer.textureInt2 + (j4 << viewDistance) / k3;
-		int k6 = Rasterizer.textureInt1 + (l1 << viewDistance) / j3;
-		int l6 = Rasterizer.textureInt2 + (k4 << viewDistance) / j3;
+		int i5 = Rasterizer.originViewX + (i2 << viewDistance) / k2;
+		int j5 = Rasterizer.originViewY + (l3 << viewDistance) / k2;
+		int k5 = Rasterizer.originViewX + (i3 << viewDistance) / j2;
+		int l5 = Rasterizer.originViewY + (i4 << viewDistance) / j2;
+		int i6 = Rasterizer.originViewX + (l2 << viewDistance) / k3;
+		int j6 = Rasterizer.originViewY + (j4 << viewDistance) / k3;
+		int k6 = Rasterizer.originViewX + (l1 << viewDistance) / j3;
+		int l6 = Rasterizer.originViewY + (k4 << viewDistance) / j3;
 		Rasterizer.anInt1465 = 0;
 		if ((i6 - k6) * (l5 - l6) - (j6 - l6) * (k5 - k6) > 0) {
 			Rasterizer.aBoolean1462 = i6 < 0 || k6 < 0 || k5 < 0 || i6 > Raster.centerX || k6 > Raster.centerX
@@ -1555,8 +1555,8 @@ public final class SceneGraph {
 				ShapedTile.anIntArray691[l1] = k2;
 				ShapedTile.anIntArray692[l1] = i3;
 			}
-			ShapedTile.anIntArray688[l1] = Rasterizer.textureInt1 + (i2 << viewDistance) / i3;
-			ShapedTile.anIntArray689[l1] = Rasterizer.textureInt2 + (k2 << viewDistance) / i3;
+			ShapedTile.anIntArray688[l1] = Rasterizer.originViewX + (i2 << viewDistance) / i3;
+			ShapedTile.anIntArray689[l1] = Rasterizer.originViewY + (k2 << viewDistance) / i3;
 			ShapedTile.depthPoint[l1] = i3;
 		}
 

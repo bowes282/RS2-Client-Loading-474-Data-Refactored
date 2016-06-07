@@ -2,11 +2,14 @@ package com.runescape;
 
 import java.applet.AppletContext;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.zip.CRC32;
+
+import javax.imageio.ImageIO;
 
 import com.runescape.cache.Archive;
 import com.runescape.cache.CacheIndex;
@@ -227,9 +230,9 @@ public class Client extends GameApplet {
       }
 
       private static void setBounds() {
-            Rasterizer.method365(frameWidth, frameHeight);
-            fullScreenTextureArray = Rasterizer.anIntArray1472;
-            Rasterizer.method365(
+            Rasterizer.reposition(frameWidth, frameHeight);
+            fullScreenTextureArray = Rasterizer.scanOffsets;
+            Rasterizer.reposition(
                         frameMode == ScreenMode.FIXED
                                     ? (chatboxImageProducer != null
                                                 ? chatboxImageProducer.canvasWidth : 519)
@@ -238,17 +241,17 @@ public class Client extends GameApplet {
                                     ? (chatboxImageProducer != null
                                                 ? chatboxImageProducer.canvasHeight : 165)
                                     : frameHeight);
-            anIntArray1180 = Rasterizer.anIntArray1472;
-            Rasterizer.method365(
+            anIntArray1180 = Rasterizer.scanOffsets;
+            Rasterizer.reposition(
                         frameMode == ScreenMode.FIXED
                                     ? (tabImageProducer != null ? tabImageProducer.canvasWidth
                                                 : 249)
                                     : frameWidth,
                         frameMode == ScreenMode.FIXED ? (tabImageProducer != null
                                     ? tabImageProducer.canvasHeight : 335) : frameHeight);
-            anIntArray1181 = Rasterizer.anIntArray1472;
-            Rasterizer.method365(screenAreaWidth, screenAreaHeight);
-            anIntArray1182 = Rasterizer.anIntArray1472;
+            anIntArray1181 = Rasterizer.scanOffsets;
+            Rasterizer.reposition(screenAreaWidth, screenAreaHeight);
+            anIntArray1182 = Rasterizer.scanOffsets;
             int ai[] = new int[9];
             for (int i8 = 0; i8 < 9; i8++) {
                   int k8 = 128 + i8 * 32 + 15;
@@ -495,7 +498,7 @@ public class Client extends GameApplet {
             if (frameMode == ScreenMode.FIXED) {
                   chatboxImageProducer.initDrawingArea();
             }
-            Rasterizer.anIntArray1472 = anIntArray1180;
+            Rasterizer.scanOffsets = anIntArray1180;
             if (chatStateCheck()) {
                   showChatComponents = true;
                   cacheSprite[20].drawSprite(0, yOffset);
@@ -765,7 +768,7 @@ public class Client extends GameApplet {
                   chatboxImageProducer.drawGraphics(338, super.graphics, 0);
             }
             gameScreenImageProducer.initDrawingArea();
-            Rasterizer.anIntArray1472 = anIntArray1182;
+            Rasterizer.scanOffsets = anIntArray1182;
       }
 
       public static String capitalize(String s) {
@@ -2552,7 +2555,7 @@ public class Client extends GameApplet {
             if (frameMode == ScreenMode.FIXED) {
                   tabImageProducer.initDrawingArea();
             }
-            Rasterizer.anIntArray1472 = anIntArray1181;
+            Rasterizer.scanOffsets = anIntArray1181;
             if (frameMode == ScreenMode.FIXED) {
                   cacheSprite[21].drawSprite(0, 0);
             } else if (frameMode != ScreenMode.FIXED && !changeTabArea) {
@@ -2615,22 +2618,22 @@ public class Client extends GameApplet {
                   tabImageProducer.drawGraphics(168, super.graphics, 516);
                   gameScreenImageProducer.initDrawingArea();
             }
-            Rasterizer.anIntArray1472 = anIntArray1182;
+            Rasterizer.scanOffsets = anIntArray1182;
       }
 
       private void writeBackgroundTexture(int j) {
             if (!lowMemory) {
                   if (Rasterizer.anIntArray1480[17] >= j) {
-                        IndexedImage background = Rasterizer.aBackgroundArray1474s[17];
+                        IndexedImage background = Rasterizer.textures[17];
                         int k = background.width * background.height - 1;
                         int j1 = background.width * tickDelta * 2;
-                        byte abyte0[] = background.raster;
+                        byte raster[] = background.raster;                        
                         byte abyte3[] = aByteArray912;
                         for (int i2 = 0; i2 <= k; i2++)
-                              abyte3[i2] = abyte0[i2 - j1 & k];
+                              abyte3[i2] = raster[i2 - j1 & k];
 
                         background.raster = abyte3;
-                        aByteArray912 = abyte0;
+                        aByteArray912 = raster;
                         Rasterizer.method370(17);
                         anInt854++;
                         if (anInt854 > 1235) {
@@ -2653,7 +2656,7 @@ public class Client extends GameApplet {
                         }
                   }
                   if (Rasterizer.anIntArray1480[24] >= j) {
-                        IndexedImage background_1 = Rasterizer.aBackgroundArray1474s[24];
+                        IndexedImage background_1 = Rasterizer.textures[24];
                         int l = background_1.width * background_1.height - 1;
                         int k1 = background_1.width * tickDelta * 2;
                         byte abyte1[] = background_1.raster;
@@ -2666,7 +2669,7 @@ public class Client extends GameApplet {
                         Rasterizer.method370(24);
                   }
                   if (Rasterizer.anIntArray1480[34] >= j) {
-                        IndexedImage background_2 = Rasterizer.aBackgroundArray1474s[34];
+                        IndexedImage background_2 = Rasterizer.textures[34];
                         int i1 = background_2.width * background_2.height - 1;
                         int l1 = background_2.width * tickDelta * 2;
                         byte abyte2[] = background_2.raster;
@@ -2679,7 +2682,7 @@ public class Client extends GameApplet {
                         Rasterizer.method370(34);
                   }
                   if (Rasterizer.anIntArray1480[40] >= j) {
-                        IndexedImage background_2 = Rasterizer.aBackgroundArray1474s[40];
+                        IndexedImage background_2 = Rasterizer.textures[40];
                         int i1 = background_2.width * background_2.height - 1;
                         int l1 = background_2.width * tickDelta * 2;
                         byte abyte2[] = background_2.raster;
@@ -3274,8 +3277,8 @@ public class Client extends GameApplet {
       }
 
       private void loadTitleScreen() {
-            aBackground_966 = new IndexedImage(titleStreamLoader, "titlebox", 0);
-            aBackground_967 = new IndexedImage(titleStreamLoader, "titlebutton", 0);
+            aBackground_966 = new IndexedImage(titleArchive, "titlebox", 0);
+            aBackground_967 = new IndexedImage(titleArchive, "titlebutton", 0);
             aBackgroundArray1152s = new IndexedImage[12];
             int j = 0;
             try {
@@ -3284,12 +3287,12 @@ public class Client extends GameApplet {
             }
             if (j == 0) {
                   for (int k = 0; k < 12; k++)
-                        aBackgroundArray1152s[k] = new IndexedImage(titleStreamLoader, "runes", k);
+                        aBackgroundArray1152s[k] = new IndexedImage(titleArchive, "runes", k);
 
             } else {
                   for (int l = 0; l < 12; l++)
                         aBackgroundArray1152s[l] =
-                                    new IndexedImage(titleStreamLoader, "runes", 12 + (l & 3));
+                                    new IndexedImage(titleArchive, "runes", 12 + (l & 3));
 
             }
             aClass30_Sub2_Sub1_Sub1_1201 = new Sprite(128, 265);
@@ -3488,7 +3491,7 @@ public class Client extends GameApplet {
       }
 
       private void drawLogo() {
-            byte sprites[] = titleStreamLoader.getEntry("title.dat");
+            byte sprites[] = titleArchive.getEntry("title.dat");
             Sprite sprite = new Sprite(sprites, this);
             flameLeftBackground.initDrawingArea();
             sprite.method346(0, 0);
@@ -3539,7 +3542,7 @@ public class Client extends GameApplet {
             sprite.method346(254, -171);
             aRSImageProducer_1115.initDrawingArea();
             sprite.method346(-180, -171);
-            sprite = new Sprite(titleStreamLoader, "logo", 0);
+            sprite = new Sprite(titleArchive, "logo", 0);
             topLeft1BackgroundTile.initDrawingArea();
             sprite.drawSprite(382 - sprite.myWidth / 2 - 128, 18);
             sprite = null;
@@ -4002,7 +4005,7 @@ public class Client extends GameApplet {
             Raster.clear();
             aRSImageProducer_1115 = new ProducingGraphicsBuffer(75, 94);
             Raster.clear();
-            if (titleStreamLoader != null) {
+            if (titleArchive != null) {
                   drawLogo();
                   loadTitleScreen();
             }
@@ -4013,7 +4016,7 @@ public class Client extends GameApplet {
             anInt1079 = i;
             aString1049 = s;
             setupLoginScreen();
-            if (titleStreamLoader == null) {
+            if (titleArchive == null) {
                   super.drawLoadingText(i, s);
                   return;
             }
@@ -5952,7 +5955,7 @@ public class Client extends GameApplet {
 
                                     if (inputString.equals("::rint")) {
                                           GameFont gameFont = new GameFont(true, "q8_full",
-                                                      titleStreamLoader);
+                                                      titleArchive);
                                           GameFont fonts[] =
                                                       {smallText, regularText, boldText, gameFont};
                                           Archive interfaces = createArchive(3, "interface",
@@ -8201,27 +8204,30 @@ public class Client extends GameApplet {
                   if (Configuration.useJaggrab) {
                         requestCrcs();
                   }
-                  titleStreamLoader = createArchive(1, "title screen", "title", archiveCRCs[1], 25);
-                  smallText = new GameFont(false, "p11_full", titleStreamLoader);
-                  regularText = new GameFont(false, "p12_full", titleStreamLoader);
-                  boldText = new GameFont(false, "b12_full", titleStreamLoader);
-                  newSmallFont = new RSFont(false, "p11_full", titleStreamLoader);
-                  newRegularFont = new RSFont(false, "p12_full", titleStreamLoader);
-                  newBoldFont = new RSFont(false, "b12_full", titleStreamLoader);
-                  newFancyFont = new RSFont(true, "q8_full", titleStreamLoader);
-                  gameFont = new GameFont(true, "q8_full", titleStreamLoader);
+                  titleArchive = createArchive(1, "title screen", "title", archiveCRCs[1], 25);                  
+                  smallText = new GameFont(false, "p11_full", titleArchive);
+                  regularText = new GameFont(false, "p12_full", titleArchive);
+                  boldText = new GameFont(false, "b12_full", titleArchive);
+                  newSmallFont = new RSFont(false, "p11_full", titleArchive);
+                  newRegularFont = new RSFont(false, "p12_full", titleArchive);
+                  newBoldFont = new RSFont(false, "b12_full", titleArchive);
+                  newFancyFont = new RSFont(true, "q8_full", titleArchive);
+                  gameFont = new GameFont(true, "q8_full", titleArchive);
                   drawLogo();
                   loadTitleScreen();
-                  Archive streamLoader = createArchive(2, "config", "config", archiveCRCs[2], 30);
-                  Archive streamLoader_1 = createArchive(3, "interface", "interface", archiveCRCs[3], 35);
-                  Archive streamLoader_2 =  createArchive(4, "2d graphics", "media", archiveCRCs[4], 40);
-                  this.mediaStreamLoader = streamLoader_2;
-                  Archive streamLoader_3 = createArchive(6, "textures", "textures", archiveCRCs[6], 45);
-                  Archive streamLoader_4 = createArchive(7, "chat system", "wordenc", archiveCRCs[7], 50);
-                  createArchive(8, "sound effects", "sounds", archiveCRCs[8], 55);
+                  Archive configArchive = createArchive(2, "config", "config", archiveCRCs[2], 30);                  
+                  Archive interfaceArchive = createArchive(3, "interface", "interface", archiveCRCs[3], 35);                  
+                  Archive mediaArchive =  createArchive(4, "2d graphics", "media", archiveCRCs[4], 40);
+                  this.mediaStreamLoader = mediaArchive;                  
+                  Archive textureArchive = createArchive(6, "textures", "textures", archiveCRCs[6], 45);
+                  Archive wordencArchive = createArchive(7, "chat system", "wordenc", archiveCRCs[7], 50);
+                  
+                  @SuppressWarnings("unused")
+                  Archive soundArchive = createArchive(8, "sound effects", "sounds", archiveCRCs[8], 55);
                   tileFlags = new byte[4][104][104];
                   tileHeights = new int[4][105][105];
                   scene = new SceneGraph(tileHeights);
+                  
                   for (int j = 0; j < 4; j++)
                         collisionMaps[j] = new CollisionMap();
 
@@ -8285,56 +8291,56 @@ public class Client extends GameApplet {
                   }
 
                   RSFont.unpackImages(modIcons, clanIcons);
-                  multiOverlay = new Sprite(streamLoader_2, "overlay_multiway", 0);
-                  mapBack = new IndexedImage(streamLoader_2, "mapback", 0);
+                  multiOverlay = new Sprite(mediaArchive, "overlay_multiway", 0);
+                  mapBack = new IndexedImage(mediaArchive, "mapback", 0);
                   for (int j3 = 0; j3 <= 14; j3++)
-                        sideIcons[j3] = new Sprite(streamLoader_2, "sideicons", j3);
-                  compass = new Sprite(streamLoader_2, "compass", 0);
+                        sideIcons[j3] = new Sprite(mediaArchive, "sideicons", j3);
+                  compass = new Sprite(mediaArchive, "compass", 0);
                   try {
                         for (int k3 = 0; k3 < 100; k3++)
-                              mapScenes[k3] = new IndexedImage(streamLoader_2, "mapscene", k3);
+                              mapScenes[k3] = new IndexedImage(mediaArchive, "mapscene", k3);
                   } catch (Exception _ex) {
                   }
                   try {
                         for (int l3 = 0; l3 < 100; l3++)
-                              mapFunctions[l3] = new Sprite(streamLoader_2, "mapfunction", l3);
+                              mapFunctions[l3] = new Sprite(mediaArchive, "mapfunction", l3);
                   } catch (Exception _ex) {
                   }
                   try {
                         for (int i4 = 0; i4 < 20; i4++)
-                              hitMarks[i4] = new Sprite(streamLoader_2, "hitmarks", i4);
+                              hitMarks[i4] = new Sprite(mediaArchive, "hitmarks", i4);
                   } catch (Exception _ex) {
                   }
                   try {
                         for (int h1 = 0; h1 < 6; h1++)
-                              headIconsHint[h1] = new Sprite(streamLoader_2, "headicons_hint", h1);
+                              headIconsHint[h1] = new Sprite(mediaArchive, "headicons_hint", h1);
                   } catch (Exception _ex) {
                   }
                   try {
                         for (int j4 = 0; j4 < 8; j4++)
-                              headIcons[j4] = new Sprite(streamLoader_2, "headicons_prayer", j4);
+                              headIcons[j4] = new Sprite(mediaArchive, "headicons_prayer", j4);
                         for (int j45 = 0; j45 < 3; j45++)
-                              skullIcons[j45] = new Sprite(streamLoader_2, "headicons_pk", j45);
+                              skullIcons[j45] = new Sprite(mediaArchive, "headicons_pk", j45);
                   } catch (Exception _ex) {
                   }
-                  mapFlag = new Sprite(streamLoader_2, "mapmarker", 0);
-                  mapMarker = new Sprite(streamLoader_2, "mapmarker", 1);
+                  mapFlag = new Sprite(mediaArchive, "mapmarker", 0);
+                  mapMarker = new Sprite(mediaArchive, "mapmarker", 1);
                   for (int k4 = 0; k4 < 8; k4++)
-                        crosses[k4] = new Sprite(streamLoader_2, "cross", k4);
-                  mapDotItem = new Sprite(streamLoader_2, "mapdots", 0);
-                  mapDotNPC = new Sprite(streamLoader_2, "mapdots", 1);
-                  mapDotPlayer = new Sprite(streamLoader_2, "mapdots", 2);
-                  mapDotFriend = new Sprite(streamLoader_2, "mapdots", 3);
-                  mapDotTeam = new Sprite(streamLoader_2, "mapdots", 4);
-                  mapDotClan = new Sprite(streamLoader_2, "mapdots", 5);
-                  scrollBar1 = new Sprite(streamLoader_2, "scrollbar", 0);
-                  scrollBar2 = new Sprite(streamLoader_2, "scrollbar", 1);
+                        crosses[k4] = new Sprite(mediaArchive, "cross", k4);
+                  mapDotItem = new Sprite(mediaArchive, "mapdots", 0);
+                  mapDotNPC = new Sprite(mediaArchive, "mapdots", 1);
+                  mapDotPlayer = new Sprite(mediaArchive, "mapdots", 2);
+                  mapDotFriend = new Sprite(mediaArchive, "mapdots", 3);
+                  mapDotTeam = new Sprite(mediaArchive, "mapdots", 4);
+                  mapDotClan = new Sprite(mediaArchive, "mapdots", 5);
+                  scrollBar1 = new Sprite(mediaArchive, "scrollbar", 0);
+                  scrollBar2 = new Sprite(mediaArchive, "scrollbar", 1);
                   for (int l4 = 0; l4 < 2; l4++)
-                        modIcons[l4] = new Sprite(streamLoader_2, "mod_icons", l4);
-                  Sprite sprite = new Sprite(streamLoader_2, "screenframe", 0);
+                        modIcons[l4] = new Sprite(mediaArchive, "mod_icons", l4);
+                  Sprite sprite = new Sprite(mediaArchive, "screenframe", 0);
                   leftFrame = new ProducingGraphicsBuffer(sprite.myWidth, sprite.myHeight);
                   sprite.method346(0, 0);
-                  sprite = new Sprite(streamLoader_2, "screenframe", 1);
+                  sprite = new Sprite(mediaArchive, "screenframe", 1);
                   topFrame = new ProducingGraphicsBuffer(sprite.myWidth, sprite.myHeight);
                   sprite.method346(0, 0);
                   int i5 = (int) (Math.random() * 21D) - 10;
@@ -8348,23 +8354,23 @@ public class Client extends GameApplet {
                               mapScenes[i6].offsetColor(i5 + l5, j5 + l5, k5 + l5);
                   }
                   drawLoadingText(83, "Unpacking textures");
-                  Rasterizer.method368(streamLoader_3);
+                  Rasterizer.loadTextures(textureArchive);
                   Rasterizer.method372(0.80000000000000004D);
                   Rasterizer.method367();
                   drawLoadingText(86, "Unpacking config");
-                  Animation.unpackConfig(streamLoader);
-                  ObjectDefinition.unpackConfig(streamLoader);
-                  Floor.unpackConfig(streamLoader);
-                  ItemDefinition.unpackConfig(streamLoader);
-                  NpcDefinition.unpackConfig(streamLoader);
-                  IdentityKit.unpackConfig(streamLoader);
-                  Graphic.unpackConfig(streamLoader);
-                  VariableParameter.unpackConfig(streamLoader);
-                  VariableBits.unpackConfig(streamLoader);
+                  Animation.unpackConfig(configArchive);
+                  ObjectDefinition.unpackConfig(configArchive);
+                  Floor.unpackConfig(configArchive);
+                  ItemDefinition.unpackConfig(configArchive);
+                  NpcDefinition.unpackConfig(configArchive);
+                  IdentityKit.unpackConfig(configArchive);
+                  Graphic.unpackConfig(configArchive);
+                  VariableParameter.unpackConfig(configArchive);
+                  VariableBits.unpackConfig(configArchive);
                   ItemDefinition.isMembers = isMembers;
                   drawLoadingText(95, "Unpacking interfaces");
                   GameFont gameFonts[] = {smallText, regularText, boldText, gameFont};
-                  Widget.load(streamLoader_1, gameFonts, streamLoader_2);
+                  Widget.load(interfaceArchive, gameFonts, mediaArchive);
                   drawLoadingText(100, "Preparing game engine");
                   for (int j6 = 0; j6 < 33; j6++) {
                         int k6 = 999;
@@ -8402,20 +8408,26 @@ public class Client extends GameApplet {
                         }
                         minimapLeft[l6 - 1] = j7 - 24;
                         minimapLineWidth[l6 - 1] = l7 - j7;
-                  }
+                  } 
                   setBounds();
-                  MessageCensor.load(streamLoader_4);
+                  MessageCensor.load(wordencArchive);
                   mouseDetection = new MouseDetection(this);
                   startRunnable(mouseDetection, 10);
                   SceneObject.clientInstance = this;
                   ObjectDefinition.clientInstance = this;
-                  NpcDefinition.clientInstance = this;
+                  NpcDefinition.clientInstance = this;                 
                   return;
             } catch (Exception exception) {
                   exception.printStackTrace();
                   SignLink.reporterror("loaderror " + aString1049 + " " + anInt1079);
             }
             loadingError = true;
+      }
+      
+      public static BufferedImage byteArrayToImage(byte[] data) throws IOException {
+          ByteArrayInputStream in = new ByteArrayInputStream(data);
+          BufferedImage image = ImageIO.read(in);
+          return image;
       }
 
       private void updatePlayerList(Buffer stream, int packetSize) {
@@ -8717,7 +8729,7 @@ public class Client extends GameApplet {
                         tickDelta = 0;
                         resetAllImageProducers();
                         super.fullGameScreen.initDrawingArea();
-                        Rasterizer.anIntArray1472 = fullScreenTextureArray;
+                        Rasterizer.scanOffsets = fullScreenTextureArray;
                         Raster.clear();
                         welcomeScreenRaised = true;
                         if (openInterfaceId != -1) {
@@ -9332,10 +9344,10 @@ public class Client extends GameApplet {
                                           sprite.drawSprite(_x, currentY);
                                     }
                         } else if (childInterface.type == Widget.TYPE_MODEL) {
-                              int centreX = Rasterizer.textureInt1;
-                              int centreY = Rasterizer.textureInt2;
-                              Rasterizer.textureInt1 = _x + childInterface.width / 2;
-                              Rasterizer.textureInt2 = currentY + childInterface.height / 2;
+                              int centreX = Rasterizer.originViewX;
+                              int centreY = Rasterizer.originViewY;
+                              Rasterizer.originViewX = _x + childInterface.width / 2;
+                              Rasterizer.originViewY = currentY + childInterface.height / 2;
                               int sine = Rasterizer.anIntArray1470[childInterface.modelRotation1]
                                           * childInterface.modelZoom >> 16;
                               int cosine = Rasterizer.COSINE[childInterface.modelRotation1]
@@ -9359,8 +9371,8 @@ public class Client extends GameApplet {
                               if (model != null)
                                     model.method482(childInterface.modelRotation2, 0,
                                                 childInterface.modelRotation1, 0, sine, cosine);
-                              Rasterizer.textureInt1 = centreX;
-                              Rasterizer.textureInt2 = centreY;
+                              Rasterizer.originViewX = centreX;
+                              Rasterizer.originViewY = centreY;
                         } else if (childInterface.type == Widget.TYPE_ITEM_LIST) {
                               GameFont font = childInterface.textDrawingAreas;
                               int slot = 0;
@@ -10958,8 +10970,8 @@ public class Client extends GameApplet {
             l = i1 * j1 + l * k1 >> 16;
             i1 = j2;
             if (l >= 50) {
-                  spriteDrawX = Rasterizer.textureInt1 + (i << SceneGraph.viewDistance) / l;
-                  spriteDrawY = Rasterizer.textureInt2 + (i1 << SceneGraph.viewDistance) / l;
+                  spriteDrawX = Rasterizer.originViewX + (i << SceneGraph.viewDistance) / l;
+                  spriteDrawY = Rasterizer.originViewY + (i1 << SceneGraph.viewDistance) / l;
             } else {
                   spriteDrawX = -1;
                   spriteDrawY = -1;
@@ -13988,7 +14000,7 @@ public class Client extends GameApplet {
       private String aString1049;
       private static int anInt1051;
       private final int[] minimapLeft;
-      private Archive titleStreamLoader;
+      private Archive titleArchive;
       private int flashingSidebarId;
       private int multicombat;
       private Deque incompleteAnimables;

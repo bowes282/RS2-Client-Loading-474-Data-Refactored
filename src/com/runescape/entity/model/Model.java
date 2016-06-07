@@ -2111,8 +2111,8 @@ public class Model extends Renderable {
 
 	public final void method482(int j, int k, int l, int i1, int j1, int k1) {
 		int i = 0;
-		int l1 = Rasterizer.textureInt1;
-		int i2 = Rasterizer.textureInt2;
+		int l1 = Rasterizer.originViewX;
+		int i2 = Rasterizer.originViewY;
 		int j2 = SINE[i];
 		int k2 = COSINE[i];
 		int l2 = SINE[j];
@@ -2213,16 +2213,16 @@ public class Model extends Renderable {
 						k4 /= i3;
 						i5 /= k5;
 					}
-					int i6 = anInt1685 - Rasterizer.textureInt1;
-					int k6 = anInt1686 - Rasterizer.textureInt2;
+					int i6 = anInt1685 - Rasterizer.originViewX;
+					int k6 = anInt1686 - Rasterizer.originViewY;
 					if (i6 > k3 && i6 < l3 && k6 > i5 && k6 < k4)
 						if (fits_on_single_square)
 							anIntArray1688[anInt1687++] = i2;
 						else
 							flag1 = true;
 				}
-				int l5 = Rasterizer.textureInt1;
-				int j6 = Rasterizer.textureInt2;
+				int l5 = Rasterizer.originViewX;
+				int j6 = Rasterizer.originViewY;
 				int l6 = 0;
 				int i7 = 0;
 				if (i != 0) {
@@ -2505,8 +2505,8 @@ public class Model extends Renderable {
 		if (anIntArray1640 != null)
 			if (anIntArray1640[i] == 65535)
 				return;
-		int j = Rasterizer.textureInt1;
-		int k = Rasterizer.textureInt2;
+		int j = Rasterizer.originViewX;
+		int k = Rasterizer.originViewY;
 		int l = 0;
 		int i1 = anIntArray1631[i];
 		int j1 = anIntArray1632[i];
