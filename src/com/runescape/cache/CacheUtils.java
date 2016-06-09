@@ -34,8 +34,7 @@ public final class CacheUtils {
             System.out.println("Finished repacking " + cacheIndex.getIndex() + ".");
       }
 
-      public static void dumpCacheIndex(Client client, CacheIndex cacheIndex) {
-            System.out.println("Unpacking index" + cacheIndex.getIndex());
+      public static void dumpCacheIndex(Client client, CacheIndex cacheIndex) {            
             try {
                   for (int i = 0;; i++) {
                         try {
@@ -45,13 +44,11 @@ public final class CacheUtils {
                                                 + ", exiting dump operation.");
                                     break;
                               }
-                              BufferedOutputStream gzip = new BufferedOutputStream(
-                                          new GZIPOutputStream(new FileOutputStream(
-                                                      SignLink.findcachedir() + "dump" + cacheIndex.getIndex()
-                                                                  + "/" + i + ".gz")));
-                              if (indexByteArray.length == 0)
+                              BufferedOutputStream gzip = new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(SignLink.findcachedir() + "dump" + cacheIndex.getIndex() + "/" + i + ".gz")));
+                              
+                              if (indexByteArray.length == 0) {
                                     continue;
-                              else {
+                              } else {
                                     gzip.write(indexByteArray);
                                     System.out.println("Unpacked " + i + ".");
                                     gzip.close();

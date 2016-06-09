@@ -1221,6 +1221,25 @@ public class Client extends GameApplet {
                   }
 
             }
+            
+            if (Configuration.dumpMapRegions) {
+            
+    		File directory = new File("MapImageDumps/");
+    		if (!directory.exists()) {
+    			directory.mkdir();
+    		}
+    		BufferedImage bufferedimage = new BufferedImage(minimapImage.myWidth, minimapImage.myHeight, 1);
+    		bufferedimage.setRGB(0, 0, minimapImage.myWidth, minimapImage.myHeight, minimapImage.myPixels, 0, minimapImage.myWidth);
+    		Graphics2D graphics2d = bufferedimage.createGraphics();
+    		graphics2d.dispose();
+    		try {
+    			File file1 = new File("MapImageDumps/"+(directory.listFiles().length+1)+".png");
+    			ImageIO.write(bufferedimage, "png", file1);
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    		
+            }
 
       }
 
@@ -8239,11 +8258,11 @@ public class Client extends GameApplet {
                   resourceProvider.initialize(streamLoader_6, this);
                   Model.method459(resourceProvider.getModelCount(), resourceProvider);
                   drawLoadingText(80, "Unpacking media");
-                  Archive streamLoader_5 =
-                              createArchive(8, "sound effects", "sounds", archiveCRCs[8], 55);
-                  byte abyte0[] = streamLoader_5.getEntry("sounds.dat");
+                  
+                  Archive soundEffectArchive = createArchive(8, "sound effects", "sounds", archiveCRCs[8], 55);
+                  byte soundData[] = soundEffectArchive.getEntry("sounds.dat");                  
 
-                  Buffer stream = new Buffer(abyte0);
+                  Buffer stream = new Buffer(soundData);
                   Track.unpack(stream);
 
                   if (Configuration.repackIndexOne) {

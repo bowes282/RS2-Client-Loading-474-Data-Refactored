@@ -39,6 +39,11 @@ public class Configuration {
 	public static final String CLIENT_NAME = "RuneScape";
 	
 	/**
+	 * Dumps map region images when new regions are loaded.
+	 */
+	public static boolean dumpMapRegions = false;
+	
+	/**
 	 * Displays debug messages on loginscreen and in-game
 	 */
 	public static boolean clientData = false;
