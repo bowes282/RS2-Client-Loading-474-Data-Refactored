@@ -985,7 +985,7 @@ public class Client extends GameApplet {
                               int k7 = (localRegionIds[j4] & 0xff) * 64 - regionBaseY;
                               byte abyte2[] = localRegionMapData[j4];
                               if (abyte2 == null && this.regionY < 800)
-                                    objectManager.method174(k7, 64, 64, l5);
+                                    objectManager.initiateVertexHeights(k7, 64, 64, l5);
                         }
                         anInt1097++;
                         if (anInt1097 > 160) {
@@ -1035,7 +1035,7 @@ public class Client extends GameApplet {
                               for (int k6 = 0; k6 < 13; k6++) {
                                     int i8 = localRegions[0][l4][k6];
                                     if (i8 == -1)
-                                          objectManager.method174(k6 * 8, 8, 8, l4 * 8);
+                                          objectManager.initiateVertexHeights(k6 * 8, 8, 8, l4 * 8);
                               }
                         }
 
@@ -1071,16 +1071,16 @@ public class Client extends GameApplet {
 
                   }
                   outgoing.writeOpCode(0);
-                  objectManager.method171(collisionMaps, scene);
+                  objectManager.createRegionScene(collisionMaps, scene);
                   gameScreenImageProducer.initDrawingArea();
                   outgoing.writeOpCode(0);
-                  int k3 = MapRegion.anInt145;
+                  int k3 = MapRegion.maximumPlane;
                   if (k3 > plane)
                         k3 = plane;
                   if (k3 < plane - 1)
                         k3 = plane - 1;
                   if (lowMemory)
-                        scene.method275(MapRegion.anInt145);
+                        scene.method275(MapRegion.maximumPlane);
                   else
                         scene.method275(0);
                   for (int i5 = 0; i5 < 104; i5++) {
@@ -3311,7 +3311,7 @@ public class Client extends GameApplet {
             try {
                   icon = Integer.parseInt(getParameter("fl_icon"));                  
             } catch (Exception ex) {
-            	ex.printStackTrace();
+            	
             }
             if (icon == 0) {
                   for (int index = 0; index < 12; index++) {                	  
@@ -3617,7 +3617,7 @@ public class Client extends GameApplet {
                         }
                   } while (resource.dataType != 93
                               || !resourceProvider.landscapePresent(resource.ID));
-                  MapRegion.method173(new Buffer(resource.buffer), resourceProvider);
+                  MapRegion.passiveRequestGameObjectModels(new Buffer(resource.buffer), resourceProvider);
             } while (true);
       }
 
