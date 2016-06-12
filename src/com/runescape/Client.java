@@ -1170,19 +1170,22 @@ public class Client extends GameApplet {
             Graphic.models.clear();
       }
 
-      private void renderMapScene(int i) {
-            int ai[] = minimapImage.myPixels;
-            int j = ai.length;
-            for (int k = 0; k < j; k++)
-                  ai[k] = 0;
+      private void renderMapScene(int plane) {
+            int pixels[] = minimapImage.myPixels;            
+            int length = pixels.length;
+            
+            for (int pixel = 0; pixel < length; pixel++) {            	
+                  pixels[pixel] = 0;
+            }
+            
 
-            for (int l = 1; l < 103; l++) {
-                  int i1 = 24628 + (103 - l) * 512 * 4;
-                  for (int k1 = 1; k1 < 103; k1++) {
-                        if ((tileFlags[i][k1][l] & 0x18) == 0)
-                              scene.method309(ai, i1, i, k1, l);
-                        if (i < 3 && (tileFlags[i + 1][k1][l] & 8) != 0)
-                              scene.method309(ai, i1, i + 1, k1, l);
+            for (int y = 1; y < 103; y++) {            	
+                  int i1 = 24628 + (103 - y) * 512 * 4;
+                  for (int x = 1; x < 103; x++) {                	  
+                        if ((tileFlags[plane][x][y] & 0x18) == 0)
+                              scene.method309(pixels, i1, plane, x, y);
+                        if (plane < 3 && (tileFlags[plane + 1][x][y] & 8) != 0)
+                              scene.method309(pixels, i1, plane + 1, x, y);
                         i1 += 4;
                   }
 
@@ -1191,30 +1194,34 @@ public class Client extends GameApplet {
             int j1 = 0xFFFFFF;
             int l1 = 0xEE0000;
             minimapImage.method343();
-            for (int i2 = 1; i2 < 103; i2++) {
-                  for (int j2 = 1; j2 < 103; j2++) {
-                        if ((tileFlags[i][j2][i2] & 0x18) == 0)
-                              drawMapScenes(i2, j1, j2, l1, i);
-                        if (i < 3 && (tileFlags[i + 1][j2][i2] & 8) != 0)
-                              drawMapScenes(i2, j1, j2, l1, i + 1);
+            
+            for (int y = 1; y < 103; y++) {            	
+                  for (int x = 1; x < 103; x++) {                	  
+                        if ((tileFlags[plane][x][y] & 0x18) == 0)
+                              drawMapScenes(y, j1, x, l1, plane);
+                        if (plane < 3 && (tileFlags[plane + 1][x][y] & 8) != 0)
+                              drawMapScenes(y, j1, x, l1, plane + 1);
                   }
 
             }
 
             gameScreenImageProducer.initDrawingArea();
             anInt1071 = 0;
-            for (int k2 = 0; k2 < 104; k2++) {
-                  for (int l2 = 0; l2 < 104; l2++) {
-                        int i3 = scene.getFloorDecorationKey(plane, k2, l2);
-                        if (i3 != 0) {
-                              i3 = i3 >> 14 & 0x7fff;
-                              int j3 = ObjectDefinition.lookup(i3).minimapFunction;
-                              if (j3 >= 0) {
-                                    int k3 = k2;
-                                    int l3 = l2;
-                                    minimapHint[anInt1071] = mapFunctions[j3];
-                                    minimapHintX[anInt1071] = k3;
-                                    minimapHintY[anInt1071] = l3;
+            
+            for (int x = 0; x < 104; x++) {            	
+                  for (int y = 0; y < 104; y++) {                	  
+                        int id = scene.getFloorDecorationKey(plane, x, y);                        
+                        if (id != 0) {
+                              id = id >> 14 & 0x7fff;
+                  
+                              int function = ObjectDefinition.lookup(id).minimapFunction;
+                              
+                              if (function >= 0) {
+                                    int viewportX = x;                                    
+                                    int viewportY = y;                                    
+                                    minimapHint[anInt1071] = mapFunctions[function];
+                                    minimapHintX[anInt1071] = viewportX;
+                                    minimapHintY[anInt1071] = viewportY;
                                     anInt1071++;
                               }
                         }
@@ -3296,33 +3303,38 @@ public class Client extends GameApplet {
       }
 
       private void loadTitleScreen() {
-            aBackground_966 = new IndexedImage(titleArchive, "titlebox", 0);
-            aBackground_967 = new IndexedImage(titleArchive, "titlebutton", 0);
-            aBackgroundArray1152s = new IndexedImage[12];
-            int j = 0;
+            titleBoxIndexedImage = new IndexedImage(titleArchive, "titlebox", 0);            
+            titleButtonIndexedImage = new IndexedImage(titleArchive, "titlebutton", 0);  
+            
+            titleIndexedImages = new IndexedImage[12];            
+            int icon = 0;
             try {
-                  j = Integer.parseInt(getParameter("fl_icon"));
-            } catch (Exception _ex) {
+                  icon = Integer.parseInt(getParameter("fl_icon"));                  
+            } catch (Exception ex) {
+            	ex.printStackTrace();
             }
-            if (j == 0) {
-                  for (int k = 0; k < 12; k++)
-                        aBackgroundArray1152s[k] = new IndexedImage(titleArchive, "runes", k);
+            if (icon == 0) {
+                  for (int index = 0; index < 12; index++) {                	  
+                        titleIndexedImages[index] = new IndexedImage(titleArchive, "runes", index);
+                  }
 
             } else {
-                  for (int l = 0; l < 12; l++)
-                        aBackgroundArray1152s[l] =
-                                    new IndexedImage(titleArchive, "runes", 12 + (l & 3));
+                  for (int index = 0; index < 12; index++) {                	  
+                        titleIndexedImages[index] = new IndexedImage(titleArchive, "runes", 12 + (index & 3));
+                  }
 
             }
-            aClass30_Sub2_Sub1_Sub1_1201 = new Sprite(128, 265);
-            aClass30_Sub2_Sub1_Sub1_1202 = new Sprite(128, 265);
+            flameLeftSprite = new Sprite(128, 265);            
+            flameRightSprite = new Sprite(128, 265);
+            
             System.arraycopy(flameLeftBackground.canvasRaster, 0,
-                        aClass30_Sub2_Sub1_Sub1_1201.myPixels, 0, 33920);
+                        flameLeftSprite.myPixels, 0, 33920);
 
             System.arraycopy(flameRightBackground.canvasRaster, 0,
-                        aClass30_Sub2_Sub1_Sub1_1202.myPixels, 0, 33920);
+                        flameRightSprite.myPixels, 0, 33920);
 
             anIntArray851 = new int[256];
+            
             for (int k1 = 0; k1 < 64; k1++)
                   anIntArray851[k1] = k1 * 0x40000;
 
@@ -3636,7 +3648,7 @@ public class Client extends GameApplet {
             if (anInt1275 > anIntArray1190.length) {
                   anInt1275 -= anIntArray1190.length;
                   int i2 = (int) (Math.random() * 12D);
-                  randomizeBackground(aBackgroundArray1152s[i2]);
+                  randomizeBackground(titleIndexedImages[i2]);
             }
             for (int j2 = 1; j2 < c - 1; j2++) {
                   for (int i3 = 1; i3 < 127; i3++) {
@@ -10203,9 +10215,9 @@ public class Client extends GameApplet {
                   } catch (Exception _ex) {
                   }
             }
-            aBackground_966 = null;
-            aBackground_967 = null;
-            aBackgroundArray1152s = null;
+            titleBoxIndexedImage = null;
+            titleButtonIndexedImage = null;
+            titleIndexedImages = null;
             anIntArray850 = null;
             anIntArray851 = null;
             anIntArray852 = null;
@@ -10214,8 +10226,8 @@ public class Client extends GameApplet {
             anIntArray1191 = null;
             anIntArray828 = null;
             anIntArray829 = null;
-            aClass30_Sub2_Sub1_Sub1_1201 = null;
-            aClass30_Sub2_Sub1_Sub1_1202 = null;
+            flameLeftSprite = null;
+            flameRightSprite = null;
       }
 
       private boolean processWidgetAnimations(int tick, int interfaceId) throws Exception {
@@ -11149,7 +11161,7 @@ public class Client extends GameApplet {
                   System.arraycopy(anIntArray851, 0, anIntArray850, 0, 256);
 
             }
-            System.arraycopy(aClass30_Sub2_Sub1_Sub1_1201.myPixels, 0,
+            System.arraycopy(flameLeftSprite.myPixels, 0,
                         flameLeftBackground.canvasRaster, 0, 33920);
 
             int i1 = 0;
@@ -11180,7 +11192,7 @@ public class Client extends GameApplet {
             }
 
             flameLeftBackground.drawGraphics(0, super.graphics, 0);
-            System.arraycopy(aClass30_Sub2_Sub1_Sub1_1202.myPixels, 0,
+            System.arraycopy(flameRightSprite.myPixels, 0,
                         flameRightBackground.canvasRaster, 0, 33920);
 
             i1 = 0;
@@ -11326,7 +11338,7 @@ public class Client extends GameApplet {
       private void drawLoginScreen(boolean flag) {
             setupLoginScreen();
             loginBoxImageProducer.initDrawingArea();
-            aBackground_966.draw(0, 0);
+            titleBoxIndexedImage.draw(0, 0);
             // regularText.render(0xffffff, "Mouse X: " + super.mouseX +
             // " , Mouse Y: " + super.mouseY, 30, frameMode == ScreenMode.FIXED ? 5
             // : frameWidth - 5);
@@ -11344,10 +11356,10 @@ public class Client extends GameApplet {
                   i += 30;
                   int l = c / 2 - 80;
                   int k1 = c1 / 2 + 20;
-                  aBackground_967.draw(l - 73, k1 - 20);
+                  titleButtonIndexedImage.draw(l - 73, k1 - 20);
                   boldText.method382(0xffffff, l, "New User", k1 + 5, true);
                   l = c / 2 + 80;
-                  aBackground_967.draw(l - 73, k1 - 20);
+                  titleButtonIndexedImage.draw(l - 73, k1 - 20);
                   boldText.method382(0xffffff, l, "Existing User", k1 + 5, true);
             }
             if (loginScreenState == 2) {
@@ -11375,10 +11387,10 @@ public class Client extends GameApplet {
                   if (!flag) {
                         int i1 = c / 2 - 80;
                         int l1 = c1 / 2 + 50;
-                        aBackground_967.draw(i1 - 73, l1 - 20);
+                        titleButtonIndexedImage.draw(i1 - 73, l1 - 20);
                         boldText.method382(0xffffff, i1, "Login", l1 + 5, true);
                         i1 = c / 2 + 80;
-                        aBackground_967.draw(i1 - 73, l1 - 20);
+                        titleButtonIndexedImage.draw(i1 - 73, l1 - 20);
                         boldText.method382(0xffffff, i1, "Cancel", l1 + 5, true);
                   }
             }
@@ -13939,8 +13951,8 @@ public class Client extends GameApplet {
       private int spriteDrawX;
       private int spriteDrawY;
       private final int[] anIntArray965 = {0xffff00, 0xff0000, 65280, 65535, 0xff00ff, 0xffffff};
-      private IndexedImage aBackground_966;
-      private IndexedImage aBackground_967;
+      private IndexedImage titleBoxIndexedImage;
+      private IndexedImage titleButtonIndexedImage;
       private final int[] anIntArray968;
       private final int[] anIntArray969;
       public final Index[] indices;
@@ -14107,7 +14119,7 @@ public class Client extends GameApplet {
       private int runEnergy;
       private boolean continuedDialogue;
       private Sprite[] crosses;
-      private IndexedImage[] aBackgroundArray1152s;
+      private IndexedImage[] titleIndexedImages;
       private int unreadMessages;
       private static int anInt1155;
       private static boolean fpsOn;
@@ -14152,8 +14164,8 @@ public class Client extends GameApplet {
       private int splitPrivateChat;
       private IndexedImage mapBack;
       private String[] menuActionText;
-      private Sprite aClass30_Sub2_Sub1_Sub1_1201;
-      private Sprite aClass30_Sub2_Sub1_Sub1_1202;
+      private Sprite flameLeftSprite;
+      private Sprite flameRightSprite;
       private final int[] anIntArray1203;
       public static final int[] anIntArray1204 = {9104, 10275, 7595, 3610, 7975, 8526, 918, 38802,
                   24466, 10145, 58654, 5027, 1457, 16565, 34991, 25486};

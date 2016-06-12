@@ -193,43 +193,51 @@ public final class Sprite extends Raster {
 				myPixels[index] = 0;
 	}
 
-	public Sprite(Archive streamLoader, String s, int i) {
-		Buffer stream = new Buffer(streamLoader.getEntry(s + ".dat"));
-		Buffer stream_1 = new Buffer(streamLoader.getEntry("index.dat"));
-		stream_1.currentPosition = stream.readUShort();
-		maxWidth = stream_1.readUShort();
-		maxHeight = stream_1.readUShort();
-		int j = stream_1.readUnsignedByte();
-		int ai[] = new int[j];
-		for (int k = 0; k < j - 1; k++) {
-			ai[k + 1] = stream_1.readTriByte();
-			if (ai[k + 1] == 0)
-				ai[k + 1] = 1;
+	public Sprite(Archive archive, String name, int i) {		
+		Buffer dataBuffer = new Buffer(archive.getEntry(name + ".dat"));		
+		Buffer indexBuffer = new Buffer(archive.getEntry("index.dat"));
+		
+		indexBuffer.currentPosition = dataBuffer.readUShort();
+		
+		maxWidth = indexBuffer.readUShort();
+		maxHeight = indexBuffer.readUShort();
+		int pixelCount = indexBuffer.readUnsignedByte();		
+		int raster[] = new int[pixelCount];
+		
+		for (int pixel = 0; pixel < pixelCount - 1; pixel++) {			
+			raster[pixel + 1] = indexBuffer.readTriByte();
+			if (raster[pixel + 1] == 0)
+				raster[pixel + 1] = 1;
 		}
 
-		for (int l = 0; l < i; l++) {
-			stream_1.currentPosition += 2;
-			stream.currentPosition += stream_1.readUShort() * stream_1.readUShort();
-			stream_1.currentPosition++;
+		for (int index = 0; index < i; index++) {			
+			indexBuffer.currentPosition += 2;
+			dataBuffer.currentPosition += indexBuffer.readUShort() * indexBuffer.readUShort();
+			indexBuffer.currentPosition++;
 		}
 
-		drawOffsetX = stream_1.readUnsignedByte();
-		drawOffsetY = stream_1.readUnsignedByte();
-		myWidth = stream_1.readUShort();
-		myHeight = stream_1.readUShort();
-		int i1 = stream_1.readUnsignedByte();
-		int j1 = myWidth * myHeight;
-		myPixels = new int[j1];
-		if (i1 == 0) {
-			for (int k1 = 0; k1 < j1; k1++)
-				myPixels[k1] = ai[stream.readUnsignedByte()];
+		drawOffsetX = indexBuffer.readUnsignedByte();
+		drawOffsetY = indexBuffer.readUnsignedByte();
+		myWidth = indexBuffer.readUShort();
+		myHeight = indexBuffer.readUShort();
+		
+		int type = indexBuffer.readUnsignedByte();
+		
+		int spriteSize = myWidth * myHeight;
+		
+		myPixels = new int[spriteSize];
+		if (type == 0) {
+			for (int pixel = 0; pixel < spriteSize; pixel++) {
+				myPixels[pixel] = raster[dataBuffer.readUnsignedByte()];
+			}
 			setTransparency(255, 0, 255);
 			return;
 		}
-		if (i1 == 1) {
-			for (int l1 = 0; l1 < myWidth; l1++) {
-				for (int i2 = 0; i2 < myHeight; i2++)
-					myPixels[l1 + i2 * myWidth] = ai[stream.readUnsignedByte()];
+		if (type == 1) {
+			for (int x = 0; x < myWidth; x++) {					
+				for (int y = 0; y < myHeight; y++) {
+					myPixels[x + y * myWidth] = raster[dataBuffer.readUnsignedByte()];
+				}
 			}
 
 		}

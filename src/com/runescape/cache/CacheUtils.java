@@ -33,6 +33,16 @@ public final class CacheUtils {
             }
             System.out.println("Finished repacking " + cacheIndex.getIndex() + ".");
       }
+      
+	public static String getFileNameWithoutExtension(String fileName) {
+          File tmpFile = new File(fileName);
+          tmpFile.getName();
+          int whereDot = tmpFile.getName().lastIndexOf('.');
+          if (0 < whereDot && whereDot <= tmpFile.getName().length() - 2) {
+                return tmpFile.getName().substring(0, whereDot);
+          }
+          return "";
+    }
 
       public static void dumpCacheIndex(Client client, CacheIndex cacheIndex) {            
             try {
