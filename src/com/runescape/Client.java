@@ -11563,7 +11563,7 @@ public class Client extends GameApplet {
                         if (j16 == 1) {
                               WallDecoration class26 = scene.method297(j4, i7, plane);
                               if (class26 != null)
-                                    class26.aClass30_Sub2_Sub4_504 =
+                                    class26.renderable =
                                                 new SceneObject(class26.uid >> 14 & 0x7fff, 0, 4,
                                                             i19, l19, j18, k20, j17, false);
                         }

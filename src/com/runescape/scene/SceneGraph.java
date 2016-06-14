@@ -222,7 +222,7 @@ public final class SceneGraph {
 		class26.anInt500 = l1 * 128 + 64 + j1;
 		class26.anInt501 = j * 128 + 64 + i2;
 		class26.anInt499 = k1;
-		class26.aClass30_Sub2_Sub4_504 = class30_sub2_sub4;
+		class26.renderable = class30_sub2_sub4;
 		class26.anInt502 = j2;
 		class26.anInt503 = k;
 		for (int k2 = i1; k2 >= 0; k2--)
@@ -1127,9 +1127,9 @@ public final class SceneGraph {
 								class10_3.anInt274 - anInt455, class10_3.anInt273 - anInt456,
 								class10_3.anInt275 - anInt457, class10_3.uid);
 				}
-				if (class26_1 != null && !method322(l, i, j, class26_1.aClass30_Sub2_Sub4_504.modelHeight))
+				if (class26_1 != null && !method322(l, i, j, class26_1.renderable.modelHeight))
 					if ((class26_1.anInt502 & j2) != 0)
-						class26_1.aClass30_Sub2_Sub4_504.method443(class26_1.anInt503, anInt458, anInt459, anInt460,
+						class26_1.renderable.method443(class26_1.anInt503, anInt458, anInt459, anInt460,
 								anInt461, class26_1.anInt500 - anInt455, class26_1.anInt499 - anInt456,
 								class26_1.anInt501 - anInt457, class26_1.uid);
 					else if ((class26_1.anInt502 & 0x300) != 0) {
@@ -1150,13 +1150,13 @@ public final class SceneGraph {
 						if ((class26_1.anInt502 & 0x100) != 0 && k10 < k9) {
 							int i11 = j4 + anIntArray463[i8];
 							int k11 = k6 + anIntArray464[i8];
-							class26_1.aClass30_Sub2_Sub4_504.method443(i8 * 512 + 256, anInt458, anInt459, anInt460,
+							class26_1.renderable.method443(i8 * 512 + 256, anInt458, anInt459, anInt460,
 									anInt461, i11, l5, k11, class26_1.uid);
 						}
 						if ((class26_1.anInt502 & 0x200) != 0 && k10 > k9) {
 							int j11 = j4 + anIntArray465[i8];
 							int l11 = k6 + anIntArray466[i8];
-							class26_1.aClass30_Sub2_Sub4_504.method443(i8 * 512 + 1280 & 0x7ff, anInt458, anInt459,
+							class26_1.renderable.method443(i8 * 512 + 1280 & 0x7ff, anInt458, anInt459,
 									anInt460, anInt461, j11, l5, l11, class26_1.uid);
 						}
 					}
@@ -1359,9 +1359,9 @@ public final class SceneGraph {
 			}
 			if (class30_sub3_1.anInt1328 != 0) {
 				WallDecoration class26 = class30_sub3_1.obj2;
-				if (class26 != null && !method322(l, i, j, class26.aClass30_Sub2_Sub4_504.modelHeight))
+				if (class26 != null && !method322(l, i, j, class26.renderable.modelHeight))
 					if ((class26.anInt502 & class30_sub3_1.anInt1328) != 0)
-						class26.aClass30_Sub2_Sub4_504.method443(class26.anInt503, anInt458, anInt459, anInt460,
+						class26.renderable.method443(class26.anInt503, anInt458, anInt459, anInt460,
 								anInt461, class26.anInt500 - anInt455, class26.anInt499 - anInt456,
 								class26.anInt501 - anInt457, class26.uid);
 					else if ((class26.anInt502 & 0x300) != 0) {
@@ -1382,13 +1382,13 @@ public final class SceneGraph {
 						if ((class26.anInt502 & 0x100) != 0 && l7 >= j6) {
 							int i9 = l2 + anIntArray463[k5];
 							int i10 = i4 + anIntArray464[k5];
-							class26.aClass30_Sub2_Sub4_504.method443(k5 * 512 + 256, anInt458, anInt459, anInt460,
+							class26.renderable.method443(k5 * 512 + 256, anInt458, anInt459, anInt460,
 									anInt461, i9, j3, i10, class26.uid);
 						}
 						if ((class26.anInt502 & 0x200) != 0 && l7 <= j6) {
 							int j9 = l2 + anIntArray465[k5];
 							int j10 = i4 + anIntArray466[k5];
-							class26.aClass30_Sub2_Sub4_504.method443(k5 * 512 + 1280 & 0x7ff, anInt458, anInt459,
+							class26.renderable.method443(k5 * 512 + 1280 & 0x7ff, anInt458, anInt459,
 									anInt460, anInt461, j9, j3, j10, class26.uid);
 						}
 					}

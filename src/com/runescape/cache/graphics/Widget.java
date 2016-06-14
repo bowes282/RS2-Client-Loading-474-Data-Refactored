@@ -1,4 +1,5 @@
 package com.runescape.cache.graphics;
+
 import com.runescape.Client;
 import com.runescape.cache.Archive;
 import com.runescape.cache.anim.Frame;
@@ -10,11 +11,11 @@ import com.runescape.io.Buffer;
 import com.runescape.util.StringUtils;
 
 /**
- * Previously known as RSInterface, which is a class
- * used to create and show game interfaces.
+ * Previously known as RSInterface, which is a class used to create and show
+ * game interfaces.
  */
 public final class Widget {
-	
+
 	public static final int OPTION_OK = 1;
 	public static final int OPTION_USABLE = 2;
 	public static final int OPTION_CLOSE = 3;
@@ -46,14 +47,14 @@ public final class Widget {
 		int defaultParentId = -1;
 		buffer.readUShort();
 		interfaceCache = new Widget[38000];
-		
+
 		while (buffer.currentPosition < buffer.payload.length) {
 			int interfaceId = buffer.readUShort();
 			if (interfaceId == 65535) {
 				defaultParentId = buffer.readUShort();
 				interfaceId = buffer.readUShort();
 			}
-			
+
 			Widget widget = interfaceCache[interfaceId] = new Widget();
 			widget.id = interfaceId;
 			widget.parent = defaultParentId;
@@ -128,7 +129,12 @@ public final class Widget {
 						String s1 = buffer.readString();
 						if (graphics != null && s1.length() > 0) {
 							int i5 = s1.lastIndexOf(",");
-							widget.sprites[j2] = method207(Integer.parseInt(s1.substring(i5 + 1)), graphics, s1.substring(0, i5));
+
+							int index = Integer.parseInt(s1.substring(i5 + 1));
+
+							String name = s1.substring(0, i5);
+
+							widget.sprites[j2] = getSprite(index, graphics, name);
 						}
 					}
 				}
@@ -150,7 +156,7 @@ public final class Widget {
 					widget.textDrawingAreas = textDrawingAreas[k2];
 				widget.textShadow = buffer.readUnsignedByte() == 1;
 			}
-			
+
 			if (widget.type == TYPE_TEXT) {
 				widget.defaultText = buffer.readString().replaceAll("RuneScape", "Astraeus");
 				if (widget.id == 19209) {
@@ -171,12 +177,14 @@ public final class Widget {
 				String name = buffer.readString();
 				if (graphics != null && name.length() > 0) {
 					int index = name.lastIndexOf(",");
-					widget.disabledSprite = method207(Integer.parseInt(name.substring(index + 1)), graphics, name.substring(0, index));
+					widget.disabledSprite = getSprite(Integer.parseInt(name.substring(index + 1)), graphics,
+							name.substring(0, index));
 				}
 				name = buffer.readString();
 				if (graphics != null && name.length() > 0) {
 					int index = name.lastIndexOf(",");
-					widget.enabledSprite = method207(Integer.parseInt(name.substring(index + 1)), graphics, name.substring(0, index));
+					widget.enabledSprite = getSprite(Integer.parseInt(name.substring(index + 1)), graphics,
+							name.substring(0, index));
 				}
 			}
 			if (widget.type == TYPE_MODEL) {
@@ -233,10 +241,11 @@ public final class Widget {
 			if (widget.type == 8)
 				widget.defaultText = buffer.readString();
 
-			if (widget.optionType == OPTION_OK || widget.optionType == OPTION_TOGGLE_SETTING || widget.optionType == OPTION_RESET_SETTING || widget.optionType == OPTION_CONTINUE) {
+			if (widget.optionType == OPTION_OK || widget.optionType == OPTION_TOGGLE_SETTING
+					|| widget.optionType == OPTION_RESET_SETTING || widget.optionType == OPTION_CONTINUE) {
 				widget.tooltip = buffer.readString();
 				if (widget.tooltip.length() == 0) {
-					//TODO
+					// TODO
 					if (widget.optionType == OPTION_OK)
 						widget.tooltip = "Ok";
 					if (widget.optionType == OPTION_TOGGLE_SETTING)
@@ -247,7 +256,7 @@ public final class Widget {
 						widget.tooltip = "Continue";
 				}
 			}
-		}		
+		}
 		interfaceLoader = interfaces;
 		clanChatTab(textDrawingAreas);
 		clanChatSetup(textDrawingAreas);
@@ -260,81 +269,81 @@ public final class Widget {
 		itemsOnDeathDATA(textDrawingAreas);
 		itemsKeptOnDeath(textDrawingAreas);
 		itemsOnDeath(textDrawingAreas);
-			
+
 		repositionModernSpells();
-	
-		spriteCache = null;		
+
+		spriteCache = null;
 	}
-	
+
 	public static void debugInterface() {
 		Widget widget = Widget.interfaceCache[12424];
 		for (int i = 0; i < widget.children.length; i++) {
-			System.out.println("childX: " + widget.childX[i] + " childY: " + widget.childY[i] + " index: " + i + " spellId: " + widget.children[i]);
+			System.out.println("childX: " + widget.childX[i] + " childY: " + widget.childY[i] + " index: " + i
+					+ " spellId: " + widget.children[i]);
 		}
 	}
-	
+
 	public static void repositionModernSpells() {
 
 		Widget widget = Widget.interfaceCache[12424];
 		for (int index = 0; index < widget.children.length; index++) {
-			
-			switch(widget.children[index]) {
-			
+
+			switch (widget.children[index]) {
+
 			case 1185:
 				widget.childX[33] = 148;
 				widget.childY[33] = 150;
 				break;
-			
-			case 1183: //wind wave
+
+			case 1183: // wind wave
 				widget.childX[31] = 76;
 				widget.childY[31] = 149;
 				break;
-			
+
 			case 1188: // earth wave
 				widget.childX[36] = 71;
 				widget.childY[36] = 172;
 				break;
-				
+
 			case 1543:
 				widget.childX[46] = 96;
 				widget.childY[46] = 173;
 				break;
-			
+
 			case 1193: // charge
 				widget.childX[41] = 49;
 				widget.childY[41] = 198;
 				break;
-			
+
 			case 12435: // tele other falador
 				widget.childX[54] = 74;
 				widget.childY[54] = 198;
 				break;
-				
-			case 12445: //teleblock
+
+			case 12445: // teleblock
 				widget.childX[55] = 99;
 				widget.childY[55] = 198;
 				break;
-				
+
 			case 6003: // lvl 6 enchant
 				widget.childX[57] = 122;
 				widget.childY[57] = 198;
 				break;
-				
-				// 150 x is end of the line
-				
+
+			// 150 x is end of the line
+
 			case 12455: // tele other camelot
 				widget.childX[56] = 147;
 				widget.childY[56] = 198;
-				break;				
-			}			
+				break;
+			}
 		}
 	}
-	
+
 	public static void itemsKeptOnDeath(GameFont[] tda) {
 		Widget Interface = addInterface(22030);
 		addSprite(22031, 1, "Interfaces/Death/SPRITE");
-		addHoverButton(22032, "Interfaces/Death/SPRITE", 2, 17, 17, "Close",
-				250, 22033, 3);
+		addHoverButton(22032, "Interfaces/Death/SPRITE", 2, 17, 17, "Close", 250, 22033, 3);
 		addHoveredButton(22033, "Interfaces/Death/SPRITE", 3, 17, 17, 22034);
 		addText(22035, "", tda, 0, 0xff981f, false, true);
 		addText(22036, "", tda, 0, 0xff981f, false, true);
@@ -353,17 +362,13 @@ public final class Widget {
 		setBounds(22039, 348, 146, 7, Interface);
 		setBounds(22040, 398, 297, 8, Interface);
 	}
-	
+
 	public static void clanChatTab(GameFont[] tda) {
 		Widget tab = addTabInterface(37128);
-		addHoverButton(37129, "/Clan Chat/SPRITE", 6, 72, 32,
-				"Join Chat", -1, 37130, 5);
-		addHoveredButton(37130, "/Clan Chat/SPRITE", 7, 72, 32,
-				37131);
-		addHoverButton(37132, "/Clan Chat/SPRITE", 6, 72, 32,
-				"Clan Setup", -1, 37133, 5);
-		addHoveredButton(37133, "/Clan Chat/SPRITE", 7, 72, 32,
-				37134);
+		addHoverButton(37129, "/Clan Chat/SPRITE", 6, 72, 32, "Join Chat", -1, 37130, 5);
+		addHoveredButton(37130, "/Clan Chat/SPRITE", 7, 72, 32, 37131);
+		addHoverButton(37132, "/Clan Chat/SPRITE", 6, 72, 32, "Clan Setup", -1, 37133, 5);
+		addHoveredButton(37133, "/Clan Chat/SPRITE", 7, 72, 32, 37134);
 		// addButton(37250, 0, "/Clan Chat/Lootshare", "Toggle lootshare");
 		addText(37135, "Join Chat", tda, 0, 0xff9b00, true, true);
 		addText(37136, "Clan Setup", tda, 0, 0xff9b00, true, true);
@@ -404,7 +409,7 @@ public final class Widget {
 		list.width = 174;
 		list.scrollMax = 1405;
 	}
-	
+
 	public static void clanChatSetup(GameFont[] tda) {
 		Widget rsi = addInterface(37300);
 		rsi.totalChildren(12 + 15);
@@ -420,21 +425,18 @@ public final class Widget {
 		addText(37303, "Clan Chat Setup", tda, 2, 0xFF981F, true, true);
 		rsi.child(count++, 37303, 256, 26);
 		/* Setup buttons */
-		String[] titles = { "Clan name:", "Who can enter chat?",
-				"Who can talk on chat?", "Who can kick on chat?",
+		String[] titles = { "Clan name:", "Who can enter chat?", "Who can talk on chat?", "Who can kick on chat?",
 				"Who can ban on chat?" };
-		String[] defaults = { "Chat Disabled", "Anyone", "Anyone", "Anyone",
-				"Anyone" };
-		String[] whoCan = { "Anyone", "Recruit", "Corporal", "Sergeant",
-				"Lieutenant", "Captain", "General", "Only Me" };
+		String[] defaults = { "Chat Disabled", "Anyone", "Anyone", "Anyone", "Anyone" };
+		String[] whoCan = { "Anyone", "Recruit", "Corporal", "Sergeant", "Lieutenant", "Captain", "General",
+				"Only Me" };
 		for (int index = 0, id = 37304, y = 50; index < titles.length; index++, id += 3, y += 40) {
 			addButton(id, 2, "/Clan Chat/sprite", "");
 			interfaceCache[id].optionType = 0;
 			if (index > 0) {
 				interfaceCache[id].actions = whoCan;
 			} else {
-				interfaceCache[id].actions = new String[] { "Edit Name",
-						"Delete Clan" };
+				interfaceCache[id].actions = new String[] { "Edit Name", "Delete Clan" };
 				;
 			}
 			addText(id + 1, titles[index], tda, 0, 0xFF981F, true, true);
@@ -457,8 +459,7 @@ public final class Widget {
 		Widget list = addInterface(id++);
 		int lines = 100;
 		list.totalChildren(lines);
-		String[] ranks = { "Remove", "Recruit", "Corporal", "Sergeant",
-				"Lieutenant", "Captain", "General", "Owner" };
+		String[] ranks = { "Remove", "Recruit", "Corporal", "Sergeant", "Lieutenant", "Captain", "General", "Owner" };
 		list.childY[0] = 2;
 		// System.out.println(id);
 		for (int index = id; index < id + lines; index++) {
@@ -466,8 +467,7 @@ public final class Widget {
 			interfaceCache[index].actions = ranks;
 			list.children[index - id] = index;
 			list.childX[index - id] = 2;
-			list.childY[index - id] = (index - id > 0 ? list.childY[index - id
-					- 1] + 14 : 0);
+			list.childY[index - id] = (index - id > 0 ? list.childY[index - id - 1] + 14 : 0);
 		}
 		id += lines;
 		list.width = 119;
@@ -484,8 +484,7 @@ public final class Widget {
 			interfaceCache[index].actions = new String[] { "Unban" };
 			list.children[index - id] = index;
 			list.childX[index - id] = 0;
-			list.childY[index - id] = (index - id > 0 ? list.childY[index - id
-					- 1] + 14 : 0);
+			list.childY[index - id] = (index - id > 0 ? list.childY[index - id - 1] + 14 : 0);
 		}
 		id += lines;
 		list.width = 119;
@@ -494,11 +493,9 @@ public final class Widget {
 		rsi.child(count++, list.id, 339, 92);
 		/* Table info text */
 		y = 47;
-		addText(id, "You can manage both ranked and banned members here.", tda,
-				0, 0xFF981F, true, true);
+		addText(id, "You can manage both ranked and banned members here.", tda, 0, 0xFF981F, true, true);
 		rsi.child(count++, id++, 337, y);
-		addText(id, "Right click on a name to edit the member.", tda, 0,
-				0xFF981F, true, true);
+		addText(id, "Right click on a name to edit the member.", tda, 0, 0xFF981F, true, true);
 		rsi.child(count++, id++, 337, y + 11);
 		/* Add ranked member button */
 		y = 75;
@@ -511,21 +508,17 @@ public final class Widget {
 		rsi.child(count++, id++, 459, y);
 
 		/* Hovers */
-		int[] clanSetup = { 37302, 37304, 37307, 37310, 37313, 37316, 37526,
-				37527 };
-		String[] names = { "close", "sprite", "sprite", "sprite", "sprite",
-				"sprite", "plus", "plus" };
+		int[] clanSetup = { 37302, 37304, 37307, 37310, 37313, 37316, 37526, 37527 };
+		String[] names = { "close", "sprite", "sprite", "sprite", "sprite", "sprite", "plus", "plus" };
 		int[] ids = { 1, 3, 3, 3, 3, 3, 1, 1 };
 		for (int index = 0; index < clanSetup.length; index++) {
 			rsi = interfaceCache[clanSetup[index]];
-			rsi.disabledSprite = imageLoader(ids[index],
-					"/Clan Chat/" + names[index]);
+			rsi.disabledSprite = imageLoader(ids[index], "/Clan Chat/" + names[index]);
 		}
 	}
-	
-	public static void addHoverText2(int id, String text, String[] tooltips,
-			GameFont tda[], int idx, int color, boolean center,
-			boolean textShadowed, int width) {
+
+	public static void addHoverText2(int id, String text, String[] tooltips, GameFont tda[], int idx, int color,
+			boolean center, boolean textShadowed, int width) {
 		Widget rsinterface = addInterface(id);
 		rsinterface.id = id;
 		rsinterface.parent = id;
@@ -547,9 +540,9 @@ public final class Widget {
 		rsinterface.secondaryHoverColor = 0;
 		rsinterface.tooltips = tooltips;
 	}
-	
-	public static void addText2(int id, String text, GameFont tda[],
-			int idx, int color, boolean center, boolean shadow) {
+
+	public static void addText2(int id, String text, GameFont tda[], int idx, int color, boolean center,
+			boolean shadow) {
 		Widget tab = addTabInterface(id);
 		tab.parent = id;
 		tab.id = id;
@@ -570,7 +563,7 @@ public final class Widget {
 		tab.defaultHoverColor = 0;
 		tab.secondaryHoverColor = 0;
 	}
-	
+
 	public static void addSprite(int i, int j, int k) {
 		Widget rsinterface = interfaceCache[i] = new Widget();
 		rsinterface.id = i;
@@ -582,14 +575,11 @@ public final class Widget {
 		rsinterface.height = 20;
 		rsinterface.opacity = 0;
 		rsinterface.mOverInterToTrigger = 52;
-		rsinterface.disabledSprite = imageLoader(j,
-				"Interfaces/Equipment/SPRITE");
-		rsinterface.enabledSprite = imageLoader(k,
-				"Interfaces/Equipment/SPRITE");
+		rsinterface.disabledSprite = imageLoader(j, "Interfaces/Equipment/SPRITE");
+		rsinterface.enabledSprite = imageLoader(k, "Interfaces/Equipment/SPRITE");
 	}
-	
-	public static void addText(int id, String text, GameFont wid[],
-			int idx, int color) {
+
+	public static void addText(int id, String text, GameFont wid[], int idx, int color) {
 		Widget rsinterface = addTabInterface(id);
 		rsinterface.id = id;
 		rsinterface.parent = id;
@@ -610,7 +600,7 @@ public final class Widget {
 		rsinterface.defaultHoverColor = 0;
 		rsinterface.secondaryHoverColor = 0;
 	}
-	
+
 	public static void itemsOnDeath(GameFont[] wid) {
 		Widget rsinterface = addInterface(17100);
 		addSprite(17101, 2, 2);
@@ -672,37 +662,27 @@ public final class Widget {
 		rsinterface.spritePaddingX = 6;
 		rsinterface.spritePaddingY = 5;
 	}
-	
+
 	public static void itemsOnDeathDATA(GameFont[] tda) {
 		Widget RSinterface = addInterface(17115);
 		addText(17109, "", 0xff981f, false, false, 0, tda, 0);
-		addText(17110, "The normal amount of", 0xff981f, false, false, 0, tda,
-				0);
-		addText(17111, "items kept is three.", 0xff981f, false, false, 0, tda,
-				0);
+		addText(17110, "The normal amount of", 0xff981f, false, false, 0, tda, 0);
+		addText(17111, "items kept is three.", 0xff981f, false, false, 0, tda, 0);
 		addText(17112, "", 0xff981f, false, false, 0, tda, 0);
 		addText(17113, "If you are skulled,", 0xff981f, false, false, 0, tda, 0);
-		addText(17114, "you will lose all your", 0xff981f, false, false, 0,
-				tda, 0);
-		addText(17117, "items, unless an item", 0xff981f, false, false, 0, tda,
-				0);
-		addText(17118, "protecting prayer is", 0xff981f, false, false, 0, tda,
-				0);
+		addText(17114, "you will lose all your", 0xff981f, false, false, 0, tda, 0);
+		addText(17117, "items, unless an item", 0xff981f, false, false, 0, tda, 0);
+		addText(17118, "protecting prayer is", 0xff981f, false, false, 0, tda, 0);
 		addText(17119, "used.", 0xff981f, false, false, 0, tda, 0);
 		addText(17120, "", 0xff981f, false, false, 0, tda, 0);
-		addText(17121, "Item protecting prayers", 0xff981f, false, false, 0,
-				tda, 0);
-		addText(17122, "will allow you to keep", 0xff981f, false, false, 0,
-				tda, 0);
+		addText(17121, "Item protecting prayers", 0xff981f, false, false, 0, tda, 0);
+		addText(17122, "will allow you to keep", 0xff981f, false, false, 0, tda, 0);
 		addText(17123, "one extra item.", 0xff981f, false, false, 0, tda, 0);
 		addText(17124, "", 0xff981f, false, false, 0, tda, 0);
 		addText(17125, "The items kept are", 0xff981f, false, false, 0, tda, 0);
-		addText(17126, "selected by the server", 0xff981f, false, false, 0,
-				tda, 0);
-		addText(17127, "and include the most", 0xff981f, false, false, 0, tda,
-				0);
-		addText(17128, "expensive items you're", 0xff981f, false, false, 0,
-				tda, 0);
+		addText(17126, "selected by the server", 0xff981f, false, false, 0, tda, 0);
+		addText(17127, "and include the most", 0xff981f, false, false, 0, tda, 0);
+		addText(17128, "expensive items you're", 0xff981f, false, false, 0, tda, 0);
 		addText(17129, "carrying.", 0xff981f, false, false, 0, tda, 0);
 		addText(17130, "", 0xff981f, false, false, 0, tda, 0);
 		RSinterface.parent = 17115;
@@ -779,7 +759,7 @@ public final class Widget {
 		RSinterface.childX[19] = 0;
 		RSinterface.childY[19] = 228;
 	}
-	
+
 	public static void equipmentTab(GameFont[] wid) {
 		Widget Interface = interfaceCache[1644];
 		addSprite(15101, 0, "Interfaces/Equipment/bl");// cheap hax
@@ -806,16 +786,13 @@ public final class Widget {
 		Interface.childY[26] = 0;
 		Interface = addInterface(27650);
 
-		addHoverButton(27651, "Interfaces/Equipment/BOX", 2, 40, 40,
-				"Price-checker", -1, 27652, 1);
+		addHoverButton(27651, "Interfaces/Equipment/BOX", 2, 40, 40, "Price-checker", -1, 27652, 1);
 		addHoveredButton(27652, "Interfaces/Equipment/HOVER", 2, 40, 40, 27658);
 
-		addHoverButton(27653, "Interfaces/Equipment/BOX", 1, 40, 40,
-				"Show Equipment Stats", -1, 27655, 1);
+		addHoverButton(27653, "Interfaces/Equipment/BOX", 1, 40, 40, "Show Equipment Stats", -1, 27655, 1);
 		addHoveredButton(27655, "Interfaces/Equipment/HOVER", 1, 40, 40, 27665);
 
-		addHoverButton(27654, "Interfaces/Equipment/BOX", 3, 40, 40,
-				"Show items kept on death", -1, 27657, 1);
+		addHoverButton(27654, "Interfaces/Equipment/BOX", 3, 40, 40, "Show items kept on death", -1, 27657, 1);
 		addHoveredButton(27657, "Interfaces/Equipment/HOVER", 3, 40, 40, 27666);
 
 		setChildren(6, Interface);
@@ -826,15 +803,14 @@ public final class Widget {
 		setBounds(27655, 23, 205, 4, Interface);
 		setBounds(27657, 127, 205, 5, Interface);
 	}
-	
+
 	public static void removeConfig(int id) {
 		@SuppressWarnings("unused")
 		Widget rsi = interfaceCache[id] = new Widget();
 	}
-	
-	public static void addHoverText(int id, String text, String tooltip,
-			GameFont tda[], int idx, int color, boolean centerText,
-			boolean textShadowed, int width) {
+
+	public static void addHoverText(int id, String text, String tooltip, GameFont tda[], int idx, int color,
+			boolean centerText, boolean textShadowed, int width) {
 		Widget rsinterface = addInterface(id);
 		rsinterface.id = id;
 		rsinterface.parent = id;
@@ -856,11 +832,10 @@ public final class Widget {
 		rsinterface.secondaryHoverColor = 0;
 		rsinterface.tooltip = tooltip;
 	}
-	
+
 	public static void equipmentScreen(GameFont[] wid) {
 		Widget Interface = Widget.interfaceCache[1644];
-		addButton(19144, 6, "Interfaces/Equipment/CUSTOM",
-				"Show Equipment Stats");
+		addButton(19144, 6, "Interfaces/Equipment/CUSTOM", "Show Equipment Stats");
 		removeSomething(19145);
 		removeSomething(19146);
 		removeSomething(19147);
@@ -870,8 +845,7 @@ public final class Widget {
 		setBounds(19147, 40, 210, 26, Interface);
 		Widget tab = addTabInterface(15106);
 		addSprite(15107, 7, "Interfaces/Equipment/CUSTOM");
-		addHoverButton(15210, "Interfaces/Equipment/CUSTOM", 8, 21, 21,
-				"Close", 250, 15211, 3);
+		addHoverButton(15210, "Interfaces/Equipment/CUSTOM", 8, 21, 21, "Close", 250, 15211, 3);
 		addHoveredButton(15211, "Interfaces/Equipment/CUSTOM", 9, 21, 21, 15212);
 		addText(15111, "Equip Your Character...", wid, 2, 0xe4a146, false, true);
 		addText(15112, "Attack bonus", wid, 2, 0xe4a146, false, true);
@@ -1051,8 +1025,8 @@ public final class Widget {
 
 	public static void addCacheSprite(int id, int sprite1, int sprite2, String sprites) {
 		Widget rsi = interfaceCache[id] = new Widget();
-		rsi.disabledSprite = method207(sprite1, interfaceLoader, sprites);
-		rsi.enabledSprite = method207(sprite2, interfaceLoader, sprites);
+		rsi.disabledSprite = getSprite(sprite1, interfaceLoader, sprites);
+		rsi.enabledSprite = getSprite(sprite2, interfaceLoader, sprites);
 		rsi.parent = id;
 		rsi.id = id;
 		rsi.type = 5;
@@ -1170,33 +1144,46 @@ public final class Widget {
 		 * str1y, str2x, str2y, str3x, str3y, str4x, str4y, img1x, img1y, img2x,
 		 * img2y, img3x, img3y, img4x, img4y, tda);
 		 */
-		Sidebar0a(1698, 1701, 7499, "Chop", "Hack", "Smash", "Block", 42, 75, 127, 75, 39, 128, 125, 128, 122, 103, 40, 50, 122, 50, 40, 103, tda);
-		Sidebar0a(2276, 2279, 7574, "Stab", "Lunge", "Slash", "Block", 43, 75, 124, 75, 41, 128, 125, 128, 122, 103, 40, 50, 122, 50, 40, 103, tda);
-		Sidebar0a(2423, 2426, 7599, "Chop", "Slash", "Lunge", "Block", 42, 75, 125, 75, 40, 128, 125, 128, 122, 103, 40, 50, 122, 50, 40, 103, tda);
-		Sidebar0a(3796, 3799, 7624, "Pound", "Pummel", "Spike", "Block", 39, 75, 121, 75, 41, 128, 125, 128, 122, 103, 40, 50, 122, 50, 40, 103, tda);
-		Sidebar0a(4679, 4682, 7674, "Lunge", "Swipe", "Pound", "Block", 40, 75, 124, 75, 39, 128, 125, 128, 122, 103, 40, 50, 122, 50, 40, 103, tda);
-		Sidebar0a(4705, 4708, 7699, "Chop", "Slash", "Smash", "Block", 42, 75, 125, 75, 39, 128, 125, 128, 122, 103, 40, 50, 122, 50, 40, 103, tda);
-		Sidebar0a(5570, 5573, 7724, "Spike", "Impale", "Smash", "Block", 41, 75, 123, 75, 39, 128, 125, 128, 122, 103, 40, 50, 122, 50, 40, 103, tda);
-		Sidebar0a(7762, 7765, 7800, "Chop", "Slash", "Lunge", "Block", 42, 75, 125, 75, 40, 128, 125, 128, 122, 103, 40, 50, 122, 50, 40, 103, tda);
+		Sidebar0a(1698, 1701, 7499, "Chop", "Hack", "Smash", "Block", 42, 75, 127, 75, 39, 128, 125, 128, 122, 103, 40,
+				50, 122, 50, 40, 103, tda);
+		Sidebar0a(2276, 2279, 7574, "Stab", "Lunge", "Slash", "Block", 43, 75, 124, 75, 41, 128, 125, 128, 122, 103, 40,
+				50, 122, 50, 40, 103, tda);
+		Sidebar0a(2423, 2426, 7599, "Chop", "Slash", "Lunge", "Block", 42, 75, 125, 75, 40, 128, 125, 128, 122, 103, 40,
+				50, 122, 50, 40, 103, tda);
+		Sidebar0a(3796, 3799, 7624, "Pound", "Pummel", "Spike", "Block", 39, 75, 121, 75, 41, 128, 125, 128, 122, 103,
+				40, 50, 122, 50, 40, 103, tda);
+		Sidebar0a(4679, 4682, 7674, "Lunge", "Swipe", "Pound", "Block", 40, 75, 124, 75, 39, 128, 125, 128, 122, 103,
+				40, 50, 122, 50, 40, 103, tda);
+		Sidebar0a(4705, 4708, 7699, "Chop", "Slash", "Smash", "Block", 42, 75, 125, 75, 39, 128, 125, 128, 122, 103, 40,
+				50, 122, 50, 40, 103, tda);
+		Sidebar0a(5570, 5573, 7724, "Spike", "Impale", "Smash", "Block", 41, 75, 123, 75, 39, 128, 125, 128, 122, 103,
+				40, 50, 122, 50, 40, 103, tda);
+		Sidebar0a(7762, 7765, 7800, "Chop", "Slash", "Lunge", "Block", 42, 75, 125, 75, 40, 128, 125, 128, 122, 103, 40,
+				50, 122, 50, 40, 103, tda);
 		/*
 		 * Sidebar0b(id, id2, "text1", "text2", "text3", "text4", str1x, str1y,
 		 * str2x, str2y, str3x, str3y, str4x, str4y, img1x, img1y, img2x, img2y,
 		 * img3x, img3y, img4x, img4y, tda);
 		 */
-		Sidebar0b(776, 779, "Reap", "Chop", "Jab", "Block", 42, 75, 126, 75, 46, 128, 125, 128, 122, 103, 122, 50, 40, 103, 40, 50, tda);
+		Sidebar0b(776, 779, "Reap", "Chop", "Jab", "Block", 42, 75, 126, 75, 46, 128, 125, 128, 122, 103, 122, 50, 40,
+				103, 40, 50, tda);
 		/*
 		 * Sidebar0c(id, id2, id3, "text1", "text2", "text3", str1x, str1y,
 		 * str2x, str2y, str3x, str3y, img1x, img1y, img2x, img2y, img3x, img3y,
 		 * tda);
 		 */
 		Sidebar0c(425, 428, 7474, "Pound", "Pummel", "Block", 39, 75, 121, 75, 42, 128, 40, 103, 40, 50, 122, 50, tda);
-		Sidebar0c(1749, 1752, 7524, "Accurate", "Rapid", "Longrange", 33, 75, 125, 75, 29, 128, 40, 103, 40, 50, 122, 50, tda);
-		Sidebar0c(1764, 1767, 7549, "Accurate", "Rapid", "Longrange", 33, 75, 125, 75, 29, 128, 40, 103, 40, 50, 122, 50, tda);
-		Sidebar0c(4446, 4449, 7649, "Accurate", "Rapid", "Longrange", 33, 75, 125, 75, 29, 128, 40, 103, 40, 50, 122, 50, tda);
+		Sidebar0c(1749, 1752, 7524, "Accurate", "Rapid", "Longrange", 33, 75, 125, 75, 29, 128, 40, 103, 40, 50, 122,
+				50, tda);
+		Sidebar0c(1764, 1767, 7549, "Accurate", "Rapid", "Longrange", 33, 75, 125, 75, 29, 128, 40, 103, 40, 50, 122,
+				50, tda);
+		Sidebar0c(4446, 4449, 7649, "Accurate", "Rapid", "Longrange", 33, 75, 125, 75, 29, 128, 40, 103, 40, 50, 122,
+				50, tda);
 		Sidebar0c(5855, 5857, 7749, "Punch", "Kick", "Block", 40, 75, 129, 75, 42, 128, 40, 50, 122, 50, 40, 103, tda);
 		Sidebar0c(6103, 6132, 6117, "Bash", "Pound", "Block", 43, 75, 124, 75, 42, 128, 40, 103, 40, 50, 122, 50, tda);
 		Sidebar0c(8460, 8463, 8493, "Jab", "Swipe", "Fend", 46, 75, 124, 75, 43, 128, 40, 103, 40, 50, 122, 50, tda);
-		Sidebar0c(12290, 12293, 12323, "Flick", "Lash", "Deflect", 44, 75, 127, 75, 36, 128, 40, 50, 40, 103, 122, 50, tda);
+		Sidebar0c(12290, 12293, 12323, "Flick", "Lash", "Deflect", 44, 75, 127, 75, 36, 128, 40, 50, 40, 103, 122, 50,
+				tda);
 		/*
 		 * Sidebar0d(id, id2, "text1", "text2", "text3", str1x, str1y, str2x,
 		 * str2y, str3x, str3y, img1x, img1y, img2x, img2y, img3x, img3y, tda);
@@ -1218,8 +1205,10 @@ public final class Widget {
 		rsi.textColor = 0xff981f;
 	}
 
-	public static void Sidebar0a(int id, int id2, int id3, String text1, String text2, String text3, String text4, int str1x, int str1y, int str2x, int str2y, int str3x, int str3y, int str4x, int str4y, int img1x, int img1y, int img2x, int img2y, int img3x, int img3y, int img4x, int img4y, GameFont[] tda) // 4button
-																																																																															// spec
+	public static void Sidebar0a(int id, int id2, int id3, String text1, String text2, String text3, String text4,
+			int str1x, int str1y, int str2x, int str2y, int str3x, int str3y, int str4x, int str4y, int img1x,
+			int img1y, int img2x, int img2y, int img3x, int img3y, int img4x, int img4y, GameFont[] tda) // 4button
+																											// spec
 	{
 		Widget rsi = addInterface(id); // 2423
 		/* addText(ID, "Text", tda, Size, Colour, Centered); */
@@ -1281,8 +1270,10 @@ public final class Widget {
 		}
 	}
 
-	public static void Sidebar0b(int id, int id2, String text1, String text2, String text3, String text4, int str1x, int str1y, int str2x, int str2y, int str3x, int str3y, int str4x, int str4y, int img1x, int img1y, int img2x, int img2y, int img3x, int img3y, int img4x, int img4y, GameFont[] tda) // 4button
-																																																																													// nospec
+	public static void Sidebar0b(int id, int id2, String text1, String text2, String text3, String text4, int str1x,
+			int str1y, int str2x, int str2y, int str3x, int str3y, int str4x, int str4y, int img1x, int img1y,
+			int img2x, int img2y, int img3x, int img3y, int img4x, int img4y, GameFont[] tda) // 4button
+																								// nospec
 	{
 		Widget rsi = addInterface(id); // 2423
 		/* addText(ID, "Text", tda, Size, Colour, Centered); */
@@ -1340,8 +1331,10 @@ public final class Widget {
 		}
 	}
 
-	public static void Sidebar0c(int id, int id2, int id3, String text1, String text2, String text3, int str1x, int str1y, int str2x, int str2y, int str3x, int str3y, int img1x, int img1y, int img2x, int img2y, int img3x, int img3y, GameFont[] tda) // 3button
-																																																																// spec
+	public static void Sidebar0c(int id, int id2, int id3, String text1, String text2, String text3, int str1x,
+			int str1y, int str2x, int str2y, int str3x, int str3y, int img1x, int img1y, int img2x, int img2y,
+			int img3x, int img3y, GameFont[] tda) // 3button
+													// spec
 	{
 		Widget rsi = addInterface(id); // 2423
 		/* addText(ID, "Text", tda, Size, Colour, Centered); */
@@ -1396,10 +1389,12 @@ public final class Widget {
 		}
 	}
 
-	public static void Sidebar0d(int id, int id2, String text1, String text2, String text3, int str1x, int str1y, int str2x, int str2y, int str3x, int str3y, int img1x, int img1y, int img2x, int img2y, int img3x, int img3y, GameFont[] tda) // 3button
-																																																														// nospec
-																																																														// (magic
-																																																														// intf)
+	public static void Sidebar0d(int id, int id2, String text1, String text2, String text3, int str1x, int str1y,
+			int str2x, int str2y, int str3x, int str3y, int img1x, int img1y, int img2x, int img2y, int img3x,
+			int img3y, GameFont[] tda) // 3button
+										// nospec
+										// (magic
+										// intf)
 	{
 		Widget rsi = addInterface(id); // 2423
 		/* addText(ID, "Text", tda, Size, Colour, Centered); */
@@ -1767,7 +1762,8 @@ public final class Widget {
 		rsi.scripts[0][2] = 0;
 	}
 
-	public static void addText(int id, String text, GameFont tda[], int idx, int color, boolean center, boolean shadow) {
+	public static void addText(int id, String text, GameFont tda[], int idx, int color, boolean center,
+			boolean shadow) {
 		Widget tab = addTabInterface(id);
 		tab.parent = id;
 		tab.id = id;
@@ -1824,7 +1820,8 @@ public final class Widget {
 		tab.tooltip = tooltip;
 	}
 
-	public static void addConfigButton(int ID, int pID, int bID, int bID2, String bName, int width, int height, String tT, int configID, int aT, int configFrame) {
+	public static void addConfigButton(int ID, int pID, int bID, int bID2, String bName, int width, int height,
+			String tT, int configID, int aT, int configFrame) {
 		Widget Tab = addTabInterface(ID);
 		Tab.parent = pID;
 		Tab.id = ID;
@@ -1863,8 +1860,9 @@ public final class Widget {
 		tab.height = 334;
 	}
 
-	public static void addHoverButton(int i, String imageName, int j, int width, int height, String text, int contentType, int hoverOver, int aT) {// hoverable
-																																					// button
+	public static void addHoverButton(int i, String imageName, int j, int width, int height, String text,
+			int contentType, int hoverOver, int aT) {// hoverable
+														// button
 		Widget tab = addTabInterface(i);
 		tab.id = i;
 		tab.parent = i;
@@ -2002,7 +2000,7 @@ public final class Widget {
 		return model;
 	}
 
-	private static Sprite method207(int i, Archive streamLoader, String s) {
+	private static Sprite getSprite(int i, Archive streamLoader, String s) {
 		long l = (StringUtils.hashSpriteName(s) << 8) + (long) i;
 		Sprite sprite = (Sprite) spriteCache.get(l);
 		if (sprite != null)
@@ -2054,7 +2052,7 @@ public final class Widget {
 	public boolean drawsTransparent;
 	public Sprite disabledSprite;
 	public int lastFrameTime;
-	
+
 	public Sprite sprites[];
 	public static Widget interfaceCache[];
 	public int scriptDefaults[];
@@ -2089,7 +2087,7 @@ public final class Widget {
 	public GameFont textDrawingAreas;
 	public int spritePaddingY;
 	public int scriptOperators[];
-	public int currentFrame;	
+	public int currentFrame;
 	public int spritesY[];
 	public String defaultText;
 	public boolean hasActions;
@@ -2101,7 +2099,7 @@ public final class Widget {
 	private int anInt256;
 	public int defaultAnimationId;
 	public int secondaryAnimationId;
-	
+
 	public boolean aBoolean259;
 	public Sprite enabledSprite;
 	public int scrollMax;
@@ -2194,7 +2192,8 @@ public final class Widget {
 		setBounds(30002, 0, 0, 0, Int);
 	}
 
-	public static void addLunar2RunesSmallBox(int ID, int r1, int r2, int ra1, int ra2, int rune1, int lvl, String name, String descr, GameFont[] TDA, int sid, int suo, int type) {
+	public static void addLunar2RunesSmallBox(int ID, int r1, int r2, int ra1, int ra2, int rune1, int lvl, String name,
+			String descr, GameFont[] TDA, int sid, int suo, int type) {
 		Widget rsInterface = addInterface(ID);
 		rsInterface.id = ID;
 		rsInterface.parent = 1151;
@@ -2251,7 +2250,8 @@ public final class Widget {
 		setBounds(ID + 6, 123, 66, 6, INT);
 	}
 
-	public static void addLunar3RunesSmallBox(int ID, int r1, int r2, int r3, int ra1, int ra2, int ra3, int rune1, int rune2, int lvl, String name, String descr, GameFont[] TDA, int sid, int suo, int type) {
+	public static void addLunar3RunesSmallBox(int ID, int r1, int r2, int r3, int ra1, int ra2, int ra3, int rune1,
+			int rune2, int lvl, String name, String descr, GameFont[] TDA, int sid, int suo, int type) {
 		Widget rsInterface = addInterface(ID);
 		rsInterface.id = ID;
 		rsInterface.parent = 1151;
@@ -2318,7 +2318,8 @@ public final class Widget {
 		setBounds(ID + 7, 142, 66, 8, INT);
 	}
 
-	public static void addLunar3RunesBigBox(int ID, int r1, int r2, int r3, int ra1, int ra2, int ra3, int rune1, int rune2, int lvl, String name, String descr, GameFont[] TDA, int sid, int suo, int type) {
+	public static void addLunar3RunesBigBox(int ID, int r1, int r2, int r3, int ra1, int ra2, int ra3, int rune1,
+			int rune2, int lvl, String name, String descr, GameFont[] TDA, int sid, int suo, int type) {
 		Widget rsInterface = addInterface(ID);
 		rsInterface.id = ID;
 		rsInterface.parent = 1151;
@@ -2385,7 +2386,8 @@ public final class Widget {
 		setBounds(ID + 7, 142, 79, 8, INT);
 	}
 
-	public static void addLunar3RunesLargeBox(int ID, int r1, int r2, int r3, int ra1, int ra2, int ra3, int rune1, int rune2, int lvl, String name, String descr, GameFont[] TDA, int sid, int suo, int type) {
+	public static void addLunar3RunesLargeBox(int ID, int r1, int r2, int r3, int ra1, int ra2, int ra3, int rune1,
+			int rune2, int lvl, String name, String descr, GameFont[] TDA, int sid, int suo, int type) {
 		Widget rsInterface = addInterface(ID);
 		rsInterface.id = ID;
 		rsInterface.parent = 1151;
@@ -2475,45 +2477,84 @@ public final class Widget {
 		drawRune(30014, 12, "Blood");
 		drawRune(30015, 13, "Soul");
 		drawRune(30016, 14, "Astral");
-		addLunar3RunesSmallBox(30017, 9075, 554, 555, 0, 4, 3, 30003, 30004, 64, "Bake Pie", "Bake pies without a stove", tda, 0, 16, 2);
-		addLunar2RunesSmallBox(30025, 9075, 557, 0, 7, 30006, 65, "Cure Plant", "Cure disease on farming patch", tda, 1, 4, 2);
-		addLunar3RunesBigBox(30032, 9075, 564, 558, 0, 0, 0, 30013, 30007, 65, "Monster Examine", "Detect the combat statistics of a\\nmonster", tda, 2, 2, 2);
-		addLunar3RunesSmallBox(30040, 9075, 564, 556, 0, 0, 1, 30013, 30005, 66, "NPC Contact", "Speak with varied NPCs", tda, 3, 0, 2);
-		addLunar3RunesSmallBox(30048, 9075, 563, 557, 0, 0, 9, 30012, 30006, 67, "Cure Other", "Cure poisoned players", tda, 4, 8, 2);
-		addLunar3RunesSmallBox(30056, 9075, 555, 554, 0, 2, 0, 30004, 30003, 67, "Humidify", "Fills certain vessels with water", tda, 5, 0, 5);
-		addLunar3RunesSmallBox(30064, 9075, 563, 557, 1, 0, 1, 30012, 30006, 68, "Moonclan Teleport", "Teleports you to moonclan island", tda, 6, 0, 5);
-		addLunar3RunesBigBox(30075, 9075, 563, 557, 1, 0, 3, 30012, 30006, 69, "Tele Group Moonclan", "Teleports players to Moonclan\\nisland", tda, 7, 0, 5);
-		addLunar3RunesSmallBox(30083, 9075, 563, 557, 1, 0, 5, 30012, 30006, 70, "Ourania Teleport", "Teleports you to ourania rune altar", tda, 8, 0, 5);
-		addLunar3RunesSmallBox(30091, 9075, 564, 563, 1, 1, 0, 30013, 30012, 70, "Cure Me", "Cures Poison", tda, 9, 0, 5);
-		addLunar2RunesSmallBox(30099, 9075, 557, 1, 1, 30006, 70, "Hunter Kit", "Get a kit of hunting gear", tda, 10, 0, 5);
-		addLunar3RunesSmallBox(30106, 9075, 563, 555, 1, 0, 0, 30012, 30004, 71, "Waterbirth Teleport", "Teleports you to Waterbirth island", tda, 11, 0, 5);
-		addLunar3RunesBigBox(30114, 9075, 563, 555, 1, 0, 4, 30012, 30004, 72, "Tele Group Waterbirth", "Teleports players to Waterbirth\\nisland", tda, 12, 0, 5);
-		addLunar3RunesSmallBox(30122, 9075, 564, 563, 1, 1, 1, 30013, 30012, 73, "Cure Group", "Cures Poison on players", tda, 13, 0, 5);
-		addLunar3RunesBigBox(30130, 9075, 564, 559, 1, 1, 4, 30013, 30008, 74, "Stat Spy", "Cast on another player to see their\\nskill levels", tda, 14, 8, 2);
-		addLunar3RunesBigBox(30138, 9075, 563, 554, 1, 1, 2, 30012, 30003, 74, "Barbarian Teleport", "Teleports you to the Barbarian\\noutpost", tda, 15, 0, 5);
-		addLunar3RunesBigBox(30146, 9075, 563, 554, 1, 1, 5, 30012, 30003, 75, "Tele Group Barbarian", "Teleports players to the Barbarian\\noutpost", tda, 16, 0, 5);
-		addLunar3RunesSmallBox(30154, 9075, 554, 556, 1, 5, 9, 30003, 30005, 76, "Superglass Make", "Make glass without a furnace", tda, 17, 16, 2);
-		addLunar3RunesSmallBox(30162, 9075, 563, 555, 1, 1, 3, 30012, 30004, 77, "Khazard Teleport", "Teleports you to Port khazard", tda, 18, 0, 5);
-		addLunar3RunesSmallBox(30170, 9075, 563, 555, 1, 1, 7, 30012, 30004, 78, "Tele Group Khazard", "Teleports players to Port khazard", tda, 19, 0, 5);
-		addLunar3RunesBigBox(30178, 9075, 564, 559, 1, 0, 4, 30013, 30008, 78, "Dream", "Take a rest and restore hitpoints 3\\n times faster", tda, 20, 0, 5);
-		addLunar3RunesSmallBox(30186, 9075, 557, 555, 1, 9, 4, 30006, 30004, 79, "String Jewellery", "String amulets without wool", tda, 21, 0, 5);
-		addLunar3RunesLargeBox(30194, 9075, 557, 555, 1, 9, 9, 30006, 30004, 80, "Stat Restore Pot\\nShare", "Share a potion with up to 4 nearby\\nplayers", tda, 22, 0, 5);
-		addLunar3RunesSmallBox(30202, 9075, 554, 555, 1, 6, 6, 30003, 30004, 81, "Magic Imbue", "Combine runes without a talisman", tda, 23, 0, 5);
-		addLunar3RunesBigBox(30210, 9075, 561, 557, 2, 1, 14, 30010, 30006, 82, "Fertile Soil", "Fertilise a farming patch with super\\ncompost", tda, 24, 4, 2);
-		addLunar3RunesBigBox(30218, 9075, 557, 555, 2, 11, 9, 30006, 30004, 83, "Boost Potion Share", "Shares a potion with up to 4 nearby\\nplayers", tda, 25, 0, 5);
-		addLunar3RunesSmallBox(30226, 9075, 563, 555, 2, 2, 9, 30012, 30004, 84, "Fishing Guild Teleport", "Teleports you to the fishing guild", tda, 26, 0, 5);
-		addLunar3RunesLargeBox(30234, 9075, 563, 555, 1, 2, 13, 30012, 30004, 85, "Tele Group Fishing Guild", "Teleports players to the Fishing\\nGuild", tda, 27, 0, 5);
-		addLunar3RunesSmallBox(30242, 9075, 557, 561, 2, 14, 0, 30006, 30010, 85, "Plank Make", "Turn Logs into planks", tda, 28, 16, 5);
-		addLunar3RunesSmallBox(30250, 9075, 563, 555, 2, 2, 9, 30012, 30004, 86, "Catherby Teleport", "Teleports you to Catherby", tda, 29, 0, 5);
-		addLunar3RunesSmallBox(30258, 9075, 563, 555, 2, 2, 14, 30012, 30004, 87, "Tele Group Catherby", "Teleports players to Catherby", tda, 30, 0, 5);
-		addLunar3RunesSmallBox(30266, 9075, 563, 555, 2, 2, 7, 30012, 30004, 88, "Ice Plateau Teleport", "Teleports you to Ice Plateau", tda, 31, 0, 5);
-		addLunar3RunesLargeBox(30274, 9075, 563, 555, 2, 2, 15, 30012, 30004, 89, "Tele Group Ice Plateau", "Teleports players to Ice Plateau", tda, 32, 0, 5);
-		addLunar3RunesBigBox(30282, 9075, 563, 561, 2, 1, 0, 30012, 30010, 90, "Energy Transfer", "Spend HP and SA energy to\\n give another SA and run energy", tda, 33, 8, 2);
-		addLunar3RunesBigBox(30290, 9075, 563, 565, 2, 2, 0, 30012, 30014, 91, "Heal Other", "Transfer up to 75% of hitpoints\\n to another player", tda, 34, 8, 2);
-		addLunar3RunesBigBox(30298, 9075, 560, 557, 2, 1, 9, 30009, 30006, 92, "Vengeance Other", "Allows another player to rebound\\ndamage to an opponent", tda, 35, 8, 2);
-		addLunar3RunesSmallBox(30306, 9075, 560, 557, 3, 1, 9, 30009, 30006, 93, "Vengeance", "Rebound damage to an opponent", tda, 36, 0, 5);
-		addLunar3RunesBigBox(30314, 9075, 565, 563, 3, 2, 5, 30014, 30012, 94, "Heal Group", "Transfer up to 75% of hitpoints\\n to a group", tda, 37, 0, 5);
-		addLunar3RunesBigBox(30322, 9075, 564, 563, 2, 1, 0, 30013, 30012, 95, "Spellbook Swap", "Change to another spellbook for 1\\nspell cast", tda, 38, 0, 5);
+		addLunar3RunesSmallBox(30017, 9075, 554, 555, 0, 4, 3, 30003, 30004, 64, "Bake Pie",
+				"Bake pies without a stove", tda, 0, 16, 2);
+		addLunar2RunesSmallBox(30025, 9075, 557, 0, 7, 30006, 65, "Cure Plant", "Cure disease on farming patch", tda, 1,
+				4, 2);
+		addLunar3RunesBigBox(30032, 9075, 564, 558, 0, 0, 0, 30013, 30007, 65, "Monster Examine",
+				"Detect the combat statistics of a\\nmonster", tda, 2, 2, 2);
+		addLunar3RunesSmallBox(30040, 9075, 564, 556, 0, 0, 1, 30013, 30005, 66, "NPC Contact",
+				"Speak with varied NPCs", tda, 3, 0, 2);
+		addLunar3RunesSmallBox(30048, 9075, 563, 557, 0, 0, 9, 30012, 30006, 67, "Cure Other", "Cure poisoned players",
+				tda, 4, 8, 2);
+		addLunar3RunesSmallBox(30056, 9075, 555, 554, 0, 2, 0, 30004, 30003, 67, "Humidify",
+				"Fills certain vessels with water", tda, 5, 0, 5);
+		addLunar3RunesSmallBox(30064, 9075, 563, 557, 1, 0, 1, 30012, 30006, 68, "Moonclan Teleport",
+				"Teleports you to moonclan island", tda, 6, 0, 5);
+		addLunar3RunesBigBox(30075, 9075, 563, 557, 1, 0, 3, 30012, 30006, 69, "Tele Group Moonclan",
+				"Teleports players to Moonclan\\nisland", tda, 7, 0, 5);
+		addLunar3RunesSmallBox(30083, 9075, 563, 557, 1, 0, 5, 30012, 30006, 70, "Ourania Teleport",
+				"Teleports you to ourania rune altar", tda, 8, 0, 5);
+		addLunar3RunesSmallBox(30091, 9075, 564, 563, 1, 1, 0, 30013, 30012, 70, "Cure Me", "Cures Poison", tda, 9, 0,
+				5);
+		addLunar2RunesSmallBox(30099, 9075, 557, 1, 1, 30006, 70, "Hunter Kit", "Get a kit of hunting gear", tda, 10, 0,
+				5);
+		addLunar3RunesSmallBox(30106, 9075, 563, 555, 1, 0, 0, 30012, 30004, 71, "Waterbirth Teleport",
+				"Teleports you to Waterbirth island", tda, 11, 0, 5);
+		addLunar3RunesBigBox(30114, 9075, 563, 555, 1, 0, 4, 30012, 30004, 72, "Tele Group Waterbirth",
+				"Teleports players to Waterbirth\\nisland", tda, 12, 0, 5);
+		addLunar3RunesSmallBox(30122, 9075, 564, 563, 1, 1, 1, 30013, 30012, 73, "Cure Group",
+				"Cures Poison on players", tda, 13, 0, 5);
+		addLunar3RunesBigBox(30130, 9075, 564, 559, 1, 1, 4, 30013, 30008, 74, "Stat Spy",
+				"Cast on another player to see their\\nskill levels", tda, 14, 8, 2);
+		addLunar3RunesBigBox(30138, 9075, 563, 554, 1, 1, 2, 30012, 30003, 74, "Barbarian Teleport",
+				"Teleports you to the Barbarian\\noutpost", tda, 15, 0, 5);
+		addLunar3RunesBigBox(30146, 9075, 563, 554, 1, 1, 5, 30012, 30003, 75, "Tele Group Barbarian",
+				"Teleports players to the Barbarian\\noutpost", tda, 16, 0, 5);
+		addLunar3RunesSmallBox(30154, 9075, 554, 556, 1, 5, 9, 30003, 30005, 76, "Superglass Make",
+				"Make glass without a furnace", tda, 17, 16, 2);
+		addLunar3RunesSmallBox(30162, 9075, 563, 555, 1, 1, 3, 30012, 30004, 77, "Khazard Teleport",
+				"Teleports you to Port khazard", tda, 18, 0, 5);
+		addLunar3RunesSmallBox(30170, 9075, 563, 555, 1, 1, 7, 30012, 30004, 78, "Tele Group Khazard",
+				"Teleports players to Port khazard", tda, 19, 0, 5);
+		addLunar3RunesBigBox(30178, 9075, 564, 559, 1, 0, 4, 30013, 30008, 78, "Dream",
+				"Take a rest and restore hitpoints 3\\n times faster", tda, 20, 0, 5);
+		addLunar3RunesSmallBox(30186, 9075, 557, 555, 1, 9, 4, 30006, 30004, 79, "String Jewellery",
+				"String amulets without wool", tda, 21, 0, 5);
+		addLunar3RunesLargeBox(30194, 9075, 557, 555, 1, 9, 9, 30006, 30004, 80, "Stat Restore Pot\\nShare",
+				"Share a potion with up to 4 nearby\\nplayers", tda, 22, 0, 5);
+		addLunar3RunesSmallBox(30202, 9075, 554, 555, 1, 6, 6, 30003, 30004, 81, "Magic Imbue",
+				"Combine runes without a talisman", tda, 23, 0, 5);
+		addLunar3RunesBigBox(30210, 9075, 561, 557, 2, 1, 14, 30010, 30006, 82, "Fertile Soil",
+				"Fertilise a farming patch with super\\ncompost", tda, 24, 4, 2);
+		addLunar3RunesBigBox(30218, 9075, 557, 555, 2, 11, 9, 30006, 30004, 83, "Boost Potion Share",
+				"Shares a potion with up to 4 nearby\\nplayers", tda, 25, 0, 5);
+		addLunar3RunesSmallBox(30226, 9075, 563, 555, 2, 2, 9, 30012, 30004, 84, "Fishing Guild Teleport",
+				"Teleports you to the fishing guild", tda, 26, 0, 5);
+		addLunar3RunesLargeBox(30234, 9075, 563, 555, 1, 2, 13, 30012, 30004, 85, "Tele Group Fishing Guild",
+				"Teleports players to the Fishing\\nGuild", tda, 27, 0, 5);
+		addLunar3RunesSmallBox(30242, 9075, 557, 561, 2, 14, 0, 30006, 30010, 85, "Plank Make", "Turn Logs into planks",
+				tda, 28, 16, 5);
+		addLunar3RunesSmallBox(30250, 9075, 563, 555, 2, 2, 9, 30012, 30004, 86, "Catherby Teleport",
+				"Teleports you to Catherby", tda, 29, 0, 5);
+		addLunar3RunesSmallBox(30258, 9075, 563, 555, 2, 2, 14, 30012, 30004, 87, "Tele Group Catherby",
+				"Teleports players to Catherby", tda, 30, 0, 5);
+		addLunar3RunesSmallBox(30266, 9075, 563, 555, 2, 2, 7, 30012, 30004, 88, "Ice Plateau Teleport",
+				"Teleports you to Ice Plateau", tda, 31, 0, 5);
+		addLunar3RunesLargeBox(30274, 9075, 563, 555, 2, 2, 15, 30012, 30004, 89, "Tele Group Ice Plateau",
+				"Teleports players to Ice Plateau", tda, 32, 0, 5);
+		addLunar3RunesBigBox(30282, 9075, 563, 561, 2, 1, 0, 30012, 30010, 90, "Energy Transfer",
+				"Spend HP and SA energy to\\n give another SA and run energy", tda, 33, 8, 2);
+		addLunar3RunesBigBox(30290, 9075, 563, 565, 2, 2, 0, 30012, 30014, 91, "Heal Other",
+				"Transfer up to 75% of hitpoints\\n to another player", tda, 34, 8, 2);
+		addLunar3RunesBigBox(30298, 9075, 560, 557, 2, 1, 9, 30009, 30006, 92, "Vengeance Other",
+				"Allows another player to rebound\\ndamage to an opponent", tda, 35, 8, 2);
+		addLunar3RunesSmallBox(30306, 9075, 560, 557, 3, 1, 9, 30009, 30006, 93, "Vengeance",
+				"Rebound damage to an opponent", tda, 36, 0, 5);
+		addLunar3RunesBigBox(30314, 9075, 565, 563, 3, 2, 5, 30014, 30012, 94, "Heal Group",
+				"Transfer up to 75% of hitpoints\\n to a group", tda, 37, 0, 5);
+		addLunar3RunesBigBox(30322, 9075, 564, 563, 2, 1, 0, 30013, 30012, 95, "Spellbook Swap",
+				"Change to another spellbook for 1\\nspell cast", tda, 38, 0, 5);
 	}
 
 	public static void constructLunar() {
@@ -2622,12 +2663,10 @@ public final class Widget {
 		RSInterface.height = H;
 		RSInterface.tooltip = S;
 	}
-	
-	public static void addConfigHover(int interfaceID, int actionType,
-			int hoverid, int spriteId, int spriteId2, String NAME, int Width,
-			int Height, int configFrame, int configId, String Tooltip,
-			int hoverId2, int hoverSpriteId, int hoverSpriteId2,
-			String hoverSpriteName, int hoverId3, String hoverDisabledText,
+
+	public static void addConfigHover(int interfaceID, int actionType, int hoverid, int spriteId, int spriteId2,
+			String NAME, int Width, int Height, int configFrame, int configId, String Tooltip, int hoverId2,
+			int hoverSpriteId, int hoverSpriteId2, String hoverSpriteName, int hoverId3, String hoverDisabledText,
 			String hoverEnabledText, int X, int Y) {
 		Widget hover = addTabInterface(interfaceID);
 		hover.id = interfaceID;
@@ -2659,17 +2698,14 @@ public final class Widget {
 		hover.height = 334;
 		hover.hoverOnly = true;
 		hover.hoverType = -1;
-		addSprites(hoverId2, hoverSpriteId, hoverSpriteId2, hoverSpriteName,
-				configId, configFrame);
-		addHoverBox(hoverId3, interfaceID, hoverDisabledText, hoverEnabledText,
-				configId, configFrame);
+		addSprites(hoverId2, hoverSpriteId, hoverSpriteId2, hoverSpriteName, configId, configFrame);
+		addHoverBox(hoverId3, interfaceID, hoverDisabledText, hoverEnabledText, configId, configFrame);
 		setChildren(2, hover);
 		setBounds(hoverId2, 15, 60, 0, hover);
 		setBounds(hoverId3, X, Y, 1, hover);
 	}
-	
-	public static void addSprites(int ID, int i, int i2, String name,
-			int configId, int configFrame) {
+
+	public static void addSprites(int ID, int i, int i2, String name, int configId, int configFrame) {
 		Widget Tab = addTabInterface(ID);
 		Tab.id = ID;
 		Tab.parent = ID;
@@ -2691,8 +2727,9 @@ public final class Widget {
 		Tab.disabledSprite = imageLoader(i, name);
 		Tab.enabledSprite = imageLoader(i2, name);
 	}
+
 	public String[] tooltips;
-	public boolean newScroller;	
+	public boolean newScroller;
 	@SuppressWarnings("unused")
 	private int mOverInterToTrigger;
 	@SuppressWarnings("unused")

@@ -2,8 +2,8 @@ package custom.seven.cache.graphics;
 import java.awt.Color;
 
 import com.runescape.cache.Archive;
+import com.runescape.cache.graphics.GameFont;
 import com.runescape.cache.graphics.Sprite;
-import com.runescape.cache.graphics.rsDrawingArea;
 import com.runescape.draw.Raster;
 import com.runescape.io.Buffer;
 
@@ -336,10 +336,10 @@ public class RSFont extends Raster {
                     }
                     int lineWidth = characterScreenWidths[character];
                     if (strikethroughColor != -1) {
-                        rsDrawingArea.drawHorizontalLine(drawX,drawY + (int) ((double) baseCharacterHeight * 0.69999999999999996D), lineWidth,strikethroughColor);
+                        GameFont.drawHorizontalLine(drawX,drawY + (int) ((double) baseCharacterHeight * 0.69999999999999996D), lineWidth,strikethroughColor);
                     }
                     if (underlineColor != -1) {
-            rsDrawingArea.drawHorizontalLine(drawX,drawY +  baseCharacterHeight, lineWidth,underlineColor);
+            GameFont.drawHorizontalLine(drawX,drawY +  baseCharacterHeight, lineWidth,underlineColor);
                     }
                     drawX += lineWidth;
                 }
@@ -470,12 +470,12 @@ public class RSFont extends Raster {
                     }
                     int i_109_ = characterScreenWidths[character];
                     if (strikethroughColor != -1) {
-                        rsDrawingArea.drawHorizontalLine(drawX,
+                        GameFont.drawHorizontalLine(drawX,
                                                          drawY + (int) ((double) baseCharacterHeight * 0.7),
                                                          i_109_, strikethroughColor);
                     }
                     if (underlineColor != -1) {
-                        rsDrawingArea.drawHorizontalLine(drawX, drawY + baseCharacterHeight, i_109_,
+                        GameFont.drawHorizontalLine(drawX, drawY + baseCharacterHeight, i_109_,
                                                          underlineColor);
                     }
                     drawX += i_109_;
