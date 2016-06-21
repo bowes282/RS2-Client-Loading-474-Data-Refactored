@@ -7,6 +7,8 @@ import java.net.*;
 import javax.sound.midi.*;
 import javax.sound.sampled.*;
 
+import com.runescape.Configuration;
+
 public final class SignLink implements Runnable {
 
 	public static final int clientversion = 317;
@@ -173,39 +175,36 @@ public final class SignLink implements Runnable {
 	}
 
 	public static String findcachedir() {
-		String os = System.getProperty("os.name").toLowerCase();
-		String cacheLoc = System.getProperty("user.home") + "/Cache/";
-		String local = "./Cache/";
-		// windows
-		if (os.indexOf("win") >= 0) {
-			File cacheDir = new File(local);
-			if (!cacheDir.exists()) {
-				cacheDir.mkdir();
-			}
-			return local;
-			// macintosh
-		} else if (os.indexOf("mac") >= 0) {
-			File cacheDirectory = new File(cacheLoc);
+		final String os = System.getProperty("os.name").toLowerCase();
+		
+		final String cacheLoc = Configuration.CACHE_DIRECTORY;
+		
+		final String local = "./Cache/";
+
+			final File cacheDirectory = new File(Configuration.CACHE_DIRECTORY);
+			
 			if (!cacheDirectory.exists()) {
-				cacheDirectory.mkdir();
+				return local;
 			}
-			return cacheLoc;
-			// linux
-		} else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0
-				|| os.indexOf("aix") > 0) {
-			File cacheDirectory = new File(cacheLoc);
-			if (!cacheDirectory.exists()) {
-				cacheDirectory.mkdir();
-			}
-			return cacheLoc;
-			// solaris
-		} else if (os.indexOf("sunos") >= 0) {
-			File cacheDirectory = new File(cacheLoc);
-			if (!cacheDirectory.exists()) {
-				cacheDirectory.mkdir();
-			}
-			return cacheLoc;
-		}
+				
+				// windows
+				if (os.indexOf("win") >= 0) {	
+					return cacheLoc;	
+					
+					// macintosh
+				} else if (os.indexOf("mac") >= 0) {					
+					return cacheLoc;
+					
+					// linux
+				} else if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0
+						|| os.indexOf("aix") > 0) {
+					return cacheLoc;
+					
+					// solaris
+				} else if (os.indexOf("sunos") >= 0) {
+					return cacheLoc;
+				}
+
 		return local;
 	}
 

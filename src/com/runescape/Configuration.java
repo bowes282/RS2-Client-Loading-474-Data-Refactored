@@ -1,5 +1,7 @@
 package com.runescape;
 
+import java.io.File;
+
 /**
  * The main configuration for the Client
  * @author 7Winds
@@ -15,6 +17,8 @@ public class Configuration {
 	 * The address of the server that the client will be connecting to
 	 */
 	public static String server_address = "localhost";
+	
+	public static final String CACHE_DIRECTORY = System.getProperty("user.home") + File.separator + "Cache/";
 	
 	/**
 	 * The port of the server that the client will be connecting to
