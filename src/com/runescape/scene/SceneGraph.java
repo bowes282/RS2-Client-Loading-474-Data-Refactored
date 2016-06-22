@@ -153,7 +153,7 @@ public final class SceneGraph {
 		if (class30_sub2_sub4 == null)
 			return;
 		GroundDecoration class49 = new GroundDecoration();
-		class49.aClass30_Sub2_Sub4_814 = class30_sub2_sub4;
+		class49.renderable = class30_sub2_sub4;
 		class49.anInt812 = j1 * 128 + 64;
 		class49.anInt813 = k * 128 + 64;
 		class49.anInt811 = j;
@@ -178,8 +178,8 @@ public final class SceneGraph {
 		Tile class30_sub3 = groundArray[l][i][i1];
 		if (class30_sub3 != null) {
 			for (int k1 = 0; k1 < class30_sub3.anInt1317; k1++)
-				if (class30_sub3.obj5Array[k1].aClass30_Sub2_Sub4_521 instanceof Model) {
-					int l1 = ((Model) class30_sub3.obj5Array[k1].aClass30_Sub2_Sub4_521).anInt1654;
+				if (class30_sub3.obj5Array[k1].renderable instanceof Model) {
+					int l1 = ((Model) class30_sub3.obj5Array[k1].renderable).anInt1654;
 					if (l1 > j1)
 						j1 = l1;
 				}
@@ -201,8 +201,8 @@ public final class SceneGraph {
 		object1.anInt274 = l * 128 + 64;
 		object1.anInt275 = k * 128 + 64;
 		object1.anInt273 = i1;
-		object1.aClass30_Sub2_Sub4_278 = class30_sub2_sub4;
-		object1.aClass30_Sub2_Sub4_279 = class30_sub2_sub4_1;
+		object1.renderable1 = class30_sub2_sub4;
+		object1.renderable2 = class30_sub2_sub4_1;
 		object1.orientation = i;
 		object1.orientation1 = j1;
 		for (int l1 = k1; l1 >= 0; l1--)
@@ -294,7 +294,7 @@ public final class SceneGraph {
 		class28.anInt519 = j1;
 		class28.anInt520 = k1;
 		class28.anInt518 = l1;
-		class28.aClass30_Sub2_Sub4_521 = class30_sub2_sub4;
+		class28.renderable = class30_sub2_sub4;
 		class28.anInt522 = i2;
 		class28.anInt523 = j;
 		class28.anInt525 = k;
@@ -425,7 +425,7 @@ public final class SceneGraph {
 		}
 	}
 
-	public Wall method296(int i, int j, int k) {
+	public Wall getWallObject(int i, int j, int k) {
 		Tile class30_sub3 = groundArray[i][j][k];
 		if (class30_sub3 == null)
 			return null;
@@ -433,7 +433,7 @@ public final class SceneGraph {
 			return class30_sub3.obj1;
 	}
 
-	public WallDecoration method297(int i, int k, int l) {
+	public WallDecoration getWallDecoration(int i, int k, int l) {
 		Tile class30_sub3 = groundArray[l][i][k];
 		if (class30_sub3 == null)
 			return null;
@@ -441,7 +441,7 @@ public final class SceneGraph {
 			return class30_sub3.obj2;
 	}
 
-	public GameObject method298(int i, int j, int k) {
+	public GameObject getTiledObject(int i, int j, int k) {
 		Tile class30_sub3 = groundArray[k][i][j];
 		if (class30_sub3 == null)
 			return null;
@@ -526,33 +526,33 @@ public final class SceneGraph {
 					Tile class30_sub3 = groundArray[l1][i2][j2];
 					if (class30_sub3 != null) {
 						Wall class10 = class30_sub3.obj1;
-						if (class10 != null && class10.aClass30_Sub2_Sub4_278 != null
-								&& class10.aClass30_Sub2_Sub4_278.aClass33Array1425 != null) {
-							method307(l1, 1, 1, i2, j2, (Model) class10.aClass30_Sub2_Sub4_278);
-							if (class10.aClass30_Sub2_Sub4_279 != null
-									&& class10.aClass30_Sub2_Sub4_279.aClass33Array1425 != null) {
-								method307(l1, 1, 1, i2, j2, (Model) class10.aClass30_Sub2_Sub4_279);
-								mergeNormals((Model) class10.aClass30_Sub2_Sub4_278,
-										(Model) class10.aClass30_Sub2_Sub4_279, 0, 0, 0, false);
-								((Model) class10.aClass30_Sub2_Sub4_279).method480(j, k1, k, i, i1);
+						if (class10 != null && class10.renderable1 != null
+								&& class10.renderable1.aClass33Array1425 != null) {
+							method307(l1, 1, 1, i2, j2, (Model) class10.renderable1);
+							if (class10.renderable2 != null
+									&& class10.renderable2.aClass33Array1425 != null) {
+								method307(l1, 1, 1, i2, j2, (Model) class10.renderable2);
+								mergeNormals((Model) class10.renderable1,
+										(Model) class10.renderable2, 0, 0, 0, false);
+								((Model) class10.renderable2).method480(j, k1, k, i, i1);
 							}
-							((Model) class10.aClass30_Sub2_Sub4_278).method480(j, k1, k, i, i1);
+							((Model) class10.renderable1).method480(j, k1, k, i, i1);
 						}
 						for (int k2 = 0; k2 < class30_sub3.anInt1317; k2++) {
 							GameObject class28 = class30_sub3.obj5Array[k2];
-							if (class28 != null && class28.aClass30_Sub2_Sub4_521 != null
-									&& class28.aClass30_Sub2_Sub4_521.aClass33Array1425 != null) {
+							if (class28 != null && class28.renderable != null
+									&& class28.renderable.aClass33Array1425 != null) {
 								method307(l1, (class28.anInt524 - class28.anInt523) + 1,
 										(class28.anInt526 - class28.anInt525) + 1, i2, j2,
-										(Model) class28.aClass30_Sub2_Sub4_521);
-								((Model) class28.aClass30_Sub2_Sub4_521).method480(j, k1, k, i, i1);
+										(Model) class28.renderable);
+								((Model) class28.renderable).method480(j, k1, k, i, i1);
 							}
 						}
 
 						GroundDecoration class49 = class30_sub3.obj3;
-						if (class49 != null && class49.aClass30_Sub2_Sub4_814.aClass33Array1425 != null) {
-							method306(i2, l1, (Model) class49.aClass30_Sub2_Sub4_814, j2);
-							((Model) class49.aClass30_Sub2_Sub4_814).method480(j, k1, k, i, i1);
+						if (class49 != null && class49.renderable.aClass33Array1425 != null) {
+							method306(i2, l1, (Model) class49.renderable, j2);
+							((Model) class49.renderable).method480(j, k1, k, i, i1);
 						}
 					}
 				}
@@ -567,26 +567,26 @@ public final class SceneGraph {
 		if (i < anInt438) {
 			Tile class30_sub3 = groundArray[j][i + 1][k];
 			if (class30_sub3 != null && class30_sub3.obj3 != null
-					&& class30_sub3.obj3.aClass30_Sub2_Sub4_814.aClass33Array1425 != null)
-				mergeNormals(model, (Model) class30_sub3.obj3.aClass30_Sub2_Sub4_814, 128, 0, 0, true);
+					&& class30_sub3.obj3.renderable.aClass33Array1425 != null)
+				mergeNormals(model, (Model) class30_sub3.obj3.renderable, 128, 0, 0, true);
 		}
 		if (k < anInt438) {
 			Tile class30_sub3_1 = groundArray[j][i][k + 1];
 			if (class30_sub3_1 != null && class30_sub3_1.obj3 != null
-					&& class30_sub3_1.obj3.aClass30_Sub2_Sub4_814.aClass33Array1425 != null)
-				mergeNormals(model, (Model) class30_sub3_1.obj3.aClass30_Sub2_Sub4_814, 0, 0, 128, true);
+					&& class30_sub3_1.obj3.renderable.aClass33Array1425 != null)
+				mergeNormals(model, (Model) class30_sub3_1.obj3.renderable, 0, 0, 128, true);
 		}
 		if (i < anInt438 && k < anInt439) {
 			Tile class30_sub3_2 = groundArray[j][i + 1][k + 1];
 			if (class30_sub3_2 != null && class30_sub3_2.obj3 != null
-					&& class30_sub3_2.obj3.aClass30_Sub2_Sub4_814.aClass33Array1425 != null)
-				mergeNormals(model, (Model) class30_sub3_2.obj3.aClass30_Sub2_Sub4_814, 128, 0, 128, true);
+					&& class30_sub3_2.obj3.renderable.aClass33Array1425 != null)
+				mergeNormals(model, (Model) class30_sub3_2.obj3.renderable, 128, 0, 128, true);
 		}
 		if (i < anInt438 && k > 0) {
 			Tile class30_sub3_3 = groundArray[j][i + 1][k - 1];
 			if (class30_sub3_3 != null && class30_sub3_3.obj3 != null
-					&& class30_sub3_3.obj3.aClass30_Sub2_Sub4_814.aClass33Array1425 != null)
-				mergeNormals(model, (Model) class30_sub3_3.obj3.aClass30_Sub2_Sub4_814, 128, 0, -128, true);
+					&& class30_sub3_3.obj3.renderable.aClass33Array1425 != null)
+				mergeNormals(model, (Model) class30_sub3_3.obj3.renderable, 128, 0, -128, true);
 		}
 	}
 
@@ -612,23 +612,23 @@ public final class SceneGraph {
 													+ anIntArrayArrayArray440[i][l][i1 + 1]
 													+ anIntArrayArrayArray440[i][l + 1][i1 + 1]) / 4;
 									Wall class10 = class30_sub3.obj1;
-									if (class10 != null && class10.aClass30_Sub2_Sub4_278 != null
-											&& class10.aClass30_Sub2_Sub4_278.aClass33Array1425 != null)
-										mergeNormals(model, (Model) class10.aClass30_Sub2_Sub4_278,
+									if (class10 != null && class10.renderable1 != null
+											&& class10.renderable1.aClass33Array1425 != null)
+										mergeNormals(model, (Model) class10.renderable1,
 												(k2 - l) * 128 + (1 - j) * 64, i3, (l2 - i1) * 128 + (1 - k) * 64,
 												flag);
-									if (class10 != null && class10.aClass30_Sub2_Sub4_279 != null
-											&& class10.aClass30_Sub2_Sub4_279.aClass33Array1425 != null)
-										mergeNormals(model, (Model) class10.aClass30_Sub2_Sub4_279,
+									if (class10 != null && class10.renderable2 != null
+											&& class10.renderable2.aClass33Array1425 != null)
+										mergeNormals(model, (Model) class10.renderable2,
 												(k2 - l) * 128 + (1 - j) * 64, i3, (l2 - i1) * 128 + (1 - k) * 64,
 												flag);
 									for (int j3 = 0; j3 < class30_sub3.anInt1317; j3++) {
 										GameObject class28 = class30_sub3.obj5Array[j3];
-										if (class28 != null && class28.aClass30_Sub2_Sub4_521 != null
-												&& class28.aClass30_Sub2_Sub4_521.aClass33Array1425 != null) {
+										if (class28 != null && class28.renderable != null
+												&& class28.renderable.aClass33Array1425 != null) {
 											int k3 = (class28.anInt524 - class28.anInt523) + 1;
 											int l3 = (class28.anInt526 - class28.anInt525) + 1;
-											mergeNormals(model, (Model) class28.aClass30_Sub2_Sub4_521,
+											mergeNormals(model, (Model) class28.renderable,
 													(class28.anInt523 - l) * 128 + (k3 - j) * 64, i3,
 													(class28.anInt525 - i1) * 128 + (l3 - k) * 64, flag);
 										}
@@ -1057,13 +1057,13 @@ public final class SceneGraph {
 								anInt461);
 					Wall class10 = class30_sub3_7.obj1;
 					if (class10 != null)
-						class10.aClass30_Sub2_Sub4_278.method443(0, anInt458, anInt459, anInt460, anInt461,
+						class10.renderable1.method443(0, anInt458, anInt459, anInt460, anInt461,
 								class10.anInt274 - anInt455, class10.anInt273 - anInt456, class10.anInt275 - anInt457,
 								class10.uid);
 					for (int i2 = 0; i2 < class30_sub3_7.anInt1317; i2++) {
 						GameObject class28 = class30_sub3_7.obj5Array[i2];
 						if (class28 != null)
-							class28.aClass30_Sub2_Sub4_521.method443(class28.anInt522, anInt458, anInt459, anInt460,
+							class28.renderable.method443(class28.anInt522, anInt458, anInt459, anInt460,
 									anInt461, class28.anInt519 - anInt455, class28.anInt518 - anInt456,
 									class28.anInt520 - anInt457, class28.uid);
 					}
@@ -1119,11 +1119,11 @@ public final class SceneGraph {
 						class30_sub3_1.anInt1325 = 0;
 					}
 					if ((class10_3.orientation & j2) != 0 && !method321(l, i, j, class10_3.orientation))
-						class10_3.aClass30_Sub2_Sub4_278.method443(0, anInt458, anInt459, anInt460, anInt461,
+						class10_3.renderable1.method443(0, anInt458, anInt459, anInt460, anInt461,
 								class10_3.anInt274 - anInt455, class10_3.anInt273 - anInt456,
 								class10_3.anInt275 - anInt457, class10_3.uid);
 					if ((class10_3.orientation1 & j2) != 0 && !method321(l, i, j, class10_3.orientation1))
-						class10_3.aClass30_Sub2_Sub4_279.method443(0, anInt458, anInt459, anInt460, anInt461,
+						class10_3.renderable2.method443(0, anInt458, anInt459, anInt460, anInt461,
 								class10_3.anInt274 - anInt455, class10_3.anInt273 - anInt456,
 								class10_3.anInt275 - anInt457, class10_3.uid);
 				}
@@ -1163,7 +1163,7 @@ public final class SceneGraph {
 				if (flag1) {
 					GroundDecoration class49 = class30_sub3_1.obj3;
 					if (class49 != null)
-						class49.aClass30_Sub2_Sub4_814.method443(0, anInt458, anInt459, anInt460, anInt461,
+						class49.renderable.method443(0, anInt458, anInt459, anInt460, anInt461,
 								class49.anInt812 - anInt455, class49.anInt811 - anInt456, class49.anInt813 - anInt457,
 								class49.uid);
 					GroundItem object4_1 = class30_sub3_1.obj4;
@@ -1219,7 +1219,7 @@ public final class SceneGraph {
 				if (flag2) {
 					Wall class10_1 = class30_sub3_1.obj1;
 					if (!method321(l, i, j, class10_1.orientation))
-						class10_1.aClass30_Sub2_Sub4_278.method443(0, anInt458, anInt459, anInt460, anInt461,
+						class10_1.renderable1.method443(0, anInt458, anInt459, anInt460, anInt461,
 								class10_1.anInt274 - anInt455, class10_1.anInt273 - anInt456,
 								class10_1.anInt275 - anInt457, class10_1.uid);
 					class30_sub3_1.anInt1325 = 0;
@@ -1297,8 +1297,8 @@ public final class SceneGraph {
 						GameObject class28_3 = aClass28Array462[l3];
 						class28_3.anInt528 = anInt448;
 						if (!method323(l, class28_3.anInt523, class28_3.anInt524, class28_3.anInt525,
-								class28_3.anInt526, class28_3.aClass30_Sub2_Sub4_521.modelHeight))
-							class28_3.aClass30_Sub2_Sub4_521.method443(class28_3.anInt522, anInt458, anInt459, anInt460,
+								class28_3.anInt526, class28_3.renderable.modelHeight))
+							class28_3.renderable.method443(class28_3.anInt522, anInt458, anInt459, anInt460,
 									anInt461, class28_3.anInt519 - anInt455, class28_3.anInt518 - anInt456,
 									class28_3.anInt520 - anInt457, class28_3.uid);
 						for (int k7 = class28_3.anInt523; k7 <= class28_3.anInt524; k7++) {
@@ -1396,12 +1396,12 @@ public final class SceneGraph {
 				if (class10_2 != null) {
 					if ((class10_2.orientation1 & class30_sub3_1.anInt1328) != 0
 							&& !method321(l, i, j, class10_2.orientation1))
-						class10_2.aClass30_Sub2_Sub4_279.method443(0, anInt458, anInt459, anInt460, anInt461,
+						class10_2.renderable2.method443(0, anInt458, anInt459, anInt460, anInt461,
 								class10_2.anInt274 - anInt455, class10_2.anInt273 - anInt456,
 								class10_2.anInt275 - anInt457, class10_2.uid);
 					if ((class10_2.orientation & class30_sub3_1.anInt1328) != 0
 							&& !method321(l, i, j, class10_2.orientation))
-						class10_2.aClass30_Sub2_Sub4_278.method443(0, anInt458, anInt459, anInt460, anInt461,
+						class10_2.renderable1.method443(0, anInt458, anInt459, anInt460, anInt461,
 								class10_2.anInt274 - anInt455, class10_2.anInt273 - anInt456,
 								class10_2.anInt275 - anInt457, class10_2.uid);
 				}

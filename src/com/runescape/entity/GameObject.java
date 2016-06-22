@@ -6,7 +6,7 @@ public final class GameObject {
 	public int anInt518;
 	public int anInt519;
 	public int anInt520;
-	public Renderable aClass30_Sub2_Sub4_521;
+	public Renderable renderable;
 	public int anInt522;
 	public int anInt523;
 	public int anInt524;

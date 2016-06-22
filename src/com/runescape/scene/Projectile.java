@@ -6,104 +6,104 @@ import com.runescape.entity.model.Model;
 
 public final class Projectile extends Renderable {
 	
-	public final int anInt1571;
-	public final int anInt1572;
-	private double aDouble1574;
-	private double aDouble1575;
-	private double aDouble1576;
-	private double aDouble1577;
+	public final int startCycle;
+	public final int stopCycle;
+	private double xIncrement;
+	private double yIncrement;
+	private double diagonalIncrement;
+	private double heightIncrement;
 	private double aDouble1578;
-	private boolean aBoolean1579;
-	private final int anInt1580;
-	private final int anInt1581;
-	private final int anInt1582;
-	public final int anInt1583;
-	public double aDouble1585;
-	public double aDouble1586;
-	public double aDouble1587;
-	private final int anInt1588;
-	private final int anInt1589;
-	public final int anInt1590;
-	private final Graphic aSpotAnim_1592;
-	private int anInt1593;
-	private int anInt1594;
-	public int anInt1595;
-	private int anInt1596;
-	public final int anInt1597;
+	private boolean started;
+	private final int projectileX;
+	private final int projectileY;
+	private final int startHeight;
+	public final int endHeight;
+	public double xPos;
+	public double yPos;
+	public double cnterHeight;
+	private final int initialSlope;
+	private final int initialDistance;
+	public final int target;
+	private final Graphic projectileGFX;
+	private int gfxStage;
+	private int gfxTickOfCurrentStage;
+	public int turnValue;
+	private int tiltAngle;
+	public final int projectileZ;
 
-	public void method455(int i, int j, int k, int l) {
-		if(!aBoolean1579) {
-			double d = l - anInt1580;
-			double d2 = j - anInt1581;
-			double d3 = Math.sqrt(d * d + d2 * d2);
-			aDouble1585 = (double)anInt1580 + (d * (double)anInt1589) / d3;
-			aDouble1586 = (double)anInt1581 + (d2 * (double)anInt1589) / d3;
-			aDouble1587 = anInt1582;
+	public void calculateIncrements(int currentCycle, int targetY, int targetCenterHeight, int targetX) {
+		if(!started) {
+			double xToGo = targetX - projectileX;
+			double yToGo = targetY - projectileY;
+			double distanceToGo = Math.sqrt(xToGo * xToGo + yToGo * yToGo);
+			xPos = (double) projectileX + (xToGo * (double) initialDistance) / distanceToGo;
+			yPos = (double) projectileY + (yToGo * (double) initialDistance) / distanceToGo;
+			cnterHeight = startHeight;
 		}
-		double d1 = (anInt1572 + 1) - i;
-		aDouble1574 = ((double)l - aDouble1585) / d1;
-		aDouble1575 = ((double)j - aDouble1586) / d1;
-		aDouble1576 = Math.sqrt(aDouble1574 * aDouble1574 + aDouble1575 * aDouble1575);
-		if(!aBoolean1579) {
-			aDouble1577 = -aDouble1576 * Math.tan((double)anInt1588 * 0.02454369D);
+		double cyclesLeft = (stopCycle + 1) - currentCycle;
+		xIncrement = ((double)targetX - xPos) / cyclesLeft;
+		yIncrement = ((double)targetY - yPos) / cyclesLeft;
+		diagonalIncrement = Math.sqrt(xIncrement * xIncrement + yIncrement * yIncrement);
+		if(!started) {
+            heightIncrement = -diagonalIncrement * Math.tan((double) initialSlope * 0.02454369D);
 		}
-		aDouble1578 = (2D * ((double)k - aDouble1587 - aDouble1577 * d1)) / (d1 * d1);
+		aDouble1578 = (2D * ((double)targetCenterHeight - cnterHeight - heightIncrement * cyclesLeft)) / (cyclesLeft * cyclesLeft);
 	}
 
 	public Model getRotatedModel() {
-		Model model = aSpotAnim_1592.getModel();
-		if(model == null) {
+		Model modelGfx = projectileGFX.getModel();
+		if(modelGfx == null) {
 			return null;
 		}
-		int j = -1;
-		if(aSpotAnim_1592.animationSequence != null) {
-			j = aSpotAnim_1592.animationSequence.primaryFrames[anInt1593];
+		int frameNumber = -1;
+		if(projectileGFX.animationSequence != null) {
+			frameNumber = projectileGFX.animationSequence.primaryFrames[gfxStage];
 		}
-		Model model_1 = new Model(true, Frame.isInvalid(j), false, model);
-		if(j != -1) {
-			model_1.skin();
-			model_1.apply(j);
-			model_1.faceGroups = null;
-			model_1.vertexGroups = null;
+		Model projectileModel = new Model(true, Frame.noAnimationInProgress(frameNumber), false, modelGfx);
+		if(frameNumber != -1) {
+			projectileModel.skin();
+			projectileModel.apply(frameNumber);
+			projectileModel.faceGroups = null;
+			projectileModel.vertexGroups = null;
 		}
-		if(aSpotAnim_1592.resizeXY != 128 || aSpotAnim_1592.resizeZ != 128) {
-			model_1.scale(aSpotAnim_1592.resizeXY, aSpotAnim_1592.resizeXY, aSpotAnim_1592.resizeZ);
+		if(projectileGFX.resizeXY != 128 || projectileGFX.resizeZ != 128) {
+			projectileModel.scale(projectileGFX.resizeXY, projectileGFX.resizeXY, projectileGFX.resizeZ);
 		}
-		model_1.method474(anInt1596);
-		model_1.light(64 + aSpotAnim_1592.modelBrightness, 850 + aSpotAnim_1592.modelShadow, -30, -50, -30, true);
-		return model_1;
+		projectileModel.leanOverX(tiltAngle);
+		projectileModel.light(64 + projectileGFX.modelBrightness, 850 + projectileGFX.modelShadow, -30, -50, -30, true);
+		return projectileModel;
 	}
 
-	public Projectile(int i, int j, int l, int i1, int j1, int k1,  int l1, int i2, int j2, int k2, int l2) {
-		aBoolean1579 = false;
-		aSpotAnim_1592 = Graphic.cache[l2];
-		anInt1597 = k1;
-		anInt1580 = j2;
-		anInt1581 = i2;
-		anInt1582 = l1;
-		anInt1571 = l;
-		anInt1572 = i1;
-		anInt1588 = i;
-		anInt1589 = j1;
-		anInt1590 = k2;
-		anInt1583 = j;
-		aBoolean1579 = false;
+	public Projectile(int initialSlope, int endHeight, int creationCycle, int destructionCycle, int initialDistance, int startZ,  int startHeight, int y, int x, int target, int gfxMoving) {
+		projectileGFX = Graphic.cache[gfxMoving];
+		projectileZ = startZ;
+		projectileX = x;
+		projectileY = y;
+		this.startHeight = startHeight;
+		startCycle = creationCycle;
+		stopCycle = destructionCycle;
+		this.initialSlope = initialSlope;
+		this.initialDistance = initialDistance;
+		this.target = target;
+		this.endHeight = endHeight;
+		started = false;
 	}
 
-	public void method456(int i) {
-		aBoolean1579 = true;
-		aDouble1585 += aDouble1574 * (double)i;
-		aDouble1586 += aDouble1575 * (double)i;
-		aDouble1587 += aDouble1577 * (double)i + 0.5D * aDouble1578 * (double)i * (double)i;
-		aDouble1577 += aDouble1578 * (double)i;
-		anInt1595 = (int)(Math.atan2(aDouble1574, aDouble1575) * 325.94900000000001D) + 1024 & 0x7ff;
-		anInt1596 = (int)(Math.atan2(aDouble1577, aDouble1576) * 325.94900000000001D) & 0x7ff;
-		if(aSpotAnim_1592.animationSequence != null) {
-			for(anInt1594 += i; anInt1594 > aSpotAnim_1592.animationSequence.duration(anInt1593);) {
-				anInt1594 -= aSpotAnim_1592.animationSequence.duration(anInt1593) + 1;
-				anInt1593++;
-				if(anInt1593 >= aSpotAnim_1592.animationSequence.frameCount) {
-					anInt1593 = 0;
+	public void progressCycles(int cyclesMissed) {
+		started = true;
+		xPos += xIncrement * (double)cyclesMissed;
+		yPos += yIncrement * (double)cyclesMissed;
+		cnterHeight += heightIncrement * (double)cyclesMissed + 0.5D * aDouble1578 * (double)cyclesMissed * (double)cyclesMissed;
+		heightIncrement += aDouble1578 * (double)cyclesMissed;
+        //noinspection SuspiciousNameCombination
+        turnValue = (int)(Math.atan2(xIncrement, yIncrement) * 325.94900000000001D) + 1024 & 0x7ff;
+		tiltAngle = (int)(Math.atan2(heightIncrement, diagonalIncrement) * 325.94900000000001D) & 0x7ff;
+		if(projectileGFX.animationSequence != null) {
+			for(gfxTickOfCurrentStage += cyclesMissed; gfxTickOfCurrentStage > projectileGFX.animationSequence.duration(gfxStage);) {
+				gfxTickOfCurrentStage -= projectileGFX.animationSequence.duration(gfxStage) + 1;
+				gfxStage++;
+				if(gfxStage >= projectileGFX.animationSequence.frameCount) {
+					gfxStage = 0;
 				}
 			}
 		}

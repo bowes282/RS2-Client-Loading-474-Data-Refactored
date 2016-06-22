@@ -9,24 +9,24 @@ public final class FrameBase {
       public final int[] transformationType;
       
       
-      public final int[][] labels;
+      public final int[][] skinList;
 
 	public FrameBase(Buffer stream) {	      
 		int count = stream.readUnsignedByte();
 		transformationType = new int[count];	
 		
-		labels = new int[count][];		
+		skinList = new int[count][];
 		for (int index = 0; index < count; index++) {		      
 			transformationType[index] = stream.readUnsignedByte();
 		}
 
 		for (int label = 0; label < count; label++) {		      
-			labels[label] = new int[stream.readUnsignedByte()];
+			skinList[label] = new int[stream.readUnsignedByte()];
 		}
 
 		for (int label = 0; label < count; label++) {     
-			for (int index = 0; index < labels[label].length; index++) {			      
-				labels[label][index] = stream.readUnsignedByte();
+			for (int index = 0; index < skinList[label].length; index++) {
+				skinList[label][index] = stream.readUnsignedByte();
 			}
 		}
 

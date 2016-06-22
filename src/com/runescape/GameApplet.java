@@ -277,7 +277,7 @@ public class GameApplet extends Applet implements Runnable, MouseListener,
 				scrollPos = Client.anInt1211 - 110;
 			if (Client.anInt1089 != scrollPos) {
 				Client.anInt1089 = scrollPos;
-				Client.inputTaken = true;
+				Client.updateChatbox = true;
 			}
 		}
 	}

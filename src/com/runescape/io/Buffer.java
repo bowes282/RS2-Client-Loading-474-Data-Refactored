@@ -11,17 +11,6 @@ import com.runescape.sign.SignLink;
 public final class Buffer extends Cacheable {
 
 	public static Buffer create() {
-		synchronized (nodeList) {
-			Buffer stream = null;
-			if (anInt1412 > 0) {
-				anInt1412--;
-				stream = (Buffer) nodeList.popHead();
-			}
-			if (stream != null) {
-				stream.currentPosition = 0;
-				return stream;
-			}
-		}
 		Buffer stream_1 = new Buffer();
 		stream_1.currentPosition = 0;
 		stream_1.payload = new byte[5000];
@@ -38,18 +27,17 @@ public final class Buffer extends Cacheable {
 
 	}
 
-	public final int readUTriByte(int value) {
+	public final int readUTriByte() {
 		currentPosition += 3;
 		return (0xff & payload[currentPosition - 3] << 16)
 				+ (0xff & payload[currentPosition - 2] << 8)
 				+ (0xff & payload[currentPosition - 1]);
 	}
 
-	private Buffer() {
-	}
+	private Buffer() {}
 
-	public Buffer(byte[] playLoad) {
-		payload = playLoad;
+	public Buffer(byte[] payload) {
+		this.payload = payload;
 		currentPosition = 0;
 	}
 
@@ -377,6 +365,4 @@ public final class Buffer extends Cacheable {
 			0x1ffffff, 0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 0x3fffffff,
 			0x7fffffff, -1 };
 	public IsaacCipher encryption;
-	private static int anInt1412;
-	private static final Deque nodeList = new Deque();
 }

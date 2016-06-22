@@ -19,7 +19,7 @@ public final class ObjectDefinition {
 	public int scaleZ;
 	public static final Model[] aModelArray741s = new Model[4];
 	public byte lightDiffusion;
-	public int width;
+	public int objectSizeX;
 	public int translateY;
 	public int minimapFunction;
 	public int[] originalModelColors;
@@ -34,7 +34,7 @@ public final class ObjectDefinition {
 	public int mapscene;
 	public int childrenIDs[];
 	public int supportItems;
-	public int length;
+	public int objectSizeY;
 	public boolean contouredGround;
 	public boolean occludes;
 	public static Client clientInstance;
@@ -144,8 +144,8 @@ public final class ObjectDefinition {
 		description = null;
 		modifiedModelColors = null;
 		originalModelColors = null;
-		width = 1;
-		length = 1;
+		objectSizeX = 1;
+		objectSizeY = 1;
 		solid = true;
 		impenetrable = true;
 		isInteractive = false;
@@ -342,7 +342,7 @@ public final class ObjectDefinition {
 		boolean flag2;
 		flag2 = translateX != 0 || translateY != 0 || translateZ != 0;
 		Model model_3 = new Model(modifiedModelColors == null,
-				Frame.isInvalid(k), l == 0 && k == -1 && !flag
+				Frame.noAnimationInProgress(k), l == 0 && k == -1 && !flag
 						&& !flag2, model);
 		if (k != -1) {
 			model_3.skin();
@@ -406,9 +406,9 @@ public final class ObjectDefinition {
 					}
 				}
 			} else if (opCode == 14)
-				width = buffer.readUnsignedByte();
+				objectSizeX = buffer.readUnsignedByte();
 			else if (opCode == 15)
-				length = buffer.readUnsignedByte();
+				objectSizeY = buffer.readUnsignedByte();
 			else if (opCode == 17)
 				solid = false;
 			else if (opCode == 18)

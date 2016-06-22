@@ -94,7 +94,7 @@ public final class Widget {
 			if (widget.type == TYPE_CONTAINER) {
 				widget.drawsTransparent = false;
 				widget.scrollMax = buffer.readUShort();
-				widget.hoverOnly = buffer.readUnsignedByte() == 1;
+				widget.invisible = buffer.readUnsignedByte() == 1;
 				int length = buffer.readUShort();
 				widget.children = new int[length];
 				widget.childX = new int[length];
@@ -970,7 +970,7 @@ public final class Widget {
 		Widget rsi = addInterface(id);
 		rsi.id = id;
 		rsi.type = 0;
-		rsi.hoverOnly = true;
+		rsi.invisible = true;
 		rsi.hoverType = -1;
 		addTooltipBox(id + 1, text);
 		rsi.totalChildren(1);
@@ -1887,7 +1887,7 @@ public final class Widget {
 		tab.optionType = 0;
 		tab.width = w;
 		tab.height = h;
-		tab.hoverOnly = true;
+		tab.invisible = true;
 		tab.opacity = 0;
 		tab.hoverType = -1;
 		tab.scrollMax = 0;
@@ -2034,7 +2034,7 @@ public final class Widget {
 			return null;
 		if (k == -1 && j == -1 && model.anIntArray1640 == null)
 			return model;
-		Model model_1 = new Model(true, Frame.isInvalid(k) & Frame.isInvalid(j), false, model);
+		Model model_1 = new Model(true, Frame.noAnimationInProgress(k) & Frame.noAnimationInProgress(j), false, model);
 		if (k != -1 || j != -1)
 			model_1.skin();
 		if (k != -1)
@@ -2107,7 +2107,7 @@ public final class Widget {
 	public int x;
 	private static final ReferenceCache models = new ReferenceCache(30);
 	public int anInt265;
-	public boolean hoverOnly;
+	public boolean invisible;
 	public int height;
 	public boolean textShadow;
 	public int modelZoom;
@@ -2185,7 +2185,7 @@ public final class Widget {
 		RSInterface.width = 20;
 		RSInterface.height = 20;
 		Widget Int = addInterface(30001);
-		Int.hoverOnly = true;
+		Int.invisible = true;
 		Int.hoverType = -1;
 		setChildren(1, Int);
 		addLunarSprite(30002, 0, "SPRITE");
@@ -2233,7 +2233,7 @@ public final class Widget {
 		rsInterface.enabledSprite = imageLoader(sid, "Lunar/LUNARON");
 		rsInterface.disabledSprite = imageLoader(sid, "Lunar/LUNAROFF");
 		Widget INT = addInterface(ID + 1);
-		INT.hoverOnly = true;
+		INT.invisible = true;
 		INT.hoverType = -1;
 		setChildren(7, INT);
 		addLunarSprite(ID + 2, 0, "Lunar/BOX");
@@ -2298,7 +2298,7 @@ public final class Widget {
 		rsInterface.enabledSprite = imageLoader(sid, "Lunar/LUNARON");
 		rsInterface.disabledSprite = imageLoader(sid, "Lunar/LUNAROFF");
 		Widget INT = addInterface(ID + 1);
-		INT.hoverOnly = true;
+		INT.invisible = true;
 		INT.hoverType = -1;
 		setChildren(9, INT);
 		addLunarSprite(ID + 2, 0, "Lunar/BOX");
@@ -2366,7 +2366,7 @@ public final class Widget {
 		rsInterface.enabledSprite = imageLoader(sid, "Lunar/LUNARON");
 		rsInterface.disabledSprite = imageLoader(sid, "Lunar/LUNAROFF");
 		Widget INT = addInterface(ID + 1);
-		INT.hoverOnly = true;
+		INT.invisible = true;
 		INT.hoverType = -1;
 		setChildren(9, INT);
 		addLunarSprite(ID + 2, 1, "Lunar/BOX");
@@ -2434,7 +2434,7 @@ public final class Widget {
 		rsInterface.enabledSprite = imageLoader(sid, "Lunar/LUNARON");
 		rsInterface.disabledSprite = imageLoader(sid, "Lunar/LUNAROFF");
 		Widget INT = addInterface(ID + 1);
-		INT.hoverOnly = true;
+		INT.invisible = true;
 		INT.hoverType = -1;
 		setChildren(9, INT);
 		addLunarSprite(ID + 2, 2, "Lunar/BOX");
@@ -2696,7 +2696,7 @@ public final class Widget {
 		hover.optionType = 0;
 		hover.width = 550;
 		hover.height = 334;
-		hover.hoverOnly = true;
+		hover.invisible = true;
 		hover.hoverType = -1;
 		addSprites(hoverId2, hoverSpriteId, hoverSpriteId2, hoverSpriteName, configId, configFrame);
 		addHoverBox(hoverId3, interfaceID, hoverDisabledText, hoverEnabledText, configId, configFrame);

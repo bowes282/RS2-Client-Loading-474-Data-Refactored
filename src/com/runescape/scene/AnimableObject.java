@@ -33,7 +33,7 @@ public final class AnimableObject extends Renderable {
 			return null;
 		}
 		int j = graphic.animationSequence.primaryFrames[anInt1569];
-		Model model_1 = new Model(true, Frame.isInvalid(j), false, model);
+		Model model_1 = new Model(true, Frame.noAnimationInProgress(j), false, model);
 		if(!aBoolean1567) {
 			model_1.skin();
 			model_1.apply(j);
