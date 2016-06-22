@@ -1,19 +1,25 @@
 package com.runescape.entity;
 
+/**
+ * ObjectGenre = 2
+ */
 public final class GameObject {
 
-	public int anInt517;
-	public int anInt518;
-	public int anInt519;
-	public int anInt520;
+	public int zLoc;
+	public int tileHeight;
+	public int xPos;
+	public int yPos;
 	public Renderable renderable;
-	public int anInt522;
-	public int anInt523;
-	public int anInt524;
-	public int anInt525;
-	public int anInt526;
+	public int turnValue;
+	public int xLocLow;
+	public int xLocHigh;
+	public int yLocHigh;
+	public int yLocLow;
 	public int anInt527;
 	public int anInt528;
 	public int uid;
-	public byte aByte530;
+    /**
+     * mask = (byte)((objectRotation << 6) + objectType);
+     */
+	public byte mask;
 }

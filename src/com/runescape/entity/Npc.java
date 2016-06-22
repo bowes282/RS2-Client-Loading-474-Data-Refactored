@@ -31,7 +31,7 @@ public final class Npc extends Mob {
 		Model animatedModel = getAnimatedModel();
 		if (animatedModel == null)
 			return null;
-		super.height = animatedModel.modelHeight;
+		super.height = animatedModel.modelBaseY;
 		if (super.graphic != -1 && super.currentAnimation != -1) {
 			Graphic spotAnim = Graphic.cache[super.graphic];
 			Model graphicModel = spotAnim.getModel();

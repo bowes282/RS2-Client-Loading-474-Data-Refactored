@@ -8,10 +8,10 @@ public final class GroundDecoration
 	{
 	}
 
-	public int anInt811;
-	public int anInt812;
-	public int anInt813;
+	public int zPos;
+	public int xPos;
+	public int yPos;
 	public Renderable renderable;
 	public int uid;
-	public byte aByte816;
+	public byte mask;
 }

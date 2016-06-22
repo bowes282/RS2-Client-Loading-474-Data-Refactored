@@ -2,18 +2,18 @@ package com.runescape.scene;
 
 public final class SceneCluster {
 
-	public int anInt787;
-	public int anInt788;
-	public int anInt789;
-	public int anInt790;
-	public int anInt791;
-	public int anInt792;
-	public int anInt793;
-	public int anInt794;
-	public int anInt795;
-	public int anInt796;
-	public int anInt797;
-	public int anInt798;
+	public int startXLoc;
+	public int endXLoc;
+	public int startYLoc;
+	public int endYLoc;
+	public int orientation;
+	public int startXPos;
+	public int endXPos;
+	public int startYPos;
+	public int endYPos;
+	public int startZPos;
+	public int endZPos;
+	public int cullDirection;
 	public int anInt799;
 	public int anInt800;
 	public int anInt801;

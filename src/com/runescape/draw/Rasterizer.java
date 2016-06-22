@@ -897,7 +897,7 @@ public final class Rasterizer extends Raster {
 		r2 = (r2 - r1) / n;
 		g2 = (g2 - g1) / n;
 		b2 = (b2 - b1) / n;
-		if (aBoolean1462) {
+		if (textureOutOfDrawingBounds) {
 			if (x2 > Raster.centerX) {
 				n -= x2 - Raster.centerX;
 				x2 = Raster.centerX;
@@ -913,7 +913,7 @@ public final class Rasterizer extends Raster {
 		if (x1 < x2) {
 			offset += x1;
 			depth += depth_slope * (float) x1;
-			if (anInt1465 == 0) {
+			if (alpha == 0) {
 				while (--n >= 0) {
 					if (true) {
 						dest[offset] = (r1 & 0xff0000) | (g1 >> 8 & 0xff00) | (b1 >> 16 & 0xff);
@@ -926,8 +926,8 @@ public final class Rasterizer extends Raster {
 					offset++;
 				}
 			} else {
-				final int a1 = anInt1465;
-				final int a2 = 256 - anInt1465;
+				final int a1 = alpha;
+				final int a2 = 256 - alpha;
 				int rgb;
 				int dst;
 				while (--n >= 0) {
@@ -1300,7 +1300,7 @@ public final class Rasterizer extends Raster {
 	private static void drawFlatTexturedScanline(int dest[], int dest_off, int loops, int start_x, int end_x,
 			float depth, float depth_slope) {
 		int rgb;
-		if (aBoolean1462) {
+		if (textureOutOfDrawingBounds) {
 			if (end_x > Raster.centerX)
 				end_x = Raster.centerX;
 			if (start_x < 0)
@@ -1311,7 +1311,7 @@ public final class Rasterizer extends Raster {
 		dest_off += start_x;
 		rgb = end_x - start_x >> 2;
 		depth += depth_slope * (float) start_x;
-		if (anInt1465 == 0) {
+		if (alpha == 0) {
 			while (--rgb >= 0) {
 				for (int i = 0; i < 4; i++) {
 					if (true) {
@@ -1332,8 +1332,8 @@ public final class Rasterizer extends Raster {
 			}
 			return;
 		}
-		int dest_alpha = anInt1465;
-		int src_alpha = 256 - anInt1465;
+		int dest_alpha = alpha;
+		int src_alpha = 256 - alpha;
 		loops = ((loops & 0xff00ff) * src_alpha >> 8 & 0xff00ff) + ((loops & 0xff00) * src_alpha >> 8 & 0xff00);
 		while (--rgb >= 0) {
 			for (int i = 0; i < 4; i++) {
@@ -1946,7 +1946,7 @@ public final class Rasterizer extends Raster {
 			return;
 		int j3;
 		int k3;
-		if (aBoolean1462) {
+		if (textureOutOfDrawingBounds) {
 			j3 = (gradient - shadeValue) / (end_x - start_x);
 			if (end_x > Raster.centerX)
 				end_x = Raster.centerX;
@@ -2572,7 +2572,7 @@ public final class Rasterizer extends Raster {
 	private static void drawDepthTriangleScanline(int dest_off, int start_x, int end_x, float depth,
 			float depth_slope) {
 		int dbl = Raster.depthBuffer.length;
-		if (aBoolean1462) {
+		if (textureOutOfDrawingBounds) {
 			if (end_x > Raster.width) {
 				end_x = Raster.width;
 			}
@@ -2586,7 +2586,7 @@ public final class Rasterizer extends Raster {
 		dest_off += start_x - 1;
 		int loops = end_x - start_x >> 2;
 		depth += depth_slope * (float) start_x;
-		if (anInt1465 == 0) {
+		if (alpha == 0) {
 			while (--loops >= 0) {
 				dest_off++;
 				if (dest_off >= 0 && dest_off < dbl && true) {
@@ -2650,10 +2650,10 @@ public final class Rasterizer extends Raster {
 	}
 
 	public static boolean lowMem = true;
-	public static boolean aBoolean1462;
+	public static boolean textureOutOfDrawingBounds;
 	private static boolean aBoolean1463;
 	public static boolean aBoolean1464 = true;
-	public static int anInt1465;
+	public static int alpha;
 	public static int originViewX;
 	public static int originViewY;	
 	private static int[] anIntArray1468;

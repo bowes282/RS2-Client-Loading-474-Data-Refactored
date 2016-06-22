@@ -22,7 +22,7 @@ public final class Player extends Mob {
             Model model = method452();
             if (model == null)
                   return null;
-            super.height = model.modelHeight;
+            super.height = model.modelBaseY;
             model.fits_on_single_square = true;
             if (aBoolean1699)
                   return model;
@@ -38,7 +38,7 @@ public final class Player extends Mob {
                         int cycle2 = super.anInt1522;
                         model_3.translate(0, -super.graphicHeight, 0);
                         model_3.skin();
-                        model_3.method470(
+                        model_3.applyAnimationFrame(
                                     spotAnim.animationSequence.primaryFrames[super.currentAnimation],
                                     nextFrame, cycle1, cycle2);
                         model_3.faceGroups = null;
@@ -314,13 +314,13 @@ public final class Player extends Mob {
             Model model_2 = Model.EMPTY_MODEL;
             model_2.method464(model_1, Frame.noAnimationInProgress(currentFrame) & Frame.noAnimationInProgress(i1));
             if (currentFrame != -1 && i1 != -1)
-                  model_2.method471(Animation.animations[super.emoteAnimation].interleaveOrder, i1,
+                  model_2.applyAnimationFrames(Animation.animations[super.emoteAnimation].interleaveOrder, i1,
                               currentFrame);
             else if (currentFrame != -1 && nextFrame != -1)
-                  model_2.method470(currentFrame, nextFrame, cycle1, cycle2);
+                  model_2.applyAnimationFrame(currentFrame, nextFrame, cycle1, cycle2);
             else
                   model_2.apply(currentFrame);
-            model_2.method466();
+            model_2.calculateDistances();
             model_2.faceGroups = null;
             model_2.vertexGroups = null;
             return model_2;
