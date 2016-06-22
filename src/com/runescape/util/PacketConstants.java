@@ -3,6 +3,7 @@ package com.runescape.util;
  * Class containing packet-related constants.
  * 
  * @author 7Winds
+ * @author TheChosenOne
  */
 public class PacketConstants {
 
@@ -10,7 +11,23 @@ public class PacketConstants {
 
 	public static final int DELETE_GROUND_ITEM = 64;
 
-	public static final int REMOVE_ITEM_MODEL = 156;
+	public static final int SEND_REMOVE_GROUND_ITEM = 156;
+
+	public static final int SEND_OBJECT = 151;
+
+	public static final int TRANSFORM_PLAYER_TO_OBJECT = 147;
+
+	public static final int SEND_REMOVE_OBJECT = 101;
+
+	public static final int SEND_PROJECTILE = 117;
+
+	public static final int ANIMATE_OBJECT = 160;
+
+	public static final int SEND_ALTER_GROUND_ITEM_COUNT = 84;
+
+	public static final int SEND_GROUND_ITEM = 44;
+
+	public static final int SEND_GFX = 4;
 
 	public static final int OPEN_WELCOME_SCREEN = 176;
 
@@ -37,6 +54,89 @@ public class PacketConstants {
 	public static final int LOGOUT = 109;
 
 	public static final int MOVE_COMPONENT = 70;
+
+    public static final int SEND_WALKABLE_INTERFACE = 208;
+
+    public static final int SEND_MINIMAP_STATE = 99;
+
+    public static final int SHOW_NPC_HEAD_ON_INTERFACE = 75;
+
+    public static final int SEND_MULTIPLE_MAP_PACKETS = 60;
+
+    public static final int SEND_EARTHQUAKE = 35;
+
+    public static final int SEND_PLAYER_OPTION = 104;
+
+    public static final int CLEAR_MINIMAP_FLAG = 78;
+
+    public static final int SEND_MESSAGE = 253;
+
+    public static final int STOP_ALL_ANIMATIONS = 1;
+
+    public static final int ADD_SET_FRIEND = 50;
+
+    public static final int SEND_RUN_ENERGY = 110;
+
+    public static final int SEND_HINT_ICON = 254;
+
+    public static final int SEND_DUO_INTERFACE = 248;
+
+    public static final int SEND_RECEIVED_PRIVATE_MESSAGE = 196;
+
+    public static final int SEND_REGION = 85;
+
+    public static final int SEND_ITEM_TO_INTERFACE = 246;
+
+    public static final int SHOW_HIDE_INTERFACE_CONTAINER = 171;
+
+    public static final int SEND_SOLO_NON_WALKABLE_SIDEBAR_INTERFACE = 142;
+
+    public static final int SET_INTERFACE_TEXT = 126;
+
+    public static final int UPDATE_CHAT_MODES = 206;
+
+    public static final int SEND_PLAYER_WEIGHT = 240;
+
+    public static final int SEND_MODEL_TO_INTERFACE = 8;
+
+    public static final int SEND_CHANGE_INTERFACE_COLOUR = 122;
+
+    public static final int SEND_UPDATE_ITEMS = 53;
+
+    public static final int SET_MODEL_INTERFACE_ZOOM = 230;
+
+    public static final int SET_FRIENDSERVER_STATUS = 221;
+
+    public static final int MOVE_CAMERA = 177;
+
+    public static final int SEND_INITIALIZE_PACKET = 249;
+
+    public static final int NPC_UPDATING = 65;
+
+    public static final int SEND_ENTER_AMOUNT = 27;
+
+    public static final int SEND_ENTER_NAME = 187;
+
+    public static final int SEND_NON_WALKABLE_INTERFACE = 97;
+
+    public static final int SEND_WALKABLE_CHATBOX_INTERFACE = 218;
+
+    public static final int SEND_CONFIG_INT = 87;
+
+    public static final int SEND_CONFIG_BYTE = 36;
+
+    public static final int SEND_MULTICOMBAT_ICON = 61;
+
+    public static final int SEND_ANIMATE_INTERFACE = 200;
+
+    public static final int CLOSE_INTERFACE = 219;
+
+    public static final int UPDATE_SPECIFIC_ITEM = 34;
+
+    public static final int SWITCH_TAB = 106;
+
+    public static final int SEND_NONWALKABLE_CHATBOX_INTERFACE = 164;
+
 
 	/**
 	 * region X = ShortA

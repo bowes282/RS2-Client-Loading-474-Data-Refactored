@@ -128,7 +128,7 @@ public final class Frame {
 		return null;
 	}
 
-	public static boolean isInvalid(int frame) {	      
+	public static boolean noAnimationInProgress(int frame) {
 		return frame == -1;		
 	}
 

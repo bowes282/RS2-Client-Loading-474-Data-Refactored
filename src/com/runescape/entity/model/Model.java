@@ -679,14 +679,14 @@ public class Model extends Renderable {
 				if (newformat < 15) {
 					kb[k14] = nc3.readUShort();
 					if (newformat >= 14)
-						N[k14] = nc3.readUTriByte(-1);
+						N[k14] = nc3.readUTriByte();
 					else
 						N[k14] = nc3.readUShort();
 					y[k14] = nc3.readUShort();
 				} else {
-					kb[k14] = nc3.readUTriByte(-1);
-					N[k14] = nc3.readUTriByte(-1);
-					y[k14] = nc3.readUTriByte(-1);
+					kb[k14] = nc3.readUTriByte();
+					N[k14] = nc3.readUTriByte();
+					y[k14] = nc3.readUTriByte();
 				}
 				gb[k14] = nc4.readSignedByte();
 				lb[k14] = nc5.readSignedByte();
@@ -697,15 +697,15 @@ public class Model extends Renderable {
 				texTrianglesPoint2[k14] = nc2.readUShort();
 				texTrianglesPoint3[k14] = nc2.readUShort();
 				if (newformat >= 15) {
-					kb[k14] = nc3.readUTriByte(-1);
-					N[k14] = nc3.readUTriByte(-1);
-					y[k14] = nc3.readUTriByte(-1);
+					kb[k14] = nc3.readUTriByte();
+					N[k14] = nc3.readUTriByte();
+					y[k14] = nc3.readUTriByte();
 				} else {
 					kb[k14] = nc3.readUShort();
 					if (newformat < 14)
 						N[k14] = nc3.readUShort();
 					else
-						N[k14] = nc3.readUTriByte(-1);
+						N[k14] = nc3.readUTriByte();
 					y[k14] = nc3.readUShort();
 				}
 				gb[k14] = nc4.readSignedByte();
@@ -723,12 +723,12 @@ public class Model extends Renderable {
 					if (newformat < 14)
 						N[k14] = nc3.readUShort();
 					else
-						N[k14] = nc3.readUTriByte(-1);
+						N[k14] = nc3.readUTriByte();
 					y[k14] = nc3.readUShort();
 				} else {
-					kb[k14] = nc3.readUTriByte(-1);
-					N[k14] = nc3.readUTriByte(-1);
-					y[k14] = nc3.readUTriByte(-1);
+					kb[k14] = nc3.readUTriByte();
+					N[k14] = nc3.readUTriByte();
+					y[k14] = nc3.readUTriByte();
 				}
 				gb[k14] = nc4.readSignedByte();
 				lb[k14] = nc5.readSignedByte();
@@ -1586,7 +1586,7 @@ public class Model extends Renderable {
 			if (nextAnimation == null || list2 == null) {
 				for (int i_263_ = 0; i_263_ < currentAnimation.transformationCount; i_263_++) {
 					int i_264_ = currentAnimation.transformationIndices[i_263_];
-					method472(list1.transformationType[i_264_], list1.labels[i_264_],
+					transformSkin(list1.transformationType[i_264_], list1.skinList[i_264_],
 							currentAnimation.transformX[i_263_],
 							currentAnimation.transformY[i_263_],
 							currentAnimation.transformZ[i_263_]);
@@ -1596,14 +1596,14 @@ public class Model extends Renderable {
 				for (int i1 = 0; i1 < currentAnimation.transformationCount; i1++) {
 					int n1 = currentAnimation.transformationIndices[i1];
 					int opcode = list1.transformationType[n1];
-					int[] skin = list1.labels[n1];
+					int[] skin = list1.skinList[n1];
 					int x = currentAnimation.transformX[i1];
 					int y = currentAnimation.transformY[i1];
 					int z = currentAnimation.transformZ[i1];
 					boolean found = false;
 					for (int i2 = 0; i2 < nextAnimation.transformationCount; i2++) {
 						int n2 = nextAnimation.transformationIndices[i2];
-						if (list2.labels[n2].equals(skin)) {
+						if (list2.skinList[n2].equals(skin)) {
 							if (opcode != 2) {
 								x += (nextAnimation.transformX[i2] - x) * cycle
 										/ end;
@@ -1665,29 +1665,29 @@ public class Model extends Renderable {
 							z = z + dz * cycle / end & 0xff;
 						}
 					}
-					method472(opcode, skin, x, y, z);
+					transformSkin(opcode, skin, x, y, z);
 				}
 			}
 		}
 	}
 
-	public void apply(int i) {
+	public void apply(int frameId) {
 		if (vertexGroups == null)
 			return;
-		if (i == -1)
+		if (frameId == -1)
 			return;
-		Frame class36 = Frame.method531(i);
-		if (class36 == null)
+		Frame animationFrame = Frame.method531(frameId);
+		if (animationFrame == null)
 			return;
-		FrameBase class18 = class36.base;
+		FrameBase class18 = animationFrame.base;
 		anInt1681 = 0;
 		anInt1682 = 0;
 		anInt1683 = 0;
-		for (int k = 0; k < class36.transformationCount; k++) {
-			int l = class36.transformationIndices[k];
-			method472(class18.transformationType[l], class18.labels[l],
-					class36.transformX[k], class36.transformY[k],
-					class36.transformZ[k]);
+		for (int k = 0; k < animationFrame.transformationCount; k++) {
+			int l = animationFrame.transformationIndices[k];
+            transformSkin(class18.transformationType[l], class18.skinList[l],
+					animationFrame.transformX[k], animationFrame.transformY[k],
+					animationFrame.transformZ[k]);
 		}
 
 	}
@@ -1718,8 +1718,8 @@ public class Model extends Renderable {
 			for (k1 = class36.transformationIndices[j1]; k1 > i1; i1 = ai[l++])
 				;
 			if (k1 != i1 || class18.transformationType[k1] == 0)
-				method472(class18.transformationType[k1],
-						class18.labels[k1],
+				transformSkin(class18.transformationType[k1],
+						class18.skinList[k1],
 						class36.transformX[j1], class36.transformY[j1],
 						class36.transformZ[j1]);
 		}
@@ -1734,8 +1734,8 @@ public class Model extends Renderable {
 			for (i2 = class36_1.transformationIndices[l1]; i2 > i1; i1 = ai[l++])
 				;
 			if (i2 == i1 || class18.transformationType[i2] == 0)
-				method472(class18.transformationType[i2],
-						class18.labels[i2],
+				transformSkin(class18.transformationType[i2],
+						class18.skinList[i2],
 						class36_1.transformX[l1],
 						class36_1.transformY[l1],
 						class36_1.transformZ[l1]);
@@ -1743,7 +1743,7 @@ public class Model extends Renderable {
 
 	}
 
-	private void method472(int i, int ai[], int j, int k, int l) {
+	private void transformSkin(int i, int ai[], int j, int k, int l) {
 
 		int i1 = ai.length;
 		if (i == 0) {
@@ -1885,7 +1885,7 @@ public class Model extends Renderable {
 		}
 	}
 
-	public void method474(int i) {
+	public void leanOverX(int i) {
 		int k = SINE[i];
 		int l = COSINE[i];
 		for (int i1 = 0; i1 < vertices; i1++) {

@@ -502,11 +502,11 @@ public final class MapRegion {
 				int j4;
 				int l4;
 				if (j1 == 1 || j1 == 3) {
-					j4 = definition.length;
-					l4 = definition.width;
+					j4 = definition.objectSizeY;
+					l4 = definition.objectSizeX;
 				} else {
-					j4 = definition.width;
-					l4 = definition.length;
+					j4 = definition.objectSizeX;
+					l4 = definition.objectSizeY;
 				}
 				if (scene.method284(key, config, mean, l4, ((Renderable) (obj1)), j4, z, i5, y, x) && definition.castsShadow) {
 					Model model;
@@ -530,7 +530,7 @@ public final class MapRegion {
 				}
 			}
 			if (definition.solid && class11 != null)
-				class11.method212(definition.impenetrable, definition.width, definition.length, x, y, j1);
+				class11.method212(definition.impenetrable, definition.objectSizeX, definition.objectSizeY, x, y, j1);
 			return;
 		}
 		if (type >= 12) {
@@ -543,7 +543,7 @@ public final class MapRegion {
 			if (type >= 12 && type <= 17 && type != 13 && z > 0)
 				anIntArrayArrayArray135[z][x][y] |= 0x924;
 			if (definition.solid && class11 != null)
-				class11.method212(definition.impenetrable, definition.width, definition.length, x, y, j1);
+				class11.method212(definition.impenetrable, definition.objectSizeX, definition.objectSizeY, x, y, j1);
 			return;
 		}
 		if (type == 0) {
@@ -668,7 +668,7 @@ public final class MapRegion {
 				obj6 = new SceneObject(id, j1, type, east, northEast, center, north, definition.animation, true);
 			scene.method284(key, config, mean, 1, ((Renderable) (obj6)), 1, z, 0, y, x);
 			if (definition.solid && class11 != null)
-				class11.method212(definition.impenetrable, definition.width, definition.length, x, y, j1);
+				class11.method212(definition.impenetrable, definition.objectSizeX, definition.objectSizeY, x, y, j1);
 			return;
 		}
 		if (definition.contouredGround)
@@ -922,8 +922,8 @@ public final class MapRegion {
 					int i4 = k3 & 3;
 					if (j3 == i && i3 >= i1 && i3 < i1 + 8 && l2 >= k && l2 < k + 8) {
 						ObjectDefinition class46 = ObjectDefinition.lookup(l1);
-						int j4 = j + ChunkUtil.method157(j1, class46.length, i3 & 7, l2 & 7, class46.width);
-						int k4 = k1 + ChunkUtil.method158(l2 & 7, class46.length, j1, class46.width, i3 & 7);
+						int j4 = j + ChunkUtil.method157(j1, class46.objectSizeY, i3 & 7, l2 & 7, class46.objectSizeX);
+						int k4 = k1 + ChunkUtil.method158(l2 & 7, class46.objectSizeY, j1, class46.objectSizeX, i3 & 7);
 						if (j4 > 0 && k4 > 0 && j4 < 103 && k4 < 103) {
 							int l4 = j3;
 							if ((tileFlags[1][j4][k4] & 2) == 2)
@@ -1016,16 +1016,16 @@ public final class MapRegion {
 				int k4;
 				int i5;
 				if (i == 1 || i == 3) {
-					k4 = class46.length;
-					i5 = class46.width;
+					k4 = class46.objectSizeY;
+					i5 = class46.objectSizeX;
 				} else {
-					k4 = class46.width;
-					i5 = class46.length;
+					k4 = class46.objectSizeX;
+					i5 = class46.objectSizeY;
 				}
 				worldController.method284(i3, byte1, l2, i5, ((Renderable) (obj1)), k4, k1, j5, j, i1);
 			}
 			if (class46.solid)
-				class11.method212(class46.impenetrable, class46.width, class46.length, i1, j, i);
+				class11.method212(class46.impenetrable, class46.objectSizeX, class46.objectSizeY, i1, j, i);
 			return;
 		}
 		if (k >= 12) {
@@ -1036,7 +1036,7 @@ public final class MapRegion {
 				obj2 = new SceneObject(j1, i, k, i2, j2, l1, k2, class46.animation, true);
 			worldController.method284(i3, byte1, l2, 1, ((Renderable) (obj2)), 1, k1, 0, j, i1);
 			if (class46.solid)
-				class11.method212(class46.impenetrable, class46.width, class46.length, i1, j, i);
+				class11.method212(class46.impenetrable, class46.objectSizeX, class46.objectSizeY, i1, j, i);
 			return;
 		}
 		if (k == 0) {
@@ -1096,7 +1096,7 @@ public final class MapRegion {
 				obj6 = new SceneObject(j1, i, k, i2, j2, l1, k2, class46.animation, true);
 			worldController.method284(i3, byte1, l2, 1, ((Renderable) (obj6)), 1, k1, 0, j, i1);
 			if (class46.solid)
-				class11.method212(class46.impenetrable, class46.width, class46.length, i1, j, i);
+				class11.method212(class46.impenetrable, class46.objectSizeX, class46.objectSizeY, i1, j, i);
 			return;
 		}
 		if (class46.contouredGround)

@@ -854,7 +854,7 @@ public class Client extends GameApplet {
                               if (menuScreenArea == 1) {
                               }
                               if (menuScreenArea == 2)
-                                    inputTaken = true;
+                                    updateChatbox = true;
                         }
                   }
                   if (j == 1) {
@@ -893,7 +893,7 @@ public class Client extends GameApplet {
                         if (menuScreenArea == 1) {
                         }
                         if (menuScreenArea == 2) {
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                   }
             } else {
@@ -1085,7 +1085,7 @@ public class Client extends GameApplet {
                         scene.method275(0);
                   for (int i5 = 0; i5 < 104; i5++) {
                         for (int i7 = 0; i7 < 104; i7++)
-                              spawnGroundItem(i5, i7);
+                              updateGroundItems(i5, i7);
 
                   }
 
@@ -1250,7 +1250,7 @@ public class Client extends GameApplet {
 
       }
 
-      private void spawnGroundItem(int i, int j) {
+      private void updateGroundItems(int i, int j) {
             Deque class19 = groundItems[plane][i][j];
             if (class19 == null) {
                   scene.method295(plane, i, j);
@@ -1263,7 +1263,7 @@ public class Client extends GameApplet {
                   ItemDefinition itemDef = ItemDefinition.lookup(item.ID);
                   int l = itemDef.value;
                   if (itemDef.stackable)
-                        l *= item.anInt1559 + 1;
+                        l *= item.itemCount + 1;
                   // notifyItemSpawn(item, i + baseX, j + baseY);
 
                   if (l > k) {
@@ -1287,7 +1287,7 @@ public class Client extends GameApplet {
 
             int i1 = i + (j << 7) + 0x60000000;
             scene.method281(i, i1, ((Renderable) (obj1)),
-                        method42(plane, j * 128 + 64, i * 128 + 64), ((Renderable) (obj2)),
+                        getCenterHeight(plane, j * 128 + 64, i * 128 + 64), ((Renderable) (obj2)),
                         ((Renderable) (obj)), plane, j);
       }
 
@@ -1308,7 +1308,7 @@ public class Client extends GameApplet {
                   }
                   if (!npc.desc.clickable)
                         k += 0x80000000;
-                  scene.method285(plane, npc.orientation, method42(plane, npc.y, npc.x), k, npc.y,
+                  scene.method285(plane, npc.orientation, getCenterHeight(plane, npc.y, npc.x), k, npc.y,
                               (npc.size - 1) * 64 + 60, npc.x, npc, npc.animationStretches);
             }
       }
@@ -1333,7 +1333,7 @@ public class Client extends GameApplet {
       private void buildInterfaceMenu(int i, Widget widget, int k, int l, int i1, int j1) {
             if (widget == null)
                   widget = Widget.interfaceCache[21356]; // newer prayer
-            if (widget.type != 0 || widget.children == null || widget.hoverOnly)
+            if (widget.type != 0 || widget.children == null || widget.invisible)
                   return;
             if (k < i || i1 < l || k > i + widget.width || i1 > l + widget.height)
                   return;
@@ -1840,34 +1840,34 @@ public class Client extends GameApplet {
             if (super.mouseX >= 5 && super.mouseX <= 61 && super.mouseY >= yOffset + 482
                         && super.mouseY <= yOffset + 503) {
                   cButtonHPos = 0;
-                  inputTaken = true;
+                  updateChatbox = true;
             } else if (super.mouseX >= 71 && super.mouseX <= 127 && super.mouseY >= yOffset + 482
                         && super.mouseY <= yOffset + 503) {
                   cButtonHPos = 1;
-                  inputTaken = true;
+                  updateChatbox = true;
             } else if (super.mouseX >= 137 && super.mouseX <= 193 && super.mouseY >= yOffset + 482
                         && super.mouseY <= yOffset + 503) {
                   cButtonHPos = 2;
-                  inputTaken = true;
+                  updateChatbox = true;
             } else if (super.mouseX >= 203 && super.mouseX <= 259 && super.mouseY >= yOffset + 482
                         && super.mouseY <= yOffset + 503) {
                   cButtonHPos = 3;
-                  inputTaken = true;
+                  updateChatbox = true;
             } else if (super.mouseX >= 269 && super.mouseX <= 325 && super.mouseY >= yOffset + 482
                         && super.mouseY <= yOffset + 503) {
                   cButtonHPos = 4;
-                  inputTaken = true;
+                  updateChatbox = true;
             } else if (super.mouseX >= 335 && super.mouseX <= 391 && super.mouseY >= yOffset + 482
                         && super.mouseY <= yOffset + 503) {
                   cButtonHPos = 5;
-                  inputTaken = true;
+                  updateChatbox = true;
             } else if (super.mouseX >= 404 && super.mouseX <= 515 && super.mouseY >= yOffset + 482
                         && super.mouseY <= yOffset + 503) {
                   cButtonHPos = 6;
-                  inputTaken = true;
+                  updateChatbox = true;
             } else {
                   cButtonHPos = -1;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (super.clickMode3 == 1) {
                   if (super.saveClickX >= 5 && super.saveClickX <= 61
@@ -1877,7 +1877,7 @@ public class Client extends GameApplet {
                               if (setChannel != 0) {
                                     cButtonCPos = 0;
                                     chatTypeView = 0;
-                                    inputTaken = true;
+                                    updateChatbox = true;
                                     setChannel = 0;
                               } else {
                                     showChatComponents = showChatComponents ? false : true;
@@ -1885,7 +1885,7 @@ public class Client extends GameApplet {
                         } else {
                               cButtonCPos = 0;
                               chatTypeView = 0;
-                              inputTaken = true;
+                              updateChatbox = true;
                               setChannel = 0;
                         }
                   } else if (super.saveClickX >= 71 && super.saveClickX <= 127
@@ -1895,7 +1895,7 @@ public class Client extends GameApplet {
                               if (setChannel != 1 && frameMode != ScreenMode.FIXED) {
                                     cButtonCPos = 1;
                                     chatTypeView = 5;
-                                    inputTaken = true;
+                                    updateChatbox = true;
                                     setChannel = 1;
                               } else {
                                     showChatComponents = showChatComponents ? false : true;
@@ -1903,7 +1903,7 @@ public class Client extends GameApplet {
                         } else {
                               cButtonCPos = 1;
                               chatTypeView = 5;
-                              inputTaken = true;
+                              updateChatbox = true;
                               setChannel = 1;
                         }
                   } else if (super.saveClickX >= 137 && super.saveClickX <= 193
@@ -1913,7 +1913,7 @@ public class Client extends GameApplet {
                               if (setChannel != 2 && frameMode != ScreenMode.FIXED) {
                                     cButtonCPos = 2;
                                     chatTypeView = 1;
-                                    inputTaken = true;
+                                    updateChatbox = true;
                                     setChannel = 2;
                               } else {
                                     showChatComponents = showChatComponents ? false : true;
@@ -1921,7 +1921,7 @@ public class Client extends GameApplet {
                         } else {
                               cButtonCPos = 2;
                               chatTypeView = 1;
-                              inputTaken = true;
+                              updateChatbox = true;
                               setChannel = 2;
                         }
                   } else if (super.saveClickX >= 203 && super.saveClickX <= 259
@@ -1931,7 +1931,7 @@ public class Client extends GameApplet {
                               if (setChannel != 3 && frameMode != ScreenMode.FIXED) {
                                     cButtonCPos = 3;
                                     chatTypeView = 2;
-                                    inputTaken = true;
+                                    updateChatbox = true;
                                     setChannel = 3;
                               } else {
                                     showChatComponents = showChatComponents ? false : true;
@@ -1939,7 +1939,7 @@ public class Client extends GameApplet {
                         } else {
                               cButtonCPos = 3;
                               chatTypeView = 2;
-                              inputTaken = true;
+                              updateChatbox = true;
                               setChannel = 3;
                         }
                   } else if (super.saveClickX >= 269 && super.saveClickX <= 325
@@ -1949,7 +1949,7 @@ public class Client extends GameApplet {
                               if (setChannel != 4 && frameMode != ScreenMode.FIXED) {
                                     cButtonCPos = 4;
                                     chatTypeView = 11;
-                                    inputTaken = true;
+                                    updateChatbox = true;
                                     setChannel = 4;
                               } else {
                                     showChatComponents = showChatComponents ? false : true;
@@ -1957,7 +1957,7 @@ public class Client extends GameApplet {
                         } else {
                               cButtonCPos = 4;
                               chatTypeView = 11;
-                              inputTaken = true;
+                              updateChatbox = true;
                               setChannel = 4;
                         }
                   } else if (super.saveClickX >= 335 && super.saveClickX <= 391
@@ -1967,7 +1967,7 @@ public class Client extends GameApplet {
                               if (setChannel != 5 && frameMode != ScreenMode.FIXED) {
                                     cButtonCPos = 5;
                                     chatTypeView = 3;
-                                    inputTaken = true;
+                                    updateChatbox = true;
                                     setChannel = 5;
                               } else {
                                     showChatComponents = showChatComponents ? false : true;
@@ -1975,7 +1975,7 @@ public class Client extends GameApplet {
                         } else {
                               cButtonCPos = 5;
                               chatTypeView = 3;
-                              inputTaken = true;
+                              updateChatbox = true;
                               setChannel = 5;
                         }
                   } else if (super.saveClickX >= 404 && super.saveClickX <= 515
@@ -2118,7 +2118,7 @@ public class Client extends GameApplet {
 
             if (parameter == 8) {
                   splitPrivateChat = state;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
 
             if (parameter == 9) {
@@ -2751,7 +2751,7 @@ public class Client extends GameApplet {
       private void calculateCameraPosition() {
             int i = x * 128 + 64;
             int j = y * 128 + 64;
-            int k = method42(plane, j, i) - height;
+            int k = getCenterHeight(plane, j, i) - height;
             if (xCameraPos < i) {
                   xCameraPos += speed + ((i - xCameraPos) * angle) / 1000;
                   if (xCameraPos > i)
@@ -2782,9 +2782,9 @@ public class Client extends GameApplet {
                   if (yCameraPos < j)
                         yCameraPos = j;
             }
-            i = anInt995 * 128 + 64;
-            j = anInt996 * 128 + 64;
-            k = method42(plane, j, i) - anInt997;
+            i = cinematicCamXViewpointLoc * 128 + 64;
+            j = cinematicCamYViewpointLoc * 128 + 64;
+            k = getCenterHeight(plane, j, i) - cinematicCamZViewpointLoc;
             int l = i - xCameraPos;
             int i1 = k - zCameraPos;
             int j1 = j - yCameraPos;
@@ -2796,12 +2796,12 @@ public class Client extends GameApplet {
             if (l1 > 383)
                   l1 = 383;
             if (yCameraCurve < l1) {
-                  yCameraCurve += anInt998 + ((l1 - yCameraCurve) * anInt999) / 1000;
+                  yCameraCurve += constCinematicCamRotationSpeed + ((l1 - yCameraCurve) * varCinematicCamRotationSpeedPromille) / 1000;
                   if (yCameraCurve > l1)
                         yCameraCurve = l1;
             }
             if (yCameraCurve > l1) {
-                  yCameraCurve -= anInt998 + ((yCameraCurve - l1) * anInt999) / 1000;
+                  yCameraCurve -= constCinematicCamRotationSpeed + ((yCameraCurve - l1) * varCinematicCamRotationSpeedPromille) / 1000;
                   if (yCameraCurve < l1)
                         yCameraCurve = l1;
             }
@@ -2811,11 +2811,11 @@ public class Client extends GameApplet {
             if (j2 < -1024)
                   j2 += 2048;
             if (j2 > 0) {
-                  xCameraCurve += anInt998 + (j2 * anInt999) / 1000;
+                  xCameraCurve += constCinematicCamRotationSpeed + (j2 * varCinematicCamRotationSpeedPromille) / 1000;
                   xCameraCurve &= 0x7ff;
             }
             if (j2 < 0) {
-                  xCameraCurve -= anInt998 + (-j2 * anInt999) / 1000;
+                  xCameraCurve -= constCinematicCamRotationSpeed + (-j2 * varCinematicCamRotationSpeedPromille) / 1000;
                   xCameraCurve &= 0x7ff;
             }
             int k2 = i2 - xCameraCurve;
@@ -2832,7 +2832,7 @@ public class Client extends GameApplet {
             int yPos = (-y + 4) + menuOffsetY;
             int w = menuWidth;
             int h = menuHeight + 1;
-            inputTaken = true;
+            updateChatbox = true;
             tabAreaAltered = true;
             int menuColor = 0x5d5447;
             Raster.drawPixels(h, yPos, xPos, menuColor, w);
@@ -2899,7 +2899,7 @@ public class Client extends GameApplet {
             throw new RuntimeException();
       }
 
-      private int method42(int z, int y, int x) {
+      private int getCenterHeight(int z, int y, int x) {
             int worldX = x >> 7;
             int worldY = y >> 7;
             if (worldX < 0 || worldY < 0 || worldX > 103 || worldY > 103)
@@ -3032,13 +3032,13 @@ public class Client extends GameApplet {
                   int k1 = player.y >> 7;
                   if (j1 < 0 || j1 >= 104 || k1 < 0 || k1 >= 104)
                         continue;
-                  if (player.aModel_1714 != null && tick >= player.anInt1707
-                              && tick < player.anInt1708) {
+                  if (player.objectModel != null && tick >= player.objectModelStart
+                              && tick < player.objectModelStop) {
                         player.aBoolean1699 = false;
-                        player.anInt1709 = method42(plane, player.y, player.x);
-                        scene.method286(plane, player.y, player, player.orientation, player.anInt1722,
-                                    player.x, player.anInt1709, player.anInt1719, player.anInt1721,
-                                    i1, player.anInt1720);
+                        player.anInt1709 = getCenterHeight(plane, player.y, player.x);
+                        scene.method286(plane, player.y, player, player.orientation, player.objectAnInt1722GreaterYLoc,
+                                    player.x, player.anInt1709, player.objectAnInt1719LesserXLoc, player.objectAnInt1721GreaterXLoc,
+                                    i1, player.objectAnInt1720LesserYLoc);
                         continue;
                   }
                   if ((player.x & 0x7f) == 64 && (player.y & 0x7f) == 64) {
@@ -3046,7 +3046,7 @@ public class Client extends GameApplet {
                               continue;
                         anIntArrayArray929[j1][k1] = anInt1265;
                   }
-                  player.anInt1709 = method42(plane, player.y, player.x);
+                  player.anInt1709 = getCenterHeight(plane, player.y, player.x);
                   scene.method285(plane, player.orientation, player.anInt1709, i1, player.y, 60,
                               player.x, player, player.animationStretches);
             }
@@ -3056,7 +3056,7 @@ public class Client extends GameApplet {
             int contentType = widget.contentType;
             if (friendServerStatus == 2) {
                   if (contentType == 201) {
-                        inputTaken = true;
+                        updateChatbox = true;
                         inputDialogState = 0;
                         messagePromptRaised = true;
                         promptInput = "";
@@ -3064,7 +3064,7 @@ public class Client extends GameApplet {
                         aString1121 = "Enter name of friend to add to list";
                   }
                   if (contentType == 202) {
-                        inputTaken = true;
+                        updateChatbox = true;
                         inputDialogState = 0;
                         messagePromptRaised = true;
                         promptInput = "";
@@ -3077,7 +3077,7 @@ public class Client extends GameApplet {
                   return true;
             }
             if (contentType == 501) {
-                  inputTaken = true;
+                  updateChatbox = true;
                   inputDialogState = 0;
                   messagePromptRaised = true;
                   promptInput = "";
@@ -3085,7 +3085,7 @@ public class Client extends GameApplet {
                   aString1121 = "Enter name of player to add to list";
             }
             if (contentType == 502) {
-                  inputTaken = true;
+                  updateChatbox = true;
                   inputDialogState = 0;
                   messagePromptRaised = true;
                   promptInput = "";
@@ -3093,7 +3093,7 @@ public class Client extends GameApplet {
                   aString1121 = "Enter name of player to delete from list";
             }
             if (contentType == 550) {
-                  inputTaken = true;
+                  updateChatbox = true;
                   inputDialogState = 0;
                   messagePromptRaised = true;
                   promptInput = "";
@@ -3191,10 +3191,10 @@ public class Client extends GameApplet {
                   if (class46_2.mapscene != -1) {
                         IndexedImage background_2 = mapScenes[class46_2.mapscene];
                         if (background_2 != null) {
-                              int i6 = (class46_2.width * 4 - background_2.width) / 2;
-                              int j6 = (class46_2.length * 4 - background_2.height) / 2;
+                              int i6 = (class46_2.objectSizeX * 4 - background_2.width) / 2;
+                              int j6 = (class46_2.objectSizeY * 4 - background_2.height) / 2;
                               background_2.draw(48 + l * 4 + i6,
-                                          48 + (104 - i - class46_2.length) * 4 + j6);
+                                          48 + (104 - i - class46_2.objectSizeY) * 4 + j6);
                         }
                   } else {
                         if (i3 == 0 || i3 == 2)
@@ -3262,10 +3262,10 @@ public class Client extends GameApplet {
                   if (class46_1.mapscene != -1) {
                         IndexedImage background_1 = mapScenes[class46_1.mapscene];
                         if (background_1 != null) {
-                              int j5 = (class46_1.width * 4 - background_1.width) / 2;
-                              int k5 = (class46_1.length * 4 - background_1.height) / 2;
+                              int j5 = (class46_1.objectSizeX * 4 - background_1.width) / 2;
+                              int k5 = (class46_1.objectSizeY * 4 - background_1.height) / 2;
                               background_1.draw(48 + l * 4 + j5,
-                                          48 + (104 - i - class46_1.length) * 4 + k5);
+                                          48 + (104 - i - class46_1.objectSizeY) * 4 + k5);
                         }
                   } else if (j3 == 9) {
                         int l4 = 0xeeeeee;
@@ -3293,10 +3293,10 @@ public class Client extends GameApplet {
                   if (class46.mapscene != -1) {
                         IndexedImage background = mapScenes[class46.mapscene];
                         if (background != null) {
-                              int i4 = (class46.width * 4 - background.width) / 2;
-                              int j4 = (class46.length * 4 - background.height) / 2;
+                              int i4 = (class46.objectSizeX * 4 - background.width) / 2;
+                              int j4 = (class46.objectSizeY * 4 - background.height) / 2;
                               background.draw(48 + l * 4 + i4,
-                                          48 + (104 - i - class46.length) * 4 + j4);
+                                          48 + (104 - i - class46.objectSizeY) * 4 + j4);
                         }
                   }
             }
@@ -3475,22 +3475,22 @@ public class Client extends GameApplet {
             for (Projectile class30_sub2_sub4_sub4 = (Projectile) projectiles
                         .reverseGetFirst(); class30_sub2_sub4_sub4 != null; class30_sub2_sub4_sub4 =
                                     (Projectile) projectiles.reverseGetNext())
-                  if (class30_sub2_sub4_sub4.anInt1597 != plane
-                              || tick > class30_sub2_sub4_sub4.anInt1572)
+                  if (class30_sub2_sub4_sub4.projectileZ != plane
+                              || tick > class30_sub2_sub4_sub4.stopCycle)
                         class30_sub2_sub4_sub4.unlink();
-                  else if (tick >= class30_sub2_sub4_sub4.anInt1571) {
-                        if (class30_sub2_sub4_sub4.anInt1590 > 0) {
-                              Npc npc = npcs[class30_sub2_sub4_sub4.anInt1590 - 1];
+                  else if (tick >= class30_sub2_sub4_sub4.startCycle) {
+                        if (class30_sub2_sub4_sub4.target > 0) {
+                              Npc npc = npcs[class30_sub2_sub4_sub4.target - 1];
                               if (npc != null && npc.x >= 0 && npc.x < 13312 && npc.y >= 0
                                           && npc.y < 13312)
-                                    class30_sub2_sub4_sub4.method455(tick, npc.y,
-                                                method42(class30_sub2_sub4_sub4.anInt1597, npc.y,
+                                    class30_sub2_sub4_sub4.calculateIncrements(tick, npc.y,
+                                                getCenterHeight(class30_sub2_sub4_sub4.projectileZ, npc.y,
                                                             npc.x)
-                                                            - class30_sub2_sub4_sub4.anInt1583,
+                                                            - class30_sub2_sub4_sub4.endHeight,
                                                 npc.x);
                         }
-                        if (class30_sub2_sub4_sub4.anInt1590 < 0) {
-                              int j = -class30_sub2_sub4_sub4.anInt1590 - 1;
+                        if (class30_sub2_sub4_sub4.target < 0) {
+                              int j = -class30_sub2_sub4_sub4.target - 1;
                               Player player;
                               if (j == localPlayerIndex)
                                     player = localPlayer;
@@ -3498,17 +3498,17 @@ public class Client extends GameApplet {
                                     player = players[j];
                               if (player != null && player.x >= 0 && player.x < 13312
                                           && player.y >= 0 && player.y < 13312)
-                                    class30_sub2_sub4_sub4.method455(tick, player.y,
-                                                method42(class30_sub2_sub4_sub4.anInt1597, player.y,
+                                    class30_sub2_sub4_sub4.calculateIncrements(tick, player.y,
+                                                getCenterHeight(class30_sub2_sub4_sub4.projectileZ, player.y,
                                                             player.x)
-                                                            - class30_sub2_sub4_sub4.anInt1583,
+                                                            - class30_sub2_sub4_sub4.endHeight,
                                                 player.x);
                         }
-                        class30_sub2_sub4_sub4.method456(tickDelta);
-                        scene.method285(plane, class30_sub2_sub4_sub4.anInt1595,
-                                    (int) class30_sub2_sub4_sub4.aDouble1587, -1,
-                                    (int) class30_sub2_sub4_sub4.aDouble1586, 60,
-                                    (int) class30_sub2_sub4_sub4.aDouble1585,
+                        class30_sub2_sub4_sub4.progressCycles(tickDelta);
+                        scene.method285(plane, class30_sub2_sub4_sub4.turnValue,
+                                    (int) class30_sub2_sub4_sub4.cnterHeight, -1,
+                                    (int) class30_sub2_sub4_sub4.yPos, 60,
+                                    (int) class30_sub2_sub4_sub4.xPos,
                                     class30_sub2_sub4_sub4, false);
                   }
 
@@ -3590,7 +3590,7 @@ public class Client extends GameApplet {
                         if (resource.dataType == 0) {
                               Model.method460(resource.buffer, resource.ID);
                               if (backDialogueId != -1)
-                                    inputTaken = true;
+                                    updateChatbox = true;
                         }
                         if (resource.dataType == 1) {
                               Frame.load(resource.buffer, resource.ID);
@@ -3697,8 +3697,8 @@ public class Client extends GameApplet {
       private void drawHeadIcon() {
             if (hintIconDrawType != 2)
                   return;
-            calcEntityScreenPos((hintIconX - regionBaseX << 7) + anInt937, anInt936 * 2,
-                        (hintIconY - regionBaseY << 7) + anInt938);
+            calcEntityScreenPos((hintIconX - regionBaseX << 7) + hintIconLocationArrowRelX, hintIconLocationArrowHeight * 2,
+                        (hintIconY - regionBaseY << 7) + hintIconLocationArrowRelY);
             if (spriteDrawX > -1 && tick % 20 < 10)
                   headIconsHint[0].drawSprite(spriteDrawX - 12, spriteDrawY - 28);
       }
@@ -3863,7 +3863,7 @@ public class Client extends GameApplet {
                         if (atInventoryInterfaceType == 2) {
                         }
                         if (atInventoryInterfaceType == 3)
-                              inputTaken = true;
+                              updateChatbox = true;
                         atInventoryInterfaceType = 0;
                   }
             }
@@ -3876,7 +3876,7 @@ public class Client extends GameApplet {
                         if (activeInterfaceType == 2) {
                         }
                         if (activeInterfaceType == 3)
-                              inputTaken = true;
+                              updateChatbox = true;
                         activeInterfaceType = 0;
                         if (aBoolean1242 && anInt989 >= 15) {
                               lastActiveInvInterface = -1;
@@ -3943,7 +3943,7 @@ public class Client extends GameApplet {
             }
             if (super.clickMode3 == 1 && clickToContinueString != null) {
                   clickToContinueString = null;
-                  inputTaken = true;
+                  updateChatbox = true;
                   super.clickMode3 = 0;
             }
             processMenuClick();
@@ -3954,7 +3954,7 @@ public class Client extends GameApplet {
                         anInt1501++;
                         if (anInt1501 == 0) {
                               if (anInt1500 != 0) {
-                                    inputTaken = true;
+                                    updateChatbox = true;
                               }
                               if (anInt1044 != 0) {
                               }
@@ -3968,7 +3968,7 @@ public class Client extends GameApplet {
             if (loadingStage == 2 && oriented)
                   calculateCameraPosition();
             for (int i1 = 0; i1 < 5; i1++)
-                  anIntArray1030[i1]++;
+                  quakeTimes[i1]++;
 
             manageTextInputs();
             super.idleTime++;
@@ -4122,11 +4122,11 @@ public class Client extends GameApplet {
                   int i2;
                   int j2;
                   if (l1 == 0 || l1 == 2) {
-                        i2 = class46.width;
-                        j2 = class46.length;
+                        i2 = class46.objectSizeX;
+                        j2 = class46.objectSizeY;
                   } else {
-                        i2 = class46.length;
-                        j2 = class46.width;
+                        i2 = class46.objectSizeY;
+                        j2 = class46.objectSizeX;
                   }
                   int k2 = class46.surroundings;
                   if (l1 != 0)
@@ -4388,12 +4388,12 @@ public class Client extends GameApplet {
 
             if (backDialogueId != -1) {
                   backDialogueId = -1;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
 
             if (inputDialogState != 0) {
                   inputDialogState = 0;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
 
             openInterfaceId = interfaceId;
@@ -4406,7 +4406,7 @@ public class Client extends GameApplet {
                   return;
             if (inputDialogState != 0) {
                   inputDialogState = 0;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             int first = firstMenuAction[id];
             int button = secondMenuAction[id];            
@@ -4582,7 +4582,7 @@ public class Client extends GameApplet {
                               case 19144:
                                     inventoryOverlay(15106, 3213);
                                     resetAnimation(15106);
-                                    inputTaken = true;
+                                    updateChatbox = true;
                                     break;
 
                               case 27653:
@@ -4894,90 +4894,90 @@ public class Client extends GameApplet {
             }
             if (action == 1003) {
                   clanChatMode = 2;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 1002) {
                   clanChatMode = 1;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 1001) {
                   clanChatMode = 0;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 1000) {
                   cButtonCPos = 4;
                   chatTypeView = 11;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 999) {
                   cButtonCPos = 0;
                   chatTypeView = 0;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 998) {
                   cButtonCPos = 1;
                   chatTypeView = 5;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 997) {
                   publicChatMode = 3;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 996) {
                   publicChatMode = 2;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 995) {
                   publicChatMode = 1;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 994) {
                   publicChatMode = 0;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 993) {
                   cButtonCPos = 2;
                   chatTypeView = 1;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 992) {
                   privateChatMode = 2;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 991) {
                   privateChatMode = 1;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 990) {
                   privateChatMode = 0;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 989) {
                   cButtonCPos = 3;
                   chatTypeView = 2;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 987) {
                   tradeMode = 2;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 986) {
                   tradeMode = 1;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 985) {
                   tradeMode = 0;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 984) {
                   cButtonCPos = 5;
                   chatTypeView = 3;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 980) {
                   cButtonCPos = 6;
                   chatTypeView = 4;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (action == 493) {
                   outgoing.writeOpCode(75);
@@ -5032,7 +5032,7 @@ public class Client extends GameApplet {
                   switch (button) {
                         case 37304:
                               if (first == 0) {
-                                    inputTaken = true;
+                                    updateChatbox = true;
                                     inputDialogState = 0;
                                     messagePromptRaised = true;
                                     promptInput = "";
@@ -5300,7 +5300,7 @@ public class Client extends GameApplet {
                         }
 
                         if (k3 != -1 && friendsNodeIDs[k3] > 0) {
-                              inputTaken = true;
+                              updateChatbox = true;
                               inputDialogState = 0;
                               messagePromptRaised = true;
                               promptInput = "";
@@ -5813,15 +5813,15 @@ public class Client extends GameApplet {
                   } else if (messagePromptRaised) {
                         if (j >= 32 && j <= 122 && promptInput.length() < 80) {
                               promptInput += (char) j;
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         if (j == 8 && promptInput.length() > 0) {
                               promptInput = promptInput.substring(0, promptInput.length() - 1);
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         if (j == 13 || j == 10) {
                               messagePromptRaised = false;
-                              inputTaken = true;
+                              updateChatbox = true;
                               if (friendsListAction == 1) {
                                     long l = StringUtils.encodeBase37(promptInput);
                                     addFriend(l);
@@ -5865,12 +5865,12 @@ public class Client extends GameApplet {
                   } else if (inputDialogState == 1) {
                         if (j >= 48 && j <= 57 && amountOrNameInput.length() < 10) {
                               amountOrNameInput += (char) j;
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         if (j == 8 && amountOrNameInput.length() > 0) {
                               amountOrNameInput = amountOrNameInput.substring(0,
                                           amountOrNameInput.length() - 1);
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         if (j == 13 || j == 10) {
                               if (amountOrNameInput.length() > 0) {
@@ -5883,17 +5883,17 @@ public class Client extends GameApplet {
                                     outgoing.writeInt(i1);
                               }
                               inputDialogState = 0;
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                   } else if (inputDialogState == 2) {
                         if (j >= 32 && j <= 122 && amountOrNameInput.length() < 12) {
                               amountOrNameInput += (char) j;
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         if (j == 8 && amountOrNameInput.length() > 0) {
                               amountOrNameInput = amountOrNameInput.substring(0,
                                           amountOrNameInput.length() - 1);
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         if (j == 13 || j == 10) {
                               if (amountOrNameInput.length() > 0) {
@@ -5901,16 +5901,16 @@ public class Client extends GameApplet {
                                     outgoing.writeLong(StringUtils.encodeBase37(amountOrNameInput));
                               }
                               inputDialogState = 0;
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                   } else if (backDialogueId == -1) {
                         if (j >= 32 && j <= 122 && inputString.length() < 80) {
                               inputString += (char) j;
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         if (j == 8 && inputString.length() > 0) {
                               inputString = inputString.substring(0, inputString.length() - 1);
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         if ((j == 13 || j == 10) && inputString.length() > 0) {
                               if (myPrivilege == 2 || server.equals("127.0.0.1")) {
@@ -5921,7 +5921,7 @@ public class Client extends GameApplet {
                                                 settings[300] = amt;
                                                 updateVarp(300);
                                                 if (dialogueId != -1)
-                                                      inputTaken = true;
+                                                      updateChatbox = true;
                                           }
                                     }
                                     if (inputString.equals("::fps")) {
@@ -6140,7 +6140,7 @@ public class Client extends GameApplet {
                                     }
                               }
                               inputString = "";
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                   }
             } while (true);
@@ -6752,7 +6752,7 @@ public class Client extends GameApplet {
                   super.clickMode3 = 0;
             }
             if (backDialogueId == -1)
-                  inputTaken = true;
+                  updateChatbox = true;
             for (int j = 499; j > 0; j--) {
                   chatTypes[j] = chatTypes[j - 1];
                   chatNames[j] = chatNames[j - 1];
@@ -7349,11 +7349,11 @@ public class Client extends GameApplet {
                   }
             }
             if (backDialogueId != -1 && anInt886 != anInt1039) {
-                  inputTaken = true;
+                  updateChatbox = true;
                   anInt1039 = anInt886;
             }
             if (backDialogueId != -1 && anInt1315 != anInt1500) {
-                  inputTaken = true;
+                  updateChatbox = true;
                   anInt1500 = anInt1315;
             }
             if (super.mouseX > 4 && super.mouseY > 480 && super.mouseX < 516
@@ -7580,8 +7580,8 @@ public class Client extends GameApplet {
                         for (int index = 0; index < 5; index++)
                               characterDesignColours[index] = 0;
                         for (int index = 0; index < 5; index++) {
-                              atPlayerActions[index] = null;
-                              atPlayerArray[index] = false;
+                              playerOptions[index] = null;
+                              playerOptionsHighPriority[index] = false;
                         }
                         anInt1175 = 0;
                         anInt1134 = 0;
@@ -8159,10 +8159,10 @@ public class Client extends GameApplet {
                   }
             } else {
                   for (int l = 4; l >= 0; l--)
-                        if (atPlayerActions[l] != null) {
-                              menuActionText[menuActionRow] = atPlayerActions[l] + " @whi@" + s;
+                        if (playerOptions[l] != null) {
+                              menuActionText[menuActionRow] = playerOptions[l] + " @whi@" + s;
                               char c = '\0';
-                              if (atPlayerActions[l].equalsIgnoreCase("attack")) {
+                              if (playerOptions[l].equalsIgnoreCase("attack")) {
                                     if (player.combatLevel > localPlayer.combatLevel)
                                           c = '\u07D0';
                                     if (localPlayer.team != 0 && player.team != 0)
@@ -8170,7 +8170,7 @@ public class Client extends GameApplet {
                                                 c = '\u07D0';
                                           else
                                                 c = '\0';
-                              } else if (atPlayerArray[l])
+                              } else if (playerOptionsHighPriority[l])
                                     c = '\u07D0';
                               if (l == 0)
                                     menuActionTypes[menuActionRow] = 561 + c;
@@ -8809,7 +8809,7 @@ public class Client extends GameApplet {
                         topFrame.drawGraphics(0, super.graphics, 0);
                         leftFrame.drawGraphics(4, super.graphics, 0);
                   }
-                  inputTaken = true;
+                  updateChatbox = true;
                   tabAreaAltered = true;
                   if (loadingStage != 2) {
                         if (frameMode == ScreenMode.FIXED) {
@@ -8846,7 +8846,7 @@ public class Client extends GameApplet {
                   }
                   if (anInt1089 != i) {
                         anInt1089 = i;
-                        inputTaken = true;
+                        updateChatbox = true;
                   }
             }
             if (backDialogueId != -1) {
@@ -8858,20 +8858,20 @@ public class Client extends GameApplet {
                         
                   }
                   if (flag2) {
-                        inputTaken = true;
+                        updateChatbox = true;
                   }
             }
             if (atInventoryInterfaceType == 3)
-                  inputTaken = true;
+                  updateChatbox = true;
             if (activeInterfaceType == 3)
-                  inputTaken = true;
+                  updateChatbox = true;
             if (clickToContinueString != null)
-                  inputTaken = true;
+                  updateChatbox = true;
             if (menuOpen && menuScreenArea == 2)
-                  inputTaken = true;
-            if (inputTaken) {
+                  updateChatbox = true;
+            if (updateChatbox) {
                   drawChatArea();
-                  inputTaken = false;
+                  updateChatbox = false;
             }
             if (loadingStage == 2)
                   moveCameraWithPlayer();
@@ -8964,7 +8964,7 @@ public class Client extends GameApplet {
                   rsInterface = Widget.interfaceCache[21356];
             if (rsInterface.type != 0 || rsInterface.children == null)
                   return;
-            if (rsInterface.hoverOnly && anInt1026 != rsInterface.id && anInt1048 != rsInterface.id
+            if (rsInterface.invisible && anInt1026 != rsInterface.id && anInt1048 != rsInterface.id
                         && anInt1039 != rsInterface.id)
                   return;
             int clipLeft = Raster.topX;
@@ -9812,7 +9812,7 @@ public class Client extends GameApplet {
                         anInt1184 = 383;
                   int l = anInt1014 >> 7;
                   int i1 = anInt1015 >> 7;
-                  int j1 = method42(plane, anInt1015, anInt1014);
+                  int j1 = getCenterHeight(plane, anInt1015, anInt1014);
                   int k1 = 0;
                   if (l > 3 && i1 > 3 && l < 100 && i1 < 100) {
                         for (int l1 = l - 4; l1 <= l + 4; l1++) {
@@ -10342,7 +10342,7 @@ public class Client extends GameApplet {
       }
 
       private int resetCameraHeight() {
-            int orientation = method42(plane, yCameraPos, xCameraPos);
+            int orientation = getCenterHeight(plane, yCameraPos, xCameraPos);
             if (orientation - zCameraPos < 800
                         && (tileFlags[plane][xCameraPos >> 7][yCameraPos >> 7] & 4) != 0)
                   return plane;
@@ -10986,7 +10986,7 @@ public class Client extends GameApplet {
                   spriteDrawY = -1;
                   return;
             }
-            int i1 = method42(plane, l, i) - j;
+            int i1 = getCenterHeight(plane, l, i) - j;
             i -= xCameraPos;
             i1 -= zCameraPos;
             l -= yCameraPos;
@@ -11062,8 +11062,8 @@ public class Client extends GameApplet {
 
       }
 
-      private void spawnObject(int longetivity, int id, int orientation, int group, int y, int type,
-                  int plane, int x, int delay) {
+      private void requestSpawnObject(int longetivity, int id, int orientation, int group, int y, int type,
+                                      int plane, int x, int delay) {
             SpawnedObject object = null;
             for (SpawnedObject node = (SpawnedObject) spawns.reverseGetFirst(); node != null; node =
                         (SpawnedObject) spawns.reverseGetNext()) {
@@ -11444,33 +11444,33 @@ public class Client extends GameApplet {
             welcomeScreenRaised = true;
       }
 
-      private void parseRegionPackets(Buffer stream, int j) {
-            if (j == 84) {
-                  int k = stream.readUnsignedByte();
-                  int j3 = localX + (k >> 4 & 7);
-                  int i6 = localY + (k & 7);
-                  int l8 = stream.readUShort();
-                  int k11 = stream.readUShort();
-                  int l13 = stream.readUShort();
-                  if (j3 >= 0 && i6 >= 0 && j3 < 104 && i6 < 104) {
-                        Deque class19_1 = groundItems[plane][j3][i6];
-                        if (class19_1 != null) {
-                              for (Item class30_sub2_sub4_sub2_3 = (Item) class19_1
-                                          .reverseGetFirst(); class30_sub2_sub4_sub2_3 != null; class30_sub2_sub4_sub2_3 =
-                                                      (Item) class19_1.reverseGetNext()) {
-                                    if (class30_sub2_sub4_sub2_3.ID != (l8 & 0x7fff)
-                                                || class30_sub2_sub4_sub2_3.anInt1559 != k11)
+      private void parseRegionPackets(Buffer stream, int packetType) {
+            if (packetType == PacketConstants.SEND_ALTER_GROUND_ITEM_COUNT) {
+                  int offset = stream.readUnsignedByte();
+                  int xLoc = localX + (offset >> 4 & 7);
+                  int yLoc = localY + (offset & 7);
+                  int itemId = stream.readUShort();
+                  int oldItemCount = stream.readUShort();
+                  int newItemCount = stream.readUShort();
+                  if (xLoc >= 0 && yLoc >= 0 && xLoc < 104 && yLoc < 104) {
+                        Deque groundItemsDeque = groundItems[plane][xLoc][yLoc];
+                        if (groundItemsDeque != null) {
+                              for (Item groundItem = (Item) groundItemsDeque
+                                          .reverseGetFirst(); groundItem != null; groundItem =
+                                                      (Item) groundItemsDeque.reverseGetNext()) {
+                                    if (groundItem.ID != (itemId & 0x7fff)
+                                                || groundItem.itemCount != oldItemCount)
                                           continue;
-                                    class30_sub2_sub4_sub2_3.anInt1559 = l13;
+                                    groundItem.itemCount = newItemCount;
                                     break;
                               }
 
-                              spawnGroundItem(j3, i6);
+                              updateGroundItems(xLoc, yLoc);
                         }
                   }
                   return;
             }
-            if (j == 105) {
+            if (packetType == 105) {
                   int l = stream.readUnsignedByte();
                   int k3 = localX + (l >> 4 & 7);
                   int j6 = localY + (l & 7);
@@ -11488,7 +11488,7 @@ public class Client extends GameApplet {
                         trackCount++;
                   }
             }
-            if (j == 215) {
+            if (packetType == 215) {
                   int i1 = stream.readUShortA();
                   int l3 = stream.readUByteS();
                   int k6 = localX + (l3 >> 4 & 7);
@@ -11498,238 +11498,224 @@ public class Client extends GameApplet {
                   if (k6 >= 0 && j9 >= 0 && k6 < 104 && j9 < 104 && i12 != localPlayerIndex) {
                         Item class30_sub2_sub4_sub2_2 = new Item();
                         class30_sub2_sub4_sub2_2.ID = i1;
-                        class30_sub2_sub4_sub2_2.anInt1559 = j14;
+                        class30_sub2_sub4_sub2_2.itemCount = j14;
                         if (groundItems[plane][k6][j9] == null)
                               groundItems[plane][k6][j9] = new Deque();
                         groundItems[plane][k6][j9].insertHead(class30_sub2_sub4_sub2_2);
-                        spawnGroundItem(k6, j9);
+                        updateGroundItems(k6, j9);
                   }
                   return;
             }
-            if (j == 156) {
-                  int j1 = stream.readUByteA();
-                  int i4 = localX + (j1 >> 4 & 7);
-                  int l6 = localY + (j1 & 7);
-                  int k9 = stream.readUShort();
-                  if (i4 >= 0 && l6 >= 0 && i4 < 104 && l6 < 104) {
-                        Deque class19 = groundItems[plane][i4][l6];
-                        if (class19 != null) {
+            if (packetType == PacketConstants.SEND_REMOVE_GROUND_ITEM) {
+                  int offset = stream.readUByteA();
+                  int xLoc = localX + (offset >> 4 & 7);
+                  int yLoc = localY + (offset & 7);
+                  int itemId = stream.readUShort();
+                  if (xLoc >= 0 && yLoc >= 0 && xLoc < 104 && yLoc < 104) {
+                        Deque groundItemsDeque = groundItems[plane][xLoc][yLoc];
+                        if (groundItemsDeque != null) {
                               for (Item item =
-                                          (Item) class19.reverseGetFirst(); item != null; item =
-                                                      (Item) class19.reverseGetNext()) {
-                                    if (item.ID != (k9 & 0x7fff))
+                                          (Item) groundItemsDeque.reverseGetFirst(); item != null; item =
+                                                      (Item) groundItemsDeque.reverseGetNext()) {
+                                    if (item.ID != (itemId & 0x7fff))
                                           continue;
                                     item.unlink();
                                     break;
                               }
 
-                              if (class19.reverseGetFirst() == null)
-                                    groundItems[plane][i4][l6] = null;
-                              spawnGroundItem(i4, l6);
+                              if (groundItemsDeque.reverseGetFirst() == null)
+                                    groundItems[plane][xLoc][yLoc] = null;
+                              updateGroundItems(xLoc, yLoc);
                         }
                   }
                   return;
             }
-            if (j == 160) {
-                  int k1 = stream.readUByteS();
-                  int j4 = localX + (k1 >> 4 & 7);
-                  int i7 = localY + (k1 & 7);
-                  int l9 = stream.readUByteS();
-                  int j12 = l9 >> 2;
-                  int k14 = l9 & 3;
-                  int j16 = anIntArray1177[j12];
-                  int j17 = stream.readUShortA();
-                  if (j4 >= 0 && i7 >= 0 && j4 < 103 && i7 < 103) {
-                        int j18 = tileHeights[plane][j4][i7];
-                        int i19 = tileHeights[plane][j4 + 1][i7];
-                        int l19 = tileHeights[plane][j4 + 1][i7 + 1];
-                        int k20 = tileHeights[plane][j4][i7 + 1];
-                        if (j16 == 0) {
-                              Wall class10 = scene.method296(plane, j4, i7);
-                              if (class10 != null) {
-                                    int k21 = class10.uid >> 14 & 0x7fff;
-                                    if (j12 == 2) {
-                                          class10.aClass30_Sub2_Sub4_278 = new SceneObject(k21,
-                                                      4 + k14, 2, i19, l19, j18, k20, j17, false);
-                                          class10.aClass30_Sub2_Sub4_279 =
-                                                      new SceneObject(k21, k14 + 1 & 3, 2, i19, l19,
-                                                                  j18, k20, j17, false);
+            if (packetType == PacketConstants.ANIMATE_OBJECT) {
+                  int offset = stream.readUByteS();
+                  int xLoc = localX + (offset >> 4 & 7);
+                  int yLoc = localY + (offset & 7);
+                  int objectTypeFace = stream.readUByteS();
+                  int objectType = objectTypeFace >> 2;
+                  int objectFace = objectTypeFace & 3;
+                  int objectGenre = objectGenreForTypes[objectType];
+                  int animId = stream.readUShortA();
+                  if (xLoc >= 0 && yLoc >= 0 && xLoc < 103 && yLoc < 103) {
+                        int heightA = tileHeights[plane][xLoc][yLoc];
+                        int heightB = tileHeights[plane][xLoc + 1][yLoc];
+                        int heightC = tileHeights[plane][xLoc + 1][yLoc + 1];
+                        int heightD = tileHeights[plane][xLoc][yLoc + 1];
+                        if (objectGenre == 0) {//WallObject
+                              Wall wallObject = scene.getWallObject(plane, xLoc, yLoc);
+                              if (wallObject != null) {
+                                    int objectId = wallObject.uid >> 14 & 0x7fff;
+                                    if (objectType == 2) {
+                                          wallObject.renderable1 = new SceneObject(objectId, 4 + objectFace, 2, heightB, heightC, heightA, heightD, animId, false);
+                                          wallObject.renderable2 = new SceneObject(objectId, objectFace + 1 & 3, 2, heightB, heightC, heightA, heightD, animId, false);
                                     } else {
-                                          class10.aClass30_Sub2_Sub4_278 = new SceneObject(k21, k14,
-                                                      j12, i19, l19, j18, k20, j17, false);
+                                          wallObject.renderable1 = new SceneObject(objectId, objectFace, objectType, heightB, heightC, heightA, heightD, animId, false);
                                     }
                               }
                         }
-                        if (j16 == 1) {
-                              WallDecoration class26 = scene.method297(j4, i7, plane);
-                              if (class26 != null)
-                                    class26.renderable =
-                                                new SceneObject(class26.uid >> 14 & 0x7fff, 0, 4,
-                                                            i19, l19, j18, k20, j17, false);
+                        if (objectGenre == 1) { //WallDecoration
+                              WallDecoration wallDecoration = scene.getWallDecoration(xLoc, yLoc, plane);
+                              if (wallDecoration != null)
+                                    wallDecoration.renderable = new SceneObject(wallDecoration.uid >> 14 & 0x7fff, 0, 4, heightB, heightC, heightA, heightD, animId, false);
                         }
-                        if (j16 == 2) {
-                              GameObject class28 = scene.method298(j4, i7, plane);
-                              if (j12 == 11)
-                                    j12 = 10;
-                              if (class28 != null)
-                                    class28.aClass30_Sub2_Sub4_521 =
-                                                new SceneObject(class28.uid >> 14 & 0x7fff, k14,
-                                                            j12, i19, l19, j18, k20, j17, false);
+                        if (objectGenre == 2) { //TiledObject
+                              GameObject tiledObject = scene.getTiledObject(xLoc, yLoc, plane);
+                              if (objectType == 11)
+                                    objectType = 10;
+                              if (tiledObject != null)
+                                    tiledObject.renderable = new SceneObject(tiledObject.uid >> 14 & 0x7fff, objectFace, objectType, heightB, heightC, heightA, heightD, animId, false);
                         }
-                        if (j16 == 3) {
-                              GroundDecoration class49 = scene.method299(i7, j4, plane);
-                              if (class49 != null)
-                                    class49.aClass30_Sub2_Sub4_814 =
-                                                new SceneObject(class49.uid >> 14 & 0x7fff, k14, 22,
-                                                            i19, l19, j18, k20, j17, false);
+                        if (objectGenre == 3) { //GroundDecoration
+                              GroundDecoration groundDecoration = scene.method299(yLoc, xLoc, plane);
+                              if (groundDecoration != null)
+                                    groundDecoration.renderable = new SceneObject(groundDecoration.uid >> 14 & 0x7fff, objectFace, 22, heightB, heightC, heightA, heightD, animId, false);
                         }
                   }
                   return;
             }
-            if (j == 147) {
-                  int l1 = stream.readUByteS();
-                  int k4 = localX + (l1 >> 4 & 7);
-                  int j7 = localY + (l1 & 7);
-                  int i10 = stream.readUShort();
-                  byte byte0 = stream.readByteS();
-                  int l14 = stream.readLEUShort();
-                  byte byte1 = stream.readNegByte();
-                  int k17 = stream.readUShort();
-                  int k18 = stream.readUByteS();
-                  int j19 = k18 >> 2;
-                  int i20 = k18 & 3;
-                  int l20 = anIntArray1177[j19];
-                  byte byte2 = stream.readSignedByte();
-                  int l21 = stream.readUShort();
-                  byte byte3 = stream.readNegByte();
+            if (packetType == PacketConstants.TRANSFORM_PLAYER_TO_OBJECT) {
+                  int offset = stream.readUByteS();
+                  int xLoc = localX + (offset >> 4 & 7);
+                  int yLoc = localY + (offset & 7);
+                  int playerIndex = stream.readUShort();
+                  byte byte0GreaterXLoc = stream.readByteS();
+                  int startDelay = stream.readLEUShort();
+                  byte byte1GreaterYLoc = stream.readNegByte();
+                  int stopDelay = stream.readUShort();
+                  int objectTypeFace = stream.readUByteS();
+                  int objectType = objectTypeFace >> 2;
+                  int objectFace = objectTypeFace & 3;
+                  int objectGenre = objectGenreForTypes[objectType];
+                  byte byte2LesserXLoc = stream.readSignedByte();
+                  int objectId = stream.readUShort();
+                  byte byte3LesserYLoc = stream.readNegByte();
                   Player player;
-                  if (i10 == localPlayerIndex)
+                  if (playerIndex == localPlayerIndex)
                         player = localPlayer;
                   else
-                        player = players[i10];
+                        player = players[playerIndex];
                   if (player != null) {
-                        ObjectDefinition class46 = ObjectDefinition.lookup(l21);
-                        int i22 = tileHeights[plane][k4][j7];
-                        int j22 = tileHeights[plane][k4 + 1][j7];
-                        int k22 = tileHeights[plane][k4 + 1][j7 + 1];
-                        int l22 = tileHeights[plane][k4][j7 + 1];
-                        Model model = class46.modelAt(j19, i20, i22, j22, k22, l22, -1);
+                        ObjectDefinition objectDefinition = ObjectDefinition.lookup(objectId);
+                        int heightA = tileHeights[plane][xLoc][yLoc];
+                        int heightB = tileHeights[plane][xLoc + 1][yLoc];
+                        int heightC = tileHeights[plane][xLoc + 1][yLoc + 1];
+                        int heightD = tileHeights[plane][xLoc][yLoc + 1];
+                        Model model = objectDefinition.modelAt(objectType, objectFace, heightA, heightB, heightC, heightD, -1);
                         if (model != null) {
-                              spawnObject(k17 + 1, -1, 0, l20, j7, 0, plane, k4, l14 + 1);
-                              player.anInt1707 = l14 + tick;
-                              player.anInt1708 = k17 + tick;
-                              player.aModel_1714 = model;
-                              int i23 = class46.width;
-                              int j23 = class46.length;
-                              if (i20 == 1 || i20 == 3) {
-                                    i23 = class46.length;
-                                    j23 = class46.width;
+                              requestSpawnObject(stopDelay + 1, -1, 0, objectGenre, yLoc, 0, plane, xLoc, startDelay + 1);
+                              player.objectModelStart = startDelay + tick;
+                              player.objectModelStop = stopDelay + tick;
+                              player.objectModel = model;
+                              int playerSizeX = objectDefinition.objectSizeX;
+                              int playerSizeY = objectDefinition.objectSizeY;
+                              if (objectFace == 1 || objectFace == 3) {
+                                    playerSizeX = objectDefinition.objectSizeY;
+                                    playerSizeY = objectDefinition.objectSizeX;
                               }
-                              player.anInt1711 = k4 * 128 + i23 * 64;
-                              player.anInt1713 = j7 * 128 + j23 * 64;
-                              player.anInt1712 =
-                                          method42(plane, player.anInt1713, player.anInt1711);
-                              if (byte2 > byte0) {
-                                    byte byte4 = byte2;
-                                    byte2 = byte0;
-                                    byte0 = byte4;
+                              player.objectXPos = xLoc * 128 + playerSizeX * 64;
+                              player.objectYPos = yLoc * 128 + playerSizeY * 64;
+                              player.objectCenterHeight = getCenterHeight(plane, player.objectYPos, player.objectXPos);
+                              if (byte2LesserXLoc > byte0GreaterXLoc) {
+                                    byte tmp = byte2LesserXLoc;
+                                    byte2LesserXLoc = byte0GreaterXLoc;
+                                    byte0GreaterXLoc = tmp;
                               }
-                              if (byte3 > byte1) {
-                                    byte byte5 = byte3;
-                                    byte3 = byte1;
-                                    byte1 = byte5;
+                              if (byte3LesserYLoc > byte1GreaterYLoc) {
+                                    byte tmp = byte3LesserYLoc;
+                                    byte3LesserYLoc = byte1GreaterYLoc;
+                                    byte1GreaterYLoc = tmp;
                               }
-                              player.anInt1719 = k4 + byte2;
-                              player.anInt1721 = k4 + byte0;
-                              player.anInt1720 = j7 + byte3;
-                              player.anInt1722 = j7 + byte1;
+                              player.objectAnInt1719LesserXLoc = xLoc + byte2LesserXLoc;
+                              player.objectAnInt1721GreaterXLoc = xLoc + byte0GreaterXLoc;
+                              player.objectAnInt1720LesserYLoc = yLoc + byte3LesserYLoc;
+                              player.objectAnInt1722GreaterYLoc = yLoc + byte1GreaterYLoc;
                         }
                   }
             }
-            if (j == 151) {
-                  int i2 = stream.readUByteA();
-                  int l4 = localX + (i2 >> 4 & 7);
-                  int k7 = localY + (i2 & 7);
-                  int j10 = stream.readLEUShort();
-                  int k12 = stream.readUByteS();
-                  int i15 = k12 >> 2;
-                  int k16 = k12 & 3;
-                  int l17 = anIntArray1177[i15];
-                  if (l4 >= 0 && k7 >= 0 && l4 < 104 && k7 < 104)
-                        spawnObject(-1, j10, k16, l17, k7, i15, plane, l4, 0);
+            if (packetType == PacketConstants.SEND_OBJECT) {
+                  int offset = stream.readUByteA();
+                  int xLoc = localX + (offset >> 4 & 7);
+                  int yLoc = localY + (offset & 7);
+                  int objectId = stream.readLEUShort();
+                  int objectTypeFace = stream.readUByteS();
+                  int objectType = objectTypeFace >> 2;
+                  int objectFace = objectTypeFace & 3;
+                  int objectGenre = objectGenreForTypes[objectType];
+                  if (xLoc >= 0 && yLoc >= 0 && xLoc < 104 && yLoc < 104)
+                        requestSpawnObject(-1, objectId, objectFace, objectGenre, yLoc, objectType, plane, xLoc, 0);
                   return;
             }
-            if (j == 4) {
-                  int j2 = stream.readUnsignedByte();
-                  int i5 = localX + (j2 >> 4 & 7);
-                  int l7 = localY + (j2 & 7);
-                  int k10 = stream.readUShort();
-                  int l12 = stream.readUnsignedByte();
-                  int j15 = stream.readUShort();
-                  if (i5 >= 0 && l7 >= 0 && i5 < 104 && l7 < 104) {
-                        i5 = i5 * 128 + 64;
-                        l7 = l7 * 128 + 64;
-                        AnimableObject class30_sub2_sub4_sub3 = new AnimableObject(plane, tick,
-                                    j15, k10, method42(plane, l7, i5) - l12, l7, i5);
-                        incompleteAnimables.insertHead(class30_sub2_sub4_sub3);
+            if (packetType == PacketConstants.SEND_GFX) {
+                  int offset = stream.readUnsignedByte();
+                  int xLoc = localX + (offset >> 4 & 7);
+                  int yLoc = localY + (offset & 7);
+                  int gfxId = stream.readUShort();
+                  int gfxHeight = stream.readUnsignedByte();
+                  int gfxDelay = stream.readUShort();
+                  if (xLoc >= 0 && yLoc >= 0 && xLoc < 104 && yLoc < 104) {
+                        xLoc = xLoc * 128 + 64;
+                        yLoc = yLoc * 128 + 64;
+                        AnimableObject loneGfx = new AnimableObject(plane, tick,
+                                    gfxDelay, gfxId, getCenterHeight(plane, yLoc, xLoc) - gfxHeight, yLoc, xLoc);
+                        incompleteAnimables.insertHead(loneGfx);
                   }
                   return;
             }
-            if (j == 44) {
-                  int k2 = stream.readLEUShortA();
-                  int j5 = stream.readUShort();
-                  int i8 = stream.readUnsignedByte();
-                  int l10 = localX + (i8 >> 4 & 7);
-                  int i13 = localY + (i8 & 7);
-                  if (l10 >= 0 && i13 >= 0 && l10 < 104 && i13 < 104) {
-                        Item class30_sub2_sub4_sub2_1 = new Item();
-                        class30_sub2_sub4_sub2_1.ID = k2;
-                        class30_sub2_sub4_sub2_1.anInt1559 = j5;
-                        if (groundItems[plane][l10][i13] == null)
-                              groundItems[plane][l10][i13] = new Deque();
-                        groundItems[plane][l10][i13].insertHead(class30_sub2_sub4_sub2_1);
-                        spawnGroundItem(l10, i13);
+            if (packetType == PacketConstants.SEND_GROUND_ITEM) {
+                  int itemId = stream.readLEUShortA();
+                  int itemCount = stream.readUShort();
+                  int offset = stream.readUnsignedByte();
+                  int xLoc = localX + (offset >> 4 & 7);
+                  int yLoc = localY + (offset & 7);
+                  if (xLoc >= 0 && yLoc >= 0 && xLoc < 104 && yLoc < 104) {
+                        Item groundItem = new Item();
+                        groundItem.ID = itemId;
+                        groundItem.itemCount = itemCount;
+                        if (groundItems[plane][xLoc][yLoc] == null)
+                              groundItems[plane][xLoc][yLoc] = new Deque();
+                        groundItems[plane][xLoc][yLoc].insertHead(groundItem);
+                        updateGroundItems(xLoc, yLoc);
                   }
                   return;
             }
-            if (j == 101) {
-                  int l2 = stream.readNegUByte();
-                  int k5 = l2 >> 2;
-                  int j8 = l2 & 3;
-                  int i11 = anIntArray1177[k5];
-                  int j13 = stream.readUnsignedByte();
-                  int k15 = localX + (j13 >> 4 & 7);
-                  int l16 = localY + (j13 & 7);
-                  if (k15 >= 0 && l16 >= 0 && k15 < 104 && l16 < 104)
-                        spawnObject(-1, -1, j8, i11, l16, k5, plane, k15, 0);
+            if (packetType == PacketConstants.SEND_REMOVE_OBJECT) {
+                  int objectTypeFace = stream.readNegUByte();
+                  int objectType = objectTypeFace >> 2;
+                  int objectFace = objectTypeFace & 3;
+                  int objectGenre = objectGenreForTypes[objectType];
+                  int offset = stream.readUnsignedByte();
+                  int xLoc = localX + (offset >> 4 & 7);
+                  int yLoc = localY + (offset & 7);
+                  if (xLoc >= 0 && yLoc >= 0 && xLoc < 104 && yLoc < 104)
+                        requestSpawnObject(-1, -1, objectFace, objectGenre, yLoc, objectType, plane, xLoc, 0);
                   return;
             }
-            if (j == 117) {
-                  int i3 = stream.readUnsignedByte();
-                  int l5 = localX + (i3 >> 4 & 7);
-                  int k8 = localY + (i3 & 7);
-                  int j11 = l5 + stream.readSignedByte();
-                  int k13 = k8 + stream.readSignedByte();
-                  int l15 = stream.readShort();
-                  int i17 = stream.readUShort();
-                  int i18 = stream.readUnsignedByte() * 4;
-                  int l18 = stream.readUnsignedByte() * 4;
-                  int k19 = stream.readUShort();
-                  int j20 = stream.readUShort();
-                  int i21 = stream.readUnsignedByte();
-                  int j21 = stream.readUnsignedByte();
-                  if (l5 >= 0 && k8 >= 0 && l5 < 104 && k8 < 104 && j11 >= 0 && k13 >= 0
-                              && j11 < 104 && k13 < 104 && i17 != 65535) {
-                        l5 = l5 * 128 + 64;
-                        k8 = k8 * 128 + 64;
-                        j11 = j11 * 128 + 64;
-                        k13 = k13 * 128 + 64;
-                        Projectile class30_sub2_sub4_sub4 = new Projectile(i21, l18,
-                                    k19 + tick, j20 + tick, j21, plane,
-                                    method42(plane, k8, l5) - i18, k8, l5, l15, i17);
-                        class30_sub2_sub4_sub4.method455(k19 + tick, k13,
-                                    method42(plane, k13, j11) - l18, j11);
-                        projectiles.insertHead(class30_sub2_sub4_sub4);
+            if (packetType == PacketConstants.SEND_PROJECTILE) {
+                  int offset = stream.readUnsignedByte();
+                  int x1 = localX + (offset >> 4 & 7);
+                  int y1 = localY + (offset & 7);
+                  int x2 = x1 + stream.readSignedByte();
+                  int y2 = y1 + stream.readSignedByte();
+                  int target = stream.readShort();
+                  int gfxMoving = stream.readUShort();
+                  int startHeight = stream.readUnsignedByte() * 4;
+                  int endHeight = stream.readUnsignedByte() * 4;
+                  int startDelay = stream.readUShort();
+                  int speed = stream.readUShort();
+                  int initialSlope = stream.readUnsignedByte();
+                  int frontOffset = stream.readUnsignedByte();
+                  if (x1 >= 0 && y1 >= 0 && x1 < 104 && y1 < 104 && x2 >= 0 && y2 >= 0
+                              && x2 < 104 && y2 < 104 && gfxMoving != 65535) {
+                        x1 = x1 * 128 + 64;
+                        y1 = y1 * 128 + 64;
+                        x2 = x2 * 128 + 64;
+                        y2 = y2 * 128 + 64;
+                        Projectile projectile = new Projectile(initialSlope, endHeight, startDelay + tick, speed + tick, frontOffset, plane, getCenterHeight(plane, y1, x1) - startHeight, y1, x1, target, gfxMoving);
+                        projectile.calculateIncrements(startDelay + tick, y2, getCenterHeight(plane, y2, x2) - endHeight, x2);
+                        projectiles.insertHead(projectile);
                   }
             }
       }
@@ -11925,13 +11911,13 @@ public class Client extends GameApplet {
                         if (group == 2) {
                               scene.removeObject(z, x, y);
                               ObjectDefinition objectDef = ObjectDefinition.lookup(id);
-                              if (x + objectDef.width > 103 || y + objectDef.width > 103
-                                          || x + objectDef.length > 103
-                                          || y + objectDef.length > 103)
+                              if (x + objectDef.objectSizeX > 103 || y + objectDef.objectSizeX > 103
+                                          || x + objectDef.objectSizeY > 103
+                                          || y + objectDef.objectSizeY > 103)
                                     return;
                               if (objectDef.solid)
-                                    collisionMaps[z].removeObject(orientation, objectDef.width, x,
-                                                y, objectDef.length, objectDef.impenetrable);
+                                    collisionMaps[z].removeObject(orientation, objectDef.objectSizeX, x,
+                                                y, objectDef.objectSizeY, objectDef.impenetrable);
                         }
                         if (group == 3) {
                               scene.removeFloorDecoration(z, y, x);
@@ -12117,7 +12103,7 @@ public class Client extends GameApplet {
                   settings[id] = state;
                   updateVarp(id);
                   if (dialogueId != -1)
-                        inputTaken = true;
+                        updateChatbox = true;
             }
       }
 
@@ -12131,11 +12117,11 @@ public class Client extends GameApplet {
             }
             if (backDialogueId != -1) {
                   backDialogueId = -1;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (inputDialogState != 0) {
                   inputDialogState = 0;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             openInterfaceId = -1;
             continuedDialogue = false;
@@ -12147,11 +12133,11 @@ public class Client extends GameApplet {
       public void inventoryOverlay(int interfaceId, int sideInterfaceId) {
             if (backDialogueId != -1) {
                   backDialogueId = -1;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             if (inputDialogState != 0) {
                   inputDialogState = 0;
-                  inputTaken = true;
+                  updateChatbox = true;
             }
             openInterfaceId = interfaceId;
             overlayInterfaceId = sideInterfaceId;
@@ -12259,7 +12245,7 @@ public class Client extends GameApplet {
                               for (int y = localY; y < localY + 8; y++)
                                     if (groundItems[plane][x][y] != null) {
                                           groundItems[plane][x][y] = null;
-                                          spawnGroundItem(x, y);
+                                          updateGroundItems(x, y);
                                     }
                         }
                         for (SpawnedObject object = (SpawnedObject) spawns
@@ -12308,7 +12294,7 @@ public class Client extends GameApplet {
                   if (opcode == PacketConstants.RESET_CAMERA) {
                         oriented = false;
                         for (int l = 0; l < 5; l++)
-                              aBooleanArray876[l] = false;
+                              quakeDirectionActive[l] = false;
                         xpCounter = 0;
                         opcode = -1;
                         return true;
@@ -12343,7 +12329,7 @@ public class Client extends GameApplet {
                         if (angle >= 100) {
                               xCameraPos = x * 128 + 64;
                               yCameraPos = y * 128 + 64;
-                              zCameraPos = method42(plane, yCameraPos, xCameraPos) - height;
+                              zCameraPos = getCenterHeight(plane, yCameraPos, xCameraPos) - height;
                         }
                         opcode = -1;
                         return true;
@@ -12640,26 +12626,26 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 208) {
-                        int i3 = incoming.readLEShort();
-                        if (i3 >= 0)
-                              resetAnimation(i3);
-                        openWalkableInterface = i3;
+                  if (opcode == PacketConstants.SEND_WALKABLE_INTERFACE) {
+                        int interfaceId = incoming.readLEShort();
+                        if (interfaceId >= 0)
+                              resetAnimation(interfaceId);
+                        openWalkableInterface = interfaceId;
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 99) {
+                  if (opcode == PacketConstants.SEND_MINIMAP_STATE) {
                         minimapState = incoming.readUnsignedByte();
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 75) {
-                        int npc = incoming.readLEUShortA();
-                        int id = incoming.readLEUShortA();
-                        Widget.interfaceCache[id].defaultMediaType = 2;
-                        Widget.interfaceCache[id].defaultMedia = npc;
+                  if (opcode == PacketConstants.SHOW_NPC_HEAD_ON_INTERFACE) {
+                        int npcId = incoming.readLEUShortA();
+                        int interfaceId = incoming.readLEUShortA();
+                        Widget.interfaceCache[interfaceId].defaultMediaType = 2;
+                        Widget.interfaceCache[interfaceId].defaultMedia = npcId;
                         opcode = -1;
                         return true;
                   }
@@ -12670,7 +12656,7 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 60) {
+                  if (opcode == PacketConstants.SEND_MULTIPLE_MAP_PACKETS) {
                         localY = incoming.readUnsignedByte();
                         localX = incoming.readNegUByte();
                         while (incoming.currentPosition < packetSize) {
@@ -12681,16 +12667,16 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 35) {
-                        int l3 = incoming.readUnsignedByte();
-                        int k11 = incoming.readUnsignedByte();
-                        int j17 = incoming.readUnsignedByte();
-                        int k21 = incoming.readUnsignedByte();
-                        aBooleanArray876[l3] = true;
-                        anIntArray873[l3] = k11;
-                        anIntArray1203[l3] = j17;
-                        anIntArray928[l3] = k21;
-                        anIntArray1030[l3] = 0;
+                  if (opcode == PacketConstants.SEND_EARTHQUAKE) {
+                        int quakeDirection = incoming.readUnsignedByte();
+                        int quakeMagnitude = incoming.readUnsignedByte();
+                        int quakeAmplitude = incoming.readUnsignedByte();
+                        int fourPiOverPeriod = incoming.readUnsignedByte();
+                        quakeDirectionActive[quakeDirection] = true;
+                        quakeMagnitudes[quakeDirection] = quakeMagnitude;
+                        quakeAmplitudes[quakeDirection] = quakeAmplitude;
+                        quake4PiOverPeriods[quakeDirection] = fourPiOverPeriod;
+                        quakeTimes[quakeDirection] = 0;
                         opcode = -1;
                         return true;
                   }
@@ -12709,27 +12695,27 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 104) {
+                  if (opcode == PacketConstants.SEND_PLAYER_OPTION) {
                         int slot = incoming.readNegUByte();
-                        int primary = incoming.readUByteA();
+                        int lowPriority = incoming.readUByteA();
                         String message = incoming.readString();
                         if (slot >= 1 && slot <= 5) {
                               if (message.equalsIgnoreCase("null"))
                                     message = null;
-                              atPlayerActions[slot - 1] = message;
-                              atPlayerArray[slot - 1] = primary == 0;
+                              playerOptions[slot - 1] = message;
+                              playerOptionsHighPriority[slot - 1] = lowPriority == 0;
                         }
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 78) {
+                  if (opcode == PacketConstants.CLEAR_MINIMAP_FLAG) {
                         destinationX = 0;
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 253) {
+                  if (opcode == PacketConstants.SEND_MESSAGE) {
                         String message = incoming.readString();
                         if (message.endsWith(":tradereq:")) {
                               String name = message.substring(0, message.indexOf(":"));
@@ -12773,9 +12759,9 @@ public class Client extends GameApplet {
 
                               }
                               if (!ignored && onTutorialIsland == 0) {
-                                    String s8 = message.substring(message.indexOf(":") + 1,
+                                    String msg = message.substring(message.indexOf(":") + 1,
                                                 message.length() - 9);
-                                    pushMessage(s8, 8, name);
+                                    pushMessage(msg, 8, name);
                               }
                         } else if (message.endsWith(":resetautocast:")) {
                               autocast = false;
@@ -12788,7 +12774,7 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 1) {
+                  if (opcode == PacketConstants.STOP_ALL_ANIMATIONS) {
                         for (int index = 0; index < players.length; index++) {
                               if (players[index] != null)
                                     players[index].emoteAnimation = -1;
@@ -12801,7 +12787,7 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 50) {
+                  if (opcode == PacketConstants.ADD_SET_FRIEND) {
                         long encodedName = incoming.readLong();
                         int world = incoming.readUnsignedByte();
                         String name = StringUtils
@@ -12827,84 +12813,81 @@ public class Client extends GameApplet {
                               friendsNodeIDs[friendsCount] = world;
                               friendsCount++;
                         }
-                        for (boolean flag6 = false; !flag6;) {
-                              flag6 = true;
-                              for (int k29 = 0; k29 < friendsCount - 1; k29++)
-                                    if (friendsNodeIDs[k29] != nodeID
-                                                && friendsNodeIDs[k29 + 1] == nodeID
-                                                || friendsNodeIDs[k29] == 0
-                                                            && friendsNodeIDs[k29 + 1] != 0) {
-                                          int j31 = friendsNodeIDs[k29];
-                                          friendsNodeIDs[k29] = friendsNodeIDs[k29 + 1];
-                                          friendsNodeIDs[k29 + 1] = j31;
-                                          String s10 = friendsList[k29];
-                                          friendsList[k29] = friendsList[k29 + 1];
-                                          friendsList[k29 + 1] = s10;
-                                          long l32 = friendsListAsLongs[k29];
-                                          friendsListAsLongs[k29] = friendsListAsLongs[k29 + 1];
-                                          friendsListAsLongs[k29 + 1] = l32;
-                                          flag6 = false;
+                        for (boolean stopSorting = false; !stopSorting;) {
+                              stopSorting = true;
+                              for (int friendIndex = 0; friendIndex < friendsCount - 1; friendIndex++)
+                                    if (friendsNodeIDs[friendIndex] != nodeID && friendsNodeIDs[friendIndex + 1] == nodeID || friendsNodeIDs[friendIndex] == 0 && friendsNodeIDs[friendIndex + 1] != 0) {
+                                          int tempFriendNodeId = friendsNodeIDs[friendIndex];
+                                          friendsNodeIDs[friendIndex] = friendsNodeIDs[friendIndex + 1];
+                                          friendsNodeIDs[friendIndex + 1] = tempFriendNodeId;
+                                          String tempFriendName = friendsList[friendIndex];
+                                          friendsList[friendIndex] = friendsList[friendIndex + 1];
+                                          friendsList[friendIndex + 1] = tempFriendName;
+                                          long tempFriendLong = friendsListAsLongs[friendIndex];
+                                          friendsListAsLongs[friendIndex] = friendsListAsLongs[friendIndex + 1];
+                                          friendsListAsLongs[friendIndex + 1] = tempFriendLong;
+                                          stopSorting = false;
                                     }
                         }
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 110) {
+                  if (opcode == PacketConstants.SEND_RUN_ENERGY) {
                         runEnergy = incoming.readUnsignedByte();
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 254) {
+                  if (opcode == PacketConstants.SEND_HINT_ICON) {
                         hintIconDrawType = incoming.readUnsignedByte();
-                        if (hintIconDrawType == 1)
+                        if (hintIconDrawType == 1) //NPC Hint Arrow
                               hintIconNpcId = incoming.readUShort();
-                        if (hintIconDrawType >= 2 && hintIconDrawType <= 6) {
-                              if (hintIconDrawType == 2) {
-                                    anInt937 = 64;
-                                    anInt938 = 64;
+                        if (hintIconDrawType >= 2 && hintIconDrawType <= 6) { //Location Hint Arrow
+                              if (hintIconDrawType == 2) { //Center
+                                hintIconLocationArrowRelX = 64;
+                                hintIconLocationArrowRelY = 64;
                               }
-                              if (hintIconDrawType == 3) {
-                                    anInt937 = 0;
-                                    anInt938 = 64;
+                              if (hintIconDrawType == 3) { //West side
+                                  hintIconLocationArrowRelX = 0;
+                                  hintIconLocationArrowRelY = 64;
                               }
-                              if (hintIconDrawType == 4) {
-                                    anInt937 = 128;
-                                    anInt938 = 64;
+                              if (hintIconDrawType == 4) { //East side
+                                    hintIconLocationArrowRelX = 128;
+                                    hintIconLocationArrowRelY = 64;
                               }
-                              if (hintIconDrawType == 5) {
-                                    anInt937 = 64;
-                                    anInt938 = 0;
+                              if (hintIconDrawType == 5) { //South side
+                                    hintIconLocationArrowRelX = 64;
+                                    hintIconLocationArrowRelY = 0;
                               }
-                              if (hintIconDrawType == 6) {
-                                    anInt937 = 64;
-                                    anInt938 = 128;
+                              if (hintIconDrawType == 6) { //North side
+                                    hintIconLocationArrowRelX = 64;
+                                    hintIconLocationArrowRelY = 128;
                               }
                               hintIconDrawType = 2;
                               hintIconX = incoming.readUShort();
                               hintIconY = incoming.readUShort();
-                              anInt936 = incoming.readUnsignedByte();
+                            hintIconLocationArrowHeight = incoming.readUnsignedByte();
                         }
-                        if (hintIconDrawType == 10)
+                        if (hintIconDrawType == 10) //Player Hint Arrow
                               hintIconPlayerId = incoming.readUShort();
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 248) {
-                        int id = incoming.readUShortA();
-                        int overlay = incoming.readUShort();
+                  if (opcode == PacketConstants.SEND_DUO_INTERFACE) { //Send Duo Interface: Main + Sidebar
+                        int mainInterfaceId = incoming.readUShortA();
+                        int sidebarOverlayInterfaceId = incoming.readUShort();
                         if (backDialogueId != -1) {
                               backDialogueId = -1;
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         if (inputDialogState != 0) {
                               inputDialogState = 0;
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
-                        openInterfaceId = id;
-                        overlayInterfaceId = overlay;
+                        openInterfaceId = mainInterfaceId;
+                        overlayInterfaceId = sidebarOverlayInterfaceId;
                         tabAreaAltered = true;
                         continuedDialogue = false;
                         opcode = -1;
@@ -12936,26 +12919,26 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 196) {
+                  if (opcode == PacketConstants.SEND_RECEIVED_PRIVATE_MESSAGE) {
                         long encodedName = incoming.readLong();
                         int messageId = incoming.readInt();
                         int rights = incoming.readUnsignedByte();
-                        boolean invalid = false;
+                        boolean ignoreRequest = false;
                         for (int index = 0; index < 100; index++) {
                               if (privateMessageIds[index] != messageId)
                                     continue;
-                              invalid = true;
+                              ignoreRequest = true;
 
                         }
                         if (rights <= 1) {
                               for (int index = 0; index < ignoreCount; index++) {
                                     if (ignoreListAsLongs[index] != encodedName)
                                           continue;
-                                    invalid = true;
+                                    ignoreRequest = true;
 
                               }
                         }
-                        if (!invalid && onTutorialIsland == 0)
+                        if (!ignoreRequest && onTutorialIsland == 0)
                               try {
                                     privateMessageIds[privateMessageCount] = messageId;
                                     privateMessageCount = (privateMessageCount + 1) % 100;
@@ -12981,7 +12964,7 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 85) {
+                  if (opcode == PacketConstants.SEND_REGION) {
                         localY = incoming.readNegUByte();
                         localX = incoming.readNegUByte();
                         opcode = -1;
@@ -13000,7 +12983,7 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 246) {
+                  if (opcode == PacketConstants.SEND_ITEM_TO_INTERFACE) {
                         int widget = incoming.readLEUShort();
                         int scale = incoming.readUShort();
                         int item = incoming.readUShort();
@@ -13021,24 +13004,24 @@ public class Client extends GameApplet {
                         }
                   }
 
-                  if (opcode == 171) {
-                        boolean flag1 = incoming.readUnsignedByte() == 1;
+                  if (opcode == PacketConstants.SHOW_HIDE_INTERFACE_CONTAINER) {
+                        boolean hide = incoming.readUnsignedByte() == 1;
                         int id = incoming.readUShort();
-                        Widget.interfaceCache[id].hoverOnly = flag1;
+                        Widget.interfaceCache[id].invisible = hide;
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 142) {
+                  if (opcode == PacketConstants.SEND_SOLO_NON_WALKABLE_SIDEBAR_INTERFACE) {
                         int id = incoming.readLEUShort();
                         resetAnimation(id);
                         if (backDialogueId != -1) {
                               backDialogueId = -1;
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         if (inputDialogState != 0) {
                               inputDialogState = 0;
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         overlayInterfaceId = id;
                         tabAreaAltered = true;
@@ -13059,17 +13042,17 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 126) {
+                  if (opcode == PacketConstants.SET_INTERFACE_TEXT) {
                         try {
                               String text = incoming.readString();
                               int id = incoming.readUShortA();
                               if (text.startsWith("www.")) {
                                     MiscUtils.launchURL(text);
                               }
-                              if (text.startsWith(":quicks:"))
+                              if (text.startsWith(":quicks:")) //TODO what is this abomination?
                                     clickedQuickPrayers = text.substring(8).equalsIgnoreCase("on")
                                                 ? true : false;
-                              if (text.startsWith(":prayer:"))
+                              if (text.startsWith(":prayer:")) //TODO and what is this abomination?
                                     prayerBook = text.substring(8);
                               updateStrings(text, id);
                               sendString(text, id);
@@ -13082,24 +13065,22 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 206) {
+                  if (opcode == PacketConstants.UPDATE_CHAT_MODES) {
                         publicChatMode = incoming.readUnsignedByte();
                         privateChatMode = incoming.readUnsignedByte();
                         tradeMode = incoming.readUnsignedByte();
-                        inputTaken = true;
+                        updateChatbox = true;
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 240) {
-                        if (tabId == 12) {
-                        }
+                  if (opcode == PacketConstants.SEND_PLAYER_WEIGHT) {
                         weight = incoming.readShort();
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 8) {
+                  if (opcode == PacketConstants.SEND_MODEL_TO_INTERFACE) {
                         int id = incoming.readLEUShortA();
                         int model = incoming.readUShort();
                         Widget.interfaceCache[id].defaultMediaType = 1;
@@ -13108,7 +13089,7 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 122) {
+                  if (opcode == PacketConstants.SEND_CHANGE_INTERFACE_COLOUR) {
                         int id = incoming.readLEUShortA();
                         int color = incoming.readLEUShortA();
                         int red = color >> 10 & 0x1f;
@@ -13120,7 +13101,7 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 53) {
+                  if (opcode == PacketConstants.SEND_UPDATE_ITEMS) {
                         int interfaceId = incoming.readUShort();
                         Widget widget = Widget.interfaceCache[interfaceId];
                         int itemCount = incoming.readUShort();
@@ -13140,7 +13121,7 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 230) {
+                  if (opcode == PacketConstants.SET_MODEL_INTERFACE_ZOOM) {
                         int scale = incoming.readUShortA();
                         int id = incoming.readUShort();
                         int pitch = incoming.readUShort();
@@ -13152,30 +13133,30 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 221) {
+                  if (opcode == PacketConstants.SET_FRIENDSERVER_STATUS) {
                         friendServerStatus = incoming.readUnsignedByte();
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 177) {
+                  if (opcode == PacketConstants.MOVE_CAMERA) { //Gradually turn camera to spatial point.
                         oriented = true;
-                        anInt995 = incoming.readUnsignedByte();
-                        anInt996 = incoming.readUnsignedByte();
-                        anInt997 = incoming.readUShort();
-                        anInt998 = incoming.readUnsignedByte();
-                        anInt999 = incoming.readUnsignedByte();
-                        if (anInt999 >= 100) {
-                              int k7 = anInt995 * 128 + 64;
-                              int k14 = anInt996 * 128 + 64;
-                              int i20 = method42(plane, k14, k7) - anInt997;
-                              int l22 = k7 - xCameraPos;
-                              int k25 = i20 - zCameraPos;
-                              int j28 = k14 - yCameraPos;
-                              int i30 = (int) Math.sqrt(l22 * l22 + j28 * j28);
-                              yCameraCurve = (int) (Math.atan2(k25, i30) * 325.94900000000001D)
+                      cinematicCamXViewpointLoc = incoming.readUnsignedByte();
+                      cinematicCamYViewpointLoc = incoming.readUnsignedByte();
+                      cinematicCamZViewpointLoc = incoming.readUShort();
+                      constCinematicCamRotationSpeed = incoming.readUnsignedByte();
+                      varCinematicCamRotationSpeedPromille = incoming.readUnsignedByte();
+                        if (varCinematicCamRotationSpeedPromille >= 100) {
+                              int cinCamXViewpointPos = cinematicCamXViewpointLoc * 128 + 64;
+                              int cinCamYViewpointPos = cinematicCamYViewpointLoc * 128 + 64;
+                              int cinCamZViewpointPos = getCenterHeight(plane, cinCamYViewpointPos, cinCamXViewpointPos) - cinematicCamZViewpointLoc;
+                              int dXPos = cinCamXViewpointPos - xCameraPos;
+                              int dYPos = cinCamYViewpointPos - yCameraPos;
+                            int dZPos = cinCamZViewpointPos - zCameraPos;
+                            int flatDistance = (int) Math.sqrt(dXPos * dXPos + dYPos * dYPos);
+                              yCameraCurve = (int) (Math.atan2(dZPos, flatDistance) * 325.94900000000001D)
                                           & 0x7ff;
-                              xCameraCurve = (int) (Math.atan2(l22, j28) * -325.94900000000001D)
+                              xCameraCurve = (int) (Math.atan2(dXPos, dYPos) * -325.94900000000001D)
                                           & 0x7ff;
                               if (yCameraCurve < 128)
                                     yCameraCurve = 128;
@@ -13186,38 +13167,38 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 249) {
+                  if (opcode == PacketConstants.SEND_INITIALIZE_PACKET) {
                         member = incoming.readUByteA();
                         localPlayerIndex = incoming.readLEUShortA();
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 65) {
+                  if (opcode == PacketConstants.NPC_UPDATING) {
                         updateNPCs(incoming, packetSize);
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 27) {
+                  if (opcode == PacketConstants.SEND_ENTER_AMOUNT) {
                         messagePromptRaised = false;
                         inputDialogState = 1;
                         amountOrNameInput = "";
-                        inputTaken = true;
+                        updateChatbox = true;
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 187) {
+                  if (opcode == PacketConstants.SEND_ENTER_NAME) { //Send Enter Name Dialogue (still allows numbers)
                         messagePromptRaised = false;
                         inputDialogState = 2;
                         amountOrNameInput = "";
-                        inputTaken = true;
+                        updateChatbox = true;
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 97) {
+                  if (opcode == PacketConstants.SEND_NON_WALKABLE_INTERFACE) {
                         int interfaceId = incoming.readUShort();
                         resetAnimation(interfaceId);
                         if (overlayInterfaceId != -1) {
@@ -13226,11 +13207,11 @@ public class Client extends GameApplet {
                         }
                         if (backDialogueId != -1) {
                               backDialogueId = -1;
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         if (inputDialogState != 0) {
                               inputDialogState = 0;
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         if (interfaceId == 15244) {
                               fullscreenInterfaceID = 17511;
@@ -13243,14 +13224,14 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 218) {
+                  if (opcode == PacketConstants.SEND_WALKABLE_CHATBOX_INTERFACE) {
                         dialogueId = incoming.readLEShortA();
-                        inputTaken = true;
+                        updateChatbox = true;
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 87) {
+                  if (opcode == PacketConstants.SEND_CONFIG_INT) {
                         int id = incoming.readLEUShort();
                         int value = incoming.readMEInt();
                         anIntArray1045[id] = value;
@@ -13258,13 +13239,13 @@ public class Client extends GameApplet {
                               settings[id] = value;
                               updateVarp(id);
                               if (dialogueId != -1)
-                                    inputTaken = true;
+                                    updateChatbox = true;
                         }
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 36) {
+                  if (opcode == PacketConstants.SEND_CONFIG_BYTE) {
                         int id = incoming.readLEUShort();
                         byte value = incoming.readSignedByte();
                         anIntArray1045[id] = value;
@@ -13272,19 +13253,19 @@ public class Client extends GameApplet {
                               settings[id] = value;
                               updateVarp(id);
                               if (dialogueId != -1)
-                                    inputTaken = true;
+                                    updateChatbox = true;
                         }
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 61) {
-                        multicombat = incoming.readUnsignedByte();
+                  if (opcode == PacketConstants.SEND_MULTICOMBAT_ICON) {
+                        multicombat = incoming.readUnsignedByte(); //1 is active
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 200) {
+                  if (opcode == PacketConstants.SEND_ANIMATE_INTERFACE) {
                         int id = incoming.readUShort();
                         int animation = incoming.readShort();
                         Widget widget = Widget.interfaceCache[id];
@@ -13293,25 +13274,25 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 219) {
+                  if (opcode == PacketConstants.CLOSE_INTERFACE) {
                         if (overlayInterfaceId != -1) {
                               overlayInterfaceId = -1;
                               tabAreaAltered = true;
                         }
                         if (backDialogueId != -1) {
                               backDialogueId = -1;
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         if (inputDialogState != 0) {
                               inputDialogState = 0;
-                              inputTaken = true;
+                              updateChatbox = true;
                         }
                         openInterfaceId = -1;
                         continuedDialogue = false;
                         opcode = -1;
                         return true;
                   }
-                  if (opcode == 34) {
+                  if (opcode == PacketConstants.UPDATE_SPECIFIC_ITEM) {
                         int interfaceId = incoming.readUShort();
                         Widget widget = Widget.interfaceCache[interfaceId];
                         while (incoming.currentPosition < packetSize) {
@@ -13329,21 +13310,21 @@ public class Client extends GameApplet {
                         return true;
                   }
 
-                  if (opcode == 4 || opcode == 44 || opcode == 84 || opcode == 101 || opcode == 105
-                              || opcode == 117 || opcode == 147 || opcode == 151 || opcode == 156
-                              || opcode == 160 || opcode == 215) {
+                  if (opcode == PacketConstants.SEND_GFX || opcode == PacketConstants.SEND_GROUND_ITEM || opcode == PacketConstants.SEND_ALTER_GROUND_ITEM_COUNT || opcode == PacketConstants.SEND_REMOVE_OBJECT || opcode == 105
+                              || opcode == PacketConstants.SEND_PROJECTILE || opcode == PacketConstants.TRANSFORM_PLAYER_TO_OBJECT || opcode == PacketConstants.SEND_OBJECT || opcode == PacketConstants.SEND_REMOVE_GROUND_ITEM
+                              || opcode == PacketConstants.ANIMATE_OBJECT || opcode == 215) {
                         parseRegionPackets(incoming, opcode);
                         opcode = -1;
                         return true;
                   }
 
-                  if (opcode == 106) {
+                  if (opcode == PacketConstants.SWITCH_TAB) {
                         tabId = incoming.readNegUByte();
                         tabAreaAltered = true;
                         opcode = -1;
                         return true;
                   }
-                  if (opcode == 164) {
+                  if (opcode == PacketConstants.SEND_NONWALKABLE_CHATBOX_INTERFACE) {
                         int id = incoming.readLEUShort();
                         resetAnimation(id);
                         if (overlayInterfaceId != -1) {
@@ -13351,7 +13332,7 @@ public class Client extends GameApplet {
                               tabAreaAltered = true;
                         }
                         backDialogueId = id;
-                        inputTaken = true;
+                        updateChatbox = true;
                         openInterfaceId = -1;
                         continuedDialogue = false;
                         opcode = -1;
@@ -13388,14 +13369,14 @@ public class Client extends GameApplet {
                   int i = anInt1184;
                   if (anInt984 / 256 > i)
                         i = anInt984 / 256;
-                  if (aBooleanArray876[4] && anIntArray1203[4] + 128 > i)
-                        i = anIntArray1203[4] + 128;
+                  if (quakeDirectionActive[4] && quakeAmplitudes[4] + 128 > i)
+                        i = quakeAmplitudes[4] + 128;
                   int k = cameraHorizontal + cameraRotation & 0x7ff;
                   setCameraPos(
                               cameraZoom + i * ((SceneGraph.viewDistance == 9)
                                           && (frameMode == ScreenMode.RESIZABLE) ? 2
                                                       : SceneGraph.viewDistance == 10 ? 5 : 3),
-                              i, anInt1014, method42(plane, localPlayer.y, localPlayer.x) - 50, k,
+                              i, anInt1014, getCenterHeight(plane, localPlayer.y, localPlayer.x) - 50, k,
                               anInt1015);
             }
             int j;
@@ -13409,12 +13390,12 @@ public class Client extends GameApplet {
             int k1 = yCameraCurve;
             int l1 = xCameraCurve;
             for (int i2 = 0; i2 < 5; i2++)
-                  if (aBooleanArray876[i2]) {
-                        int j2 = (int) ((Math.random() * (double) (anIntArray873[i2] * 2 + 1)
-                                    - (double) anIntArray873[i2]) + Math
-                                                .sin((double) anIntArray1030[i2]
-                                                            * ((double) anIntArray928[i2] / 100D))
-                                                * (double) anIntArray1203[i2]);
+                  if (quakeDirectionActive[i2]) {
+                        int j2 = (int) ((Math.random() * (double) (quakeMagnitudes[i2] * 2 + 1)
+                                    - (double) quakeMagnitudes[i2]) + Math
+                                                .sin((double) quakeTimes[i2]
+                                                            * ((double) quake4PiOverPeriods[i2] / 100D))
+                                                * (double) quakeAmplitudes[i2]);
                         if (i2 == 0)
                               xCameraPos += j2;
                         if (i2 == 1)
@@ -13666,7 +13647,7 @@ public class Client extends GameApplet {
             }
             if (backDialogueId != -1) {
                   backDialogueId = -1;
-                  inputTaken = true;
+                  updateChatbox = true;
                   continuedDialogue = false;
             }
             openInterfaceId = -1;
@@ -13699,8 +13680,8 @@ public class Client extends GameApplet {
             aBoolean848 = true;
             openInterfaceId = -1;
             currentExp = new int[SkillConstants.SKILL_COUNT];
-            anIntArray873 = new int[5];
-            aBooleanArray876 = new boolean[5];
+            quakeMagnitudes = new int[5];
+            quakeDirectionActive = new boolean[5];
             drawFlames = false;
             reportAbuseInput = "";
             localPlayerIndex = -1;
@@ -13718,7 +13699,7 @@ public class Client extends GameApplet {
             currentStats = new int[SkillConstants.SKILL_COUNT];
             ignoreListAsLongs = new long[100];
             loadingError = false;
-            anIntArray928 = new int[5];
+            quake4PiOverPeriods = new int[5];
             anIntArrayArray929 = new int[104][104];
             chatTypes = new int[500];
             chatNames = new String[500];
@@ -13752,7 +13733,7 @@ public class Client extends GameApplet {
             projectiles = new Deque();
             aBoolean1017 = false;
             openWalkableInterface = -1;
-            anIntArray1030 = new int[5];
+            quakeTimes = new int[5];
             aBoolean1031 = false;
             mapFunctions = new Sprite[100];
             dialogueId = -1;
@@ -13783,8 +13764,8 @@ public class Client extends GameApplet {
             headIconsHint = new Sprite[20];
             tabAreaAltered = false;
             aString1121 = "";
-            atPlayerActions = new String[5];
-            atPlayerArray = new boolean[5];
+            playerOptions = new String[5];
+            playerOptionsHighPriority = new boolean[5];
             localRegions = new int[4][13][13];
             anInt1132 = 2;
             minimapHint = new Sprite[1000];
@@ -13806,14 +13787,14 @@ public class Client extends GameApplet {
             overlayInterfaceId = -1;
             outgoing = Buffer.create();
             menuActionText = new String[500];
-            anIntArray1203 = new int[5];
+            quakeAmplitudes = new int[5];
             tracks = new int[50];
             anInt1210 = 2;
             anInt1211 = 78;
             promptInput = "";
             modIcons = new Sprite[2];
             tabId = 3;
-            inputTaken = false;
+            updateChatbox = false;
             fadeMusic = true;
             collisionMaps = new CollisionMap[4];
             privateMessageIds = new int[100];
@@ -13883,8 +13864,8 @@ public class Client extends GameApplet {
       private final int[] currentExp;
       private Sprite mapFlag;
       private Sprite mapMarker;
-      private final int[] anIntArray873;
-      private final boolean[] aBooleanArray876;
+      private final int[] quakeMagnitudes;
+      private final boolean[] quakeDirectionActive;
       private int weight;
       private MouseDetection mouseDetection;
       private volatile boolean drawFlames;
@@ -13917,16 +13898,16 @@ public class Client extends GameApplet {
       private static int anInt924;
       private final long[] ignoreListAsLongs;
       private boolean loadingError;
-      private final int[] anIntArray928;
+      private final int[] quake4PiOverPeriods;
       private int[][] anIntArrayArray929;
       private Sprite aClass30_Sub2_Sub1_Sub1_931;
       private Sprite aClass30_Sub2_Sub1_Sub1_932;
       private int hintIconPlayerId;
       private int hintIconX;
       private int hintIconY;
-      private int anInt936;
-      private int anInt937;
-      private int anInt938;
+      private int hintIconLocationArrowHeight;
+      private int hintIconLocationArrowRelX;
+      private int hintIconLocationArrowRelY;
       private final int[] chatTypes;
       private final String[] chatNames;
       private final String[] chatMessages;
@@ -13975,11 +13956,11 @@ public class Client extends GameApplet {
       private int anInt989;
       private final int[] characterDesignColours;
       private final boolean aBoolean994;
-      private int anInt995;
-      private int anInt996;
-      private int anInt997;
-      private int anInt998;
-      private int anInt999;
+      private int cinematicCamXViewpointLoc;
+      private int cinematicCamYViewpointLoc;
+      private int cinematicCamZViewpointLoc;
+      private int constCinematicCamRotationSpeed;
+      private int varCinematicCamRotationSpeedPromille;
       private IsaacCipher encryption;
       private Sprite multiOverlay;
       public static final int[][] PLAYER_BODY_RECOLOURS = {                  
@@ -14011,7 +13992,7 @@ public class Client extends GameApplet {
       private Sprite scrollBar1;
       private Sprite scrollBar2;
       private int anInt1026;
-      private final int[] anIntArray1030;
+      private final int[] quakeTimes;
       private boolean aBoolean1031;
       private Sprite[] mapFunctions;
       private int regionBaseX;
@@ -14100,8 +14081,8 @@ public class Client extends GameApplet {
       private Sprite compass;
       private ProducingGraphicsBuffer chatSettingImageProducer;
       public static Player localPlayer;
-      private final String[] atPlayerActions;
-      private final boolean[] atPlayerArray;
+      private final String[] playerOptions;
+      private final boolean[] playerOptionsHighPriority;
       private final int[][][] localRegions;
       public static final int[] tabInterfaceIDs =
                   {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
@@ -14143,7 +14124,7 @@ public class Client extends GameApplet {
       private String myPassword;
       private static int anInt1175;
       private boolean genericLoadingError;
-      private final int[] anIntArray1177 =
+      private final int[] objectGenreForTypes =
                   {0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3};
       private int reportAbuseInterfaceID;
       private Deque spawns;
@@ -14166,7 +14147,7 @@ public class Client extends GameApplet {
       private String[] menuActionText;
       private Sprite flameLeftSprite;
       private Sprite flameRightSprite;
-      private final int[] anIntArray1203;
+      private final int[] quakeAmplitudes;
       public static final int[] anIntArray1204 = {9104, 10275, 7595, 3610, 7975, 8526, 918, 38802,
                   24466, 10145, 58654, 5027, 1457, 16565, 34991, 25486};
       private static boolean flagged;
@@ -14183,7 +14164,7 @@ public class Client extends GameApplet {
       private long aLong1220;
       static int tabId;
       private int hintIconNpcId;
-      public static boolean inputTaken;
+      public static boolean updateChatbox;
       private int inputDialogState;
       private static int anInt1226;
       private int nextSong;

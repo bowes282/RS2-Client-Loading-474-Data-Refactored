@@ -30,7 +30,7 @@ public final class Player extends Mob {
                   Graphic spotAnim = Graphic.cache[super.graphic];
                   Model model_2 = spotAnim.getModel();
                   if (model_2 != null) {
-                        Model model_3 = new Model(true, Frame.isInvalid(super.currentAnimation),
+                        Model model_3 = new Model(true, Frame.noAnimationInProgress(super.currentAnimation),
                                     false, model_2);
                         int nextFrame =
                                     spotAnim.animationSequence.primaryFrames[super.nextGraphicsAnimationFrame];
@@ -53,13 +53,13 @@ public final class Player extends Mob {
                         return null;
                   }
             }
-            if (aModel_1714 != null) {
-                  if (Client.tick >= anInt1708)
-                        aModel_1714 = null;
-                  if (Client.tick >= anInt1707 && Client.tick < anInt1708) {
-                        Model model_1 = aModel_1714;
-                        model_1.translate(anInt1711 - super.x, anInt1712 - anInt1709,
-                                    anInt1713 - super.y);
+            if (objectModel != null) {
+                  if (Client.tick >= objectModelStop)
+                        objectModel = null;
+                  if (Client.tick >= objectModelStart && Client.tick < objectModelStop) {
+                        Model model_1 = objectModel;
+                        model_1.translate(objectXPos - super.x, objectCenterHeight - anInt1709,
+                                    objectYPos - super.y);
                         if (super.nextStepOrientation == 512) {
                               model_1.method473();
                               model_1.method473();
@@ -81,8 +81,8 @@ public final class Player extends Mob {
                               model_1.method473();
                               model_1.method473();
                         }
-                        model_1.translate(super.x - anInt1711, anInt1709 - anInt1712,
-                                    super.y - anInt1713);
+                        model_1.translate(super.x - objectXPos, anInt1709 - objectCenterHeight,
+                                    super.y - objectYPos);
                   }
             }
             model.fits_on_single_square = true;
@@ -312,7 +312,7 @@ public final class Player extends Mob {
             if (aBoolean1699)
                   return model_1;
             Model model_2 = Model.EMPTY_MODEL;
-            model_2.method464(model_1, Frame.isInvalid(currentFrame) & Frame.isInvalid(i1));
+            model_2.method464(model_1, Frame.noAnimationInProgress(currentFrame) & Frame.noAnimationInProgress(i1));
             if (currentFrame != -1 && i1 != -1)
                   model_2.method471(Animation.animations[super.emoteAnimation].interleaveOrder, i1,
                               currentFrame);
@@ -397,20 +397,20 @@ public final class Player extends Mob {
       public int headIcon;
       public int skullIcon;
       public int hintIcon;
-      public int anInt1707;
-      public int anInt1708;
+      public int objectModelStart;
+      public int objectModelStop;
       public int anInt1709;
       public boolean visible;
-      public int anInt1711;
-      public int anInt1712;
-      public int anInt1713;
-      public Model aModel_1714;
+      public int objectXPos;
+      public int objectCenterHeight;
+      public int objectYPos;
+      public Model objectModel;
       public final int[] equipment;
       private long aLong1718;
-      public int anInt1719;
-      public int anInt1720;
-      public int anInt1721;
-      public int anInt1722;
+      public int objectAnInt1719LesserXLoc;
+      public int objectAnInt1720LesserYLoc;
+      public int objectAnInt1721GreaterXLoc;
+      public int objectAnInt1722GreaterYLoc;
       public int skill;
 
 }
