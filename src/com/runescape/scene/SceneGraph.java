@@ -654,7 +654,7 @@ public final class SceneGraph {
 			return;
 		SimpleTile simpleTile = tile.mySimpleTile;
 		if (simpleTile != null) {
-			int tileRGB = simpleTile.colourRGB;
+			int tileRGB = simpleTile.getColourRGB();
 			if (tileRGB == 0)
 				return;
 			for (int i = 0; i < 4; i++) {
@@ -667,8 +667,11 @@ public final class SceneGraph {
 			return;
 		}
 		ShapedTile shapedTile = tile.myShapedTile;
-		if (shapedTile == null)
+		
+		if (shapedTile == null) {
 			return;
+		}
+		
 		int shape = shapedTile.shape;
 		int rotation = shapedTile.rotation;
 		int underlayRGB = shapedTile.colourRGB;
@@ -1434,17 +1437,17 @@ public final class SceneGraph {
 				clickedTileX = j1;
 				clickedTileY = k1;
 			}
-			if (simpleTile.anInt720 == -1) {
-				if (simpleTile.anInt718 != 0xbc614e)
-					Rasterizer3D.drawShadedTriangle(j6, l6, l5, i6, k6, k5, simpleTile.anInt718, simpleTile.anInt719, simpleTile.anInt717, k3, j3, j2);
+			if (simpleTile.getTexture() == -1) {
+				if (simpleTile.getCenterColor() != 0xbc614e)
+					Rasterizer3D.drawShadedTriangle(j6, l6, l5, i6, k6, k5, simpleTile.getCenterColor(), simpleTile.getEastColor(), simpleTile.getNorthColor(), k3, j3, j2);
 			} else if (!lowMem) {
-				if (simpleTile.flat)
-					Rasterizer3D.drawTexturedTriangle(j6, l6, l5, i6, k6, k5, simpleTile.anInt718, simpleTile.anInt719, simpleTile.anInt717, i2, i3, l1, l3, i4, k4, k2, j2, j3, simpleTile.anInt720, k3, j3, j2);
+				if (simpleTile.isFlat())
+					Rasterizer3D.drawTexturedTriangle(j6, l6, l5, i6, k6, k5, simpleTile.getCenterColor(), simpleTile.getEastColor(), simpleTile.getNorthColor(), i2, i3, l1, l3, i4, k4, k2, j2, j3, simpleTile.getTexture(), k3, j3, j2);
 				else
-					Rasterizer3D.drawTexturedTriangle(j6, l6, l5, i6, k6, k5, simpleTile.anInt718, simpleTile.anInt719, simpleTile.anInt717, l2, l1, i3, j4, k4, i4, k3, j3, j2, simpleTile.anInt720, k3, j3, j2);
-			} else {
-				int i7 = anIntArray485[simpleTile.anInt720];
-				Rasterizer3D.drawShadedTriangle(j6, l6, l5, i6, k6, k5, method317(i7, simpleTile.anInt718), method317(i7, simpleTile.anInt719), method317(i7, simpleTile.anInt717), k3, j3, j2);
+					Rasterizer3D.drawTexturedTriangle(j6, l6, l5, i6, k6, k5, simpleTile.getCenterColor(), simpleTile.getEastColor(), simpleTile.getNorthColor(), l2, l1, i3, j4, k4, i4, k3, j3, j2, simpleTile.getTexture(), k3, j3, j2);
+			} else {				
+				int textureColor = TEXTURE_COLORS[simpleTile.getTexture()];				
+				Rasterizer3D.drawShadedTriangle(j6, l6, l5, i6, k6, k5, light(textureColor, simpleTile.getCenterColor()), light(textureColor, simpleTile.getEastColor()), light(textureColor, simpleTile.getNorthColor()), k3, j3, j2);
 			}
 		}
 		if ((i5 - k5) * (l6 - l5) - (j5 - l5) * (k6 - k5) > 0) {
@@ -1453,19 +1456,19 @@ public final class SceneGraph {
 				clickedTileX = j1;
 				clickedTileY = k1;
 			}
-			if (simpleTile.anInt720 == -1) {
-				if (simpleTile.anInt716 != 0xbc614e) {
-					Rasterizer3D.drawShadedTriangle(j5, l5, l6, i5, k5, k6, simpleTile.anInt716, simpleTile.anInt717,
-							simpleTile.anInt719, k2, j2, j3);
+			if (simpleTile.getTexture() == -1) {
+				if (simpleTile.getNorthEastColor() != 0xbc614e) {
+					Rasterizer3D.drawShadedTriangle(j5, l5, l6, i5, k5, k6, simpleTile.getNorthEastColor(), simpleTile.getNorthColor(),
+							simpleTile.getEastColor(), k2, j2, j3);
 				}
 			} else {
 				if (!lowMem) {
-					Rasterizer3D.drawTexturedTriangle(j5, l5, l6, i5, k5, k6, simpleTile.anInt716, simpleTile.anInt717,
-							simpleTile.anInt719, i2, i3, l1, l3, i4, k4, k2, j2, j3, simpleTile.anInt720, k2, j2, j3);
+					Rasterizer3D.drawTexturedTriangle(j5, l5, l6, i5, k5, k6, simpleTile.getNorthEastColor(), simpleTile.getNorthColor(),
+							simpleTile.getEastColor(), i2, i3, l1, l3, i4, k4, k2, j2, j3, simpleTile.getTexture(), k2, j2, j3);
 					return;
 				}
-				int j7 = anIntArray485[simpleTile.anInt720];
-				Rasterizer3D.drawShadedTriangle(j5, l5, l6, i5, k5, k6, method317(j7, simpleTile.anInt716), method317(j7, simpleTile.anInt717), method317(j7, simpleTile.anInt719), k2, j2, j3);
+				int j7 = TEXTURE_COLORS[simpleTile.getTexture()];
+				Rasterizer3D.drawShadedTriangle(j5, l5, l6, i5, k5, k6, light(j7, simpleTile.getNorthEastColor()), light(j7, simpleTile.getNorthColor()), light(j7, simpleTile.getEastColor()), k2, j2, j3);
 			}
 		}
 	}
@@ -1536,16 +1539,16 @@ public final class SceneGraph {
 								ShapedTile.anIntArray692[j3], ShapedTile.anIntArray692[l3], class40.anIntArray682[j2],
 								ShapedTile.depthPoint[l2], ShapedTile.depthPoint[j3], ShapedTile.depthPoint[l3]);
 				} else {
-					int k5 = anIntArray485[class40.anIntArray682[j2]];
-					Rasterizer3D.drawShadedTriangle(l4, i5, j5, i4, j4, k4, method317(k5, class40.anIntArray676[j2]),
-							method317(k5, class40.anIntArray677[j2]), method317(k5, class40.anIntArray678[j2]),
+					int k5 = TEXTURE_COLORS[class40.anIntArray682[j2]];
+					Rasterizer3D.drawShadedTriangle(l4, i5, j5, i4, j4, k4, light(k5, class40.anIntArray676[j2]),
+							light(k5, class40.anIntArray677[j2]), light(k5, class40.anIntArray678[j2]),
 							ShapedTile.depthPoint[l2], ShapedTile.depthPoint[j3], ShapedTile.depthPoint[l3]);
 				}
 			}
 		}
 	}
 
-	private int method317(int j, int k) {
+	private int light(int j, int k) {		
 		k = 127 - k;
 		k = (k * (j & 0x7f)) / 160;
 		if (k < 2)
@@ -1937,7 +1940,7 @@ public final class SceneGraph {
 	private static final int[] anIntArray482 = { 2, 0, 0, 2, 0, 0, 0, 4, 4 };
 	private static final int[] anIntArray483 = { 0, 4, 4, 8, 0, 0, 8, 0, 0 };
 	private static final int[] anIntArray484 = { 1, 1, 0, 0, 0, 8, 0, 0, 8 };
-	private static final int[] anIntArray485 = { 41, 39248, 41, 4643, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 43086,
+	private static final int[] TEXTURE_COLORS = { 41, 39248, 41, 4643, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 43086,
 			41, 41, 41, 41, 41, 41, 41, 8602, 41, 28992, 41, 41, 41, 41, 41, 5056, 41, 41, 41, 7079, 41, 41, 41, 41, 41,
 			41, 41, 41, 41, 41, 3131, 41, 41, 41 };
 	private final int[] anIntArray486;

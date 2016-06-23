@@ -1,25 +1,51 @@
 package com.runescape.scene.object.tile;
 
-public final class SimpleTile
-{
+public final class SimpleTile {
+	
+	private final int northEastColor;	
+	private final int northColor;	
+	private final int centerColor;		
+	private final int eastColor;		
+	private final int texture;	
+	private final boolean flat;
+	private final int colorRGB;
 
-	public SimpleTile(int i, int j, int k, int l, int i1, int j1, boolean flag)
-	{
-		flat = true;
-		anInt716 = i;
-		anInt717 = j;
-		anInt718 = k;
-		anInt719 = l;
-		anInt720 = i1;
-		colourRGB = j1;
-		flat = flag;
+	public SimpleTile(int northEastColor, int northColor, int centerColor, int eastColor, int texture, int colorRGB, boolean flat) {
+		this.northEastColor = northEastColor;		
+		this.northColor = northColor;		
+		this.centerColor = centerColor;			
+		this.eastColor = eastColor;		
+		this.texture = texture;		
+		this.colorRGB = colorRGB;		
+		this.flat = flat;		
 	}
 
-	public final int anInt716;
-	public final int anInt717;
-	public final int anInt718;
-	public final int anInt719;
-	public final int anInt720;
-	public boolean flat;
-	public final int colourRGB;
+	public int getNorthEastColor() {
+		return northEastColor;
+	}
+
+	public int getNorthColor() {
+		return northColor;
+	}
+
+	public int getCenterColor() {
+		return centerColor;
+	}
+
+	public int getEastColor() {		
+		return eastColor;
+	}
+
+	public int getTexture() {		
+		return texture;
+	}
+
+	public boolean isFlat() {
+		return flat;
+	}
+
+	public int getColourRGB() {
+		return colorRGB;
+	}
+	
 }
