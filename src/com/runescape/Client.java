@@ -3032,7 +3032,7 @@ public class Client extends GameApplet {
                   int k1 = player.y >> 7;
                   if (j1 < 0 || j1 >= 104 || k1 < 0 || k1 >= 104)
                         continue;
-                  if (player.objectModel != null && tick >= player.objectModelStart
+                  if (player.playerModel != null && tick >= player.objectModelStart
                               && tick < player.objectModelStop) {
                         player.aBoolean1699 = false;
                         player.anInt1709 = getCenterHeight(plane, player.y, player.x);
@@ -6524,7 +6524,7 @@ public class Client extends GameApplet {
                   rsInterface.modelRotation1 = verticleTilt;
                   rsInterface.modelRotation2 = animationSpeed;
                   if (aBoolean1031) {
-                        Model characterDisplay = localPlayer.method452();
+                        Model characterDisplay = localPlayer.getAnimatedModel();
                         for (int l2 = 0; l2 < 5; l2++)
                               if (characterDesignColours[l2] != 0) {
                                     characterDisplay.recolor(PLAYER_BODY_RECOLOURS[l2][0],
@@ -10765,7 +10765,7 @@ public class Client extends GameApplet {
                         }
                   }
             }
-            for (int p = 0; p < playerCount; p++) {
+            for (int p = 0; p < playerCount; p++) {            	
                   Player player = players[playerList[p]];
                   if (player != null && player.isVisible()) {
                         int mapX = player.x / 32 - localPlayer.x / 32;
@@ -11608,7 +11608,7 @@ public class Client extends GameApplet {
                               requestSpawnObject(stopDelay + 1, -1, 0, objectGenre, yLoc, 0, plane, xLoc, startDelay + 1);
                               player.objectModelStart = startDelay + tick;
                               player.objectModelStop = stopDelay + tick;
-                              player.objectModel = model;
+                              player.playerModel = model;
                               int playerSizeX = objectDefinition.objectSizeX;
                               int playerSizeY = objectDefinition.objectSizeY;
                               if (objectFace == 1 || objectFace == 3) {
@@ -12261,7 +12261,7 @@ public class Client extends GameApplet {
                   if (opcode == PacketConstants.SHOW_PLAYER_HEAD_ON_INTERFACE) {
                         int playerHeadModelId = incoming.readLEUShortA();
                         Widget.interfaceCache[playerHeadModelId].defaultMediaType = 3;
-                        if (localPlayer.desc == null)
+                        if (localPlayer.npcDefinition == null)
                               Widget.interfaceCache[playerHeadModelId].defaultMedia =
                                           (localPlayer.appearanceColors[0] << 25)
                                                       + (localPlayer.appearanceColors[4] << 20)
@@ -12271,7 +12271,7 @@ public class Client extends GameApplet {
                                                       + localPlayer.equipment[1];
                         else
                               Widget.interfaceCache[playerHeadModelId].defaultMedia =
-                                          (int) (0x12345678L + localPlayer.desc.interfaceType);
+                                          (int) (0x12345678L + localPlayer.npcDefinition.interfaceType);
                         opcode = -1;
                         return true;
                   }

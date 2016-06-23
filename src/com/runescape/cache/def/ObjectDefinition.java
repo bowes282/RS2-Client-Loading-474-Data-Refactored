@@ -351,7 +351,7 @@ public final class ObjectDefinition {
 			model_3.vertexGroups = null;
 		}
 		while (l-- > 0)
-			model_3.method473();
+			model_3.rotate90Degrees();
 		if (modifiedModelColors != null) {
 			for (int k2 = 0; k2 < modifiedModelColors.length; k2++)
 				model_3.recolor(modifiedModelColors[k2],

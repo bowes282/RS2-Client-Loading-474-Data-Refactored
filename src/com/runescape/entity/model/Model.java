@@ -1866,8 +1866,8 @@ public class Model extends Renderable {
 		}
 	}
 
-	public void method473() {
-		for (int j = 0; j < numVertices; j++) {
+	public void rotate90Degrees() {
+		for (int j = 0; j < numVertices; j++) {			
 			int k = vertexX[j];
 			vertexX[j] = vertexZ[j];
 			vertexZ[j] = -k;

@@ -45,16 +45,16 @@ public final class AnimableObject extends Renderable {
 		}
 		if(graphic.rotation != 0) {
 			if(graphic.rotation == 90) {
-				model_1.method473();
+				model_1.rotate90Degrees();
 			}
 			if(graphic.rotation == 180) {
-				model_1.method473();
-				model_1.method473();
+				model_1.rotate90Degrees();
+				model_1.rotate90Degrees();
 			}
 			if(graphic.rotation == 270) {
-				model_1.method473();
-				model_1.method473();
-				model_1.method473();
+				model_1.rotate90Degrees();
+				model_1.rotate90Degrees();
+				model_1.rotate90Degrees();
 			}
 		}
 		model_1.light(64 + graphic.modelBrightness, 850 + graphic.modelShadow, -30, -50, -30, true);

@@ -1981,22 +1981,37 @@ public final class Widget {
 		childY = new int[t];
 	}
 
-	private Model method206(int i, int j) {
-		Model model = (Model) models.get((i << 16) + j);
-		if (model != null)
+	private Model getModel(int type, int mobId) {
+		Model model = (Model) models.get((type << 16) + mobId);
+		
+		if (model != null) {
 			return model;
-		if (i == 1)
-			model = Model.getModel(j);
-		if (i == 2)
-			model = NpcDefinition.lookup(j).model();
-		if (i == 3)
-			model = Client.localPlayer.method453();
-		if (i == 4)
-			model = ItemDefinition.lookup(j).getUnshadedModel(50);
-		if (i == 5)
+		}
+		
+		if (type == 1) {
+			model = Model.getModel(mobId);
+		}
+		
+		if (type == 2) {
+			model = NpcDefinition.lookup(mobId).model();
+		}
+		
+		if (type == 3) {
+			model = Client.localPlayer.getHeadModel();
+		}
+		
+		if (type == 4) {
+			model = ItemDefinition.lookup(mobId).getUnshadedModel(50);
+		}
+		
+		if (type == 5) {
 			model = null;
-		if (model != null)
-			models.put(model, (i << 16) + j);
+		}
+		
+		if (model != null) {
+			models.put(model, (type << 16) + mobId);
+		}
+		
 		return model;
 	}
 
@@ -2027,9 +2042,9 @@ public final class Widget {
 	public Model method209(int j, int k, boolean flag) {
 		Model model;
 		if (flag)
-			model = method206(anInt255, anInt256);
+			model = getModel(anInt255, anInt256);
 		else
-			model = method206(defaultMediaType, defaultMedia);
+			model = getModel(defaultMediaType, defaultMedia);
 		if (model == null)
 			return null;
 		if (k == -1 && j == -1 && model.triangleColours == null)
