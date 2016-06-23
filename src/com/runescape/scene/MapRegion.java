@@ -200,7 +200,7 @@ public final class MapRegion {
 									if (j21 != -1)
 										i22 = Rasterizer.anIntArray1482[method187(k21, 96)];
 									if (i19 == 0) {
-										scene.method279(z, l6, k17, 0, 0, -1, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), 0, 0, 0, 0, i22, 0);
+										scene.addTile(z, l6, k17, 0, 0, -1, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), 0, 0, 0, 0, i22, 0);
 									} else {
 										int k22 = overlayTypes[z][l6][k17] + 1;
 										byte byte4 = overlayOrientations[z][l6][k17];
@@ -237,7 +237,7 @@ public final class MapRegion {
 												k23 = 0x483B21;
 												j23 = encode(25, 146, 24);
 											}
-											scene.method279(z, l6, k17, k22, byte4, i23, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), checkedLight(j23, j20), checkedLight(j23, k20), checkedLight(j23, l20), checkedLight(j23, i21), i22, k23);
+											scene.addTile(z, l6, k17, k22, byte4, i23, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), checkedLight(j23, j20), checkedLight(j23, k20), checkedLight(j23, l20), checkedLight(j23, i21), i22, k23);
 										} else {
 										}
 									}
@@ -250,16 +250,16 @@ public final class MapRegion {
 
 				for (int j8 = 1; j8 < regionSizeY - 1; j8++) {
 					for (int i10 = 1; i10 < regionSizeX - 1; i10++)
-						scene.method278(z, i10, j8, getCollisionPlane(j8, z, i10));
+						scene.setTileLogicHeight(z, i10, j8, getCollisionPlane(j8, z, i10));
 
 				}
 			}
 
-			scene.method305(-10, -50, -50);
+			scene.shadeModels(-10, -50, -50);
 			for (int j1 = 0; j1 < regionSizeX; j1++) {
 				for (int l1 = 0; l1 < regionSizeY; l1++)
 					if ((tileFlags[1][j1][l1] & 2) == 2)
-						scene.method276(l1, j1);
+						scene.applyBridgeMode(l1, j1);
 
 			}
 
@@ -303,7 +303,7 @@ public final class MapRegion {
 									char c1 = '\360';
 									int k14 = tileHeights[k8][i4][k4] - c1;
 									int l15 = tileHeights[i7][i4][k4];
-									SceneGraph.method277(l2, i4 * 128, l15, i4 * 128, l5 * 128 + 128, k14, k4 * 128, 1);
+									SceneGraph.createNewSceneCluster(l2, i4 * 128, l15, i4 * 128, l5 * 128 + 128, k14, k4 * 128, 1);
 									for (int l16 = i7; l16 <= k8; l16++) {
 										for (int l17 = k4; l17 <= l5; l17++)
 											anIntArrayArrayArray135[l16][i4][l17] &= ~i2;
@@ -340,7 +340,7 @@ public final class MapRegion {
 									char c2 = '\360';
 									int l14 = tileHeights[l8][l4][k3] - c2;
 									int i16 = tileHeights[j7][l4][k3];
-									SceneGraph.method277(l2, l4 * 128, i16, i6 * 128 + 128, k3 * 128, l14, k3 * 128, 2);
+									SceneGraph.createNewSceneCluster(l2, l4 * 128, i16, i6 * 128 + 128, k3 * 128, l14, k3 * 128, 2);
 									for (int i17 = j7; i17 <= l8; i17++) {
 										for (int i18 = l4; i18 <= i6; i18++)
 											anIntArrayArrayArray135[i17][i18][k3] &= ~j2;
@@ -374,7 +374,7 @@ public final class MapRegion {
 
 								if (((j6 - i5) + 1) * ((i9 - k7) + 1) >= 4) {
 									int j12 = tileHeights[i3][i5][k7];
-									SceneGraph.method277(l2, i5 * 128, j12, j6 * 128 + 128, i9 * 128 + 128, j12, k7 * 128, 4);
+									SceneGraph.createNewSceneCluster(l2, i5 * 128, j12, j6 * 128 + 128, i9 * 128 + 128, j12, k7 * 128, 4);
 									for (int k13 = i5; k13 <= j6; k13++) {
 										for (int i15 = k7; i15 <= i9; i15++)
 											anIntArrayArrayArray135[i3][k13][i15] &= ~k2;
@@ -484,7 +484,7 @@ public final class MapRegion {
 				obj = definition.modelAt(22, j1, center, east, northEast, north, -1);
 			else
 				obj = new SceneObject(id, j1, 22, east, northEast, center, north, definition.animation, true);
-			scene.method280(z, mean, y, ((Renderable) (obj)), config, key, x);
+			scene.addGroundDecoration(z, mean, y, ((Renderable) (obj)), config, key, x);
 			if (definition.solid && definition.isInteractive && class11 != null)
 				class11.block(x, y);
 			return;
@@ -508,7 +508,7 @@ public final class MapRegion {
 					j4 = definition.objectSizeX;
 					l4 = definition.objectSizeY;
 				}
-				if (scene.method284(key, config, mean, l4, ((Renderable) (obj1)), j4, z, i5, y, x) && definition.castsShadow) {
+				if (scene.addTiledObject(key, config, mean, l4, ((Renderable) (obj1)), j4, z, i5, y, x) && definition.castsShadow) {
 					Model model;
 					if (obj1 instanceof Model)
 						model = (Model) obj1;
@@ -517,7 +517,7 @@ public final class MapRegion {
 					if (model != null) {
 						for (int j5 = 0; j5 <= j4; j5++) {
 							for (int k5 = 0; k5 <= l4; k5++) {
-								int l5 = model.anInt1650 / 4;
+								int l5 = model.maxVertexDistanceXZPlane / 4;
 								if (l5 > 30)
 									l5 = 30;
 								if (l5 > shading[z][x + j5][y + k5])
@@ -539,7 +539,7 @@ public final class MapRegion {
 				obj2 = definition.modelAt(type, j1, center, east, northEast, north, -1);
 			else
 				obj2 = new SceneObject(id, j1, type, east, northEast, center, north, definition.animation, true);
-			scene.method284(key, config, mean, 1, ((Renderable) (obj2)), 1, z, 0, y, x);
+			scene.addTiledObject(key, config, mean, 1, ((Renderable) (obj2)), 1, z, 0, y, x);
 			if (type >= 12 && type <= 17 && type != 13 && z > 0)
 				anIntArrayArrayArray135[z][x][y] |= 0x924;
 			if (definition.solid && class11 != null)
@@ -552,7 +552,7 @@ public final class MapRegion {
 				obj3 = definition.modelAt(0, j1, center, east, northEast, north, -1);
 			else
 				obj3 = new SceneObject(id, j1, 0, east, northEast, center, north, definition.animation, true);
-			scene.method282(anIntArray152[j1], ((Renderable) (obj3)), key, y, config, x, null, mean, 0, z);
+			scene.addWallObject(anIntArray152[j1], ((Renderable) (obj3)), key, y, config, x, null, mean, 0, z);
 			if (j1 == 0) {
 				if (definition.castsShadow) {
 					shading[z][x][y] = 50;
@@ -594,7 +594,7 @@ public final class MapRegion {
 				obj4 = definition.modelAt(1, j1, center, east, northEast, north, -1);
 			else
 				obj4 = new SceneObject(id, j1, 1, east, northEast, center, north, definition.animation, true);
-			scene.method282(anIntArray140[j1], ((Renderable) (obj4)), key, y, config, x, null, mean, 0, z);
+			scene.addWallObject(anIntArray140[j1], ((Renderable) (obj4)), key, y, config, x, null, mean, 0, z);
 			if (definition.castsShadow)
 				if (j1 == 0)
 					shading[z][x][y + 1] = 50;
@@ -619,7 +619,7 @@ public final class MapRegion {
 				obj11 = new SceneObject(id, 4 + j1, 2, east, northEast, center, north, definition.animation, true);
 				obj12 = new SceneObject(id, i3, 2, east, northEast, center, north, definition.animation, true);
 			}
-			scene.method282(anIntArray152[j1], ((Renderable) (obj11)), key, y, config, x, ((Renderable) (obj12)), mean, anIntArray152[i3], z);
+			scene.addWallObject(anIntArray152[j1], ((Renderable) (obj11)), key, y, config, x, ((Renderable) (obj12)), mean, anIntArray152[i3], z);
 			if (definition.occludes)
 				if (j1 == 0) {
 					anIntArrayArrayArray135[z][x][y] |= 0x249;
@@ -646,7 +646,7 @@ public final class MapRegion {
 				obj5 = definition.modelAt(3, j1, center, east, northEast, north, -1);
 			else
 				obj5 = new SceneObject(id, j1, 3, east, northEast, center, north, definition.animation, true);
-			scene.method282(anIntArray140[j1], ((Renderable) (obj5)), key, y, config, x, null, mean, 0, z);
+			scene.addWallObject(anIntArray140[j1], ((Renderable) (obj5)), key, y, config, x, null, mean, 0, z);
 			if (definition.castsShadow)
 				if (j1 == 0)
 					shading[z][x][y + 1] = 50;
@@ -666,7 +666,7 @@ public final class MapRegion {
 				obj6 = definition.modelAt(type, j1, center, east, northEast, north, -1);
 			else
 				obj6 = new SceneObject(id, j1, type, east, northEast, center, north, definition.animation, true);
-			scene.method284(key, config, mean, 1, ((Renderable) (obj6)), 1, z, 0, y, x);
+			scene.addTiledObject(key, config, mean, 1, ((Renderable) (obj6)), 1, z, 0, y, x);
 			if (definition.solid && class11 != null)
 				class11.method212(definition.impenetrable, definition.objectSizeX, definition.objectSizeY, x, y, j1);
 			return;
@@ -698,12 +698,12 @@ public final class MapRegion {
 				obj7 = definition.modelAt(4, 0, center, east, northEast, north, -1);
 			else
 				obj7 = new SceneObject(id, 0, 4, east, northEast, center, north, definition.animation, true);
-			scene.method283(key, y, j1 * 512, z, 0, mean, ((Renderable) (obj7)), x, config, 0, anIntArray152[j1]);
+			scene.addWallDecoration(key, y, j1 * 512, z, 0, mean, ((Renderable) (obj7)), x, config, 0, anIntArray152[j1]);
 			return;
 		}
 		if (type == 5) {
 			int i4 = 16;
-			int k4 = scene.getWallKey(z, x, y);
+			int k4 = scene.getWallObjectUid(z, x, y);
 			if (k4 > 0)
 				i4 = ObjectDefinition.lookup(k4 >> 14 & 0x7fff).decorDisplacement;
 			Object obj13;
@@ -711,7 +711,7 @@ public final class MapRegion {
 				obj13 = definition.modelAt(4, 0, center, east, northEast, north, -1);
 			else
 				obj13 = new SceneObject(id, 0, 4, east, northEast, center, north, definition.animation, true);
-			scene.method283(key, y, j1 * 512, z, COSINE_VERTICES[j1] * i4, mean, ((Renderable) (obj13)), x, config, SINE_VERTICIES[j1] * i4, anIntArray152[j1]);
+			scene.addWallDecoration(key, y, j1 * 512, z, COSINE_VERTICES[j1] * i4, mean, ((Renderable) (obj13)), x, config, SINE_VERTICIES[j1] * i4, anIntArray152[j1]);
 			return;
 		}
 		if (type == 6) {
@@ -720,7 +720,7 @@ public final class MapRegion {
 				obj8 = definition.modelAt(4, 0, center, east, northEast, north, -1);
 			else
 				obj8 = new SceneObject(id, 0, 4, east, northEast, center, north, definition.animation, true);
-			scene.method283(key, y, j1, z, 0, mean, ((Renderable) (obj8)), x, config, 0, 256);
+			scene.addWallDecoration(key, y, j1, z, 0, mean, ((Renderable) (obj8)), x, config, 0, 256);
 			return;
 		}
 		if (type == 7) {
@@ -729,7 +729,7 @@ public final class MapRegion {
 				obj9 = definition.modelAt(4, 0, center, east, northEast, north, -1);
 			else
 				obj9 = new SceneObject(id, 0, 4, east, northEast, center, north, definition.animation, true);
-			scene.method283(key, y, j1, z, 0, mean, ((Renderable) (obj9)), x, config, 0, 512);
+			scene.addWallDecoration(key, y, j1, z, 0, mean, ((Renderable) (obj9)), x, config, 0, 512);
 			return;
 		}
 		if (type == 8) {
@@ -738,7 +738,7 @@ public final class MapRegion {
 				obj10 = definition.modelAt(4, 0, center, east, northEast, north, -1);
 			else
 				obj10 = new SceneObject(id, 0, 4, east, northEast, center, north, definition.animation, true);
-			scene.method283(key, y, j1, z, 0, mean, ((Renderable) (obj10)), x, config, 0, 768);
+			scene.addWallDecoration(key, y, j1, z, 0, mean, ((Renderable) (obj10)), x, config, 0, 768);
 		}
 	}
 
@@ -998,7 +998,7 @@ public final class MapRegion {
 				obj = class46.modelAt(22, i, l1, i2, j2, k2, -1);
 			else
 				obj = new SceneObject(j1, i, 22, i2, j2, l1, k2, class46.animation, true);
-			worldController.method280(k1, l2, j, ((Renderable) (obj)), byte1, i3, i1);
+			worldController.addGroundDecoration(k1, l2, j, ((Renderable) (obj)), byte1, i3, i1);
 			if (class46.solid && class46.isInteractive)
 				class11.block(i1, j);
 			return;
@@ -1022,7 +1022,7 @@ public final class MapRegion {
 					k4 = class46.objectSizeX;
 					i5 = class46.objectSizeY;
 				}
-				worldController.method284(i3, byte1, l2, i5, ((Renderable) (obj1)), k4, k1, j5, j, i1);
+				worldController.addTiledObject(i3, byte1, l2, i5, ((Renderable) (obj1)), k4, k1, j5, j, i1);
 			}
 			if (class46.solid)
 				class11.method212(class46.impenetrable, class46.objectSizeX, class46.objectSizeY, i1, j, i);
@@ -1034,7 +1034,7 @@ public final class MapRegion {
 				obj2 = class46.modelAt(k, i, l1, i2, j2, k2, -1);
 			else
 				obj2 = new SceneObject(j1, i, k, i2, j2, l1, k2, class46.animation, true);
-			worldController.method284(i3, byte1, l2, 1, ((Renderable) (obj2)), 1, k1, 0, j, i1);
+			worldController.addTiledObject(i3, byte1, l2, 1, ((Renderable) (obj2)), 1, k1, 0, j, i1);
 			if (class46.solid)
 				class11.method212(class46.impenetrable, class46.objectSizeX, class46.objectSizeY, i1, j, i);
 			return;
@@ -1045,7 +1045,7 @@ public final class MapRegion {
 				obj3 = class46.modelAt(0, i, l1, i2, j2, k2, -1);
 			else
 				obj3 = new SceneObject(j1, i, 0, i2, j2, l1, k2, class46.animation, true);
-			worldController.method282(anIntArray152[i], ((Renderable) (obj3)), i3, j, byte1, i1, null, l2, 0, k1);
+			worldController.addWallObject(anIntArray152[i], ((Renderable) (obj3)), i3, j, byte1, i1, null, l2, 0, k1);
 			if (class46.solid)
 				class11.method211(j, i, i1, k, class46.impenetrable);
 			return;
@@ -1056,7 +1056,7 @@ public final class MapRegion {
 				obj4 = class46.modelAt(1, i, l1, i2, j2, k2, -1);
 			else
 				obj4 = new SceneObject(j1, i, 1, i2, j2, l1, k2, class46.animation, true);
-			worldController.method282(anIntArray140[i], ((Renderable) (obj4)), i3, j, byte1, i1, null, l2, 0, k1);
+			worldController.addWallObject(anIntArray140[i], ((Renderable) (obj4)), i3, j, byte1, i1, null, l2, 0, k1);
 			if (class46.solid)
 				class11.method211(j, i, i1, k, class46.impenetrable);
 			return;
@@ -1072,7 +1072,7 @@ public final class MapRegion {
 				obj11 = new SceneObject(j1, 4 + i, 2, i2, j2, l1, k2, class46.animation, true);
 				obj12 = new SceneObject(j1, j3, 2, i2, j2, l1, k2, class46.animation, true);
 			}
-			worldController.method282(anIntArray152[i], ((Renderable) (obj11)), i3, j, byte1, i1, ((Renderable) (obj12)), l2, anIntArray152[j3], k1);
+			worldController.addWallObject(anIntArray152[i], ((Renderable) (obj11)), i3, j, byte1, i1, ((Renderable) (obj12)), l2, anIntArray152[j3], k1);
 			if (class46.solid)
 				class11.method211(j, i, i1, k, class46.impenetrable);
 			return;
@@ -1083,7 +1083,7 @@ public final class MapRegion {
 				obj5 = class46.modelAt(3, i, l1, i2, j2, k2, -1);
 			else
 				obj5 = new SceneObject(j1, i, 3, i2, j2, l1, k2, class46.animation, true);
-			worldController.method282(anIntArray140[i], ((Renderable) (obj5)), i3, j, byte1, i1, null, l2, 0, k1);
+			worldController.addWallObject(anIntArray140[i], ((Renderable) (obj5)), i3, j, byte1, i1, null, l2, 0, k1);
 			if (class46.solid)
 				class11.method211(j, i, i1, k, class46.impenetrable);
 			return;
@@ -1094,7 +1094,7 @@ public final class MapRegion {
 				obj6 = class46.modelAt(k, i, l1, i2, j2, k2, -1);
 			else
 				obj6 = new SceneObject(j1, i, k, i2, j2, l1, k2, class46.animation, true);
-			worldController.method284(i3, byte1, l2, 1, ((Renderable) (obj6)), 1, k1, 0, j, i1);
+			worldController.addTiledObject(i3, byte1, l2, 1, ((Renderable) (obj6)), 1, k1, 0, j, i1);
 			if (class46.solid)
 				class11.method212(class46.impenetrable, class46.objectSizeX, class46.objectSizeY, i1, j, i);
 			return;
@@ -1126,12 +1126,12 @@ public final class MapRegion {
 				obj7 = class46.modelAt(4, 0, l1, i2, j2, k2, -1);
 			else
 				obj7 = new SceneObject(j1, 0, 4, i2, j2, l1, k2, class46.animation, true);
-			worldController.method283(i3, j, i * 512, k1, 0, l2, ((Renderable) (obj7)), i1, byte1, 0, anIntArray152[i]);
+			worldController.addWallDecoration(i3, j, i * 512, k1, 0, l2, ((Renderable) (obj7)), i1, byte1, 0, anIntArray152[i]);
 			return;
 		}
 		if (k == 5) {
 			int j4 = 16;
-			int l4 = worldController.getWallKey(k1, i1, j);
+			int l4 = worldController.getWallObjectUid(k1, i1, j);
 			if (l4 > 0)
 				j4 = ObjectDefinition.lookup(l4 >> 14 & 0x7fff).decorDisplacement;
 			Object obj13;
@@ -1139,7 +1139,7 @@ public final class MapRegion {
 				obj13 = class46.modelAt(4, 0, l1, i2, j2, k2, -1);
 			else
 				obj13 = new SceneObject(j1, 0, 4, i2, j2, l1, k2, class46.animation, true);
-			worldController.method283(i3, j, i * 512, k1, COSINE_VERTICES[i] * j4, l2, ((Renderable) (obj13)), i1, byte1, SINE_VERTICIES[i] * j4, anIntArray152[i]);
+			worldController.addWallDecoration(i3, j, i * 512, k1, COSINE_VERTICES[i] * j4, l2, ((Renderable) (obj13)), i1, byte1, SINE_VERTICIES[i] * j4, anIntArray152[i]);
 			return;
 		}
 		if (k == 6) {
@@ -1148,7 +1148,7 @@ public final class MapRegion {
 				obj8 = class46.modelAt(4, 0, l1, i2, j2, k2, -1);
 			else
 				obj8 = new SceneObject(j1, 0, 4, i2, j2, l1, k2, class46.animation, true);
-			worldController.method283(i3, j, i, k1, 0, l2, ((Renderable) (obj8)), i1, byte1, 0, 256);
+			worldController.addWallDecoration(i3, j, i, k1, 0, l2, ((Renderable) (obj8)), i1, byte1, 0, 256);
 			return;
 		}
 		if (k == 7) {
@@ -1157,7 +1157,7 @@ public final class MapRegion {
 				obj9 = class46.modelAt(4, 0, l1, i2, j2, k2, -1);
 			else
 				obj9 = new SceneObject(j1, 0, 4, i2, j2, l1, k2, class46.animation, true);
-			worldController.method283(i3, j, i, k1, 0, l2, ((Renderable) (obj9)), i1, byte1, 0, 512);
+			worldController.addWallDecoration(i3, j, i, k1, 0, l2, ((Renderable) (obj9)), i1, byte1, 0, 512);
 			return;
 		}
 		if (k == 8) {
@@ -1166,7 +1166,7 @@ public final class MapRegion {
 				obj10 = class46.modelAt(4, 0, l1, i2, j2, k2, -1);
 			else
 				obj10 = new SceneObject(j1, 0, 4, i2, j2, l1, k2, class46.animation, true);
-			worldController.method283(i3, j, i, k1, 0, l2, ((Renderable) (obj10)), i1, byte1, 0, 768);
+			worldController.addWallDecoration(i3, j, i, k1, 0, l2, ((Renderable) (obj10)), i1, byte1, 0, 768);
 		}
 	}
 

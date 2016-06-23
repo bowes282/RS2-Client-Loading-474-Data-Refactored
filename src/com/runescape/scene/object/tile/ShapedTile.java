@@ -1,20 +1,16 @@
 package com.runescape.scene.object.tile;
-public final class ShapedTile
-{
 
-	public ShapedTile(int i, int j, int k, int l, int i1, int j1, int k1,
-				   int l1, int i2, int j2, int k2, int l2, int i3, int j3,
-				   int k3, int l3, int i4, int k4, int l4)
-	{
-		aBoolean683 = !(i3 != l2 || i3 != l || i3 != k2);
-		anInt684 = j3;
-		anInt685 = k1;
-		anInt686 = i2;
-		anInt687 = l4;
-		char c = '\200';
-		int i5 = c / 2;
-		int j5 = c / 4;
-		int k5 = (c * 3) / 4;
+public final class ShapedTile{
+	public ShapedTile(int yLoc, int j, int k, int l, int texture, int j1, int rotation, int l1, int i2, int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int xLoc, int l4){
+        flat = !(i3 != l2 || i3 != l || i3 != k2);
+		shape = j3;
+		this.rotation = rotation;
+		colourRGB = i2;
+		colourRGBA = l4;
+		char sideLength = 128;
+		int halfSizeLength = sideLength / 2;
+		int quarterSizeLight = sideLength / 4;
+		int k5 = (sideLength * 3) / 4;
 		int ai[] = anIntArrayArray696[j3];
 		int l5 = ai.length;
 		anIntArray673 = new int[l5];
@@ -22,145 +18,114 @@ public final class ShapedTile
 		anIntArray675 = new int[l5];
 		int ai1[] = new int[l5];
 		int ai2[] = new int[l5];
-		int i6 = k4 * c;
-		int j6 = i * c;
-		for(int k6 = 0; k6 < l5; k6++)
-		{
-			int l6 = ai[k6];
-			if((l6 & 1) == 0 && l6 <= 8)
-				l6 = (l6 - k1 - k1 - 1 & 7) + 1;
-			if(l6 > 8 && l6 <= 12)
-				l6 = (l6 - 9 - k1 & 3) + 9;
-			if(l6 > 12 && l6 <= 16)
-				l6 = (l6 - 13 - k1 & 3) + 13;
+		int xPos = xLoc * sideLength;
+		int yPos = yLoc * sideLength;
+		for(int k6 = 0; k6 < l5; k6++){
+			int realShape = ai[k6];
+			if((realShape & 1) == 0 && realShape <= 8)
+				realShape = (realShape - rotation - rotation - 1 & 7) + 1;
+			if(realShape > 8 && realShape <= 12)
+				realShape = (realShape - 9 - rotation & 3) + 9;
+			if(realShape > 12 && realShape <= 16)
+				realShape = (realShape - 13 - rotation & 3) + 13;
 			int i7;
 			int k7;
 			int i8;
 			int k8;
 			int j9;
-			if(l6 == 1)
-			{
-				i7 = i6;
-				k7 = j6;
+			if(realShape == 1){
+				i7 = xPos;
+				k7 = yPos;
 				i8 = i3;
 				k8 = l1;
 				j9 = j;
-			} else
-			if(l6 == 2)
-			{
-				i7 = i6 + i5;
-				k7 = j6;
+			} else if(realShape == 2){
+				i7 = xPos + halfSizeLength;
+				k7 = yPos;
 				i8 = i3 + l2 >> 1;
 				k8 = l1 + i4 >> 1;
 				j9 = j + l3 >> 1;
-			} else
-			if(l6 == 3)
-			{
-				i7 = i6 + c;
-				k7 = j6;
+			} else if(realShape == 3){
+				i7 = xPos + sideLength;
+				k7 = yPos;
 				i8 = l2;
 				k8 = i4;
 				j9 = l3;
-			} else
-			if(l6 == 4)
-			{
-				i7 = i6 + c;
-				k7 = j6 + i5;
+			} else if(realShape == 4){
+				i7 = xPos + sideLength;
+				k7 = yPos + halfSizeLength;
 				i8 = l2 + l >> 1;
 				k8 = i4 + j2 >> 1;
 				j9 = l3 + j1 >> 1;
-			} else
-			if(l6 == 5)
-			{
-				i7 = i6 + c;
-				k7 = j6 + c;
+			} else if(realShape == 5){
+				i7 = xPos + sideLength;
+				k7 = yPos + sideLength;
 				i8 = l;
 				k8 = j2;
 				j9 = j1;
-			} else
-			if(l6 == 6)
-			{
-				i7 = i6 + i5;
-				k7 = j6 + c;
+			} else if(realShape == 6){
+				i7 = xPos + halfSizeLength;
+				k7 = yPos + sideLength;
 				i8 = l + k2 >> 1;
 				k8 = j2 + k >> 1;
 				j9 = j1 + k3 >> 1;
-			} else
-			if(l6 == 7)
-			{
-				i7 = i6;
-				k7 = j6 + c;
+			} else if(realShape == 7){
+				i7 = xPos;
+				k7 = yPos + sideLength;
 				i8 = k2;
 				k8 = k;
 				j9 = k3;
-			} else
-			if(l6 == 8)
-			{
-				i7 = i6;
-				k7 = j6 + i5;
+			} else if(realShape == 8){
+				i7 = xPos;
+				k7 = yPos + halfSizeLength;
 				i8 = k2 + i3 >> 1;
 				k8 = k + l1 >> 1;
 				j9 = k3 + j >> 1;
-			} else
-			if(l6 == 9)
-			{
-				i7 = i6 + i5;
-				k7 = j6 + j5;
+			} else if(realShape == 9){
+				i7 = xPos + halfSizeLength;
+				k7 = yPos + quarterSizeLight;
 				i8 = i3 + l2 >> 1;
 				k8 = l1 + i4 >> 1;
 				j9 = j + l3 >> 1;
-			} else
-			if(l6 == 10)
-			{
-				i7 = i6 + k5;
-				k7 = j6 + i5;
+			} else if(realShape == 10){
+				i7 = xPos + k5;
+				k7 = yPos + halfSizeLength;
 				i8 = l2 + l >> 1;
 				k8 = i4 + j2 >> 1;
 				j9 = l3 + j1 >> 1;
-			} else
-			if(l6 == 11)
-			{
-				i7 = i6 + i5;
-				k7 = j6 + k5;
+			} else if(realShape == 11){
+				i7 = xPos + halfSizeLength;
+				k7 = yPos + k5;
 				i8 = l + k2 >> 1;
 				k8 = j2 + k >> 1;
 				j9 = j1 + k3 >> 1;
-			} else
-			if(l6 == 12)
-			{
-				i7 = i6 + j5;
-				k7 = j6 + i5;
+			} else if(realShape == 12){
+				i7 = xPos + quarterSizeLight;
+				k7 = yPos + halfSizeLength;
 				i8 = k2 + i3 >> 1;
 				k8 = k + l1 >> 1;
 				j9 = k3 + j >> 1;
-			} else
-			if(l6 == 13)
-			{
-				i7 = i6 + j5;
-				k7 = j6 + j5;
+			} else if(realShape == 13){
+				i7 = xPos + quarterSizeLight;
+				k7 = yPos + quarterSizeLight;
 				i8 = i3;
 				k8 = l1;
 				j9 = j;
-			} else
-			if(l6 == 14)
-			{
-				i7 = i6 + k5;
-				k7 = j6 + j5;
+			} else if(realShape == 14){
+				i7 = xPos + k5;
+				k7 = yPos + quarterSizeLight;
 				i8 = l2;
 				k8 = i4;
 				j9 = l3;
-			} else
-			if(l6 == 15)
-			{
-				i7 = i6 + k5;
-				k7 = j6 + k5;
+			} else if(realShape == 15){
+				i7 = xPos + k5;
+				k7 = yPos + k5;
 				i8 = l;
 				k8 = j2;
 				j9 = j1;
-			} else
-			{
-				i7 = i6 + j5;
-				k7 = j6 + k5;
+			} else {
+				i7 = xPos + quarterSizeLight;
+				k7 = yPos + k5;
 				i8 = k2;
 				k8 = k;
 				j9 = k3;
@@ -180,39 +145,36 @@ public final class ShapedTile
 		anIntArray676 = new int[j7];
 		anIntArray677 = new int[j7];
 		anIntArray678 = new int[j7];
-		if(i1 != -1)
+		if(texture != -1)
 			anIntArray682 = new int[j7];
 		int l7 = 0;
-		for(int j8 = 0; j8 < j7; j8++)
-		{
+		for(int j8 = 0; j8 < j7; j8++){
 			int l8 = ai3[l7];
 			int k9 = ai3[l7 + 1];
 			int i10 = ai3[l7 + 2];
 			int k10 = ai3[l7 + 3];
 			l7 += 4;
 			if(k9 < 4)
-				k9 = k9 - k1 & 3;
+				k9 = k9 - rotation & 3;
 			if(i10 < 4)
-				i10 = i10 - k1 & 3;
+				i10 = i10 - rotation & 3;
 			if(k10 < 4)
-				k10 = k10 - k1 & 3;
+				k10 = k10 - rotation & 3;
 			anIntArray679[j8] = k9;
 			anIntArray680[j8] = i10;
 			anIntArray681[j8] = k10;
-			if(l8 == 0)
-			{
+			if(l8 == 0){
 				anIntArray676[j8] = ai1[k9];
 				anIntArray677[j8] = ai1[i10];
 				anIntArray678[j8] = ai1[k10];
 				if(anIntArray682 != null)
 					anIntArray682[j8] = -1;
-			} else
-			{
+			} else {
 				anIntArray676[j8] = ai2[k9];
 				anIntArray677[j8] = ai2[i10];
 				anIntArray678[j8] = ai2[k10];
 				if(anIntArray682 != null)
-					anIntArray682[j8] = i1;
+					anIntArray682[j8] = texture;
 			}
 		}
 
@@ -244,11 +206,11 @@ public final class ShapedTile
 	public final int[] anIntArray680;
 	public final int[] anIntArray681;
 	public int anIntArray682[];
-	public final boolean aBoolean683;
-	public final int anInt684;
-	public final int anInt685;
-	public final int anInt686;
-	public final int anInt687;
+	public final boolean flat;
+	public final int shape;
+	public final int rotation;
+	public final int colourRGB;
+	public final int colourRGBA;
 	public static final int[] anIntArray688 = new int[6];
 	public static final int[] anIntArray689 = new int[6];
 	public static final int[] anIntArray690 = new int[6];

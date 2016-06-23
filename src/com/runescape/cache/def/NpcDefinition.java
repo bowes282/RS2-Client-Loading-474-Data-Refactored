@@ -144,14 +144,14 @@ public final class NpcDefinition {
 		stream = null;
 	}
 
-	public Model method164(int j, int frame, int ai[], int nextFrame, int idk,
+	public Model method164(int j, int somethingCurrentAnimsFrameNumber, int ai[], int nextFrame, int idk,
 			int idk2) {
 		if (childrenIDs != null) {
 			NpcDefinition entityDef = morph();
 			if (entityDef == null)
 				return null;
 			else
-				return entityDef.method164(j, frame, ai, nextFrame, idk, idk2);
+				return entityDef.method164(j, somethingCurrentAnimsFrameNumber, ai, nextFrame, idk, idk2);
 		}
 		Model model = (Model) modelCache.get(interfaceType);
 		if (model == null) {
@@ -183,17 +183,17 @@ public final class NpcDefinition {
 		}
 		Model empty = Model.EMPTY_MODEL;
 		empty.method464(model,
-				Frame.noAnimationInProgress(frame) & Frame.noAnimationInProgress(j)
+				Frame.noAnimationInProgress(somethingCurrentAnimsFrameNumber) & Frame.noAnimationInProgress(j)
 						& Frame.noAnimationInProgress(nextFrame));
-		if (frame != -1 && j != -1)
-			empty.method471(ai, j, frame);
-		else if (frame != -1 && nextFrame != -1)
-			empty.method470(frame, nextFrame, idk, idk2);
-		else if (frame != -1)
-			empty.apply(frame);
+		if (somethingCurrentAnimsFrameNumber != -1 && j != -1)
+			empty.applyAnimationFrames(ai, j, somethingCurrentAnimsFrameNumber);
+		else if (somethingCurrentAnimsFrameNumber != -1 && nextFrame != -1)
+			empty.applyAnimationFrame(somethingCurrentAnimsFrameNumber, nextFrame, idk, idk2);
+		else if (somethingCurrentAnimsFrameNumber != -1)
+			empty.apply(somethingCurrentAnimsFrameNumber);
 		if (scaleXZ != 128 || scaleY != 128)
 			empty.scale(scaleXZ, scaleXZ, scaleY);
-		empty.method466();
+		empty.calculateDistances();
 		empty.faceGroups = null;
 		empty.vertexGroups = null;
 		if (size == 1)
@@ -243,12 +243,12 @@ public final class NpcDefinition {
 		model_1.method464(model, Frame.noAnimationInProgress(secondaryFrame)
 				& Frame.noAnimationInProgress(primaryFrame));
 		if (secondaryFrame != -1 && primaryFrame != -1)
-			model_1.method471(interleaveOrder, primaryFrame, secondaryFrame);
+			model_1.applyAnimationFrames(interleaveOrder, primaryFrame, secondaryFrame);
 		else if (secondaryFrame != -1)
 			model_1.apply(secondaryFrame);
 		if (scaleXZ != 128 || scaleY != 128)
 			model_1.scale(scaleXZ, scaleXZ, scaleY);
-		model_1.method466();
+		model_1.calculateDistances();
 		model_1.faceGroups = null;
 		model_1.vertexGroups = null;
 		if (size == 1)

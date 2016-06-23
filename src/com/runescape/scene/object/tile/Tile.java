@@ -1,48 +1,41 @@
 package com.runescape.scene.object.tile;
 import com.runescape.collection.Linkable;
-import com.runescape.entity.GroundItem;
+import com.runescape.entity.GroundItemTile;
 import com.runescape.scene.object.GroundDecoration;
-import com.runescape.scene.object.Wall;
+import com.runescape.scene.object.WallObject;
 import com.runescape.scene.object.WallDecoration;
 import com.runescape.entity.GameObject;
 
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
-
 public final class Tile extends Linkable {
-
-	public Tile(int i, int j, int k)
-	{
-		obj5Array = new GameObject[5];
-		anIntArray1319 = new int[5];
-		anInt1310 = anInt1307 = i;
+	public Tile(int i, int j, int k){
+		gameObjects = new GameObject[5];
+        tiledObjectMasks = new int[5];
+		anInt1310 = z1AnInt1307 = i;
 		anInt1308 = j;
 		anInt1309 = k;
 	}
 
-	public int anInt1307;
+	public int z1AnInt1307;
 	public final int anInt1308;
 	public final int anInt1309;
 	public final int anInt1310;
-	public SimpleTile aClass43_1311;
-	public ShapedTile aClass40_1312;
-	public Wall obj1;
-	public WallDecoration obj2;
-	public GroundDecoration obj3;
-	public GroundItem obj4;
-	public int anInt1317;
-	public final GameObject[] obj5Array;
-	public final int[] anIntArray1319;
-	public int anInt1320;
-	public int anInt1321;
+	public SimpleTile mySimpleTile;
+	public ShapedTile myShapedTile;
+	public WallObject wallObject;
+	public WallDecoration wallDecoration;
+	public GroundDecoration groundDecoration;
+	public GroundItemTile groundItemTile;
+	public int gameObjectIndex;
+	public final GameObject[] gameObjects;
+	public final int[] tiledObjectMasks;
+	public int totalTiledObjectMask;
+	public int logicHeight;
 	public boolean aBoolean1322;
 	public boolean aBoolean1323;
 	public boolean aBoolean1324;
-	public int anInt1325;
+	public int someTileMask;
 	public int anInt1326;
 	public int anInt1327;
 	public int anInt1328;
-	public Tile aClass30_Sub3_1329;
+	public Tile firstFloorTile;
 }

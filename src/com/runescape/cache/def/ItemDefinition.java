@@ -284,7 +284,7 @@ public final class ItemDefinition {
 		int l3 = Rasterizer.anIntArray1470[itemDef.rotation_y] * k3 >> 16;
 		int i4 = Rasterizer.COSINE[itemDef.rotation_y] * k3 >> 16;
 		model.method482(itemDef.rotation_x, itemDef.rotation_z,
-				itemDef.rotation_y, itemDef.translate_x, l3 + model.modelHeight
+				itemDef.rotation_y, itemDef.translate_x, l3 + model.modelBaseY
 						/ 2 + itemDef.translate_yz, i4 + itemDef.translate_yz);
 		for (int i5 = 31; i5 >= 0; i5--) {
 			for (int j4 = 31; j4 >= 0; j4--)

@@ -49,7 +49,7 @@ import com.runescape.net.requester.ResourceProvider;
 import com.runescape.scene.SceneObject;
 import com.runescape.scene.object.GroundDecoration;
 import com.runescape.scene.object.SpawnedObject;
-import com.runescape.scene.object.Wall;
+import com.runescape.scene.object.WallObject;
 import com.runescape.scene.object.WallDecoration;
 import com.runescape.scene.object.tile.Floor;
 import com.runescape.scene.Projectile;
@@ -269,7 +269,7 @@ public class Client extends GameApplet {
                   SceneGraph.viewDistance = 10;
                   cameraZoom = 600;
             }
-            SceneGraph.method310(500, 800, screenAreaWidth, screenAreaHeight, ai);
+            SceneGraph.setupViewport(500, 800, screenAreaWidth, screenAreaHeight, ai);
             if (loggedIn) {
                   gameScreenImageProducer =
                               new ProducingGraphicsBuffer(screenAreaWidth, screenAreaHeight);
@@ -1183,9 +1183,9 @@ public class Client extends GameApplet {
                   int i1 = 24628 + (103 - y) * 512 * 4;
                   for (int x = 1; x < 103; x++) {                	  
                         if ((tileFlags[plane][x][y] & 0x18) == 0)
-                              scene.method309(pixels, i1, plane, x, y);
+                              scene.drawTileOnMinimapSprite(pixels, i1, plane, x, y);
                         if (plane < 3 && (tileFlags[plane + 1][x][y] & 8) != 0)
-                              scene.method309(pixels, i1, plane + 1, x, y);
+                              scene.drawTileOnMinimapSprite(pixels, i1, plane + 1, x, y);
                         i1 += 4;
                   }
 
@@ -1210,7 +1210,7 @@ public class Client extends GameApplet {
             
             for (int x = 0; x < 104; x++) {            	
                   for (int y = 0; y < 104; y++) {                	  
-                        int id = scene.getFloorDecorationKey(plane, x, y);                        
+                        int id = scene.getGroundDecorationUid(plane, x, y);
                         if (id != 0) {
                               id = id >> 14 & 0x7fff;
                   
@@ -1253,7 +1253,7 @@ public class Client extends GameApplet {
       private void updateGroundItems(int i, int j) {
             Deque class19 = groundItems[plane][i][j];
             if (class19 == null) {
-                  scene.method295(plane, i, j);
+                  scene.removeGroundItemTile(plane, i, j);
                   return;
             }
             int k = 0xfa0a1f01;
@@ -1286,7 +1286,7 @@ public class Client extends GameApplet {
             }
 
             int i1 = i + (j << 7) + 0x60000000;
-            scene.method281(i, i1, ((Renderable) (obj1)),
+            scene.addGroundItemTile(i, i1, ((Renderable) (obj1)),
                         getCenterHeight(plane, j * 128 + 64, i * 128 + 64), ((Renderable) (obj2)),
                         ((Renderable) (obj)), plane, j);
       }
@@ -1308,7 +1308,7 @@ public class Client extends GameApplet {
                   }
                   if (!npc.desc.clickable)
                         k += 0x80000000;
-                  scene.method285(plane, npc.orientation, getCenterHeight(plane, npc.y, npc.x), k, npc.y,
+                  scene.addAnimableA(plane, npc.orientation, getCenterHeight(plane, npc.y, npc.x), k, npc.y,
                               (npc.size - 1) * 64 + 60, npc.x, npc, npc.animationStretches);
             }
       }
@@ -3036,7 +3036,7 @@ public class Client extends GameApplet {
                               && tick < player.objectModelStop) {
                         player.aBoolean1699 = false;
                         player.anInt1709 = getCenterHeight(plane, player.y, player.x);
-                        scene.method286(plane, player.y, player, player.orientation, player.objectAnInt1722GreaterYLoc,
+                        scene.addToScenePlayerAsObject(plane, player.y, player, player.orientation, player.objectAnInt1722GreaterYLoc,
                                     player.x, player.anInt1709, player.objectAnInt1719LesserXLoc, player.objectAnInt1721GreaterXLoc,
                                     i1, player.objectAnInt1720LesserYLoc);
                         continue;
@@ -3047,7 +3047,7 @@ public class Client extends GameApplet {
                         anIntArrayArray929[j1][k1] = anInt1265;
                   }
                   player.anInt1709 = getCenterHeight(plane, player.y, player.x);
-                  scene.method285(plane, player.orientation, player.anInt1709, i1, player.y, 60,
+                  scene.addAnimableA(plane, player.orientation, player.anInt1709, i1, player.y, 60,
                               player.x, player, player.animationStretches);
             }
       }
@@ -3176,9 +3176,9 @@ public class Client extends GameApplet {
       }
 
       private void drawMapScenes(int i, int k, int l, int i1, int j1) {
-            int k1 = scene.getWallKey(j1, l, i);
+            int k1 = scene.getWallObjectUid(j1, l, i);
             if (k1 != 0) {
-                  int l1 = scene.method304(j1, l, i, k1);
+                  int l1 = scene.getMask(j1, l, i, k1);
                   int k2 = l1 >> 6 & 3;
                   int i3 = l1 & 0x1f;
                   int k3 = k;
@@ -3252,9 +3252,9 @@ public class Client extends GameApplet {
                               }
                   }
             }
-            k1 = scene.getInteractableObjectKey(j1, l, i);
+            k1 = scene.getGameObjectUid(j1, l, i);
             if (k1 != 0) {
-                  int i2 = scene.method304(j1, l, i, k1);
+                  int i2 = scene.getMask(j1, l, i, k1);
                   int l2 = i2 >> 6 & 3;
                   int j3 = i2 & 0x1f;
                   int l3 = k1 >> 14 & 0x7fff;
@@ -3286,7 +3286,7 @@ public class Client extends GameApplet {
                         }
                   }
             }
-            k1 = scene.getFloorDecorationKey(j1, l, i);
+            k1 = scene.getGroundDecorationUid(j1, l, i);
             if (k1 != 0) {
                   int j2 = k1 >> 14 & 0x7fff;
                   ObjectDefinition class46 = ObjectDefinition.lookup(j2);
@@ -3505,7 +3505,7 @@ public class Client extends GameApplet {
                                                 player.x);
                         }
                         class30_sub2_sub4_sub4.progressCycles(tickDelta);
-                        scene.method285(plane, class30_sub2_sub4_sub4.turnValue,
+                        scene.addAnimableA(plane, class30_sub2_sub4_sub4.turnValue,
                                     (int) class30_sub2_sub4_sub4.cnterHeight, -1,
                                     (int) class30_sub2_sub4_sub4.yPos, 60,
                                     (int) class30_sub2_sub4_sub4.xPos,
@@ -3928,12 +3928,12 @@ public class Client extends GameApplet {
                         super.clickMode3 = 0;
                   }
             }
-            if (SceneGraph.anInt470 != -1) {
-                  int k = SceneGraph.anInt470;
-                  int k1 = SceneGraph.anInt471;
+            if (SceneGraph.clickedTileX != -1) {
+                  int k = SceneGraph.clickedTileX;
+                  int k1 = SceneGraph.clickedTileY;
                   boolean flag = doWalkTo(0, 0, 0, 0, localPlayer.pathY[0], 0, 0, k1,
                               localPlayer.pathX[0], true, k);
-                  SceneGraph.anInt470 = -1;
+                  SceneGraph.clickedTileX = -1;
                   if (flag) {
                         crossX = super.saveClickX;
                         crossY = super.saveClickY;
@@ -4112,7 +4112,7 @@ public class Client extends GameApplet {
 
       private boolean clickObject(int i, int j, int k) {
             int i1 = i >> 14 & 0x7fff;
-            int j1 = scene.method304(plane, k, j, i);
+            int j1 = scene.getMask(plane, k, j, i);
             if (j1 == -1)
                   return false;
             int k1 = j1 & 0x1f;
@@ -4645,9 +4645,9 @@ public class Client extends GameApplet {
             }
             if (action == 519)
                   if (!menuOpen)
-                        scene.method312(super.saveClickY - 4, super.saveClickX - 4);
+                        scene.clickTile(super.saveClickY - 4, super.saveClickX - 4);
                   else
-                        scene.method312(button - 4, first - 4);
+                        scene.clickTile(button - 4, first - 4);
             if (action == 1062) {
                   anInt924 += regionBaseX;
                   if (anInt924 >= 113) {
@@ -5484,7 +5484,7 @@ public class Client extends GameApplet {
                   if (l == j)
                         continue;
                   j = l;
-                  if (k1 == 2 && scene.method304(plane, i1, j1, l) >= 0) {
+                  if (k1 == 2 && scene.getMask(plane, i1, j1, l) >= 0) {
                         ObjectDefinition objectDef = ObjectDefinition.lookup(l1);
                         if (objectDef.childrenIDs != null)
                               objectDef = objectDef.method580();
@@ -5783,7 +5783,7 @@ public class Client extends GameApplet {
             super.fullGameScreen = null;
             Player.models = null;
             Rasterizer.clear();
-            SceneGraph.clear();
+            SceneGraph.destructor();
             Model.clear();
             Frame.clear();
             System.gc();
@@ -8202,18 +8202,18 @@ public class Client extends GameApplet {
             int k = 0;
             int l = 0;
             if (class30_sub1.group == 0)
-                  i = scene.getWallKey(class30_sub1.plane, class30_sub1.x, class30_sub1.y);
+                  i = scene.getWallObjectUid(class30_sub1.plane, class30_sub1.x, class30_sub1.y);
             if (class30_sub1.group == 1)
-                  i = scene.getWallDecorationKey(class30_sub1.plane, class30_sub1.x,
+                  i = scene.getWallDecorationUid(class30_sub1.plane, class30_sub1.x,
                               class30_sub1.y);
             if (class30_sub1.group == 2)
-                  i = scene.getInteractableObjectKey(class30_sub1.plane, class30_sub1.x,
+                  i = scene.getGameObjectUid(class30_sub1.plane, class30_sub1.x,
                               class30_sub1.y);
             if (class30_sub1.group == 3)
-                  i = scene.getFloorDecorationKey(class30_sub1.plane, class30_sub1.x,
+                  i = scene.getGroundDecorationUid(class30_sub1.plane, class30_sub1.x,
                               class30_sub1.y);
             if (i != 0) {
-                  int i1 = scene.method304(class30_sub1.plane, class30_sub1.x, class30_sub1.y, i);
+                  int i1 = scene.getMask(class30_sub1.plane, class30_sub1.x, class30_sub1.y, i);
                   j = i >> 14 & 0x7fff;
                   k = i1 & 0x1f;
                   l = i1 >> 6;
@@ -8938,7 +8938,7 @@ public class Client extends GameApplet {
                         if (class30_sub2_sub4_sub3.aBoolean1567)
                               class30_sub2_sub4_sub3.unlink();
                         else
-                              scene.method285(class30_sub2_sub4_sub3.anInt1560, 0,
+                              scene.addAnimableA(class30_sub2_sub4_sub3.anInt1560, 0,
                                           class30_sub2_sub4_sub3.anInt1563, -1,
                                           class30_sub2_sub4_sub3.anInt1562, 60,
                                           class30_sub2_sub4_sub3.anInt1561, class30_sub2_sub4_sub3,
@@ -11545,14 +11545,14 @@ public class Client extends GameApplet {
                         int heightC = tileHeights[plane][xLoc + 1][yLoc + 1];
                         int heightD = tileHeights[plane][xLoc][yLoc + 1];
                         if (objectGenre == 0) {//WallObject
-                              Wall wallObject = scene.getWallObject(plane, xLoc, yLoc);
-                              if (wallObject != null) {
-                                    int objectId = wallObject.uid >> 14 & 0x7fff;
+                              WallObject wallObjectObject = scene.getWallObject(plane, xLoc, yLoc);
+                              if (wallObjectObject != null) {
+                                    int objectId = wallObjectObject.uid >> 14 & 0x7fff;
                                     if (objectType == 2) {
-                                          wallObject.renderable1 = new SceneObject(objectId, 4 + objectFace, 2, heightB, heightC, heightA, heightD, animId, false);
-                                          wallObject.renderable2 = new SceneObject(objectId, objectFace + 1 & 3, 2, heightB, heightC, heightA, heightD, animId, false);
+                                          wallObjectObject.renderable1 = new SceneObject(objectId, 4 + objectFace, 2, heightB, heightC, heightA, heightD, animId, false);
+                                          wallObjectObject.renderable2 = new SceneObject(objectId, objectFace + 1 & 3, 2, heightB, heightC, heightA, heightD, animId, false);
                                     } else {
-                                          wallObject.renderable1 = new SceneObject(objectId, objectFace, objectType, heightB, heightC, heightA, heightD, animId, false);
+                                          wallObjectObject.renderable1 = new SceneObject(objectId, objectFace, objectType, heightB, heightC, heightA, heightD, animId, false);
                                     }
                               }
                         }
@@ -11562,14 +11562,14 @@ public class Client extends GameApplet {
                                     wallDecoration.renderable = new SceneObject(wallDecoration.uid >> 14 & 0x7fff, 0, 4, heightB, heightC, heightA, heightD, animId, false);
                         }
                         if (objectGenre == 2) { //TiledObject
-                              GameObject tiledObject = scene.getTiledObject(xLoc, yLoc, plane);
+                              GameObject tiledObject = scene.getGameObject(xLoc, yLoc, plane);
                               if (objectType == 11)
                                     objectType = 10;
                               if (tiledObject != null)
                                     tiledObject.renderable = new SceneObject(tiledObject.uid >> 14 & 0x7fff, objectFace, objectType, heightB, heightC, heightA, heightD, animId, false);
                         }
                         if (objectGenre == 3) { //GroundDecoration
-                              GroundDecoration groundDecoration = scene.method299(yLoc, xLoc, plane);
+                              GroundDecoration groundDecoration = scene.getGroundDecoration(yLoc, xLoc, plane);
                               if (groundDecoration != null)
                                     groundDecoration.renderable = new SceneObject(groundDecoration.uid >> 14 & 0x7fff, objectFace, 22, heightB, heightC, heightA, heightD, animId, false);
                         }
@@ -11887,20 +11887,20 @@ public class Client extends GameApplet {
                         return;
                   int key = 0;
                   if (group == 0)
-                        key = scene.getWallKey(z, x, y);
+                        key = scene.getWallObjectUid(z, x, y);
                   if (group == 1)
-                        key = scene.getWallDecorationKey(z, x, y);
+                        key = scene.getWallDecorationUid(z, x, y);
                   if (group == 2)
-                        key = scene.getInteractableObjectKey(z, x, y);
+                        key = scene.getGameObjectUid(z, x, y);
                   if (group == 3)
-                        key = scene.getFloorDecorationKey(z, x, y);
+                        key = scene.getGroundDecorationUid(z, x, y);
                   if (key != 0) {
-                        int config = scene.method304(z, x, y, key);
+                        int config = scene.getMask(z, x, y, key);
                         int id = key >> 14 & 0x7fff;
                         int objectType = config & 0x1f;
                         int orientation = config >> 6;
                         if (group == 0) {
-                              scene.removeWall(x, z, y, (byte) -119);
+                              scene.removeWallObject(x, z, y);
                               ObjectDefinition objectDef = ObjectDefinition.lookup(id);
                               if (objectDef.solid)
                                     collisionMaps[z].removeObject(orientation, objectType,
@@ -11909,7 +11909,7 @@ public class Client extends GameApplet {
                         if (group == 1)
                               scene.removeWallDecoration(y, z, x);
                         if (group == 2) {
-                              scene.removeObject(z, x, y);
+                              scene.removeTiledObject(z, x, y);
                               ObjectDefinition objectDef = ObjectDefinition.lookup(id);
                               if (x + objectDef.objectSizeX > 103 || y + objectDef.objectSizeX > 103
                                           || x + objectDef.objectSizeY > 103
@@ -11920,7 +11920,7 @@ public class Client extends GameApplet {
                                                 y, objectDef.objectSizeY, objectDef.impenetrable);
                         }
                         if (group == 3) {
-                              scene.removeFloorDecoration(z, y, x);
+                              scene.removeGroundDecoration(z, y, x);
                               ObjectDefinition objectDef = ObjectDefinition.lookup(id);
                               if (objectDef.solid && objectDef.isInteractive)
                                     collisionMaps[z].removeFloorDecoration(y, x);
@@ -13418,8 +13418,8 @@ public class Client extends GameApplet {
             Model.anInt1685 = super.mouseX - (frameMode == ScreenMode.FIXED ? 4 : 0);
             Model.anInt1686 = super.mouseY - (frameMode == ScreenMode.FIXED ? 4 : 0);
             Raster.clear();
-            scene.method313(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, j, yCameraCurve);
-            scene.clearObj5Cache();
+            scene.render(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, j, yCameraCurve);
+            scene.clearGameObjectCache();
             if (Configuration.enableFog) {
                   double fogDistance = Math.sqrt(Math.pow(zCameraPos, 2));
                   int fogStartDistance = 1330;

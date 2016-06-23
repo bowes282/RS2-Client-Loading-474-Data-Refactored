@@ -4,12 +4,12 @@ import com.runescape.entity.Renderable;
 
 public final class WallDecoration {
 
-	public int anInt499;
-	public int anInt500;
-	public int anInt501;
-	public int anInt502;
-	public int anInt503;
+	public int zPos;
+	public int xPos;
+	public int yPos;
+	public int orientation;
+	public int orientation2;
 	public Renderable renderable;
 	public int uid;
-	public byte aByte506;
+	public byte mask;
 }

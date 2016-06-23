@@ -235,7 +235,7 @@ public final class ObjectDefinition {
 			model = new Model(contouredGround, delayShading, model);
 		if (contouredGround) {
 			int y = (aY + bY + cY + dY) / 4;
-			for (int vertex = 0; vertex < model.vertices; vertex++) {
+			for (int vertex = 0; vertex < model.numVertices; vertex++) {
 				int x = model.vertexX[vertex];
 				int z = model.vertexZ[vertex];
 				int l2 = aY + ((bY - aY) * (x + 64)) / 128;
@@ -364,7 +364,7 @@ public final class ObjectDefinition {
 			model_3.translate(translateX, translateY, translateZ);
 		model_3.light(84, 1500, -90, -280, -70, !delayShading);
 		if (supportItems == 1)
-			model_3.anInt1654 = model_3.modelHeight;
+			model_3.itemDropHeight = model_3.modelBaseY;
 		models.put(model_3, l1);
 		return model_3;
 	}
