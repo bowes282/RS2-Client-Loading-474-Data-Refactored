@@ -1432,7 +1432,7 @@ public final class SceneGraph {
 		int l6 = Rasterizer3D.originViewY + (k4 << viewDistance) / j3;
 		Rasterizer3D.alpha = 0;
 		if ((i6 - k6) * (l5 - l6) - (j6 - l6) * (k5 - k6) > 0) {
-			Rasterizer3D.textureOutOfDrawingBounds = i6 < 0 || k6 < 0 || k5 < 0 || i6 > Rasterizer2D.centerX || k6 > Rasterizer2D.centerX || k5 > Rasterizer2D.centerX;
+			Rasterizer3D.textureOutOfDrawingBounds = i6 < 0 || k6 < 0 || k5 < 0 || i6 > Rasterizer2D.lastX || k6 > Rasterizer2D.lastX || k5 > Rasterizer2D.lastX;
 			if (clicked && method318(clickScreenX, clickScreenY, j6, l6, l5, i6, k6, k5)) {
 				clickedTileX = j1;
 				clickedTileY = k1;
@@ -1451,7 +1451,7 @@ public final class SceneGraph {
 			}
 		}
 		if ((i5 - k5) * (l6 - l5) - (j5 - l5) * (k6 - k5) > 0) {
-			Rasterizer3D.textureOutOfDrawingBounds = i5 < 0 || k5 < 0 || k6 < 0 || i5 > Rasterizer2D.centerX || k5 > Rasterizer2D.centerX || k6 > Rasterizer2D.centerX;
+			Rasterizer3D.textureOutOfDrawingBounds = i5 < 0 || k5 < 0 || k6 < 0 || i5 > Rasterizer2D.lastX || k5 > Rasterizer2D.lastX || k6 > Rasterizer2D.lastX;
 			if (clicked && method318(clickScreenX, clickScreenY, j5, l5, l6, i5, k5, k6)) {
 				clickedTileX = j1;
 				clickedTileY = k1;
@@ -1510,8 +1510,8 @@ public final class SceneGraph {
 			int i5 = ShapedTile.anIntArray689[j3];
 			int j5 = ShapedTile.anIntArray689[l3];
 			if ((i4 - j4) * (j5 - i5) - (l4 - i5) * (k4 - j4) > 0) {
-				Rasterizer3D.textureOutOfDrawingBounds = i4 < 0 || j4 < 0 || k4 < 0 || i4 > Rasterizer2D.centerX
-						|| j4 > Rasterizer2D.centerX || k4 > Rasterizer2D.centerX;
+				Rasterizer3D.textureOutOfDrawingBounds = i4 < 0 || j4 < 0 || k4 < 0 || i4 > Rasterizer2D.lastX
+						|| j4 > Rasterizer2D.lastX || k4 > Rasterizer2D.lastX;
 				if (clicked && method318(clickScreenX, clickScreenY, l4, i5, j5, i4, j4, k4)) {
 					clickedTileX = i;
 					clickedTileY = i1;

@@ -336,10 +336,10 @@ public class RSFont extends Rasterizer2D {
                     }
                     int lineWidth = characterScreenWidths[character];
                     if (strikethroughColor != -1) {
-                        GameFont.drawHorizontalLine(drawX,drawY + (int) ((double) baseCharacterHeight * 0.69999999999999996D), lineWidth,strikethroughColor);
+                        GameFont.drawHorizontalLine(drawX, drawY + (int) ((double) baseCharacterHeight * 0.69999999999999996D), lineWidth, strikethroughColor);
                     }
                     if (underlineColor != -1) {
-            GameFont.drawHorizontalLine(drawX,drawY +  baseCharacterHeight, lineWidth,underlineColor);
+            GameFont.drawHorizontalLine(drawX, drawY +  baseCharacterHeight, lineWidth, underlineColor);
                     }
                     drawX += lineWidth;
                 }
@@ -470,13 +470,10 @@ public class RSFont extends Rasterizer2D {
                     }
                     int i_109_ = characterScreenWidths[character];
                     if (strikethroughColor != -1) {
-                        GameFont.drawHorizontalLine(drawX,
-                                                         drawY + (int) ((double) baseCharacterHeight * 0.7),
-                                                         i_109_, strikethroughColor);
+                        GameFont.drawHorizontalLine(drawX, drawY + (int) ((double) baseCharacterHeight * 0.7), i_109_, strikethroughColor);
                     }
                     if (underlineColor != -1) {
-                        GameFont.drawHorizontalLine(drawX, drawY + baseCharacterHeight, i_109_,
-                                                         underlineColor);
+                        GameFont.drawHorizontalLine(drawX, drawY + baseCharacterHeight, i_109_, underlineColor);
                     }
                     drawX += i_109_;
                 }
@@ -670,10 +667,10 @@ public class RSFont extends Rasterizer2D {
         if (i_12_ + i_14_ > Rasterizer2D.bottomY) {
             i_14_ -= i_12_ + i_14_ - Rasterizer2D.bottomY;
         }
-        if (i_11_ < Rasterizer2D.topX) {
-            int i_22_ = Rasterizer2D.topX - i_11_;
+        if (i_11_ < Rasterizer2D.leftX) {
+            int i_22_ = Rasterizer2D.leftX - i_11_;
             i_13_ -= i_22_;
-            i_11_ = Rasterizer2D.topX;
+            i_11_ = Rasterizer2D.leftX;
             i_20_ += i_22_;
             i_17_ += i_22_;
             i_19_ += i_22_;
@@ -788,10 +785,10 @@ public class RSFont extends Rasterizer2D {
         if (i_36_ + i_38_ > Rasterizer2D.bottomY) {
             i_38_ -= i_36_ + i_38_ - Rasterizer2D.bottomY;
         }
-        if (i_35_ < Rasterizer2D.topX) {
-            int i_45_ = Rasterizer2D.topX - i_35_;
+        if (i_35_ < Rasterizer2D.leftX) {
+            int i_45_ = Rasterizer2D.leftX - i_35_;
             i_37_ -= i_45_;
-            i_35_ = Rasterizer2D.topX;
+            i_35_ = Rasterizer2D.leftX;
             i_43_ += i_45_;
             i_40_ += i_45_;
             i_42_ += i_45_;

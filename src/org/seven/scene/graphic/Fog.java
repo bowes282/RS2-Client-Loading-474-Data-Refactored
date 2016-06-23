@@ -26,7 +26,7 @@ public class Fog {
         int fogBegin = (int) (fogStartDistance + fogDistance);
         int fogEnd = (int) (fogEndDistance + fogDistance);
         for (int y = 0; y < Rasterizer2D.bottomY; y++) {
-            for (int x = 0; x < Rasterizer2D.centerX; x++) {
+            for (int x = 0; x < Rasterizer2D.lastX; x++) {
                 if (Rasterizer2D.depthBuffer[pos] >= fogEnd) {
                     Rasterizer2D.pixels[pos] = setColor;
                 } else if (Rasterizer2D.depthBuffer[pos] >= fogBegin) {
@@ -39,7 +39,7 @@ public class Fog {
                 }
                 pos++;
             }
-            pos += Rasterizer2D.width - Rasterizer2D.centerX;
+            pos += Rasterizer2D.width - Rasterizer2D.lastX;
         }
     }
     

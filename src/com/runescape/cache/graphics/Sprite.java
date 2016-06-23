@@ -109,10 +109,10 @@ public final class Sprite extends Rasterizer2D {
 		if (y + height > Rasterizer2D.bottomY) {
 			height -= (y + height) - Rasterizer2D.bottomY;
 		}
-		if (x < Rasterizer2D.topX) {
-			int trimLeft = Rasterizer2D.topX - x;
+		if (x < Rasterizer2D.leftX) {
+			int trimLeft = Rasterizer2D.leftX - x;
 			width -= trimLeft;
-			x = Rasterizer2D.topX;
+			x = Rasterizer2D.leftX;
 			srcOffset += trimLeft;
 			destOffset += trimLeft;
 			srcStep += trimLeft;
@@ -148,10 +148,10 @@ public final class Sprite extends Rasterizer2D {
 		}
 		if (y + k1 > Rasterizer2D.bottomY)
 			k1 -= (y + k1) - Rasterizer2D.bottomY;
-		if (x < Rasterizer2D.topX) {
-			int l2 = Rasterizer2D.topX - x;
+		if (x < Rasterizer2D.leftX) {
+			int l2 = Rasterizer2D.leftX - x;
 			l1 -= l2;
-			x = Rasterizer2D.topX;
+			x = Rasterizer2D.leftX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
@@ -308,10 +308,10 @@ public final class Sprite extends Rasterizer2D {
 		}
 		if (y + height > Rasterizer2D.bottomY)
 			height -= (y + height) - Rasterizer2D.bottomY;
-		if (x < Rasterizer2D.topX) {
-			int k2 = Rasterizer2D.topX - x;
+		if (x < Rasterizer2D.leftX) {
+			int k2 = Rasterizer2D.leftX - x;
 			width -= k2;
-			x = Rasterizer2D.topX;
+			x = Rasterizer2D.leftX;
 			i1 += k2;
 			l += k2;
 			i2 += k2;
@@ -370,10 +370,10 @@ public final class Sprite extends Rasterizer2D {
 		}
 		if (j + k1 > Rasterizer2D.bottomY)
 			k1 -= (j + k1) - Rasterizer2D.bottomY;
-		if (i < Rasterizer2D.topX) {
-			int l2 = Rasterizer2D.topX - i;
+		if (i < Rasterizer2D.leftX) {
+			int l2 = Rasterizer2D.leftX - i;
 			l1 -= l2;
-			i = Rasterizer2D.topX;
+			i = Rasterizer2D.leftX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
@@ -410,11 +410,11 @@ public final class Sprite extends Rasterizer2D {
 		}
 		if(y + height > Rasterizer2D.bottomY)
 			height -= (y + height) - Rasterizer2D.bottomY;
-		if(x < Rasterizer2D.topX)
+		if(x < Rasterizer2D.leftX)
 		{
-			int dx = Rasterizer2D.topX - x;
+			int dx = Rasterizer2D.leftX - x;
 			width -= dx;
-			x = Rasterizer2D.topX;
+			x = Rasterizer2D.leftX;
 			imageClip += dx;
 			rasterClip += dx;
 			imageOffset += dx;
@@ -481,10 +481,10 @@ public final class Sprite extends Rasterizer2D {
 		if (k + j1 > Rasterizer2D.bottomY) {
 			j1 -= (k + j1) - Rasterizer2D.bottomY;
 		}
-		if (i < Rasterizer2D.topX) {
-			int k2 = Rasterizer2D.topX - i;
+		if (i < Rasterizer2D.leftX) {
+			int k2 = Rasterizer2D.leftX - i;
 			k1 -= k2;
-			i = Rasterizer2D.topX;
+			i = Rasterizer2D.leftX;
 			i1 += k2;
 			l += k2;
 			i2 += k2;
@@ -520,10 +520,10 @@ public final class Sprite extends Rasterizer2D {
 		}
 		if (j + k1 > Rasterizer2D.bottomY)
 			k1 -= (j + k1) - Rasterizer2D.bottomY;
-		if (i < Rasterizer2D.topX) {
-			int l2 = Rasterizer2D.topX - i;
+		if (i < Rasterizer2D.leftX) {
+			int l2 = Rasterizer2D.leftX - i;
 			l1 -= l2;
-			i = Rasterizer2D.topX;
+			i = Rasterizer2D.leftX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
@@ -733,10 +733,10 @@ public final class Sprite extends Rasterizer2D {
 		}
 		if (i + i1 > Rasterizer2D.bottomY)
 			i1 -= (i + i1) - Rasterizer2D.bottomY;
-		if (j < Rasterizer2D.topX) {
-			int j2 = Rasterizer2D.topX - j;
+		if (j < Rasterizer2D.leftX) {
+			int j2 = Rasterizer2D.leftX - j;
 			j1 -= j2;
-			j = Rasterizer2D.topX;
+			j = Rasterizer2D.leftX;
 			l += j2;
 			k += j2;
 			l1 += j2;
@@ -749,7 +749,7 @@ public final class Sprite extends Rasterizer2D {
 			k1 += k2;
 		}
 		if (!(j1 <= 0 || i1 <= 0)) {
-			method355(myPixels, j1, background.raster, i1, Rasterizer2D.pixels, 0, k1, k, l1, l);
+			method355(myPixels, j1, background.palettePixels, i1, Rasterizer2D.pixels, 0, k1, k, l1, l);
 		}
 	}
 	
@@ -776,10 +776,10 @@ public final class Sprite extends Rasterizer2D {
 		}
 		if (yPos + spriteHeight > Rasterizer2D.bottomY)
 			spriteHeight -= (yPos + spriteHeight) - Rasterizer2D.bottomY;
-			if (xPos < Rasterizer2D.topX) {
-			int l2 = Rasterizer2D.topX - xPos;
+			if (xPos < Rasterizer2D.leftX) {
+			int l2 = Rasterizer2D.leftX - xPos;
 			spriteWidth -= l2;
-			xPos = Rasterizer2D.topX;
+			xPos = Rasterizer2D.leftX;
 			j1 += l2;
 			i1 += l2;
 			j2 += l2;
