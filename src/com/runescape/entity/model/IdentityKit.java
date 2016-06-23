@@ -1,6 +1,6 @@
 package com.runescape.entity.model;
 
-import com.runescape.cache.Archive;
+import com.runescape.cache.FileArchive;
 import com.runescape.io.Buffer;
 
 public final class IdentityKit {
@@ -21,8 +21,8 @@ public final class IdentityKit {
 		validStyle = false;
 	}
 
-	public static void unpackConfig(Archive archive) {
-		Buffer stream = new Buffer(archive.getEntry("idk.dat"));
+	public static void unpackConfig(FileArchive archive) {
+		Buffer stream = new Buffer(archive.readFile("idk.dat"));
 		length = stream.readUShort();
 		if (kits == null)
 			kits = new IdentityKit[length];

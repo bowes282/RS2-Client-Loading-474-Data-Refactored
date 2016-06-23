@@ -1,4 +1,4 @@
-package com.runescape.util;
+package org.seven.util;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

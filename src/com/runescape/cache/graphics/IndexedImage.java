@@ -1,5 +1,5 @@
 package com.runescape.cache.graphics;
-import com.runescape.cache.Archive;
+import com.runescape.cache.FileArchive;
 import com.runescape.draw.Rasterizer2D;
 import com.runescape.io.Buffer;
 
@@ -14,9 +14,9 @@ public final class IndexedImage extends Rasterizer2D {
 	public int resizeWidth;	
 	private int resizeHeight;
 
-	public IndexedImage(Archive archive, String s, int i) {		
-		Buffer image = new Buffer(archive.getEntry(s + ".dat"));
-		Buffer meta = new Buffer(archive.getEntry("index.dat"));		
+	public IndexedImage(FileArchive archive, String s, int i) {		
+		Buffer image = new Buffer(archive.readFile(s + ".dat"));
+		Buffer meta = new Buffer(archive.readFile("index.dat"));		
 		meta.currentPosition = image.readUShort();
 		resizeWidth = meta.readUShort();
 		resizeHeight = meta.readUShort();

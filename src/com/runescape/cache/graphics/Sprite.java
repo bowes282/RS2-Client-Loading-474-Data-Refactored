@@ -4,12 +4,13 @@ import java.awt.image.PixelGrabber;
 
 import javax.swing.ImageIcon;
 
+import org.seven.util.FileUtils;
+
 import com.runescape.Client;
-import com.runescape.cache.Archive;
+import com.runescape.cache.FileArchive;
 import com.runescape.draw.Rasterizer2D;
 import com.runescape.io.Buffer;
 import com.runescape.sign.SignLink;
-import com.runescape.util.FileUtils;
 
 public final class Sprite extends Rasterizer2D {
 
@@ -193,9 +194,9 @@ public final class Sprite extends Rasterizer2D {
 				myPixels[index] = 0;
 	}
 
-	public Sprite(Archive archive, String name, int i) {		
-		Buffer dataBuffer = new Buffer(archive.getEntry(name + ".dat"));		
-		Buffer indexBuffer = new Buffer(archive.getEntry("index.dat"));
+	public Sprite(FileArchive archive, String name, int i) {		
+		Buffer dataBuffer = new Buffer(archive.readFile(name + ".dat"));		
+		Buffer indexBuffer = new Buffer(archive.readFile("index.dat"));
 		
 		indexBuffer.currentPosition = dataBuffer.readUShort();
 		

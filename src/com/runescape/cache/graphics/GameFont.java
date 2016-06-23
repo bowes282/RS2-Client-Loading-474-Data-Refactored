@@ -2,13 +2,13 @@ package com.runescape.cache.graphics;
 
 import java.util.Random;
 
-import com.runescape.cache.Archive;
+import com.runescape.cache.FileArchive;
 import com.runescape.draw.Rasterizer2D;
 import com.runescape.io.Buffer;
 
 public final class GameFont extends Rasterizer2D {
 
-	public GameFont(boolean flag, String s, Archive streamLoader) {
+	public GameFont(boolean flag, String s, FileArchive streamLoader) {
 	aByteArrayArray1491 = new byte[256][];
 	anIntArray1492 = new int[256];
 	anIntArray1493 = new int[256];
@@ -17,8 +17,8 @@ public final class GameFont extends Rasterizer2D {
 	anIntArray1496 = new int[256];
 	aRandom1498 = new Random();
 	aBoolean1499 = false;
-	Buffer stream = new Buffer(streamLoader.getEntry(s + ".dat"));
-	Buffer stream_1 = new Buffer(streamLoader.getEntry("index.dat"));
+	Buffer stream = new Buffer(streamLoader.readFile(s + ".dat"));
+	Buffer stream_1 = new Buffer(streamLoader.readFile("index.dat"));
 	stream_1.currentPosition = stream.readUShort() + 4;
 	int k = stream_1.readUnsignedByte();
 	if(k > 0)

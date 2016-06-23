@@ -2,7 +2,7 @@ package com.runescape.cache.def;
 
 import java.io.IOException;
 import com.runescape.Client;
-import com.runescape.cache.Archive;
+import com.runescape.cache.FileArchive;
 import com.runescape.cache.anim.Frame;
 import com.runescape.cache.config.VariableBits;
 import com.runescape.collection.ReferenceCache;
@@ -191,9 +191,9 @@ public final class ObjectDefinition {
 		stream = null;
 	}
 
-	public static void unpackConfig(Archive streamLoader) throws IOException {
-		stream = new Buffer(streamLoader.getEntry("loc.dat"));
-		Buffer stream = new Buffer(streamLoader.getEntry("loc.idx"));
+	public static void unpackConfig(FileArchive streamLoader) throws IOException {
+		stream = new Buffer(streamLoader.readFile("loc.dat"));
+		Buffer stream = new Buffer(streamLoader.readFile("loc.idx"));
 		int totalObjects = stream.readUShort();
 		streamIndices = new int[totalObjects];
 		int offset = 2;

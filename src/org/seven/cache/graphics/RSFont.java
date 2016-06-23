@@ -1,7 +1,7 @@
-package custom.seven.cache.graphics;
+package org.seven.cache.graphics;
 import java.awt.Color;
 
-import com.runescape.cache.Archive;
+import com.runescape.cache.FileArchive;
 import com.runescape.cache.graphics.GameFont;
 import com.runescape.cache.graphics.Sprite;
 import com.runescape.draw.Rasterizer2D;
@@ -59,15 +59,15 @@ public class RSFont extends Rasterizer2D {
     public static int transparency;
     public static int textColor;
 
-    public RSFont(boolean TypeFont, String s, Archive archive) {
+    public RSFont(boolean TypeFont, String s, FileArchive archive) {
         fontPixels = new byte[256][];
         characterWidths = new int[256];
         characterHeights = new int[256];
         characterDrawXOffsets = new int[256];
         characterDrawYOffsets = new int[256];
         characterScreenWidths = new int[256];
-        Buffer stream = new Buffer(archive.getEntry(s + ".dat"));
-        Buffer stream_1 = new Buffer(archive.getEntry("index.dat"));
+        Buffer stream = new Buffer(archive.readFile(s + ".dat"));
+        Buffer stream_1 = new Buffer(archive.readFile("index.dat"));
         stream_1.currentPosition = stream.readUShort() + 4;
         int k = stream_1.readUnsignedByte();
         if (k > 0) {

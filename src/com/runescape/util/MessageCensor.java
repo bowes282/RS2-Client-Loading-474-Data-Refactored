@@ -1,6 +1,6 @@
 package com.runescape.util;
 
-import com.runescape.cache.Archive;
+import com.runescape.cache.FileArchive;
 import com.runescape.io.Buffer;
 
 public final class MessageCensor {
@@ -14,12 +14,12 @@ public final class MessageCensor {
 	private static final String[] exceptions = { "cook", "cook's", "cooks",
 			"seeks", "sheet", "woop", "woops", "faq", "noob", "noobs" };
 
-	public static void load(Archive archive) {
+	public static void load(FileArchive archive) {
 		Buffer fragments = new Buffer(
-				archive.getEntry("fragmentsenc.txt"));
-		Buffer bad = new Buffer(archive.getEntry("badenc.txt"));
-		Buffer domain = new Buffer(archive.getEntry("domainenc.txt"));
-		Buffer tldlist = new Buffer(archive.getEntry("tldlist.txt"));
+				archive.readFile("fragmentsenc.txt"));
+		Buffer bad = new Buffer(archive.readFile("badenc.txt"));
+		Buffer domain = new Buffer(archive.readFile("domainenc.txt"));
+		Buffer tldlist = new Buffer(archive.readFile("tldlist.txt"));
 		decode(fragments, bad, domain, tldlist);		
 	}
 

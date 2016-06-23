@@ -1,9 +1,31 @@
 package com.runescape.cache;
 import java.io.*;
 
-public final class Index {
+public final class FileStore {
+	
+	public static enum Store {
+	      
+	      MODEL(1),
+	      
+	      ANIMATION(2),
+	      
+	      MUSIC(3),
+	      
+	      MAP(4);
+	      
+	      private int index;
+	      
+	      private Store(int index) {
+	            this.index = index;
+	      }
 
-	public Index(RandomAccessFile randomaccessfile, RandomAccessFile randomaccessfile1, int j) {
+	      public int getIndex() {
+	            return this.index;
+	      }     
+
+	}
+
+	public FileStore(RandomAccessFile randomaccessfile, RandomAccessFile randomaccessfile1, int j) {
 		anInt311 = j;
 		dataFile = randomaccessfile;
 		indexFile = randomaccessfile1;

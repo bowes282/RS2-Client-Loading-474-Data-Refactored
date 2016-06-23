@@ -1,6 +1,6 @@
 package com.runescape.cache.def;
 
-import com.runescape.cache.Archive;
+import com.runescape.cache.FileArchive;
 import com.runescape.cache.graphics.Sprite;
 import com.runescape.collection.ReferenceCache;
 import com.runescape.draw.Rasterizer2D;
@@ -35,9 +35,9 @@ public final class ItemDefinition {
 		return cached;
 	}
 
-	public static void unpackConfig(Archive archive) {
-		item_data = new Buffer(archive.getEntry("obj.dat"));
-		Buffer stream = new Buffer(archive.getEntry("obj.idx"));
+	public static void unpackConfig(FileArchive archive) {
+		item_data = new Buffer(archive.readFile("obj.dat"));
+		Buffer stream = new Buffer(archive.readFile("obj.idx"));
 		item_count = stream.readUShort() + 21;
 		streamIndices = new int[item_count + 50000];
 		int offset = 2;

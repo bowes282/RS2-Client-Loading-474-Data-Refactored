@@ -1,4 +1,4 @@
-package custom.seven.scene.graphic;
+package org.seven.scene.graphic;
 import com.runescape.draw.Rasterizer2D;
 import com.runescape.draw.Rasterizer3D;
 

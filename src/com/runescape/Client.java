@@ -11,10 +11,16 @@ import java.util.zip.CRC32;
 
 import javax.imageio.ImageIO;
 
-import com.runescape.cache.Archive;
-import com.runescape.cache.CacheIndex;
-import com.runescape.cache.CacheUtils;
-import com.runescape.cache.Index;
+import org.seven.cache.graphics.RSFont;
+import org.seven.net.CreateUID;
+import org.seven.net.NetworkConstants;
+import org.seven.net.protocol.ProtocolConstants;
+import org.seven.scene.graphic.Fog;
+import org.seven.util.CacheUtils;
+
+import com.runescape.cache.FileArchive;
+import com.runescape.cache.FileStore;
+import com.runescape.cache.FileStore.Store;
 import com.runescape.cache.anim.Animation;
 import com.runescape.cache.anim.Frame;
 import com.runescape.cache.anim.Graphic;
@@ -68,12 +74,6 @@ import com.runescape.util.MouseDetection;
 import com.runescape.util.PacketConstants;
 import com.runescape.util.SkillConstants;
 import com.runescape.util.StringUtils;
-
-import custom.seven.cache.graphics.RSFont;
-import custom.seven.net.CreateUID;
-import custom.seven.net.NetworkConstants;
-import custom.seven.net.protocol.ProtocolConstants;
-import custom.seven.scene.graphic.Fog;
 
 public class Client extends GameApplet {
 
@@ -2127,7 +2127,7 @@ public class Client extends GameApplet {
 
       }
 
-      public Archive mediaStreamLoader;
+      public FileArchive mediaStreamLoader;
 
       private final int[] hitmarks562 = {31, 32, 33, 34};
 
@@ -3522,7 +3522,7 @@ public class Client extends GameApplet {
       }
 
       private void drawLogo() {
-            byte sprites[] = titleArchive.getEntry("title.dat");
+            byte sprites[] = titleArchive.readFile("title.dat");
             Sprite sprite = new Sprite(sprites, this);
             flameLeftBackground.initDrawingArea();
             sprite.method346(0, 0);
@@ -4227,7 +4227,7 @@ public class Client extends GameApplet {
             }
       }
 
-      private Archive createArchive(int file, String displayedName, String name,
+      private FileArchive createArchive(int file, String displayedName, String name,
                   int expectedCRC, int x) {
             byte archiveBuffer[] = null;
             int reconnectionDelay = 5;
@@ -4245,7 +4245,7 @@ public class Client extends GameApplet {
                   }
             }
             if (archiveBuffer != null) {
-                  Archive streamLoader = new Archive(archiveBuffer);
+                  FileArchive streamLoader = new FileArchive(archiveBuffer);
                   return streamLoader;
             }
             int errors = 0;
@@ -4337,7 +4337,7 @@ public class Client extends GameApplet {
 
             }
 
-            Archive streamLoader_1 = new Archive(archiveBuffer);
+            FileArchive streamLoader_1 = new FileArchive(archiveBuffer);
             return streamLoader_1;
       }
 
@@ -5989,9 +5989,9 @@ public class Client extends GameApplet {
                                                       titleArchive);
                                           GameFont fonts[] =
                                                       {smallText, regularText, boldText, gameFont};
-                                          Archive interfaces = createArchive(3, "interface",
+                                          FileArchive interfaces = createArchive(3, "interface",
                                                       "interface", archiveCRCs[3], 35);
-                                          Archive graphics = createArchive(4, "2d graphics",
+                                          FileArchive graphics = createArchive(4, "2d graphics",
                                                       "media", archiveCRCs[4], 40);
                                           Widget.load(interfaces, fonts, graphics);
                                           System.out.println("Reloaded interfaces.");
@@ -8228,7 +8228,7 @@ public class Client extends GameApplet {
             SpriteLoader.loadSprites();
             if (SignLink.cache_dat != null) {
                   for (int i = 0; i < 5; i++)
-                        indices[i] = new Index(SignLink.cache_dat, SignLink.indices[i], i + 1);
+                        indices[i] = new FileStore(SignLink.cache_dat, SignLink.indices[i], i + 1);
             }
             try {
 
@@ -8246,15 +8246,15 @@ public class Client extends GameApplet {
                   gameFont = new GameFont(true, "q8_full", titleArchive);
                   drawLogo();
                   loadTitleScreen();
-                  Archive configArchive = createArchive(2, "config", "config", archiveCRCs[2], 30);                  
-                  Archive interfaceArchive = createArchive(3, "interface", "interface", archiveCRCs[3], 35);                  
-                  Archive mediaArchive =  createArchive(4, "2d graphics", "media", archiveCRCs[4], 40);
+                  FileArchive configArchive = createArchive(2, "config", "config", archiveCRCs[2], 30);                  
+                  FileArchive interfaceArchive = createArchive(3, "interface", "interface", archiveCRCs[3], 35);                  
+                  FileArchive mediaArchive =  createArchive(4, "2d graphics", "media", archiveCRCs[4], 40);
                   this.mediaStreamLoader = mediaArchive;                  
-                  Archive textureArchive = createArchive(6, "textures", "textures", archiveCRCs[6], 45);
-                  Archive wordencArchive = createArchive(7, "chat system", "wordenc", archiveCRCs[7], 50);
+                  FileArchive textureArchive = createArchive(6, "textures", "textures", archiveCRCs[6], 45);
+                  FileArchive wordencArchive = createArchive(7, "chat system", "wordenc", archiveCRCs[7], 50);
                   
                   @SuppressWarnings("unused")
-                  Archive soundArchive = createArchive(8, "sound effects", "sounds", archiveCRCs[8], 55);
+                  FileArchive soundArchive = createArchive(8, "sound effects", "sounds", archiveCRCs[8], 55);
                   tileFlags = new byte[4][104][104];
                   tileHeights = new int[4][105][105];
                   scene = new SceneGraph(tileHeights);
@@ -8263,7 +8263,7 @@ public class Client extends GameApplet {
                         collisionMaps[j] = new CollisionMap();
 
                   minimapImage = new Sprite(512, 512);
-                  Archive streamLoader_6 =
+                  FileArchive streamLoader_6 =
                               createArchive(5, "update list", "versionlist", archiveCRCs[5], 60);
                   drawLoadingText(60, "Connecting to update server");
                   resourceProvider = new ResourceProvider();
@@ -8271,42 +8271,42 @@ public class Client extends GameApplet {
                   Model.method459(resourceProvider.getModelCount(), resourceProvider);
                   drawLoadingText(80, "Unpacking media");
                   
-                  Archive soundEffectArchive = createArchive(8, "sound effects", "sounds", archiveCRCs[8], 55);
-                  byte soundData[] = soundEffectArchive.getEntry("sounds.dat");                  
+                  FileArchive soundEffectArchive = createArchive(8, "sound effects", "sounds", archiveCRCs[8], 55);
+                  byte soundData[] = soundEffectArchive.readFile("sounds.dat");                  
 
                   Buffer stream = new Buffer(soundData);
                   Track.unpack(stream);
 
                   if (Configuration.repackIndexOne) {
-                        CacheUtils.repackCacheIndex(this, CacheIndex.MODEL);
+                        CacheUtils.repackCacheIndex(this, Store.MODEL);
                   }
 
                   if (Configuration.repackIndexTwo) {
-                        CacheUtils.repackCacheIndex(this, CacheIndex.ANIMATION);
+                        CacheUtils.repackCacheIndex(this, Store.ANIMATION);
                   }
 
                   if (Configuration.repackIndexThree) {
-                        CacheUtils.repackCacheIndex(this, CacheIndex.MUSIC);
+                        CacheUtils.repackCacheIndex(this, Store.MUSIC);
                   }
 
                   if (Configuration.repackIndexFour) {
-                        CacheUtils.repackCacheIndex(this, CacheIndex.MAP);
+                        CacheUtils.repackCacheIndex(this, Store.MAP);
                   }
 
                   if (Configuration.dumpIndexOne) {
-                        CacheUtils.dumpCacheIndex(this, CacheIndex.MODEL);
+                        CacheUtils.dumpCacheIndex(this, Store.MODEL);
                   }
 
                   if (Configuration.dumpIndexTwo) {
-                        CacheUtils.dumpCacheIndex(this, CacheIndex.ANIMATION);
+                        CacheUtils.dumpCacheIndex(this, Store.ANIMATION);
                   }
 
                   if (Configuration.dumpIndexThree) {
-                        CacheUtils.dumpCacheIndex(this, CacheIndex.MUSIC);
+                        CacheUtils.dumpCacheIndex(this, Store.MUSIC);
                   }
 
                   if (Configuration.repackIndexFour) {
-                        CacheUtils.dumpCacheIndex(this, CacheIndex.MAP);
+                        CacheUtils.dumpCacheIndex(this, Store.MAP);
                   }
 
                   cacheSprite = SpriteLoader.getSprites();
@@ -13713,7 +13713,7 @@ public class Client extends GameApplet {
             spriteDrawY = -1;
             anIntArray968 = new int[33];
             anIntArray969 = new int[256];
-            indices = new Index[5];
+            indices = new FileStore[5];
             settings = new int[2000];
             aBoolean972 = false;
             anInt975 = 50;
@@ -13936,7 +13936,7 @@ public class Client extends GameApplet {
       private IndexedImage titleButtonIndexedImage;
       private final int[] anIntArray968;
       private final int[] anIntArray969;
-      public final Index[] indices;
+      public final FileStore[] indices;
       public int settings[];
       private boolean aBoolean972;
       private final int anInt975;
@@ -14012,7 +14012,7 @@ public class Client extends GameApplet {
       private String aString1049;
       private static int anInt1051;
       private final int[] minimapLeft;
-      private Archive titleArchive;
+      private FileArchive titleArchive;
       private int flashingSidebarId;
       private int multicombat;
       private Deque incompleteAnimables;

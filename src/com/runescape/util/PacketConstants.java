@@ -1,11 +1,15 @@
 package com.runescape.util;
 /**
- * Class containing packet-related constants.
+ * The class that contains packet-related constants.
  * 
- * @author 7Winds
+ * @author Seven
  * @author TheChosenOne
  */
-public class PacketConstants {
+public final class PacketConstants {
+	
+	private PacketConstants() {
+		
+	}
 
 	public static final int PLAYER_UPDATING = 81;
 
@@ -137,19 +141,8 @@ public class PacketConstants {
 
     public static final int SEND_NONWALKABLE_CHATBOX_INTERFACE = 164;
 
-
-	/**
-	 * region X = ShortA
-	 * region Y = Short
-	 */
 	public static final int SEND_MAP_REGION = 73;
 
-	/**
-	 * region Y - ShortA
-	 * blank tile - 1 bit
-	 * x << 14 | y << 3 | h << 24 |
-	 * rotation << 1 - 26 Bits region X - Short
-	 */
 	public static final int SEND_REGION_MAP_REGION = 241;
 	
 	public static final int SYSTEM_UPDATE = 114;
@@ -165,7 +158,7 @@ public class PacketConstants {
 	 *  
 	 *  In 400+ they switched to using constants instead to make it more difficult.
 	 */
-	public static final int[] anIntArray552 = {
+	public static final int[] OBFUSTICATED_OPCODES = {			
 			6, 21, 25, 33, 254, 127, 183, 87, 216, 215, 
 			211, 48, 15, 195, 149, 233, 162, 102, 104, 179, 
 			222, 103, 224, 81, 152, 89, 45, 11, 197, 187, 

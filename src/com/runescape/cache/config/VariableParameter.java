@@ -1,6 +1,6 @@
 package com.runescape.cache.config;
 
-import com.runescape.cache.Archive;
+import com.runescape.cache.FileArchive;
 import com.runescape.io.Buffer;
 
 public final class VariableParameter {
@@ -15,8 +15,8 @@ public final class VariableParameter {
 		aBoolean713 = false;
 	}
 
-	public static void unpackConfig(Archive archive) {
-		Buffer stream = new Buffer(archive.getEntry("varp.dat"));
+	public static void unpackConfig(FileArchive archive) {
+		Buffer stream = new Buffer(archive.readFile("varp.dat"));
 		anInt702 = 0;
 		int cacheSize = stream.readUShort();
 		if (parameters == null)

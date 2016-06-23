@@ -4,7 +4,7 @@ import java.net.Socket;
 import java.util.zip.GZIPInputStream;
 
 import com.runescape.Client;
-import com.runescape.cache.Archive;
+import com.runescape.cache.FileArchive;
 import com.runescape.collection.Deque;
 import com.runescape.collection.Queue;
 import com.runescape.io.Buffer;
@@ -149,8 +149,8 @@ public final class ResourceProvider extends Provider implements Runnable {
 
 	public int mapAmount = 0;
 
-	public void initialize(Archive archive, Client client) {
-		byte[] mapData = archive.getEntry("map_index");
+	public void initialize(FileArchive archive, Client client) {
+		byte[] mapData = archive.readFile("map_index");
 		Buffer stream2 = new Buffer(mapData);
 		int j1 = mapData.length / 6;
 		areas = new int[j1];
@@ -163,7 +163,7 @@ public final class ResourceProvider extends Provider implements Runnable {
 			mapAmount++;
 		}
 		System.out.println("Map Amount: " + mapAmount + "");
-		mapData = archive.getEntry("midi_index");
+		mapData = archive.readFile("midi_index");
 		stream2 = new Buffer(mapData);
 		j1 = mapData.length;
 		musicPriorities = new int[j1];

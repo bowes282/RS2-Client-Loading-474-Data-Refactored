@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
+import org.seven.util.FileUtils;
+
 import com.runescape.io.Buffer;
 import com.runescape.sign.SignLink;
-import com.runescape.util.FileUtils;
 import com.runescape.util.LoggerUtils;
 
 public final class SpriteLoader {

@@ -1,4 +1,4 @@
-package custom.seven.net;
+package org.seven.net;
 
 import java.math.BigInteger;
 

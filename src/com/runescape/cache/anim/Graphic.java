@@ -1,13 +1,13 @@
 package com.runescape.cache.anim;
-import com.runescape.cache.Archive;
+import com.runescape.cache.FileArchive;
 import com.runescape.collection.ReferenceCache;
 import com.runescape.entity.model.Model;
 import com.runescape.io.Buffer;
 
 public final class Graphic {
 
-	public static void unpackConfig(Archive streamLoader) {
-		Buffer stream = new Buffer(streamLoader.getEntry("spotanim.dat"));
+	public static void unpackConfig(FileArchive streamLoader) {
+		Buffer stream = new Buffer(streamLoader.readFile("spotanim.dat"));
 		int length = stream.readUShort();
 		if (cache == null)
 			cache = new Graphic[length];

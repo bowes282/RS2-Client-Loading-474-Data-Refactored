@@ -1,7 +1,7 @@
 package com.runescape.cache.def;
 
 import com.runescape.Client;
-import com.runescape.cache.Archive;
+import com.runescape.cache.FileArchive;
 import com.runescape.cache.anim.Frame;
 import com.runescape.cache.config.VariableBits;
 import com.runescape.collection.ReferenceCache;
@@ -118,9 +118,9 @@ public final class NpcDefinition {
 			return lookup(childrenIDs[child]);
 	}
 
-	public static void unpackConfig(Archive streamLoader) {
-		stream = new Buffer(streamLoader.getEntry("npc.dat"));
-		Buffer stream2 = new Buffer(streamLoader.getEntry("npc.idx"));
+	public static void unpackConfig(FileArchive streamLoader) {
+		stream = new Buffer(streamLoader.readFile("npc.dat"));
+		Buffer stream2 = new Buffer(streamLoader.readFile("npc.idx"));
 		int totalNPCs = stream2.readUShort();
 		streamIndices = new int[totalNPCs];
 		int offset = 2;

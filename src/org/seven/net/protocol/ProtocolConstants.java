@@ -1,4 +1,4 @@
-package custom.seven.net.protocol;
+package org.seven.net.protocol;
 
 /**
  * Class containing protocol-related constants.

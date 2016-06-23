@@ -1,4 +1,4 @@
-package com.runescape.cache;
+package org.seven.util;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.util.zip.GZIPOutputStream;
 
 import com.runescape.Client;
+import com.runescape.cache.FileStore.Store;
 import com.runescape.sign.SignLink;
-import com.runescape.util.FileUtils;
 
 public final class CacheUtils {
 
-      public static void repackCacheIndex(Client client, CacheIndex cacheIndex) {
+      public static void repackCacheIndex(Client client, Store cacheIndex) {
             System.out.println("Started repacking index " + cacheIndex.getIndex() + ".");
             int indexLength = new File(SignLink.indexLocation(cacheIndex.getIndex(), -1)).listFiles().length;
             File[] file = new File(SignLink.indexLocation(cacheIndex.getIndex(), -1)).listFiles();
@@ -44,7 +44,7 @@ public final class CacheUtils {
           return "";
     }
 
-      public static void dumpCacheIndex(Client client, CacheIndex cacheIndex) {            
+      public static void dumpCacheIndex(Client client, Store cacheIndex) {            
             try {
                   for (int i = 0;; i++) {
                         try {
