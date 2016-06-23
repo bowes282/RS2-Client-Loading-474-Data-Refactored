@@ -5,7 +5,7 @@ import com.runescape.io.Buffer;
 
 public final class IndexedImage extends Rasterizer2D {
 	
-	public byte raster[];
+	public byte palettePixels[];
 	public final int[] palette;
 	public int width;
 	public int height;
@@ -39,16 +39,16 @@ public final class IndexedImage extends Rasterizer2D {
 		height = meta.readUShort();		
 		int type = meta.readUnsignedByte();		
 		int pixels = width * height;			
-		raster = new byte[pixels];
+		palettePixels = new byte[pixels];
 		
 		if(type == 0) {
 			for(int index = 0; index < pixels; index++) {
-				raster[index] = image.readSignedByte();
+				palettePixels[index] = image.readSignedByte();
 			}
 		} else if(type == 1) {
 			for(int x = 0; x < width; x++) {				
 				for(int y = 0; y < height; y++) {					
-					raster[x + y * width] = image.readSignedByte();
+					palettePixels[x + y * width] = image.readSignedByte();
 				}
 			}
 		}
@@ -64,7 +64,7 @@ public final class IndexedImage extends Rasterizer2D {
 				raster[(x + drawOffsetX >> 1) + (y  + drawOffsetY >> 1) * resizeWidth] = raster[sourceIndex++];
 			}
 		}
-		this.raster = raster;
+		this.palettePixels = raster;
 		width = resizeWidth;
 		height = resizeHeight;
 		drawOffsetX = 0;
@@ -84,7 +84,7 @@ public final class IndexedImage extends Rasterizer2D {
 				raster[x + drawOffsetX + (y + drawOffsetY) * resizeWidth] = raster[i++];
 			}
 		}
-		this.raster = raster;
+		this.palettePixels = raster;
 		width = resizeWidth;
 		height = resizeHeight;
 		drawOffsetX = 0;
@@ -99,7 +99,7 @@ public final class IndexedImage extends Rasterizer2D {
 				raster[pixel++] = raster[x + y * width];
 			}
 		}
-		this.raster = raster;
+		this.palettePixels = raster;
 		drawOffsetX = resizeWidth - width - drawOffsetX;
 	}
 
@@ -111,7 +111,7 @@ public final class IndexedImage extends Rasterizer2D {
 				raster[pixel++] = raster[x + y * width];
 			}
 		}
-		this.raster = raster;
+		this.palettePixels = raster;
 		drawOffsetY = resizeHeight - height - drawOffsetY;
 	}
 
@@ -169,10 +169,10 @@ public final class IndexedImage extends Rasterizer2D {
 			height -= (y + height) - Rasterizer2D.bottomY;
 		}
 		
-		if(x < Rasterizer2D.topX) {
-			int k2 = Rasterizer2D.topX - x;
+		if(x < Rasterizer2D.leftX) {
+			int k2 = Rasterizer2D.leftX - x;
 			width -= k2;
-			x = Rasterizer2D.topX;
+			x = Rasterizer2D.leftX;
 			sourceOffset += k2;
 			destOffset += k2;
 			sourceStep += k2;
@@ -187,7 +187,7 @@ public final class IndexedImage extends Rasterizer2D {
 		}
 		
 		if(!(width <= 0 || height <= 0)) {			
-			draw(height, Rasterizer2D.pixels, raster, destStep, destOffset, width, sourceOffset, palette, sourceStep);
+			draw(height, Rasterizer2D.pixels, palettePixels, destStep, destOffset, width, sourceOffset, palette, sourceStep);
 		}
 		
 	}

@@ -178,7 +178,7 @@ public final class GameFont extends Rasterizer2D {
 				i += anIntArray1496[c];
 			}
 		if(aBoolean1499)
-			Rasterizer2D.method339(k + (int)((double)verticalSpace * 0.69999999999999996D), 0x800000, i - l, l);
+			Rasterizer2D.drawHorizontalLine(l, k + (int)((double)verticalSpace * 0.69999999999999996D), i - l, 0x800000);
 	}
 
 	public void method390(int i, int j, String s, int k, int i1) {
@@ -265,10 +265,10 @@ public final class GameFont extends Rasterizer2D {
         }
         if (j + l >= bottomY)
             l -= ((j + l) - bottomY);
-        if (i < topX) {
-            int k2 = topX - i;
+        if (i < leftX) {
+            int k2 = leftX - i;
             k -= k2;
-            i = topX;
+            i = leftX;
             i2 += k2;
             j1 += k2;
             l1 += k2;
@@ -333,10 +333,10 @@ public final class GameFont extends Rasterizer2D {
         }
         if (l + i1 >= bottomY)
             i1 -= ((l + i1) - bottomY);
-        if (j < topX) {
-            int l2 = topX - j;
+        if (j < leftX) {
+            int l2 = leftX - j;
             k -= l2;
-            j = topX;
+            j = leftX;
             j2 += l2;
             k1 += l2;
             i2 += l2;

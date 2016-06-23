@@ -2147,19 +2147,19 @@ public class Model extends Renderable {
 								return;
 							int j3 = l1 * l + j1 * i1 >> 16;
 				int k3 = j3 - maxVertexDistanceXZPlane << SceneGraph.viewDistance;
-				if (k3 / i3 >= Rasterizer2D.centerY)
+				if (k3 / i3 >= Rasterizer2D.viewportCenterX)
 					return;
 				int l3 = j3 + maxVertexDistanceXZPlane << SceneGraph.viewDistance;
-				if (l3 / i3 <= -Rasterizer2D.centerY)
+				if (l3 / i3 <= -Rasterizer2D.viewportCenterX)
 					return;
 				int i4 = k1 * k - j2 * j >> 16;
 				int j4 = maxVertexDistanceXZPlane * j >> 16;
 				int k4 = i4 + j4 << SceneGraph.viewDistance;
-				if (k4 / i3 <= -Rasterizer2D.anInt1387)
+				if (k4 / i3 <= -Rasterizer2D.viewportCenterY)
 					return;
 				int l4 = j4 + (super.modelBaseY * k >> 16);
 				int i5 = i4 - l4 << SceneGraph.viewDistance;
-				if (i5 / i3 >= Rasterizer2D.anInt1387)
+				if (i5 / i3 >= Rasterizer2D.viewportCenterY)
 					return;
 				int j5 = l2 + (super.modelBaseY * j >> 16);
 				boolean flag = false;
@@ -2272,9 +2272,9 @@ public class Model extends Renderable {
 							* (k4 - l3) > 0) {
 						aBooleanArray1664[k] = false;
 						if (i3 < 0 || l3 < 0 || k4 < 0
-								|| i3 > Rasterizer2D.centerX
-								|| l3 > Rasterizer2D.centerX
-								|| k4 > Rasterizer2D.centerX)
+								|| i3 > Rasterizer2D.lastX
+								|| l3 > Rasterizer2D.lastX
+								|| k4 > Rasterizer2D.lastX)
 							aBooleanArray1663[k] = true;
 						else
 							aBooleanArray1663[k] = false;
@@ -2588,8 +2588,8 @@ public class Model extends Renderable {
 		if ((j3 - j4) * (k7 - j7) - (i7 - j7) * (j5 - j4) > 0) {
 			Rasterizer3D.textureOutOfDrawingBounds = false;
 			if (l == 3) {
-				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Rasterizer2D.centerX
-						|| j4 > Rasterizer2D.centerX || j5 > Rasterizer2D.centerX)
+				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Rasterizer2D.lastX
+						|| j4 > Rasterizer2D.lastX || j5 > Rasterizer2D.lastX)
 					Rasterizer3D.textureOutOfDrawingBounds = true;
 				int l7;
 				if (faceDrawType == null)
@@ -2632,10 +2632,10 @@ public class Model extends Renderable {
 				}
 			}
 			if (l == 4) {
-				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Rasterizer2D.centerX
-						|| j4 > Rasterizer2D.centerX || j5 > Rasterizer2D.centerX
+				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Rasterizer2D.lastX
+						|| j4 > Rasterizer2D.lastX || j5 > Rasterizer2D.lastX
 						|| anIntArray1678[3] < 0
-						|| anIntArray1678[3] > Rasterizer2D.centerX)
+						|| anIntArray1678[3] > Rasterizer2D.lastX)
 					Rasterizer3D.textureOutOfDrawingBounds = true;
 				int i8;
 				if (faceDrawType == null)
@@ -2796,7 +2796,7 @@ public class Model extends Renderable {
 	static {
 		SINE = Rasterizer3D.anIntArray1470;
 		COSINE = Rasterizer3D.COSINE;
-		modelIntArray3 = Rasterizer3D.anIntArray1482;
+		modelIntArray3 = Rasterizer3D.hslToRgb;
 		modelIntArray4 = Rasterizer3D.anIntArray1469;
 	}
 }

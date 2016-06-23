@@ -267,14 +267,14 @@ public final class ItemDefinition {
 		float depthBuffer[] = Rasterizer2D.depthBuffer;
 		int width = Rasterizer2D.width;
 		int height = Rasterizer2D.height;
-		int vp_left = Rasterizer2D.topX;
+		int vp_left = Rasterizer2D.leftX;
 		int vp_right = Rasterizer2D.bottomX;
 		int vp_top = Rasterizer2D.topY;
 		int vp_bottom = Rasterizer2D.bottomY;
 		Rasterizer3D.aBoolean1464 = false;
 		Rasterizer2D.initDrawingArea(32, 32, enabledSprite.myPixels,
 				new float[32 * 32]);
-		Rasterizer2D.method336(32, 0, 0, 0, 32);
+		Rasterizer2D.drawBox(0, 0, 32, 32, 0);
 		Rasterizer3D.useViewport();
 		int k3 = itemDef.model_zoom;
 		if (outlineColor == -1)

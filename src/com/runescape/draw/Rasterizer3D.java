@@ -13,13 +13,13 @@ public final class Rasterizer3D extends Rasterizer2D {
 		COSINE = null;
 		scanOffsets = null;
 		textures = null;
-		aBooleanArray1475 = null;
-		anIntArray1476 = null;
-		anIntArrayArray1478 = null;
-		anIntArrayArray1479 = null;
-		anIntArray1480 = null;
-		anIntArray1482 = null;
-		anIntArrayArray1483 = null;
+		textureIsTransparant = null;
+		averageTextureColours = null;
+		textureRequestPixelBuffer = null;
+		texturesPixelBuffer = null;
+		textureLastUsed = null;
+		hslToRgb = null;
+		currentPalette = null;
 	}
 
 	public static void useViewport() {
@@ -33,34 +33,30 @@ public final class Rasterizer3D extends Rasterizer2D {
 		originViewY = Rasterizer2D.height / 2;
 	}
 
-	public static void reposition(int length, int width) {		
-		scanOffsets = new int[width];		
-		for (int x = 0; x < width; x++) {			
-			scanOffsets[x] = length * x;			
+	public static void reposition(int width, int length) {
+		scanOffsets = new int[length];
+		for (int x = 0; x < length; x++) {
+			scanOffsets[x] = width * x;
 		}
-		originViewX = length / 2;		
-		originViewY = width / 2;
+		originViewX = width / 2;
+		originViewY = length / 2;
 	}
 
-	public static void method366() {
-		anIntArrayArray1478 = null;
-		
-		for (int j = 0; j < 50; j++) {
-			anIntArrayArray1479[j] = null;
-		}
-
+	public static void clearTextureCache() {
+		textureRequestPixelBuffer = null;
+		for (int i = 0; i < 50; i++)
+            texturesPixelBuffer[i] = null;
 	}
 
-	public static void method367() {
-		if (anIntArrayArray1478 == null) {
-			anInt1477 = 20;
+	public static void initiateRequestBuffers() {
+		if (textureRequestPixelBuffer == null) {
+            textureRequestBufferPointer = 20;
 			if (lowMem)
-				anIntArrayArray1478 = new int[anInt1477][16384];
+				textureRequestPixelBuffer = new int[textureRequestBufferPointer][16384];
 			else
-				anIntArrayArray1478 = new int[anInt1477][0x10000];
-			for (int k = 0; k < 50; k++)
-				anIntArrayArray1479[k] = null;
-
+				textureRequestPixelBuffer = new int[textureRequestBufferPointer][0x10000];
+			for (int i = 0; i < 50; i++)
+				texturesPixelBuffer[i] = null;
 		}
 	}
 
@@ -81,102 +77,95 @@ public final class Rasterizer3D extends Rasterizer2D {
 		}
 	}
 
-	public static int method369(int textureId) {
-		if (anIntArray1476[textureId] != 0)
-			return anIntArray1476[textureId];
-		int r = 0;
-		int g = 0;
-		int b = 0;
-		int colourCount = anIntArrayArray1483[textureId].length;
+	public static int getOverallColour(int textureId) {
+		if (averageTextureColours[textureId] != 0)
+			return averageTextureColours[textureId];
+		int totalRed = 0;
+		int totalGreen = 0;
+		int totalBlue = 0;
+		int colourCount = currentPalette[textureId].length;
 		for (int ptr = 0; ptr < colourCount; ptr++) {
-			r += anIntArrayArray1483[textureId][ptr] >> 16 & 0xff;
-			g += anIntArrayArray1483[textureId][ptr] >> 8 & 0xff;
-			b += anIntArrayArray1483[textureId][ptr] & 0xff;
+			totalRed += currentPalette[textureId][ptr] >> 16 & 0xff;
+			totalGreen += currentPalette[textureId][ptr] >> 8 & 0xff;
+			totalBlue += currentPalette[textureId][ptr] & 0xff;
 		}
 
-		int rgb = (r / colourCount << 16) + (g / colourCount << 8) + b / colourCount;
-		rgb = adjustBrightness(rgb, 1.3999999999999999D);
-		if (rgb == 0)
-			rgb = 1;
-		anIntArray1476[textureId] = rgb;
-		return rgb;
+		int avgPaletteColour = (totalRed / colourCount << 16) + (totalGreen / colourCount << 8) + totalBlue / colourCount;
+		avgPaletteColour = adjustBrightness(avgPaletteColour, 1.3999999999999999D);
+		if (avgPaletteColour == 0)
+			avgPaletteColour = 1;
+		averageTextureColours[textureId] = avgPaletteColour;
+		return avgPaletteColour;
 	}
 
-	public static void method370(int textureId) {
-		try {
-			if (anIntArrayArray1479[textureId] == null) {
-				return;
-			}
-			anIntArrayArray1478[anInt1477++] = anIntArrayArray1479[textureId];
-			anIntArrayArray1479[textureId] = null;
-		} catch (Exception e) {
-
-		}
+	public static void requestTextureUpdate(int textureId) {
+        if (texturesPixelBuffer[textureId] == null) {
+            return;
+        }
+        textureRequestPixelBuffer[textureRequestBufferPointer++] = texturesPixelBuffer[textureId];
+        texturesPixelBuffer[textureId] = null;
 	}
 
 	private static int[] getTexturePixels(int textureId) {
-		anIntArray1480[textureId] = anInt1481++;
-		if (anIntArrayArray1479[textureId] != null)
-			return anIntArrayArray1479[textureId];
-		int texels[];
-		if (anInt1477 > 0) {
-			texels = anIntArrayArray1478[--anInt1477];
-			anIntArrayArray1478[anInt1477] = null;
+        textureLastUsed[textureId] = lastTextureRetrievalCount++;
+		if (texturesPixelBuffer[textureId] != null)
+			return texturesPixelBuffer[textureId];
+		int texturePixels[];
+		if (textureRequestBufferPointer > 0) {
+			texturePixels = textureRequestPixelBuffer[--textureRequestBufferPointer];
+			textureRequestPixelBuffer[textureRequestBufferPointer] = null;
 		} else {
 			int lastUsed = 0;
 			int target = -1;
 			for (int l = 0; l < textureCount; l++)
-				if (anIntArrayArray1479[l] != null && (anIntArray1480[l] < lastUsed || target == -1)) {
-					lastUsed = anIntArray1480[l];
+				if (texturesPixelBuffer[l] != null && (textureLastUsed[l] < lastUsed || target == -1)) {
+					lastUsed = textureLastUsed[l];
 					target = l;
 				}
 
-			texels = anIntArrayArray1479[target];
-			anIntArrayArray1479[target] = null;
+			texturePixels = texturesPixelBuffer[target];
+			texturesPixelBuffer[target] = null;
 		}
-		anIntArrayArray1479[textureId] = texels;
+		texturesPixelBuffer[textureId] = texturePixels;
 		IndexedImage background = textures[textureId];
-		int texturePalette[] = anIntArrayArray1483[textureId];		
+		int texturePalette[] = currentPalette[textureId];
 		if (lowMem) {
-			aBooleanArray1475[textureId] = false;
+            textureIsTransparant[textureId] = false;
 			for (int i1 = 0; i1 < 4096; i1++) {
-				int i2 = texels[i1] = texturePalette[background.raster[i1]] & 0xf8f8ff;
-				if (i2 == 0)
-					aBooleanArray1475[textureId] = true;
-				texels[4096 + i1] = i2 - (i2 >>> 3) & 0xf8f8ff;
-				texels[8192 + i1] = i2 - (i2 >>> 2) & 0xf8f8ff;
-				texels[12288 + i1] = i2 - (i2 >>> 2) - (i2 >>> 3) & 0xf8f8ff;
+				int colour = texturePixels[i1] = texturePalette[background.palettePixels[i1]] & 0xf8f8ff;
+				if (colour == 0)
+					textureIsTransparant[textureId] = true;
+				texturePixels[4096 + i1] = colour - (colour >>> 3) & 0xf8f8ff;
+				texturePixels[8192 + i1] = colour - (colour >>> 2) & 0xf8f8ff;
+				texturePixels[12288 + i1] = colour - (colour >>> 2) - (colour >>> 3) & 0xf8f8ff;
 			}
 
 		} else {
 			if (background.width == 64) {
-				for (int j1 = 0; j1 < 128; j1++) {
-					for (int j2 = 0; j2 < 128; j2++)
-						texels[j2 + (j1 << 7)] = texturePalette[background.raster[(j2 >> 1) + ((j1 >> 1) << 6)]];
-
+				for (int x = 0; x < 128; x++) {
+					for (int y = 0; y < 128; y++)
+						texturePixels[y + (x << 7)] = texturePalette[background.palettePixels[(y >> 1) + ((x >> 1) << 6)]];
 				}
-
 			} else {
-				for (int k1 = 0; k1 < 16384; k1++)
-					texels[k1] = texturePalette[background.raster[k1]];
-
+				for (int i = 0; i < 16384; i++)
+					texturePixels[i] = texturePalette[background.palettePixels[i]];
 			}
-			aBooleanArray1475[textureId] = false;
-			for (int l1 = 0; l1 < 16384; l1++) {
-				texels[l1] &= 0xf8f8ff;
-				int k2 = texels[l1];
-				if (k2 == 0)
-					aBooleanArray1475[textureId] = true;
-				texels[16384 + l1] = k2 - (k2 >>> 3) & 0xf8f8ff;
-				texels[32768 + l1] = k2 - (k2 >>> 2) & 0xf8f8ff;
-				texels[49152 + l1] = k2 - (k2 >>> 2) - (k2 >>> 3) & 0xf8f8ff;
+			textureIsTransparant[textureId] = false;
+			for (int i = 0; i < 16384; i++) {
+				texturePixels[i] &= 0xf8f8ff;
+				int colour = texturePixels[i];
+				if (colour == 0)
+					textureIsTransparant[textureId] = true;
+				texturePixels[16384 + i] = colour - (colour >>> 3) & 0xf8f8ff;
+				texturePixels[32768 + i] = colour - (colour >>> 2) & 0xf8f8ff;
+				texturePixels[49152 + i] = colour - (colour >>> 2) - (colour >>> 3) & 0xf8f8ff;
 			}
 
 		}
-		return texels;
+		return texturePixels;
 	}
 
-	public static void method372(double brightness) {
+	public static void setBrightness(double brightness) {
 		int j = 0;
 		for (int k = 0; k < 512; k++) {
 			double d1 = (double) (k / 8) / 64D + 0.0078125D;
@@ -232,25 +221,25 @@ public final class Rasterizer3D extends Rasterizer2D {
 				rgb = adjustBrightness(rgb, brightness);
 				if (rgb == 0)
 					rgb = 1;
-				anIntArray1482[j++] = rgb;
+                hslToRgb[j++] = rgb;
 			}
 
 		}
 
 		for (int textureId = 0; textureId < 51; textureId++)
 			if (textures[textureId] != null) {
-				int palette[] = textures[textureId].palette;
-				anIntArrayArray1483[textureId] = new int[palette.length];
-				for (int colourId = 0; colourId < palette.length; colourId++) {
-					anIntArrayArray1483[textureId][colourId] = adjustBrightness(palette[colourId], brightness);
-					if ((anIntArrayArray1483[textureId][colourId] & 0xf8f8ff) == 0 && colourId != 0)
-						anIntArrayArray1483[textureId][colourId] = 1;
+				int originalPalette[] = textures[textureId].palette;
+				currentPalette[textureId] = new int[originalPalette.length];
+				for (int colourId = 0; colourId < originalPalette.length; colourId++) {
+					currentPalette[textureId][colourId] = adjustBrightness(originalPalette[colourId], brightness);
+					if ((currentPalette[textureId][colourId] & 0xf8f8ff) == 0 && colourId != 0)
+						currentPalette[textureId][colourId] = 1;
 				}
 
 			}
 
 		for (int textureId = 0; textureId < 51; textureId++)
-			method370(textureId);
+			requestTextureUpdate(textureId);
 
 	}
 
@@ -267,13 +256,12 @@ public final class Rasterizer3D extends Rasterizer2D {
 		return (r_byte << 16) + (g_byte << 8) + b_byte;
 	}
 
-	public static void drawShadedTriangle(int y_a, int y_b, int y_c, int x_a, int x_b, int x_c, int hsl1, int hsl2,
-			int hsl3, float z_a, float z_b, float z_c) {
+	public static void drawShadedTriangle(int y_a, int y_b, int y_c, int x_a, int x_b, int x_c, int hsl1, int hsl2, int hsl3, float z_a, float z_b, float z_c) {
 		if (z_a < 0 || z_b < 0 || z_c < 0)
 			return;
-		int rgb1 = anIntArray1482[hsl1];
-		int rgb2 = anIntArray1482[hsl2];
-		int rgb3 = anIntArray1482[hsl3];
+		int rgb1 = hslToRgb[hsl1];
+		int rgb2 = hslToRgb[hsl2];
+		int rgb3 = hslToRgb[hsl3];
 		int r1 = rgb1 >> 16 & 0xff;
 		int g1 = rgb1 >> 8 & 0xff;
 		int b1 = rgb1 & 0xff;
@@ -888,8 +876,7 @@ public final class Rasterizer3D extends Rasterizer2D {
 		}
 	}
 
-	public static void drawShadedScanline(int[] dest, int offset, int x1, int x2, int r1, int g1, int b1, int r2,
-			int g2, int b2, float depth, float depth_slope) {
+	public static void drawShadedScanline(int[] dest, int offset, int x1, int x2, int r1, int g1, int b1, int r2, int g2, int b2, float depth, float depth_slope) {
 		int n = x2 - x1;
 		if (n <= 0) {
 			return;
@@ -898,9 +885,9 @@ public final class Rasterizer3D extends Rasterizer2D {
 		g2 = (g2 - g1) / n;
 		b2 = (b2 - b1) / n;
 		if (textureOutOfDrawingBounds) {
-			if (x2 > Rasterizer2D.centerX) {
-				n -= x2 - Rasterizer2D.centerX;
-				x2 = Rasterizer2D.centerX;
+			if (x2 > Rasterizer2D.lastX) {
+				n -= x2 - Rasterizer2D.lastX;
+				x2 = Rasterizer2D.lastX;
 			}
 			if (x1 < 0) {
 				n = x2;
@@ -1301,8 +1288,8 @@ public final class Rasterizer3D extends Rasterizer2D {
 			float depth, float depth_slope) {
 		int rgb;
 		if (textureOutOfDrawingBounds) {
-			if (end_x > Rasterizer2D.centerX)
-				end_x = Rasterizer2D.centerX;
+			if (end_x > Rasterizer2D.lastX)
+				end_x = Rasterizer2D.lastX;
 			if (start_x < 0)
 				start_x = 0;
 		}
@@ -1363,7 +1350,7 @@ public final class Rasterizer3D extends Rasterizer2D {
 		if (z_a < 0 || z_b < 0 || z_c < 0)
 			return;
 		int texture[] = getTexturePixels(k4);
-		aBoolean1463 = !aBooleanArray1475[k4];
+		aBoolean1463 = !textureIsTransparant[k4];
 		Mx = Px - Mx;
 		Mz = Pz - Mz;
 		My = Py - My;
@@ -1948,8 +1935,8 @@ public final class Rasterizer3D extends Rasterizer2D {
 		int k3;
 		if (textureOutOfDrawingBounds) {
 			j3 = (gradient - shadeValue) / (end_x - start_x);
-			if (end_x > Rasterizer2D.centerX)
-				end_x = Rasterizer2D.centerX;
+			if (end_x > Rasterizer2D.lastX)
+				end_x = Rasterizer2D.lastX;
 			if (start_x < 0) {
 				shadeValue -= start_x * j3;
 				start_x = 0;
@@ -2051,7 +2038,7 @@ public final class Rasterizer3D extends Rasterizer2D {
 			while (k3-- > 0) {
 				int k8;
 				for (int i = 0; i < 8; i++) {
-					if ((k8 = texture[(loops & 0xfc0) + (rgb >> 6)] >>> i8) != 0 && true) {
+					if ((k8 = texture[(loops & 0xfc0) + (rgb >> 6)] >>> i8) != 0) {
 						dest[dest_off] = k8;
 						Rasterizer2D.depthBuffer[dest_off] = depth;
 					}
@@ -2083,7 +2070,7 @@ public final class Rasterizer3D extends Rasterizer2D {
 			}
 			for (k3 = end_x - start_x & 7; k3-- > 0;) {
 				int l8;
-				if ((l8 = texture[(loops & 0xfc0) + (rgb >> 6)] >>> i8) != 0 && true) {
+				if ((l8 = texture[(loops & 0xfc0) + (rgb >> 6)] >>> i8) != 0) {
 					dest[dest_off] = l8;
 					Rasterizer2D.depthBuffer[dest_off] = depth;
 				}
@@ -2174,7 +2161,7 @@ public final class Rasterizer3D extends Rasterizer2D {
 		while (k3-- > 0) {
 			int i9;
 			for (int i = 0; i < 8; i++) {
-				if ((i9 = texture[(loops & 0x3f80) + (rgb >> 7)] >>> j8) != 0 && true) {
+				if ((i9 = texture[(loops & 0x3f80) + (rgb >> 7)] >>> j8) != 0) {
 					dest[dest_off] = i9;
 					Rasterizer2D.depthBuffer[dest_off] = depth;
 				}
@@ -2205,7 +2192,7 @@ public final class Rasterizer3D extends Rasterizer2D {
 		}
 		for (int l3 = end_x - start_x & 7; l3-- > 0;) {
 			int j9;
-			if ((j9 = texture[(loops & 0x3f80) + (rgb >> 7)] >>> j8) != 0 && true) {
+			if ((j9 = texture[(loops & 0x3f80) + (rgb >> 7)] >>> j8) != 0) {
 				dest[dest_off] = j9;
 				Rasterizer2D.depthBuffer[dest_off] = depth;
 			}
@@ -2589,29 +2576,29 @@ public final class Rasterizer3D extends Rasterizer2D {
 		if (alpha == 0) {
 			while (--loops >= 0) {
 				dest_off++;
-				if (dest_off >= 0 && dest_off < dbl && true) {
+				if (dest_off >= 0 && dest_off < dbl) {
 					Rasterizer2D.depthBuffer[dest_off] = depth;
 				}
 				depth += depth_slope;
 				dest_off++;
-				if (dest_off >= 0 && dest_off < dbl && true) {
+				if (dest_off >= 0 && dest_off < dbl) {
 					Rasterizer2D.depthBuffer[dest_off] = depth;
 				}
 				depth += depth_slope;
 				dest_off++;
-				if (dest_off >= 0 && dest_off < dbl && true) {
+				if (dest_off >= 0 && dest_off < dbl) {
 					Rasterizer2D.depthBuffer[dest_off] = depth;
 				}
 				depth += depth_slope;
 				dest_off++;
-				if (dest_off >= 0 && dest_off < dbl && true) {
+				if (dest_off >= 0 && dest_off < dbl) {
 					Rasterizer2D.depthBuffer[dest_off] = depth;
 				}
 				depth += depth_slope;
 			}
 			for (loops = end_x - start_x & 3; --loops >= 0;) {
 				dest_off++;
-				if (dest_off >= 0 && dest_off < dbl && true) {
+				if (dest_off >= 0 && dest_off < dbl) {
 					Rasterizer2D.depthBuffer[dest_off] = depth;
 				}
 				depth += depth_slope;
@@ -2620,29 +2607,29 @@ public final class Rasterizer3D extends Rasterizer2D {
 		}
 		while (--loops >= 0) {
 			dest_off++;
-			if (dest_off >= 0 && dest_off < dbl && true) {
+			if (dest_off >= 0 && dest_off < dbl) {
 				Rasterizer2D.depthBuffer[dest_off] = depth;
 			}
 			depth += depth_slope;
 			dest_off++;
-			if (dest_off >= 0 && dest_off < dbl && true) {
+			if (dest_off >= 0 && dest_off < dbl) {
 				Rasterizer2D.depthBuffer[dest_off] = depth;
 			}
 			depth += depth_slope;
 			dest_off++;
-			if (dest_off >= 0 && dest_off < dbl && true) {
+			if (dest_off >= 0 && dest_off < dbl) {
 				Rasterizer2D.depthBuffer[dest_off] = depth;
 			}
 			depth += depth_slope;
 			dest_off++;
-			if (dest_off >= 0 && dest_off < dbl && true) {
+			if (dest_off >= 0 && dest_off < dbl) {
 				Rasterizer2D.depthBuffer[dest_off] = depth;
 			}
 			depth += depth_slope;
 		}
 		for (loops = end_x - start_x & 3; --loops >= 0;) {
 			dest_off++;
-			if (dest_off >= 0 && dest_off < dbl && true) {
+			if (dest_off >= 0 && dest_off < dbl) {
 				Rasterizer2D.depthBuffer[dest_off] = depth;
 			}
 			depth += depth_slope;
@@ -2663,15 +2650,15 @@ public final class Rasterizer3D extends Rasterizer2D {
 	public static int scanOffsets[];
 	private static int textureCount;
 	public static IndexedImage textures[] = new IndexedImage[51];
-	private static boolean[] aBooleanArray1475 = new boolean[51];
-	private static int[] anIntArray1476 = new int[51];
-	private static int anInt1477;
-	private static int[][] anIntArrayArray1478;
-	private static int[][] anIntArrayArray1479 = new int[51][];
-	public static int anIntArray1480[] = new int[51];
-	public static int anInt1481;
-	public static int anIntArray1482[] = new int[0x10000];
-	private static int[][] anIntArrayArray1483 = new int[51][];
+	private static boolean[] textureIsTransparant = new boolean[51];
+	private static int[] averageTextureColours = new int[51];
+	private static int textureRequestBufferPointer;
+	private static int[][] textureRequestPixelBuffer;
+	private static int[][] texturesPixelBuffer = new int[51][];
+	public static int textureLastUsed[] = new int[51];
+	public static int lastTextureRetrievalCount;
+	public static int hslToRgb[] = new int[0x10000];
+	private static int[][] currentPalette = new int[51][];
 
 	static {
 		anIntArray1468 = new int[512];
