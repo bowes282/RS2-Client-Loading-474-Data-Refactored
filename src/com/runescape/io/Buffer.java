@@ -4,7 +4,6 @@ import java.math.BigInteger;
 
 import com.runescape.Configuration;
 import com.runescape.collection.Cacheable;
-import com.runescape.collection.Deque;
 import com.runescape.net.IsaacCipher;
 import com.runescape.sign.SignLink;
 

@@ -1,9 +1,9 @@
 package com.runescape.cache.graphics;
 import com.runescape.cache.Archive;
-import com.runescape.draw.Raster;
+import com.runescape.draw.Rasterizer2D;
 import com.runescape.io.Buffer;
 
-public final class IndexedImage extends Raster {
+public final class IndexedImage extends Rasterizer2D {
 	
 	public byte raster[];
 	public final int[] palette;
@@ -150,44 +150,44 @@ public final class IndexedImage extends Raster {
 	public void draw(int x, int y) {		
 		x += drawOffsetX;
 		y += drawOffsetY;		
-		int destOffset = x + y * Raster.width;		
+		int destOffset = x + y * Rasterizer2D.width;		
 		int sourceOffset = 0;
 		int height = this.height;
 		int width = this.width;		
-		int destStep = Raster.width - width;		
+		int destStep = Rasterizer2D.width - width;		
 		int sourceStep = 0;
 		
-		if(y < Raster.topY) {
-			int dy = Raster.topY - y;			
+		if(y < Rasterizer2D.topY) {
+			int dy = Rasterizer2D.topY - y;			
 			height -= dy;			
-			y = Raster.topY;
+			y = Rasterizer2D.topY;
 			sourceOffset += dy * width;			
-			destOffset += dy * Raster.width;
+			destOffset += dy * Rasterizer2D.width;
 		}
 		
-		if(y + height > Raster.bottomY) {
-			height -= (y + height) - Raster.bottomY;
+		if(y + height > Rasterizer2D.bottomY) {
+			height -= (y + height) - Rasterizer2D.bottomY;
 		}
 		
-		if(x < Raster.topX) {
-			int k2 = Raster.topX - x;
+		if(x < Rasterizer2D.topX) {
+			int k2 = Rasterizer2D.topX - x;
 			width -= k2;
-			x = Raster.topX;
+			x = Rasterizer2D.topX;
 			sourceOffset += k2;
 			destOffset += k2;
 			sourceStep += k2;
 			destStep += k2;
 		}
 		
-		if(x + width > Raster.bottomX) {
-			int dx = (x + width) - Raster.bottomX;			
+		if(x + width > Rasterizer2D.bottomX) {
+			int dx = (x + width) - Rasterizer2D.bottomX;			
 			width -= dx;
 			sourceStep += dx;
 			destStep += dx;
 		}
 		
 		if(!(width <= 0 || height <= 0)) {			
-			draw(height, Raster.pixels, raster, destStep, destOffset, width, sourceOffset, palette, sourceStep);
+			draw(height, Rasterizer2D.pixels, raster, destStep, destOffset, width, sourceOffset, palette, sourceStep);
 		}
 		
 	}

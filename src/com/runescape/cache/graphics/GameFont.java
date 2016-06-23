@@ -3,10 +3,10 @@ package com.runescape.cache.graphics;
 import java.util.Random;
 
 import com.runescape.cache.Archive;
-import com.runescape.draw.Raster;
+import com.runescape.draw.Rasterizer2D;
 import com.runescape.io.Buffer;
 
-public final class GameFont extends Raster {
+public final class GameFont extends Rasterizer2D {
 
 	public GameFont(boolean flag, String s, Archive streamLoader) {
 	aByteArrayArray1491 = new byte[256][];
@@ -178,7 +178,7 @@ public final class GameFont extends Raster {
 				i += anIntArray1496[c];
 			}
 		if(aBoolean1499)
-			Raster.method339(k + (int)((double)verticalSpace * 0.69999999999999996D), 0x800000, i - l, l);
+			Rasterizer2D.method339(k + (int)((double)verticalSpace * 0.69999999999999996D), 0x800000, i - l, l);
 	}
 
 	public void method390(int i, int j, String s, int k, int i1) {

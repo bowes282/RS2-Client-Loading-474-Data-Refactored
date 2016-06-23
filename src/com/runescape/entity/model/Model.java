@@ -2,8 +2,8 @@ package com.runescape.entity.model;
 import com.runescape.Configuration;
 import com.runescape.cache.anim.Frame;
 import com.runescape.cache.anim.FrameBase;
-import com.runescape.draw.Raster;
-import com.runescape.draw.Rasterizer;
+import com.runescape.draw.Rasterizer2D;
+import com.runescape.draw.Rasterizer3D;
 import com.runescape.entity.Renderable;
 import com.runescape.io.Buffer;
 import com.runescape.net.requester.Provider;
@@ -2082,8 +2082,8 @@ public class Model extends Renderable {
 
 	public final void method482(int j, int k, int l, int i1, int j1, int k1) {
 		int i = 0;
-		int l1 = Rasterizer.originViewX;
-		int i2 = Rasterizer.originViewY;
+		int l1 = Rasterizer3D.originViewX;
+		int i2 = Rasterizer3D.originViewY;
 		int j2 = SINE[i];
 		int k2 = COSINE[i];
 		int l2 = SINE[j];
@@ -2147,19 +2147,19 @@ public class Model extends Renderable {
 								return;
 							int j3 = l1 * l + j1 * i1 >> 16;
 				int k3 = j3 - maxVertexDistanceXZPlane << SceneGraph.viewDistance;
-				if (k3 / i3 >= Raster.centerY)
+				if (k3 / i3 >= Rasterizer2D.centerY)
 					return;
 				int l3 = j3 + maxVertexDistanceXZPlane << SceneGraph.viewDistance;
-				if (l3 / i3 <= -Raster.centerY)
+				if (l3 / i3 <= -Rasterizer2D.centerY)
 					return;
 				int i4 = k1 * k - j2 * j >> 16;
 				int j4 = maxVertexDistanceXZPlane * j >> 16;
 				int k4 = i4 + j4 << SceneGraph.viewDistance;
-				if (k4 / i3 <= -Raster.anInt1387)
+				if (k4 / i3 <= -Rasterizer2D.anInt1387)
 					return;
 				int l4 = j4 + (super.modelBaseY * k >> 16);
 				int i5 = i4 - l4 << SceneGraph.viewDistance;
-				if (i5 / i3 >= Raster.anInt1387)
+				if (i5 / i3 >= Rasterizer2D.anInt1387)
 					return;
 				int j5 = l2 + (super.modelBaseY * j >> 16);
 				boolean flag = false;
@@ -2184,16 +2184,16 @@ public class Model extends Renderable {
 						k4 /= i3;
 						i5 /= k5;
 					}
-					int i6 = anInt1685 - Rasterizer.originViewX;
-					int k6 = anInt1686 - Rasterizer.originViewY;
+					int i6 = anInt1685 - Rasterizer3D.originViewX;
+					int k6 = anInt1686 - Rasterizer3D.originViewY;
 					if (i6 > k3 && i6 < l3 && k6 > i5 && k6 < k4)
 						if (fits_on_single_square)
 							anIntArray1688[anInt1687++] = i2;
 						else
 							flag1 = true;
 				}
-				int l5 = Rasterizer.originViewX;
-				int j6 = Rasterizer.originViewY;
+				int l5 = Rasterizer3D.originViewX;
+				int j6 = Rasterizer3D.originViewY;
 				int l6 = 0;
 				int i7 = 0;
 				if (i != 0) {
@@ -2272,9 +2272,9 @@ public class Model extends Renderable {
 							* (k4 - l3) > 0) {
 						aBooleanArray1664[k] = false;
 						if (i3 < 0 || l3 < 0 || k4 < 0
-								|| i3 > Raster.centerX
-								|| l3 > Raster.centerX
-								|| k4 > Raster.centerX)
+								|| i3 > Rasterizer2D.centerX
+								|| l3 > Rasterizer2D.centerX
+								|| k4 > Rasterizer2D.centerX)
 							aBooleanArray1663[k] = true;
 						else
 							aBooleanArray1663[k] = false;
@@ -2420,25 +2420,25 @@ public class Model extends Renderable {
 		int j = facePointA[i];
 		int k = facePointB[i];
 		int l = facePointC[i];
-		Rasterizer.textureOutOfDrawingBounds = aBooleanArray1663[i];
+		Rasterizer3D.textureOutOfDrawingBounds = aBooleanArray1663[i];
 		if (anIntArray1639 == null)
-			Rasterizer.alpha = 0;
+			Rasterizer3D.alpha = 0;
 		else
-			Rasterizer.alpha = anIntArray1639[i];
+			Rasterizer3D.alpha = anIntArray1639[i];
 		int i1;
 		if (faceDrawType == null)
 			i1 = 0;
 		else
 			i1 = faceDrawType[i] & 3;
 		if (i1 == 0) {
-			Rasterizer.drawShadedTriangle(anIntArray1666[j], anIntArray1666[k],
+			Rasterizer3D.drawShadedTriangle(anIntArray1666[j], anIntArray1666[k],
 					anIntArray1666[l], anIntArray1665[j], anIntArray1665[k],
 					anIntArray1665[l], faceHslA[i], faceHslB[i],
 					faceHslC[i], vertexPerspectiveZAbs[j], vertexPerspectiveZAbs[k], vertexPerspectiveZAbs[l]);
 			return;
 		}
 		if (i1 == 1) {
-			Rasterizer.drawFlatTriangle(anIntArray1666[j], anIntArray1666[k],
+			Rasterizer3D.drawFlatTriangle(anIntArray1666[j], anIntArray1666[k],
 					anIntArray1666[l], anIntArray1665[j], anIntArray1665[k],
 					anIntArray1665[l], modelIntArray3[faceHslA[i]], vertexPerspectiveZAbs[j], vertexPerspectiveZAbs[k], vertexPerspectiveZAbs[l]);;
 			return;
@@ -2448,7 +2448,7 @@ public class Model extends Renderable {
 			int l1 = anIntArray1643[j1];
 			int j2 = anIntArray1644[j1];
 			int l2 = anIntArray1645[j1];
-			Rasterizer.drawTexturedTriangle(anIntArray1666[j], anIntArray1666[k],
+			Rasterizer3D.drawTexturedTriangle(anIntArray1666[j], anIntArray1666[k],
 					anIntArray1666[l], anIntArray1665[j], anIntArray1665[k],
 					anIntArray1665[l], faceHslA[i], faceHslB[i],
 					faceHslC[i], anIntArray1668[l1], anIntArray1668[j2],
@@ -2462,7 +2462,7 @@ public class Model extends Renderable {
 				int i2 = anIntArray1643[k1];
 				int k2 = anIntArray1644[k1];
 				int i3 = anIntArray1645[k1];
-				Rasterizer.drawTexturedTriangle(anIntArray1666[j], anIntArray1666[k],
+				Rasterizer3D.drawTexturedTriangle(anIntArray1666[j], anIntArray1666[k],
 						anIntArray1666[l], anIntArray1665[j], anIntArray1665[k],
 						anIntArray1665[l], faceHslA[i], faceHslA[i],
 						faceHslA[i], anIntArray1668[i2], anIntArray1668[k2],
@@ -2476,8 +2476,8 @@ public class Model extends Renderable {
 		if (triangleColours != null)
 			if (triangleColours[i] == 65535)
 				return;
-		int j = Rasterizer.originViewX;
-		int k = Rasterizer.originViewY;
+		int j = Rasterizer3D.originViewX;
+		int k = Rasterizer3D.originViewY;
 		int l = 0;
 		int i1 = facePointA[i];
 		int j1 = facePointB[i];
@@ -2586,29 +2586,29 @@ public class Model extends Renderable {
 		int j7 = anIntArray1679[1];
 		int k7 = anIntArray1679[2];
 		if ((j3 - j4) * (k7 - j7) - (i7 - j7) * (j5 - j4) > 0) {
-			Rasterizer.textureOutOfDrawingBounds = false;
+			Rasterizer3D.textureOutOfDrawingBounds = false;
 			if (l == 3) {
-				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Raster.centerX
-						|| j4 > Raster.centerX || j5 > Raster.centerX)
-					Rasterizer.textureOutOfDrawingBounds = true;
+				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Rasterizer2D.centerX
+						|| j4 > Rasterizer2D.centerX || j5 > Rasterizer2D.centerX)
+					Rasterizer3D.textureOutOfDrawingBounds = true;
 				int l7;
 				if (faceDrawType == null)
 					l7 = 0;
 				else
 					l7 = faceDrawType[i] & 3;
 				if (l7 == 0)
-					Rasterizer.drawShadedTriangle(i7, j7, k7, j3, j4, j5,
+					Rasterizer3D.drawShadedTriangle(i7, j7, k7, j3, j4, j5,
 							anIntArray1680[0], anIntArray1680[1],
 							anIntArray1680[2], -1f, -1f, -1f);
 				else if (l7 == 1)
-					Rasterizer.drawFlatTriangle(i7, j7, k7, j3, j4, j5,
+					Rasterizer3D.drawFlatTriangle(i7, j7, k7, j3, j4, j5,
 							modelIntArray3[faceHslA[i]], -1f, -1f, -1f);
 				else if (l7 == 2) {
 					int j8 = faceDrawType[i] >> 2;
 					int k9 = anIntArray1643[j8];
 					int k10 = anIntArray1644[j8];
 					int k11 = anIntArray1645[j8];
-					Rasterizer.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
+					Rasterizer3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
 							anIntArray1680[0], anIntArray1680[1],
 							anIntArray1680[2], anIntArray1668[k9],
 							anIntArray1668[k10], anIntArray1668[k11],
@@ -2621,7 +2621,7 @@ public class Model extends Renderable {
 					int l9 = anIntArray1643[k8];
 					int l10 = anIntArray1644[k8];
 					int l11 = anIntArray1645[k8];
-					Rasterizer.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
+					Rasterizer3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
 							faceHslA[i], faceHslA[i],
 							faceHslA[i], anIntArray1668[l9],
 							anIntArray1668[l10], anIntArray1668[l11],
@@ -2632,29 +2632,29 @@ public class Model extends Renderable {
 				}
 			}
 			if (l == 4) {
-				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Raster.centerX
-						|| j4 > Raster.centerX || j5 > Raster.centerX
+				if (j3 < 0 || j4 < 0 || j5 < 0 || j3 > Rasterizer2D.centerX
+						|| j4 > Rasterizer2D.centerX || j5 > Rasterizer2D.centerX
 						|| anIntArray1678[3] < 0
-						|| anIntArray1678[3] > Raster.centerX)
-					Rasterizer.textureOutOfDrawingBounds = true;
+						|| anIntArray1678[3] > Rasterizer2D.centerX)
+					Rasterizer3D.textureOutOfDrawingBounds = true;
 				int i8;
 				if (faceDrawType == null)
 					i8 = 0;
 				else
 					i8 = faceDrawType[i] & 3;
 				if (i8 == 0) {
-					Rasterizer.drawShadedTriangle(i7, j7, k7, j3, j4, j5,
+					Rasterizer3D.drawShadedTriangle(i7, j7, k7, j3, j4, j5,
 							anIntArray1680[0], anIntArray1680[1],
 							anIntArray1680[2], -1f, -1f, -1f);
-					Rasterizer.drawShadedTriangle(i7, k7, anIntArray1679[3], j3, j5,
+					Rasterizer3D.drawShadedTriangle(i7, k7, anIntArray1679[3], j3, j5,
 							anIntArray1678[3], anIntArray1680[0],
 							anIntArray1680[2], anIntArray1680[3], vertexPerspectiveZAbs[i1], vertexPerspectiveZAbs[j1], vertexPerspectiveZAbs[k1]);
 					return;
 				}
 				if (i8 == 1) {
 					int l8 = modelIntArray3[faceHslA[i]];
-					Rasterizer.drawFlatTriangle(i7, j7, k7, j3, j4, j5, l8, -1f, -1f, -1f);
-					Rasterizer.drawFlatTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], l8, vertexPerspectiveZAbs[i1], vertexPerspectiveZAbs[j1], vertexPerspectiveZAbs[k1]);
+					Rasterizer3D.drawFlatTriangle(i7, j7, k7, j3, j4, j5, l8, -1f, -1f, -1f);
+					Rasterizer3D.drawFlatTriangle(i7, k7, anIntArray1679[3], j3, j5, anIntArray1678[3], l8, vertexPerspectiveZAbs[i1], vertexPerspectiveZAbs[j1], vertexPerspectiveZAbs[k1]);
 					return;
 				}
 				if (i8 == 2) {
@@ -2662,7 +2662,7 @@ public class Model extends Renderable {
 					int i10 = anIntArray1643[i9];
 					int i11 = anIntArray1644[i9];
 					int i12 = anIntArray1645[i9];
-					Rasterizer.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
+					Rasterizer3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
 							anIntArray1680[0], anIntArray1680[1],
 							anIntArray1680[2], anIntArray1668[i10],
 							anIntArray1668[i11], anIntArray1668[i12],
@@ -2670,7 +2670,7 @@ public class Model extends Renderable {
 							anIntArray1669[i12], anIntArray1670[i10],
 							anIntArray1670[i11], anIntArray1670[i12],
 							triangleColours[i], vertexPerspectiveZAbs[i1], vertexPerspectiveZAbs[j1], vertexPerspectiveZAbs[k1]);
-							Rasterizer.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5,
+							Rasterizer3D.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5,
 							anIntArray1678[3], anIntArray1680[0],
 							anIntArray1680[2], anIntArray1680[3],
 							anIntArray1668[i10], anIntArray1668[i11],
@@ -2685,7 +2685,7 @@ public class Model extends Renderable {
 					int j10 = anIntArray1643[j9];
 					int j11 = anIntArray1644[j9];
 					int j12 = anIntArray1645[j9];
-					Rasterizer.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
+					Rasterizer3D.drawTexturedTriangle(i7, j7, k7, j3, j4, j5,
 							faceHslA[i], faceHslA[i],
 							faceHslA[i], anIntArray1668[j10],
 							anIntArray1668[j11], anIntArray1668[j12],
@@ -2693,7 +2693,7 @@ public class Model extends Renderable {
 							anIntArray1669[j12], anIntArray1670[j10],
 							anIntArray1670[j11], anIntArray1670[j12],
 							triangleColours[i], vertexPerspectiveZAbs[i1], vertexPerspectiveZAbs[j1], vertexPerspectiveZAbs[k1]);
-							Rasterizer.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5,
+							Rasterizer3D.drawTexturedTriangle(i7, k7, anIntArray1679[3], j3, j5,
 							anIntArray1678[3], faceHslA[i],
 							faceHslA[i], faceHslA[i],
 							anIntArray1668[j10], anIntArray1668[j11],
@@ -2794,9 +2794,9 @@ public class Model extends Renderable {
 	static int modelIntArray4[];
 
 	static {
-		SINE = Rasterizer.anIntArray1470;
-		COSINE = Rasterizer.COSINE;
-		modelIntArray3 = Rasterizer.anIntArray1482;
-		modelIntArray4 = Rasterizer.anIntArray1469;
+		SINE = Rasterizer3D.anIntArray1470;
+		COSINE = Rasterizer3D.COSINE;
+		modelIntArray3 = Rasterizer3D.anIntArray1482;
+		modelIntArray4 = Rasterizer3D.anIntArray1469;
 	}
 }

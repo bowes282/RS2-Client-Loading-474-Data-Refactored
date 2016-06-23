@@ -31,8 +31,8 @@ import com.runescape.cache.graphics.Widget;
 import com.runescape.collection.Deque;
 import com.runescape.collection.Linkable;
 import com.runescape.draw.ProducingGraphicsBuffer;
-import com.runescape.draw.Raster;
-import com.runescape.draw.Rasterizer;
+import com.runescape.draw.Rasterizer2D;
+import com.runescape.draw.Rasterizer3D;
 import com.runescape.entity.Mob;
 import com.runescape.entity.Item;
 import com.runescape.entity.Npc;
@@ -230,9 +230,9 @@ public class Client extends GameApplet {
       }
 
       private static void setBounds() {
-            Rasterizer.reposition(frameWidth, frameHeight);
-            fullScreenTextureArray = Rasterizer.scanOffsets;
-            Rasterizer.reposition(
+            Rasterizer3D.reposition(frameWidth, frameHeight);
+            fullScreenTextureArray = Rasterizer3D.scanOffsets;
+            Rasterizer3D.reposition(
                         frameMode == ScreenMode.FIXED
                                     ? (chatboxImageProducer != null
                                                 ? chatboxImageProducer.canvasWidth : 519)
@@ -241,22 +241,22 @@ public class Client extends GameApplet {
                                     ? (chatboxImageProducer != null
                                                 ? chatboxImageProducer.canvasHeight : 165)
                                     : frameHeight);
-            anIntArray1180 = Rasterizer.scanOffsets;
-            Rasterizer.reposition(
+            anIntArray1180 = Rasterizer3D.scanOffsets;
+            Rasterizer3D.reposition(
                         frameMode == ScreenMode.FIXED
                                     ? (tabImageProducer != null ? tabImageProducer.canvasWidth
                                                 : 249)
                                     : frameWidth,
                         frameMode == ScreenMode.FIXED ? (tabImageProducer != null
                                     ? tabImageProducer.canvasHeight : 335) : frameHeight);
-            anIntArray1181 = Rasterizer.scanOffsets;
-            Rasterizer.reposition(screenAreaWidth, screenAreaHeight);
-            anIntArray1182 = Rasterizer.scanOffsets;
+            anIntArray1181 = Rasterizer3D.scanOffsets;
+            Rasterizer3D.reposition(screenAreaWidth, screenAreaHeight);
+            anIntArray1182 = Rasterizer3D.scanOffsets;
             int ai[] = new int[9];
             for (int i8 = 0; i8 < 9; i8++) {
                   int k8 = 128 + i8 * 32 + 15;
                   int l8 = 600 + k8 * 3;
-                  int i9 = Rasterizer.anIntArray1470[k8];
+                  int i9 = Rasterizer3D.anIntArray1470[k8];
                   ai[i8] = l8 * i9 >> 16;
             }
             if (frameMode == ScreenMode.RESIZABLE && (frameWidth >= 766) && (frameWidth <= 1025)
@@ -358,11 +358,11 @@ public class Client extends GameApplet {
       private void drawLoadingMessages(int used, String s, String s1) {
             int width = regularText.getTextWidth(used == 1 ? s : s1);
             int height = s1 == null ? 25 : 38;
-            Raster.drawPixels(height, 1, 1, 0, width + 6);
-            Raster.drawPixels(1, 1, 1, 0xffffff, width + 6);
-            Raster.drawPixels(height, 1, 1, 0xffffff, 1);
-            Raster.drawPixels(1, height, 1, 0xffffff, width + 6);
-            Raster.drawPixels(height, 1, width + 6, 0xffffff, 1);
+            Rasterizer2D.drawPixels(height, 1, 1, 0, width + 6);
+            Rasterizer2D.drawPixels(1, 1, 1, 0xffffff, width + 6);
+            Rasterizer2D.drawPixels(height, 1, 1, 0xffffff, 1);
+            Rasterizer2D.drawPixels(1, height, 1, 0xffffff, width + 6);
+            Rasterizer2D.drawPixels(height, 1, width + 6, 0xffffff, 1);
             regularText.drawText(0xffffff, s, 18, width / 2 + 5);
             if (s1 != null) {
                   regularText.drawText(0xffffff, s1, 31, width / 2 + 5);
@@ -498,21 +498,21 @@ public class Client extends GameApplet {
             if (frameMode == ScreenMode.FIXED) {
                   chatboxImageProducer.initDrawingArea();
             }
-            Rasterizer.scanOffsets = anIntArray1180;
+            Rasterizer3D.scanOffsets = anIntArray1180;
             if (chatStateCheck()) {
                   showChatComponents = true;
                   cacheSprite[20].drawSprite(0, yOffset);
             }
             if (showChatComponents) {
                   if (changeChatArea && !chatStateCheck()) {
-                        Raster.method339(7 + yOffset, 0x575757, 506, 7);
-                        Raster.drawAlphaGradient(7, 7 + yOffset, 506, 135, 0, 0xFFFFFF, 20);
+                        Rasterizer2D.method339(7 + yOffset, 0x575757, 506, 7);
+                        Rasterizer2D.drawAlphaGradient(7, 7 + yOffset, 506, 135, 0, 0xFFFFFF, 20);
                   } else {
                         cacheSprite[20].drawSprite(0, yOffset);
                   }
             }
             if (!showChatComponents || changeChatArea) {
-                  Raster.drawAlphaPixels(7, frameHeight - 23, 506, 24, 0, 100);
+                  Rasterizer2D.drawAlphaPixels(7, frameHeight - 23, 506, 24, 0, 100);
             }
             drawChannelButtons();
             GameFont font = regularText;
@@ -546,7 +546,7 @@ public class Client extends GameApplet {
                   int j77 = -3;
                   int j = 0;
                   int shadow = changeChatArea ? 0 : -1;
-                  Raster.setDrawingArea(122 + yOffset, 8, 497, 7 + yOffset);
+                  Rasterizer2D.setDrawingArea(122 + yOffset, 8, 497, 7 + yOffset);
                   for (int k = 0; k < 500; k++) {
                         if (chatMessages[k] != null) {
                               int chatType = chatTypes[k];
@@ -734,7 +734,7 @@ public class Client extends GameApplet {
                               }
                         }
                   }
-                  Raster.defaultDrawingAreaSize();
+                  Rasterizer2D.defaultDrawingAreaSize();
                   anInt1211 = j * 14 + 7 + 5;
                   if (anInt1211 < 111) {
                         anInt1211 = 111;
@@ -747,7 +747,7 @@ public class Client extends GameApplet {
                   } else {
                         s = StringUtils.formatUsername(capitalize(myUsername));
                   }
-                  Raster.setDrawingArea(140 + yOffset, 8, 509, 120 + yOffset);
+                  Rasterizer2D.setDrawingArea(140 + yOffset, 8, 509, 120 + yOffset);
                   int xOffset = 0;
                   if (myPrivilege > 0) {
                         modIcons[myPrivilege - 1].drawSprite(10, 122 + yOffset);
@@ -758,8 +758,8 @@ public class Client extends GameApplet {
                   newRegularFont.drawBasicString(inputString + "*",
                               xOffset + 12 + font.getTextWidth(s + ": "), 133 + yOffset,
                               changeChatArea ? 0x7FA9FF : 255, shadow);
-                  Raster.method339(121 + yOffset, changeChatArea ? 0x575757 : 0x807660, 506, 7);
-                  Raster.defaultDrawingAreaSize();
+                  Rasterizer2D.method339(121 + yOffset, changeChatArea ? 0x575757 : 0x807660, 506, 7);
+                  Rasterizer2D.defaultDrawingAreaSize();
             }
             if (menuOpen) {
                   drawMenu(0, frameMode == ScreenMode.FIXED ? 338 : 0);
@@ -768,7 +768,7 @@ public class Client extends GameApplet {
                   chatboxImageProducer.drawGraphics(338, super.graphics, 0);
             }
             gameScreenImageProducer.initDrawingArea();
-            Rasterizer.scanOffsets = anIntArray1182;
+            Rasterizer3D.scanOffsets = anIntArray1182;
       }
 
       public static String capitalize(String s) {
@@ -955,7 +955,7 @@ public class Client extends GameApplet {
                   anInt985 = -1;
                   incompleteAnimables.clear();
                   projectiles.clear();
-                  Rasterizer.method366();
+                  Rasterizer3D.method366();
                   unlinkCaches();
                   scene.initToNull();
                   System.gc();
@@ -1112,7 +1112,7 @@ public class Client extends GameApplet {
 
             }
             System.gc();
-            Rasterizer.method367();
+            Rasterizer3D.method367();
             resourceProvider.clearExtras();
             int k = (this.regionX - 6) / 8 - 1;
             int j1 = (this.regionX + 6) / 8 + 1;
@@ -1321,8 +1321,8 @@ public class Client extends GameApplet {
             for (int i = 1; i < results.length; i++)
                   if (width <= smallText.getTextWidth(results[i]) + 6)
                         width = smallText.getTextWidth(results[i]) + 6;
-            Raster.drawPixels(height, yPos, xPos, 0xFFFFA0, width);
-            Raster.fillPixels(xPos, width, height, 0, yPos);
+            Rasterizer2D.drawPixels(height, yPos, xPos, 0xFFFFA0, width);
+            Rasterizer2D.fillPixels(xPos, width, height, 0, yPos);
             yPos += 14;
             for (int i = 0; i < results.length; i++) {
                   smallText.drawTextWithPotentialShadow(false, xPos + 3, 0, results[i], yPos);
@@ -1664,8 +1664,8 @@ public class Client extends GameApplet {
       public void drawTransparentScrollBar(int x, int y, int height, int maxScroll, int pos) {
             cacheSprite[29].drawARGBSprite(x, y, 120);
             cacheSprite[30].drawARGBSprite(x, y + height - 16, 120);
-            Raster.drawVerticalLine(x, y + 16, height - 32, 0xffffff, 64);
-            Raster.drawVerticalLine(x + 15, y + 16, height - 32, 0xffffff, 64);
+            Rasterizer2D.drawVerticalLine(x, y + 16, height - 32, 0xffffff, 64);
+            Rasterizer2D.drawVerticalLine(x + 15, y + 16, height - 32, 0xffffff, 64);
             int barHeight = (height - 32) * height / maxScroll;
             if (barHeight < 10) {
                   barHeight = 10;
@@ -1674,7 +1674,7 @@ public class Client extends GameApplet {
             if (maxScroll != height) {
                   barPos = (height - 32 - barHeight) * pos / (maxScroll - height);
             }
-            Raster.drawRectangle(x, y + 16 + barPos, 16,
+            Rasterizer2D.drawRectangle(x, y + 16 + barPos, 16,
                         5 + y + 16 + barPos + barHeight - 5 - (y + 16 + barPos), 0xffffff, 32);
       }
 
@@ -1685,121 +1685,121 @@ public class Client extends GameApplet {
             } else {
                   scrollBar1.drawSprite(x, y);
                   scrollBar2.drawSprite(x, (y + height) - 16);
-                  Raster.drawPixels(height - 32, y + 16, x, 0x000001, 16);
-                  Raster.drawPixels(height - 32, y + 16, x, 0x3d3426, 15);
-                  Raster.drawPixels(height - 32, y + 16, x, 0x342d21, 13);
-                  Raster.drawPixels(height - 32, y + 16, x, 0x2e281d, 11);
-                  Raster.drawPixels(height - 32, y + 16, x, 0x29241b, 10);
-                  Raster.drawPixels(height - 32, y + 16, x, 0x252019, 9);
-                  Raster.drawPixels(height - 32, y + 16, x, 0x000001, 1);
+                  Rasterizer2D.drawPixels(height - 32, y + 16, x, 0x000001, 16);
+                  Rasterizer2D.drawPixels(height - 32, y + 16, x, 0x3d3426, 15);
+                  Rasterizer2D.drawPixels(height - 32, y + 16, x, 0x342d21, 13);
+                  Rasterizer2D.drawPixels(height - 32, y + 16, x, 0x2e281d, 11);
+                  Rasterizer2D.drawPixels(height - 32, y + 16, x, 0x29241b, 10);
+                  Rasterizer2D.drawPixels(height - 32, y + 16, x, 0x252019, 9);
+                  Rasterizer2D.drawPixels(height - 32, y + 16, x, 0x000001, 1);
                   int k1 = ((height - 32) * height) / maxScroll;
                   if (k1 < 8) {
                         k1 = 8;
                   }
                   int l1 = ((height - 32 - k1) * pos) / (maxScroll - height);
-                  Raster.drawPixels(k1, y + 16 + l1, x, barFillColor, 16);
-                  Raster.method341(y + 16 + l1, 0x000001, k1, x);
-                  Raster.method341(y + 16 + l1, 0x817051, k1, x + 1);
-                  Raster.method341(y + 16 + l1, 0x73654a, k1, x + 2);
-                  Raster.method341(y + 16 + l1, 0x6a5c43, k1, x + 3);
-                  Raster.method341(y + 16 + l1, 0x6a5c43, k1, x + 4);
-                  Raster.method341(y + 16 + l1, 0x655841, k1, x + 5);
-                  Raster.method341(y + 16 + l1, 0x655841, k1, x + 6);
-                  Raster.method341(y + 16 + l1, 0x61553e, k1, x + 7);
-                  Raster.method341(y + 16 + l1, 0x61553e, k1, x + 8);
-                  Raster.method341(y + 16 + l1, 0x5d513c, k1, x + 9);
-                  Raster.method341(y + 16 + l1, 0x5d513c, k1, x + 10);
-                  Raster.method341(y + 16 + l1, 0x594e3a, k1, x + 11);
-                  Raster.method341(y + 16 + l1, 0x594e3a, k1, x + 12);
-                  Raster.method341(y + 16 + l1, 0x514635, k1, x + 13);
-                  Raster.method341(y + 16 + l1, 0x4b4131, k1, x + 14);
-                  Raster.method339(y + 16 + l1, 0x000001, 15, x);
-                  Raster.method339(y + 17 + l1, 0x000001, 15, x);
-                  Raster.method339(y + 17 + l1, 0x655841, 14, x);
-                  Raster.method339(y + 17 + l1, 0x6a5c43, 13, x);
-                  Raster.method339(y + 17 + l1, 0x6d5f48, 11, x);
-                  Raster.method339(y + 17 + l1, 0x73654a, 10, x);
-                  Raster.method339(y + 17 + l1, 0x76684b, 7, x);
-                  Raster.method339(y + 17 + l1, 0x7b6a4d, 5, x);
-                  Raster.method339(y + 17 + l1, 0x7e6e50, 4, x);
-                  Raster.method339(y + 17 + l1, 0x817051, 3, x);
-                  Raster.method339(y + 17 + l1, 0x000001, 2, x);
-                  Raster.method339(y + 18 + l1, 0x000001, 16, x);
-                  Raster.method339(y + 18 + l1, 0x564b38, 15, x);
-                  Raster.method339(y + 18 + l1, 0x5d513c, 14, x);
-                  Raster.method339(y + 18 + l1, 0x625640, 11, x);
-                  Raster.method339(y + 18 + l1, 0x655841, 10, x);
-                  Raster.method339(y + 18 + l1, 0x6a5c43, 7, x);
-                  Raster.method339(y + 18 + l1, 0x6e6046, 5, x);
-                  Raster.method339(y + 18 + l1, 0x716247, 4, x);
-                  Raster.method339(y + 18 + l1, 0x7b6a4d, 3, x);
-                  Raster.method339(y + 18 + l1, 0x817051, 2, x);
-                  Raster.method339(y + 18 + l1, 0x000001, 1, x);
-                  Raster.method339(y + 19 + l1, 0x000001, 16, x);
-                  Raster.method339(y + 19 + l1, 0x514635, 15, x);
-                  Raster.method339(y + 19 + l1, 0x564b38, 14, x);
-                  Raster.method339(y + 19 + l1, 0x5d513c, 11, x);
-                  Raster.method339(y + 19 + l1, 0x61553e, 9, x);
-                  Raster.method339(y + 19 + l1, 0x655841, 7, x);
-                  Raster.method339(y + 19 + l1, 0x6a5c43, 5, x);
-                  Raster.method339(y + 19 + l1, 0x6e6046, 4, x);
-                  Raster.method339(y + 19 + l1, 0x73654a, 3, x);
-                  Raster.method339(y + 19 + l1, 0x817051, 2, x);
-                  Raster.method339(y + 19 + l1, 0x000001, 1, x);
-                  Raster.method339(y + 20 + l1, 0x000001, 16, x);
-                  Raster.method339(y + 20 + l1, 0x4b4131, 15, x);
-                  Raster.method339(y + 20 + l1, 0x544936, 14, x);
-                  Raster.method339(y + 20 + l1, 0x594e3a, 13, x);
-                  Raster.method339(y + 20 + l1, 0x5d513c, 10, x);
-                  Raster.method339(y + 20 + l1, 0x61553e, 8, x);
-                  Raster.method339(y + 20 + l1, 0x655841, 6, x);
-                  Raster.method339(y + 20 + l1, 0x6a5c43, 4, x);
-                  Raster.method339(y + 20 + l1, 0x73654a, 3, x);
-                  Raster.method339(y + 20 + l1, 0x817051, 2, x);
-                  Raster.method339(y + 20 + l1, 0x000001, 1, x);
-                  Raster.method341(y + 16 + l1, 0x000001, k1, x + 15);
-                  Raster.method339(y + 15 + l1 + k1, 0x000001, 16, x);
-                  Raster.method339(y + 14 + l1 + k1, 0x000001, 15, x);
-                  Raster.method339(y + 14 + l1 + k1, 0x3f372a, 14, x);
-                  Raster.method339(y + 14 + l1 + k1, 0x443c2d, 10, x);
-                  Raster.method339(y + 14 + l1 + k1, 0x483e2f, 9, x);
-                  Raster.method339(y + 14 + l1 + k1, 0x4a402f, 7, x);
-                  Raster.method339(y + 14 + l1 + k1, 0x4b4131, 4, x);
-                  Raster.method339(y + 14 + l1 + k1, 0x564b38, 3, x);
-                  Raster.method339(y + 14 + l1 + k1, 0x000001, 2, x);
-                  Raster.method339(y + 13 + l1 + k1, 0x000001, 16, x);
-                  Raster.method339(y + 13 + l1 + k1, 0x443c2d, 15, x);
-                  Raster.method339(y + 13 + l1 + k1, 0x4b4131, 11, x);
-                  Raster.method339(y + 13 + l1 + k1, 0x514635, 9, x);
-                  Raster.method339(y + 13 + l1 + k1, 0x544936, 7, x);
-                  Raster.method339(y + 13 + l1 + k1, 0x564b38, 6, x);
-                  Raster.method339(y + 13 + l1 + k1, 0x594e3a, 4, x);
-                  Raster.method339(y + 13 + l1 + k1, 0x625640, 3, x);
-                  Raster.method339(y + 13 + l1 + k1, 0x6a5c43, 2, x);
-                  Raster.method339(y + 13 + l1 + k1, 0x000001, 1, x);
-                  Raster.method339(y + 12 + l1 + k1, 0x000001, 16, x);
-                  Raster.method339(y + 12 + l1 + k1, 0x443c2d, 15, x);
-                  Raster.method339(y + 12 + l1 + k1, 0x4b4131, 14, x);
-                  Raster.method339(y + 12 + l1 + k1, 0x544936, 12, x);
-                  Raster.method339(y + 12 + l1 + k1, 0x564b38, 11, x);
-                  Raster.method339(y + 12 + l1 + k1, 0x594e3a, 10, x);
-                  Raster.method339(y + 12 + l1 + k1, 0x5d513c, 7, x);
-                  Raster.method339(y + 12 + l1 + k1, 0x61553e, 4, x);
-                  Raster.method339(y + 12 + l1 + k1, 0x6e6046, 3, x);
-                  Raster.method339(y + 12 + l1 + k1, 0x7b6a4d, 2, x);
-                  Raster.method339(y + 12 + l1 + k1, 0x000001, 1, x);
-                  Raster.method339(y + 11 + l1 + k1, 0x000001, 16, x);
-                  Raster.method339(y + 11 + l1 + k1, 0x4b4131, 15, x);
-                  Raster.method339(y + 11 + l1 + k1, 0x514635, 14, x);
-                  Raster.method339(y + 11 + l1 + k1, 0x564b38, 13, x);
-                  Raster.method339(y + 11 + l1 + k1, 0x594e3a, 11, x);
-                  Raster.method339(y + 11 + l1 + k1, 0x5d513c, 9, x);
-                  Raster.method339(y + 11 + l1 + k1, 0x61553e, 7, x);
-                  Raster.method339(y + 11 + l1 + k1, 0x655841, 5, x);
-                  Raster.method339(y + 11 + l1 + k1, 0x6a5c43, 4, x);
-                  Raster.method339(y + 11 + l1 + k1, 0x73654a, 3, x);
-                  Raster.method339(y + 11 + l1 + k1, 0x7b6a4d, 2, x);
-                  Raster.method339(y + 11 + l1 + k1, 0x000001, 1, x);
+                  Rasterizer2D.drawPixels(k1, y + 16 + l1, x, barFillColor, 16);
+                  Rasterizer2D.method341(y + 16 + l1, 0x000001, k1, x);
+                  Rasterizer2D.method341(y + 16 + l1, 0x817051, k1, x + 1);
+                  Rasterizer2D.method341(y + 16 + l1, 0x73654a, k1, x + 2);
+                  Rasterizer2D.method341(y + 16 + l1, 0x6a5c43, k1, x + 3);
+                  Rasterizer2D.method341(y + 16 + l1, 0x6a5c43, k1, x + 4);
+                  Rasterizer2D.method341(y + 16 + l1, 0x655841, k1, x + 5);
+                  Rasterizer2D.method341(y + 16 + l1, 0x655841, k1, x + 6);
+                  Rasterizer2D.method341(y + 16 + l1, 0x61553e, k1, x + 7);
+                  Rasterizer2D.method341(y + 16 + l1, 0x61553e, k1, x + 8);
+                  Rasterizer2D.method341(y + 16 + l1, 0x5d513c, k1, x + 9);
+                  Rasterizer2D.method341(y + 16 + l1, 0x5d513c, k1, x + 10);
+                  Rasterizer2D.method341(y + 16 + l1, 0x594e3a, k1, x + 11);
+                  Rasterizer2D.method341(y + 16 + l1, 0x594e3a, k1, x + 12);
+                  Rasterizer2D.method341(y + 16 + l1, 0x514635, k1, x + 13);
+                  Rasterizer2D.method341(y + 16 + l1, 0x4b4131, k1, x + 14);
+                  Rasterizer2D.method339(y + 16 + l1, 0x000001, 15, x);
+                  Rasterizer2D.method339(y + 17 + l1, 0x000001, 15, x);
+                  Rasterizer2D.method339(y + 17 + l1, 0x655841, 14, x);
+                  Rasterizer2D.method339(y + 17 + l1, 0x6a5c43, 13, x);
+                  Rasterizer2D.method339(y + 17 + l1, 0x6d5f48, 11, x);
+                  Rasterizer2D.method339(y + 17 + l1, 0x73654a, 10, x);
+                  Rasterizer2D.method339(y + 17 + l1, 0x76684b, 7, x);
+                  Rasterizer2D.method339(y + 17 + l1, 0x7b6a4d, 5, x);
+                  Rasterizer2D.method339(y + 17 + l1, 0x7e6e50, 4, x);
+                  Rasterizer2D.method339(y + 17 + l1, 0x817051, 3, x);
+                  Rasterizer2D.method339(y + 17 + l1, 0x000001, 2, x);
+                  Rasterizer2D.method339(y + 18 + l1, 0x000001, 16, x);
+                  Rasterizer2D.method339(y + 18 + l1, 0x564b38, 15, x);
+                  Rasterizer2D.method339(y + 18 + l1, 0x5d513c, 14, x);
+                  Rasterizer2D.method339(y + 18 + l1, 0x625640, 11, x);
+                  Rasterizer2D.method339(y + 18 + l1, 0x655841, 10, x);
+                  Rasterizer2D.method339(y + 18 + l1, 0x6a5c43, 7, x);
+                  Rasterizer2D.method339(y + 18 + l1, 0x6e6046, 5, x);
+                  Rasterizer2D.method339(y + 18 + l1, 0x716247, 4, x);
+                  Rasterizer2D.method339(y + 18 + l1, 0x7b6a4d, 3, x);
+                  Rasterizer2D.method339(y + 18 + l1, 0x817051, 2, x);
+                  Rasterizer2D.method339(y + 18 + l1, 0x000001, 1, x);
+                  Rasterizer2D.method339(y + 19 + l1, 0x000001, 16, x);
+                  Rasterizer2D.method339(y + 19 + l1, 0x514635, 15, x);
+                  Rasterizer2D.method339(y + 19 + l1, 0x564b38, 14, x);
+                  Rasterizer2D.method339(y + 19 + l1, 0x5d513c, 11, x);
+                  Rasterizer2D.method339(y + 19 + l1, 0x61553e, 9, x);
+                  Rasterizer2D.method339(y + 19 + l1, 0x655841, 7, x);
+                  Rasterizer2D.method339(y + 19 + l1, 0x6a5c43, 5, x);
+                  Rasterizer2D.method339(y + 19 + l1, 0x6e6046, 4, x);
+                  Rasterizer2D.method339(y + 19 + l1, 0x73654a, 3, x);
+                  Rasterizer2D.method339(y + 19 + l1, 0x817051, 2, x);
+                  Rasterizer2D.method339(y + 19 + l1, 0x000001, 1, x);
+                  Rasterizer2D.method339(y + 20 + l1, 0x000001, 16, x);
+                  Rasterizer2D.method339(y + 20 + l1, 0x4b4131, 15, x);
+                  Rasterizer2D.method339(y + 20 + l1, 0x544936, 14, x);
+                  Rasterizer2D.method339(y + 20 + l1, 0x594e3a, 13, x);
+                  Rasterizer2D.method339(y + 20 + l1, 0x5d513c, 10, x);
+                  Rasterizer2D.method339(y + 20 + l1, 0x61553e, 8, x);
+                  Rasterizer2D.method339(y + 20 + l1, 0x655841, 6, x);
+                  Rasterizer2D.method339(y + 20 + l1, 0x6a5c43, 4, x);
+                  Rasterizer2D.method339(y + 20 + l1, 0x73654a, 3, x);
+                  Rasterizer2D.method339(y + 20 + l1, 0x817051, 2, x);
+                  Rasterizer2D.method339(y + 20 + l1, 0x000001, 1, x);
+                  Rasterizer2D.method341(y + 16 + l1, 0x000001, k1, x + 15);
+                  Rasterizer2D.method339(y + 15 + l1 + k1, 0x000001, 16, x);
+                  Rasterizer2D.method339(y + 14 + l1 + k1, 0x000001, 15, x);
+                  Rasterizer2D.method339(y + 14 + l1 + k1, 0x3f372a, 14, x);
+                  Rasterizer2D.method339(y + 14 + l1 + k1, 0x443c2d, 10, x);
+                  Rasterizer2D.method339(y + 14 + l1 + k1, 0x483e2f, 9, x);
+                  Rasterizer2D.method339(y + 14 + l1 + k1, 0x4a402f, 7, x);
+                  Rasterizer2D.method339(y + 14 + l1 + k1, 0x4b4131, 4, x);
+                  Rasterizer2D.method339(y + 14 + l1 + k1, 0x564b38, 3, x);
+                  Rasterizer2D.method339(y + 14 + l1 + k1, 0x000001, 2, x);
+                  Rasterizer2D.method339(y + 13 + l1 + k1, 0x000001, 16, x);
+                  Rasterizer2D.method339(y + 13 + l1 + k1, 0x443c2d, 15, x);
+                  Rasterizer2D.method339(y + 13 + l1 + k1, 0x4b4131, 11, x);
+                  Rasterizer2D.method339(y + 13 + l1 + k1, 0x514635, 9, x);
+                  Rasterizer2D.method339(y + 13 + l1 + k1, 0x544936, 7, x);
+                  Rasterizer2D.method339(y + 13 + l1 + k1, 0x564b38, 6, x);
+                  Rasterizer2D.method339(y + 13 + l1 + k1, 0x594e3a, 4, x);
+                  Rasterizer2D.method339(y + 13 + l1 + k1, 0x625640, 3, x);
+                  Rasterizer2D.method339(y + 13 + l1 + k1, 0x6a5c43, 2, x);
+                  Rasterizer2D.method339(y + 13 + l1 + k1, 0x000001, 1, x);
+                  Rasterizer2D.method339(y + 12 + l1 + k1, 0x000001, 16, x);
+                  Rasterizer2D.method339(y + 12 + l1 + k1, 0x443c2d, 15, x);
+                  Rasterizer2D.method339(y + 12 + l1 + k1, 0x4b4131, 14, x);
+                  Rasterizer2D.method339(y + 12 + l1 + k1, 0x544936, 12, x);
+                  Rasterizer2D.method339(y + 12 + l1 + k1, 0x564b38, 11, x);
+                  Rasterizer2D.method339(y + 12 + l1 + k1, 0x594e3a, 10, x);
+                  Rasterizer2D.method339(y + 12 + l1 + k1, 0x5d513c, 7, x);
+                  Rasterizer2D.method339(y + 12 + l1 + k1, 0x61553e, 4, x);
+                  Rasterizer2D.method339(y + 12 + l1 + k1, 0x6e6046, 3, x);
+                  Rasterizer2D.method339(y + 12 + l1 + k1, 0x7b6a4d, 2, x);
+                  Rasterizer2D.method339(y + 12 + l1 + k1, 0x000001, 1, x);
+                  Rasterizer2D.method339(y + 11 + l1 + k1, 0x000001, 16, x);
+                  Rasterizer2D.method339(y + 11 + l1 + k1, 0x4b4131, 15, x);
+                  Rasterizer2D.method339(y + 11 + l1 + k1, 0x514635, 14, x);
+                  Rasterizer2D.method339(y + 11 + l1 + k1, 0x564b38, 13, x);
+                  Rasterizer2D.method339(y + 11 + l1 + k1, 0x594e3a, 11, x);
+                  Rasterizer2D.method339(y + 11 + l1 + k1, 0x5d513c, 9, x);
+                  Rasterizer2D.method339(y + 11 + l1 + k1, 0x61553e, 7, x);
+                  Rasterizer2D.method339(y + 11 + l1 + k1, 0x655841, 5, x);
+                  Rasterizer2D.method339(y + 11 + l1 + k1, 0x6a5c43, 4, x);
+                  Rasterizer2D.method339(y + 11 + l1 + k1, 0x73654a, 3, x);
+                  Rasterizer2D.method339(y + 11 + l1 + k1, 0x7b6a4d, 2, x);
+                  Rasterizer2D.method339(y + 11 + l1 + k1, 0x000001, 1, x);
             }
       }
 
@@ -2017,19 +2017,19 @@ public class Client extends GameApplet {
             if (parameter == 1) {
 
                   if (state == 1) {
-                        Rasterizer.method372(0.9);
+                        Rasterizer3D.method372(0.9);
                   }
 
                   if (state == 2) {
-                        Rasterizer.method372(0.8);
+                        Rasterizer3D.method372(0.8);
                   }
 
                   if (state == 3) {
-                        Rasterizer.method372(0.7);
+                        Rasterizer3D.method372(0.7);
                   }
 
                   if (state == 4) {
-                        Rasterizer.method372(0.6);
+                        Rasterizer3D.method372(0.6);
                   }
 
                   ItemDefinition.sprites.clear();
@@ -2274,9 +2274,9 @@ public class Client extends GameApplet {
                                                 hpPercent = 56;
                                           }
                                           if (!Configuration.hpBar554) {
-                                                Raster.drawPixels(5, spriteDrawY - 3,
+                                                Rasterizer2D.drawPixels(5, spriteDrawY - 3,
                                                             spriteDrawX - 15, 65280, i1);
-                                                Raster.drawPixels(5, spriteDrawY - 3,
+                                                Rasterizer2D.drawPixels(5, spriteDrawY - 3,
                                                             (spriteDrawX - 15) + i1, 0xff0000,
                                                             30 - i1);
                                           } else {
@@ -2466,11 +2466,11 @@ public class Client extends GameApplet {
                                     int i4 = boldText.method384(s);
                                     int k4 = ((150 - anIntArray982[defaultText]) * (i4 + 100))
                                                 / 150;
-                                    Raster.setDrawingArea(334, spriteDrawX - 50, spriteDrawX + 50,
+                                    Rasterizer2D.setDrawingArea(334, spriteDrawX - 50, spriteDrawX + 50,
                                                 0);
                                     boldText.render(0, s, spriteDrawY + 1, (spriteDrawX + 50) - k4);
                                     boldText.render(i3, s, spriteDrawY, (spriteDrawX + 50) - k4);
-                                    Raster.defaultDrawingAreaSize();
+                                    Rasterizer2D.defaultDrawingAreaSize();
                               }
                               if (anIntArray981[defaultText] == 5) {
                                     int j4 = 150 - anIntArray982[defaultText];
@@ -2479,11 +2479,11 @@ public class Client extends GameApplet {
                                           l4 = j4 - 25;
                                     else if (j4 > 125)
                                           l4 = j4 - 125;
-                                    Raster.setDrawingArea(spriteDrawY + 5, 0, 512,
+                                    Rasterizer2D.setDrawingArea(spriteDrawY + 5, 0, 512,
                                                 spriteDrawY - boldText.verticalSpace - 1);
                                     boldText.drawText(0, s, spriteDrawY + 1 + l4, spriteDrawX);
                                     boldText.drawText(i3, s, spriteDrawY + l4, spriteDrawX);
-                                    Raster.defaultDrawingAreaSize();
+                                    Rasterizer2D.defaultDrawingAreaSize();
                               }
                         } else {
                               boldText.drawText(0, s, spriteDrawY + 1, spriteDrawX);
@@ -2581,17 +2581,17 @@ public class Client extends GameApplet {
             if (frameMode == ScreenMode.FIXED) {
                   tabImageProducer.initDrawingArea();
             }
-            Rasterizer.scanOffsets = anIntArray1181;
+            Rasterizer3D.scanOffsets = anIntArray1181;
             if (frameMode == ScreenMode.FIXED) {
                   cacheSprite[21].drawSprite(0, 0);
             } else if (frameMode != ScreenMode.FIXED && !changeTabArea) {
-                  Raster.method335(0x3E3529, frameHeight - 304, 195, 270,
+                  Rasterizer2D.method335(0x3E3529, frameHeight - 304, 195, 270,
                               transparentTabArea ? 80 : 256, frameWidth - 217);
                   cacheSprite[47].drawSprite(xOffset, yOffset);
             } else {
                   if (frameWidth >= 1000) {
                         if (showTabComponents) {
-                              Raster.method335(0x3E3529, frameHeight - 304, 197, 265,
+                              Rasterizer2D.method335(0x3E3529, frameHeight - 304, 197, 265,
                                           transparentTabArea ? 80 : 256, frameWidth - 197);
                               cacheSprite[50].drawSprite(frameWidth - 204, frameHeight - 311);
                         }
@@ -2601,7 +2601,7 @@ public class Client extends GameApplet {
                         }
                   } else if (frameWidth < 1000) {
                         if (showTabComponents) {
-                              Raster.method335(0x3E3529, frameHeight - 341, 195, 265,
+                              Rasterizer2D.method335(0x3E3529, frameHeight - 341, 195, 265,
                                           transparentTabArea ? 80 : 256, frameWidth - 197);
                               cacheSprite[50].drawSprite(frameWidth - 204, frameHeight - 348);
                         }
@@ -2644,13 +2644,13 @@ public class Client extends GameApplet {
                   tabImageProducer.drawGraphics(168, super.graphics, 516);
                   gameScreenImageProducer.initDrawingArea();
             }
-            Rasterizer.scanOffsets = anIntArray1182;
+            Rasterizer3D.scanOffsets = anIntArray1182;
       }
 
       private void writeBackgroundTexture(int j) {
             if (!lowMemory) {
-                  if (Rasterizer.anIntArray1480[17] >= j) {
-                        IndexedImage background = Rasterizer.textures[17];
+                  if (Rasterizer3D.anIntArray1480[17] >= j) {
+                        IndexedImage background = Rasterizer3D.textures[17];
                         int k = background.width * background.height - 1;
                         int j1 = background.width * tickDelta * 2;
                         byte raster[] = background.raster;                        
@@ -2660,7 +2660,7 @@ public class Client extends GameApplet {
 
                         background.raster = abyte3;
                         aByteArray912 = raster;
-                        Rasterizer.method370(17);
+                        Rasterizer3D.method370(17);
                         anInt854++;
                         if (anInt854 > 1235) {
                               anInt854 = 0;
@@ -2681,8 +2681,8 @@ public class Client extends GameApplet {
                               outgoing.writeBytes(outgoing.currentPosition - l2);
                         }
                   }
-                  if (Rasterizer.anIntArray1480[24] >= j) {
-                        IndexedImage background_1 = Rasterizer.textures[24];
+                  if (Rasterizer3D.anIntArray1480[24] >= j) {
+                        IndexedImage background_1 = Rasterizer3D.textures[24];
                         int l = background_1.width * background_1.height - 1;
                         int k1 = background_1.width * tickDelta * 2;
                         byte abyte1[] = background_1.raster;
@@ -2692,10 +2692,10 @@ public class Client extends GameApplet {
 
                         background_1.raster = abyte4;
                         aByteArray912 = abyte1;
-                        Rasterizer.method370(24);
+                        Rasterizer3D.method370(24);
                   }
-                  if (Rasterizer.anIntArray1480[34] >= j) {
-                        IndexedImage background_2 = Rasterizer.textures[34];
+                  if (Rasterizer3D.anIntArray1480[34] >= j) {
+                        IndexedImage background_2 = Rasterizer3D.textures[34];
                         int i1 = background_2.width * background_2.height - 1;
                         int l1 = background_2.width * tickDelta * 2;
                         byte abyte2[] = background_2.raster;
@@ -2705,10 +2705,10 @@ public class Client extends GameApplet {
 
                         background_2.raster = abyte5;
                         aByteArray912 = abyte2;
-                        Rasterizer.method370(34);
+                        Rasterizer3D.method370(34);
                   }
-                  if (Rasterizer.anIntArray1480[40] >= j) {
-                        IndexedImage background_2 = Rasterizer.textures[40];
+                  if (Rasterizer3D.anIntArray1480[40] >= j) {
+                        IndexedImage background_2 = Rasterizer3D.textures[40];
                         int i1 = background_2.width * background_2.height - 1;
                         int l1 = background_2.width * tickDelta * 2;
                         byte abyte2[] = background_2.raster;
@@ -2718,7 +2718,7 @@ public class Client extends GameApplet {
 
                         background_2.raster = abyte5;
                         aByteArray912 = abyte2;
-                        Rasterizer.method370(40);
+                        Rasterizer3D.method370(40);
                   }
             }
       }
@@ -2835,9 +2835,9 @@ public class Client extends GameApplet {
             updateChatbox = true;
             tabAreaAltered = true;
             int menuColor = 0x5d5447;
-            Raster.drawPixels(h, yPos, xPos, menuColor, w);
-            Raster.drawPixels(16, yPos + 1, xPos + 1, 0, w - 2);
-            Raster.fillPixels(xPos + 1, w - 2, h - 19, 0, yPos + 18);
+            Rasterizer2D.drawPixels(h, yPos, xPos, menuColor, w);
+            Rasterizer2D.drawPixels(16, yPos + 1, xPos + 1, 0, w - 2);
+            Rasterizer2D.fillPixels(xPos + 1, w - 2, h - 19, 0, yPos + 18);
             boldText.render(menuColor, "Choose Option", yPos + 14, xPos + 3);
             int mouseX = super.mouseX - (x);
             int mouseY = (-y) + super.mouseY;
@@ -2846,7 +2846,7 @@ public class Client extends GameApplet {
                   int textColor = 0xffffff;
                   if (mouseX > xPos && mouseX < xPos + w && mouseY > textY - 13
                               && mouseY < textY + 3) {
-                        Raster.drawPixels(15, textY - 11, xPos + 3, 0x6f695d, menuWidth - 6);
+                        Rasterizer2D.drawPixels(15, textY - 11, xPos + 3, 0x6f695d, menuWidth - 6);
                         textColor = 0xffff00;
                   }
                   boldText.drawTextWithPotentialShadow(true, xPos + 3, textColor, menuActionText[i],
@@ -3389,7 +3389,7 @@ public class Client extends GameApplet {
 
       private static void setHighMem() {
             SceneGraph.lowMem = false;
-            Rasterizer.lowMem = false;
+            Rasterizer3D.lowMem = false;
             lowMemory = false;
             MapRegion.lowMem = false;
             ObjectDefinition.lowMemory = false;
@@ -4015,27 +4015,27 @@ public class Client extends GameApplet {
             gameScreenImageProducer = null;
             chatSettingImageProducer = null;
             flameLeftBackground = new ProducingGraphicsBuffer(128, 265);
-            Raster.clear();
+            Rasterizer2D.clear();
             flameRightBackground = new ProducingGraphicsBuffer(128, 265);
-            Raster.clear();
+            Rasterizer2D.clear();
             topLeft1BackgroundTile = new ProducingGraphicsBuffer(509, 171);
-            Raster.clear();
+            Rasterizer2D.clear();
             bottomLeft1BackgroundTile = new ProducingGraphicsBuffer(360, 132);
-            Raster.clear();
+            Rasterizer2D.clear();
             loginBoxImageProducer = new ProducingGraphicsBuffer(360, 200);
-            Raster.clear();
+            Rasterizer2D.clear();
             loginScreenAccessories = new ProducingGraphicsBuffer(300, 800);
-            Raster.clear();
+            Rasterizer2D.clear();
             bottomLeft0BackgroundTile = new ProducingGraphicsBuffer(202, 238);
-            Raster.clear();
+            Rasterizer2D.clear();
             bottomRightImageProducer = new ProducingGraphicsBuffer(203, 238);
-            Raster.clear();
+            Rasterizer2D.clear();
             loginMusicImageProducer = new ProducingGraphicsBuffer(203, 238);
-            Raster.clear();
+            Rasterizer2D.clear();
             middleLeft1BackgroundTile = new ProducingGraphicsBuffer(74, 94);
-            Raster.clear();
+            Rasterizer2D.clear();
             aRSImageProducer_1115 = new ProducingGraphicsBuffer(75, 94);
-            Raster.clear();
+            Rasterizer2D.clear();
             if (titleArchive != null) {
                   drawLogo();
                   loadTitleScreen();
@@ -4058,10 +4058,10 @@ public class Client extends GameApplet {
             boldText.drawText(0xffffff, Configuration.CLIENT_NAME + " is loading - please wait...",
                         c1 / 2 - 26 - byte1, c / 2);
             int j = c1 / 2 - 18 - byte1;
-            Raster.fillPixels(c / 2 - 152, 304, 34, 0x8c1111, j);
-            Raster.fillPixels(c / 2 - 151, 302, 32, 0, j + 1);
-            Raster.drawPixels(30, j + 2, c / 2 - 150, 0x8c1111, i * 3);
-            Raster.drawPixels(30, j + 2, (c / 2 - 150) + i * 3, 0, 300 - i * 3);
+            Rasterizer2D.fillPixels(c / 2 - 152, 304, 34, 0x8c1111, j);
+            Rasterizer2D.fillPixels(c / 2 - 151, 302, 32, 0, j + 1);
+            Rasterizer2D.drawPixels(30, j + 2, c / 2 - 150, 0x8c1111, i * 3);
+            Rasterizer2D.drawPixels(30, j + 2, (c / 2 - 150) + i * 3, 0, 300 - i * 3);
             boldText.drawText(0xffffff, s, (c1 / 2 + 5) - byte1, c / 2);
             loginBoxImageProducer.drawGraphics(171, super.graphics, 202);
             if (welcomeScreenRaised) {
@@ -4346,8 +4346,8 @@ public class Client extends GameApplet {
                   resetLogout();
                   return;
             }
-            Raster.fillPixels(2, 229, 39, 0xffffff, 2); // white box around
-            Raster.drawPixels(37, 3, 3, 0, 227); // black fill
+            Rasterizer2D.fillPixels(2, 229, 39, 0xffffff, 2); // white box around
+            Rasterizer2D.drawPixels(37, 3, 3, 0, 227); // black fill
             regularText.drawText(0, "Connection lost.", 19, 120);
             regularText.drawText(0xffffff, "Connection lost.", 18, 119);
             regularText.drawText(0, "Please wait - attempting to reestablish.", 34, 117);
@@ -5782,7 +5782,7 @@ public class Client extends GameApplet {
             VariableParameter.parameters = null;
             super.fullGameScreen = null;
             Player.models = null;
-            Rasterizer.clear();
+            Rasterizer3D.clear();
             SceneGraph.destructor();
             Model.clear();
             Frame.clear();
@@ -7164,11 +7164,11 @@ public class Client extends GameApplet {
             aRSImageProducer_1115 = null;
             chatboxImageProducer = new ProducingGraphicsBuffer(519, 165);// chatback
             minimapImageProducer = new ProducingGraphicsBuffer(249, 168);// mapback
-            Raster.clear();
+            Rasterizer2D.clear();
             cacheSprite[19].drawSprite(0, 0);
             tabImageProducer = new ProducingGraphicsBuffer(249, 335);// inventory
             gameScreenImageProducer = new ProducingGraphicsBuffer(512, 334);// gamescreen
-            Raster.clear();
+            Rasterizer2D.clear();
             chatSettingImageProducer = new ProducingGraphicsBuffer(249, 45);
             welcomeScreenRaised = true;
       }
@@ -8385,9 +8385,9 @@ public class Client extends GameApplet {
                               mapScenes[i6].offsetColor(i5 + l5, j5 + l5, k5 + l5);
                   }
                   drawLoadingText(83, "Unpacking textures");
-                  Rasterizer.loadTextures(textureArchive);
-                  Rasterizer.method372(0.80000000000000004D);
-                  Rasterizer.method367();
+                  Rasterizer3D.loadTextures(textureArchive);
+                  Rasterizer3D.method372(0.80000000000000004D);
+                  Rasterizer3D.method367();
                   drawLoadingText(86, "Unpacking config");
                   Animation.unpackConfig(configArchive);
                   ObjectDefinition.unpackConfig(configArchive);
@@ -8524,8 +8524,8 @@ public class Client extends GameApplet {
                         i -= 73;
                         j -= 75;
                         int k = cameraHorizontal + minimapRotation & 0x7ff;
-                        int i1 = Rasterizer.anIntArray1470[k];
-                        int j1 = Rasterizer.COSINE[k];
+                        int i1 = Rasterizer3D.anIntArray1470[k];
+                        int j1 = Rasterizer3D.COSINE[k];
                         i1 = i1 * (minimapZoom + 256) >> 8;
                         j1 = j1 * (minimapZoom + 256) >> 8;
                         int k1 = j * i1 + i * j1 >> 11;
@@ -8760,8 +8760,8 @@ public class Client extends GameApplet {
                         tickDelta = 0;
                         resetAllImageProducers();
                         super.fullGameScreen.initDrawingArea();
-                        Rasterizer.scanOffsets = fullScreenTextureArray;
-                        Raster.clear();
+                        Rasterizer3D.scanOffsets = fullScreenTextureArray;
+                        Rasterizer2D.clear();
                         welcomeScreenRaised = true;
                         if (openInterfaceId != -1) {
                               Widget rsInterface_1 = Widget.interfaceCache[openInterfaceId];
@@ -8948,15 +8948,15 @@ public class Client extends GameApplet {
       }
 
       public void drawBlackBox(int xPos, int yPos) {
-            Raster.drawPixels(71, yPos - 1, xPos - 2, 0x726451, 1);
-            Raster.drawPixels(69, yPos, xPos + 174, 0x726451, 1);
-            Raster.drawPixels(1, yPos - 2, xPos - 2, 0x726451, 178);
-            Raster.drawPixels(1, yPos + 68, xPos, 0x726451, 174);
-            Raster.drawPixels(71, yPos - 1, xPos - 1, 0x2E2B23, 1);
-            Raster.drawPixels(71, yPos - 1, xPos + 175, 0x2E2B23, 1);
-            Raster.drawPixels(1, yPos - 1, xPos, 0x2E2B23, 175);
-            Raster.drawPixels(1, yPos + 69, xPos, 0x2E2B23, 175);
-            Raster.method335(0, yPos, 174, 68, 220, xPos);
+            Rasterizer2D.drawPixels(71, yPos - 1, xPos - 2, 0x726451, 1);
+            Rasterizer2D.drawPixels(69, yPos, xPos + 174, 0x726451, 1);
+            Rasterizer2D.drawPixels(1, yPos - 2, xPos - 2, 0x726451, 178);
+            Rasterizer2D.drawPixels(1, yPos + 68, xPos, 0x726451, 174);
+            Rasterizer2D.drawPixels(71, yPos - 1, xPos - 1, 0x2E2B23, 1);
+            Rasterizer2D.drawPixels(71, yPos - 1, xPos + 175, 0x2E2B23, 1);
+            Rasterizer2D.drawPixels(1, yPos - 1, xPos, 0x2E2B23, 175);
+            Rasterizer2D.drawPixels(1, yPos + 69, xPos, 0x2E2B23, 175);
+            Rasterizer2D.method335(0, yPos, 174, 68, 220, xPos);
       }      
 
       private void drawInterface(int scroll_y, int x, Widget rsInterface, int y) throws Exception {
@@ -8967,11 +8967,11 @@ public class Client extends GameApplet {
             if (rsInterface.invisible && anInt1026 != rsInterface.id && anInt1048 != rsInterface.id
                         && anInt1039 != rsInterface.id)
                   return;
-            int clipLeft = Raster.topX;
-            int clipTop = Raster.topY;
-            int clipRight = Raster.bottomX;
-            int clipBottom = Raster.bottomY;
-            Raster.setDrawingArea(y + rsInterface.height, x, x + rsInterface.width, y);
+            int clipLeft = Rasterizer2D.topX;
+            int clipTop = Rasterizer2D.topY;
+            int clipRight = Rasterizer2D.bottomX;
+            int clipBottom = Rasterizer2D.bottomY;
+            Rasterizer2D.setDrawingArea(y + rsInterface.height, x, x + rsInterface.width, y);
             int childCount = rsInterface.children.length;
             int alpha = rsInterface.transparency;
             for (int childId = 0; childId < childCount; childId++) {
@@ -9049,10 +9049,10 @@ public class Client extends GameApplet {
                                                 int differenceY = 0;
                                                 int itemId = childInterface.inventoryItemId[item]
                                                             - 1;
-                                                if (tileX > Raster.topX - 32
-                                                            && tileX < Raster.bottomX
-                                                            && tileY > Raster.topY - 32
-                                                            && tileY < Raster.bottomY
+                                                if (tileX > Rasterizer2D.topX - 32
+                                                            && tileX < Rasterizer2D.bottomX
+                                                            && tileY > Rasterizer2D.topY - 32
+                                                            && tileY < Rasterizer2D.bottomY
                                                             || activeInterfaceType != 0
                                                                         && anInt1085 == item) {
                                                       int l9 = 0;
@@ -9084,10 +9084,10 @@ public class Client extends GameApplet {
                                                                   item_icon.drawSprite1(
                                                                               tileX + differenceX,
                                                                               tileY + differenceY);
-                                                                  if (tileY + differenceY < Raster.topY
+                                                                  if (tileY + differenceY < Rasterizer2D.topY
                                                                               && rsInterface.scrollPosition > 0) {
                                                                         int i10 = (tickDelta
-                                                                                    * (Raster.topY
+                                                                                    * (Rasterizer2D.topY
                                                                                                 - tileY
                                                                                                 - differenceY))
                                                                                     / 3;
@@ -9100,13 +9100,13 @@ public class Client extends GameApplet {
                                                                         anInt1088 += i10;
                                                                   }
                                                                   if (tileY + differenceY
-                                                                              + 32 > Raster.bottomY
+                                                                              + 32 > Rasterizer2D.bottomY
                                                                               && rsInterface.scrollPosition < rsInterface.scrollMax
                                                                                           - rsInterface.height) {
                                                                         int j10 = (tickDelta
                                                                                     * ((tileY + differenceY
                                                                                                 + 32)
-                                                                                                - Raster.bottomY))
+                                                                                                - Rasterizer2D.bottomY))
                                                                                     / 3;
                                                                         if (j10 > tickDelta * 10)
                                                                               j10 = tickDelta * 10;
@@ -9179,17 +9179,17 @@ public class Client extends GameApplet {
                               }
                               if (childInterface.opacity == 0) {
                                     if (childInterface.filled)
-                                          Raster.drawPixels(childInterface.height, currentY, _x, colour,
+                                          Rasterizer2D.drawPixels(childInterface.height, currentY, _x, colour,
                                                       childInterface.width);
                                     else
-                                          Raster.fillPixels(_x, childInterface.width,
+                                          Rasterizer2D.fillPixels(_x, childInterface.width,
                                                       childInterface.height, colour, currentY);
                               } else if (childInterface.filled)
-                                    Raster.method335(colour, currentY, childInterface.width,
+                                    Rasterizer2D.method335(colour, currentY, childInterface.width,
                                                 childInterface.height,
                                                 256 - (childInterface.opacity & 0xff), _x);
                               else
-                                    Raster.method338(currentY, childInterface.height,
+                                    Rasterizer2D.method338(currentY, childInterface.height,
                                                 256 - (childInterface.opacity & 0xff), colour,
                                                 childInterface.width, _x);
                         } else if (childInterface.type == Widget.TYPE_TEXT) {
@@ -9216,7 +9216,7 @@ public class Client extends GameApplet {
                                     text = "Please wait...";
                                     colour = childInterface.textColor;
                               }
-                              if (Raster.width == 516) {
+                              if (Rasterizer2D.width == 516) {
                                     if (colour == 0xffff00)
                                           colour = 255;
                                     if (colour == 49152)
@@ -9375,13 +9375,13 @@ public class Client extends GameApplet {
                                           sprite.drawSprite(_x, currentY);
                                     }
                         } else if (childInterface.type == Widget.TYPE_MODEL) {
-                              int centreX = Rasterizer.originViewX;
-                              int centreY = Rasterizer.originViewY;
-                              Rasterizer.originViewX = _x + childInterface.width / 2;
-                              Rasterizer.originViewY = currentY + childInterface.height / 2;
-                              int sine = Rasterizer.anIntArray1470[childInterface.modelRotation1]
+                              int centreX = Rasterizer3D.originViewX;
+                              int centreY = Rasterizer3D.originViewY;
+                              Rasterizer3D.originViewX = _x + childInterface.width / 2;
+                              Rasterizer3D.originViewY = currentY + childInterface.height / 2;
+                              int sine = Rasterizer3D.anIntArray1470[childInterface.modelRotation1]
                                           * childInterface.modelZoom >> 16;
-                              int cosine = Rasterizer.COSINE[childInterface.modelRotation1]
+                              int cosine = Rasterizer3D.COSINE[childInterface.modelRotation1]
                                           * childInterface.modelZoom >> 16;
                               boolean selected = interfaceIsSelected(childInterface);
                               int emoteAnimation;
@@ -9402,8 +9402,8 @@ public class Client extends GameApplet {
                               if (model != null)
                                     model.method482(childInterface.modelRotation2, 0,
                                                 childInterface.modelRotation1, 0, sine, cosine);
-                              Rasterizer.originViewX = centreX;
-                              Rasterizer.originViewY = centreY;
+                              Rasterizer3D.originViewX = centreX;
+                              Rasterizer3D.originViewY = centreY;
                         } else if (childInterface.type == Widget.TYPE_ITEM_LIST) {
                               GameFont font = childInterface.textDrawingAreas;
                               int slot = 0;
@@ -9522,8 +9522,8 @@ public class Client extends GameApplet {
                               if (yPos + boxHeight > y + rsInterface.height) {
                                     yPos = (currentY - boxHeight);
                               }
-                              Raster.drawPixels(boxHeight, yPos, xPos, 0xFFFFA0, boxWidth);
-                              Raster.fillPixels(xPos, boxWidth, boxHeight, 0, yPos);
+                              Rasterizer2D.drawPixels(boxHeight, yPos, xPos, 0xFFFFA0, boxWidth);
+                              Rasterizer2D.fillPixels(xPos, boxWidth, boxHeight, 0, yPos);
                               String s2 = childInterface.defaultText;
                               for (int j11 = yPos + font.verticalSpace + 2; s2.length() > 0; j11 +=
                                           font.verticalSpace + 1) {// verticalSpace
@@ -9604,7 +9604,7 @@ public class Client extends GameApplet {
                               }
                         }
             }
-            Raster.setDrawingArea(clipBottom, clipLeft, clipRight, clipTop);
+            Rasterizer2D.setDrawingArea(clipBottom, clipLeft, clipRight, clipTop);
       }
 
       private void randomizeBackground(IndexedImage background) {
@@ -10835,7 +10835,7 @@ public class Client extends GameApplet {
                   int mapY = (destY * 4 + 2) - localPlayer.y / 32;
                   markMinimap(mapFlag, mapX, mapY);
             }
-            Raster.drawPixels(3, (frameMode == ScreenMode.FIXED ? 83 : 80),
+            Rasterizer2D.drawPixels(3, (frameMode == ScreenMode.FIXED ? 83 : 80),
                         (frameMode == ScreenMode.FIXED ? 127 : frameWidth - 88), 0xffffff, 3);
             if (frameMode == ScreenMode.FIXED) {
                   cacheSprite[19].drawSprite(0, 0);
@@ -11001,8 +11001,8 @@ public class Client extends GameApplet {
             l = i1 * j1 + l * k1 >> 16;
             i1 = j2;
             if (l >= 50) {
-                  spriteDrawX = Rasterizer.originViewX + (i << SceneGraph.viewDistance) / l;
-                  spriteDrawY = Rasterizer.originViewY + (i1 << SceneGraph.viewDistance) / l;
+                  spriteDrawX = Rasterizer3D.originViewX + (i << SceneGraph.viewDistance) / l;
+                  spriteDrawY = Rasterizer3D.originViewY + (i1 << SceneGraph.viewDistance) / l;
             } else {
                   spriteDrawX = -1;
                   spriteDrawY = -1;
@@ -13412,12 +13412,12 @@ public class Client extends GameApplet {
                                     yCameraCurve = 383;
                         }
                   }
-            int k2 = Rasterizer.anInt1481;
+            int k2 = Rasterizer3D.anInt1481;
             Model.aBoolean1684 = true;
             Model.anInt1687 = 0;
             Model.anInt1685 = super.mouseX - (frameMode == ScreenMode.FIXED ? 4 : 0);
             Model.anInt1686 = super.mouseY - (frameMode == ScreenMode.FIXED ? 4 : 0);
-            Raster.clear();
+            Rasterizer2D.clear();
             scene.render(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, j, yCameraCurve);
             scene.clearGameObjectCache();
             if (Configuration.enableFog) {

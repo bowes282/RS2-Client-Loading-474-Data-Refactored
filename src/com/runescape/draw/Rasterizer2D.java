@@ -1,7 +1,7 @@
 package com.runescape.draw;
 import com.runescape.collection.Cacheable;
 
-public class Raster extends Cacheable {
+public class Rasterizer2D extends Cacheable {
 
 	public static int pixels[];
 	public static int width;

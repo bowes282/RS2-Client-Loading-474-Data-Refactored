@@ -1,6 +1,6 @@
 package com.runescape.scene;
 import com.runescape.cache.def.ObjectDefinition;
-import com.runescape.draw.Rasterizer;
+import com.runescape.draw.Rasterizer3D;
 import com.runescape.entity.Renderable;
 import com.runescape.entity.model.Model;
 import com.runescape.io.Buffer;
@@ -198,7 +198,7 @@ public final class MapRegion {
 									}
 									int i22 = 0;
 									if (j21 != -1)
-										i22 = Rasterizer.anIntArray1482[method187(k21, 96)];
+										i22 = Rasterizer3D.anIntArray1482[method187(k21, 96)];
 									if (i19 == 0) {
 										scene.addTile(z, l6, k17, 0, 0, -1, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), 0, 0, 0, 0, i22, 0);
 									} else {
@@ -210,19 +210,19 @@ public final class MapRegion {
 											int j23;
 											int k23;
 											if (i23 >= 0) {
-												k23 = Rasterizer.method369(i23);
+												k23 = Rasterizer3D.method369(i23);
 												j23 = -1;
 											} else if (flo_2.anInt390 == 0xff00ff) {
 												k23 = 0;
 												j23 = -2;
 												i23 = -1;
 											} else if (flo_2.anInt390 == 0x333333) {
-												k23 = Rasterizer.anIntArray1482[checkedLight(flo_2.anInt399, 96)];
+												k23 = Rasterizer3D.anIntArray1482[checkedLight(flo_2.anInt399, 96)];
 												j23 = -2;
 												i23 = -1;
 											} else {
 												j23 = encode(flo_2.anInt394, flo_2.anInt395, flo_2.anInt396);
-												k23 = Rasterizer.anIntArray1482[checkedLight(flo_2.anInt399, 96)];
+												k23 = Rasterizer3D.anIntArray1482[checkedLight(flo_2.anInt399, 96)];
 											}
 											if ((i19 - 1) == 63) {
 												k23 = flo_2.anInt390 = 0x767676;
@@ -230,7 +230,7 @@ public final class MapRegion {
 												i23 = -1;
 			            				    }
 											if ((i19 - 1) == 111) {
-												k23 = Rasterizer.method369(1);
+												k23 = Rasterizer3D.method369(1);
 												j23 = -1;
 												i23 = 1;
 											} else if (j23 == 6363) {
@@ -940,7 +940,7 @@ public final class MapRegion {
 	}
 
 	private static int interpolate(int a, int b, int angle, int frequencyReciprocal) {
-		int cosine = 0x10000 - Rasterizer.COSINE[(angle * 1024) / frequencyReciprocal] >> 1;
+		int cosine = 0x10000 - Rasterizer3D.COSINE[(angle * 1024) / frequencyReciprocal] >> 1;
 		return (a * (0x10000 - cosine) >> 16) + (b * cosine >> 16);
 	}
 

@@ -1,6 +1,6 @@
 package custom.seven.scene.graphic;
-import com.runescape.draw.Raster;
-import com.runescape.draw.Rasterizer;
+import com.runescape.draw.Rasterizer2D;
+import com.runescape.draw.Rasterizer3D;
 
 public class Fog {    
     /**
@@ -21,25 +21,25 @@ public class Fog {
      */
     public void renderFog(boolean belowGround, int fogStartDistance, int fogEndDistance, int fogIntensity) {
         getColor(setColor);
-        int pos = Rasterizer.scanOffsets[0];
+        int pos = Rasterizer3D.scanOffsets[0];
         int src, dst, alpha;
         int fogBegin = (int) (fogStartDistance + fogDistance);
         int fogEnd = (int) (fogEndDistance + fogDistance);
-        for (int y = 0; y < Raster.bottomY; y++) {
-            for (int x = 0; x < Raster.centerX; x++) {
-                if (Raster.depthBuffer[pos] >= fogEnd) {
-                    Raster.pixels[pos] = setColor;
-                } else if (Raster.depthBuffer[pos] >= fogBegin) {
-                    alpha = (int)(Raster.depthBuffer[pos] - fogBegin) / fogIntensity;
+        for (int y = 0; y < Rasterizer2D.bottomY; y++) {
+            for (int x = 0; x < Rasterizer2D.centerX; x++) {
+                if (Rasterizer2D.depthBuffer[pos] >= fogEnd) {
+                    Rasterizer2D.pixels[pos] = setColor;
+                } else if (Rasterizer2D.depthBuffer[pos] >= fogBegin) {
+                    alpha = (int)(Rasterizer2D.depthBuffer[pos] - fogBegin) / fogIntensity;
                     src = ((setColor & 0xff00ff) * alpha >> 8 & 0xff00ff) + ((setColor & 0xff00) * alpha >> 8 & 0xff00);
                     alpha = 256 - alpha;
-                    dst = Raster.pixels[pos];
+                    dst = Rasterizer2D.pixels[pos];
                     dst = ((dst & 0xff00ff) * alpha >> 8 & 0xff00ff) + ((dst & 0xff00) * alpha >> 8 & 0xff00);
-                    Raster.pixels[pos] = src + dst;
+                    Rasterizer2D.pixels[pos] = src + dst;
                 }
                 pos++;
             }
-            pos += Raster.width - Raster.centerX;
+            pos += Rasterizer2D.width - Rasterizer2D.centerX;
         }
     }
     

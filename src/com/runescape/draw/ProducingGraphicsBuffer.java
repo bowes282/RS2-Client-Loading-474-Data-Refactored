@@ -25,6 +25,6 @@ public final class ProducingGraphicsBuffer {
 	}
 
 	public void initDrawingArea() {
-		Raster.initDrawingArea(canvasHeight, canvasWidth, canvasRaster, depthbuffer);
+		Rasterizer2D.initDrawingArea(canvasHeight, canvasWidth, canvasRaster, depthbuffer);
 	}
 }

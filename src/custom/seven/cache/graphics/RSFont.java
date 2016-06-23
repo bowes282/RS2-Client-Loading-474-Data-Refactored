@@ -4,10 +4,10 @@ import java.awt.Color;
 import com.runescape.cache.Archive;
 import com.runescape.cache.graphics.GameFont;
 import com.runescape.cache.graphics.Sprite;
-import com.runescape.draw.Raster;
+import com.runescape.draw.Rasterizer2D;
 import com.runescape.io.Buffer;
 
-public class RSFont extends Raster {
+public class RSFont extends Rasterizer2D {
 
     public int baseCharacterHeight = 0;
     public int anInt4142;
@@ -656,37 +656,37 @@ public class RSFont extends Raster {
 
     public void drawTransparentCharacter(int i, int i_11_, int i_12_, int i_13_, int i_14_,
             int i_15_, int i_16_, boolean bool) {
-        int i_17_ = i_11_ + i_12_ * Raster.width;
-        int i_18_ = Raster.width - i_13_;
+        int i_17_ = i_11_ + i_12_ * Rasterizer2D.width;
+        int i_18_ = Rasterizer2D.width - i_13_;
         int i_19_ = 0;
         int i_20_ = 0;
-        if (i_12_ < Raster.topY) {
-            int i_21_ = Raster.topY - i_12_;
+        if (i_12_ < Rasterizer2D.topY) {
+            int i_21_ = Rasterizer2D.topY - i_12_;
             i_14_ -= i_21_;
-            i_12_ = Raster.topY;
+            i_12_ = Rasterizer2D.topY;
             i_20_ += i_21_ * i_13_;
-            i_17_ += i_21_ * Raster.width;
+            i_17_ += i_21_ * Rasterizer2D.width;
         }
-        if (i_12_ + i_14_ > Raster.bottomY) {
-            i_14_ -= i_12_ + i_14_ - Raster.bottomY;
+        if (i_12_ + i_14_ > Rasterizer2D.bottomY) {
+            i_14_ -= i_12_ + i_14_ - Rasterizer2D.bottomY;
         }
-        if (i_11_ < Raster.topX) {
-            int i_22_ = Raster.topX - i_11_;
+        if (i_11_ < Rasterizer2D.topX) {
+            int i_22_ = Rasterizer2D.topX - i_11_;
             i_13_ -= i_22_;
-            i_11_ = Raster.topX;
+            i_11_ = Rasterizer2D.topX;
             i_20_ += i_22_;
             i_17_ += i_22_;
             i_19_ += i_22_;
             i_18_ += i_22_;
         }
-        if (i_11_ + i_13_ > Raster.bottomX) {
-            int i_23_ = i_11_ + i_13_ - Raster.bottomX;
+        if (i_11_ + i_13_ > Rasterizer2D.bottomX) {
+            int i_23_ = i_11_ + i_13_ - Rasterizer2D.bottomX;
             i_13_ -= i_23_;
             i_19_ += i_23_;
             i_18_ += i_23_;
         }
         if (i_13_ > 0 && i_14_ > 0) {
-            createTransparentCharacterPixels(Raster.pixels, fontPixels[i], i_15_ ,i_20_, i_17_, i_13_, i_14_, i_18_, i_19_, i_16_);
+            createTransparentCharacterPixels(Rasterizer2D.pixels, fontPixels[i], i_15_ ,i_20_, i_17_, i_13_, i_14_, i_18_, i_19_, i_16_);
         }
     }
 
@@ -774,37 +774,37 @@ public class RSFont extends Raster {
 
     public void drawCharacter(int character, int i_35_, int i_36_, int i_37_, int i_38_,
             int i_39_, boolean bool) {
-        int i_40_ = i_35_ + i_36_ * Raster.width;
-        int i_41_ = Raster.width - i_37_;
+        int i_40_ = i_35_ + i_36_ * Rasterizer2D.width;
+        int i_41_ = Rasterizer2D.width - i_37_;
         int i_42_ = 0;
         int i_43_ = 0;
-        if (i_36_ < Raster.topY) {
-            int i_44_ = Raster.topY - i_36_;
+        if (i_36_ < Rasterizer2D.topY) {
+            int i_44_ = Rasterizer2D.topY - i_36_;
             i_38_ -= i_44_;
-            i_36_ = Raster.topY;
+            i_36_ = Rasterizer2D.topY;
             i_43_ += i_44_ * i_37_;
-            i_40_ += i_44_ * Raster.width;
+            i_40_ += i_44_ * Rasterizer2D.width;
         }
-        if (i_36_ + i_38_ > Raster.bottomY) {
-            i_38_ -= i_36_ + i_38_ - Raster.bottomY;
+        if (i_36_ + i_38_ > Rasterizer2D.bottomY) {
+            i_38_ -= i_36_ + i_38_ - Rasterizer2D.bottomY;
         }
-        if (i_35_ < Raster.topX) {
-            int i_45_ = Raster.topX - i_35_;
+        if (i_35_ < Rasterizer2D.topX) {
+            int i_45_ = Rasterizer2D.topX - i_35_;
             i_37_ -= i_45_;
-            i_35_ = Raster.topX;
+            i_35_ = Rasterizer2D.topX;
             i_43_ += i_45_;
             i_40_ += i_45_;
             i_42_ += i_45_;
             i_41_ += i_45_;
         }
-        if (i_35_ + i_37_ > Raster.bottomX) {
-            int i_46_ = i_35_ + i_37_ - Raster.bottomX;
+        if (i_35_ + i_37_ > Rasterizer2D.bottomX) {
+            int i_46_ = i_35_ + i_37_ - Rasterizer2D.bottomX;
             i_37_ -= i_46_;
             i_42_ += i_46_;
             i_41_ += i_46_;
         }
         if (i_37_ > 0 && i_38_ > 0) {
-            createCharacterPixels(Raster.pixels, fontPixels[character],
+            createCharacterPixels(Rasterizer2D.pixels, fontPixels[character],
                                   i_39_, i_43_, i_40_, i_37_, i_38_, i_41_, i_42_);
 
         }

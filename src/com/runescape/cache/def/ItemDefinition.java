@@ -3,8 +3,8 @@ package com.runescape.cache.def;
 import com.runescape.cache.Archive;
 import com.runescape.cache.graphics.Sprite;
 import com.runescape.collection.ReferenceCache;
-import com.runescape.draw.Raster;
-import com.runescape.draw.Rasterizer;
+import com.runescape.draw.Rasterizer2D;
+import com.runescape.draw.Rasterizer3D;
 import com.runescape.entity.model.Model;
 import com.runescape.io.Buffer;
 
@@ -260,29 +260,29 @@ public final class ItemDefinition {
 				return null;
 		}
 		Sprite enabledSprite = new Sprite(32, 32);
-		int centerX = Rasterizer.originViewX;
-		int centerY = Rasterizer.originViewY;
-		int lineOffsets[] = Rasterizer.scanOffsets;
-		int pixels[] = Raster.pixels;
-		float depthBuffer[] = Raster.depthBuffer;
-		int width = Raster.width;
-		int height = Raster.height;
-		int vp_left = Raster.topX;
-		int vp_right = Raster.bottomX;
-		int vp_top = Raster.topY;
-		int vp_bottom = Raster.bottomY;
-		Rasterizer.aBoolean1464 = false;
-		Raster.initDrawingArea(32, 32, enabledSprite.myPixels,
+		int centerX = Rasterizer3D.originViewX;
+		int centerY = Rasterizer3D.originViewY;
+		int lineOffsets[] = Rasterizer3D.scanOffsets;
+		int pixels[] = Rasterizer2D.pixels;
+		float depthBuffer[] = Rasterizer2D.depthBuffer;
+		int width = Rasterizer2D.width;
+		int height = Rasterizer2D.height;
+		int vp_left = Rasterizer2D.topX;
+		int vp_right = Rasterizer2D.bottomX;
+		int vp_top = Rasterizer2D.topY;
+		int vp_bottom = Rasterizer2D.bottomY;
+		Rasterizer3D.aBoolean1464 = false;
+		Rasterizer2D.initDrawingArea(32, 32, enabledSprite.myPixels,
 				new float[32 * 32]);
-		Raster.method336(32, 0, 0, 0, 32);
-		Rasterizer.useViewport();
+		Rasterizer2D.method336(32, 0, 0, 0, 32);
+		Rasterizer3D.useViewport();
 		int k3 = itemDef.model_zoom;
 		if (outlineColor == -1)
 			k3 = (int) ((double) k3 * 1.5D);
 		if (outlineColor > 0)
 			k3 = (int) ((double) k3 * 1.04D);
-		int l3 = Rasterizer.anIntArray1470[itemDef.rotation_y] * k3 >> 16;
-		int i4 = Rasterizer.COSINE[itemDef.rotation_y] * k3 >> 16;
+		int l3 = Rasterizer3D.anIntArray1470[itemDef.rotation_y] * k3 >> 16;
+		int i4 = Rasterizer3D.COSINE[itemDef.rotation_y] * k3 >> 16;
 		model.method482(itemDef.rotation_x, itemDef.rotation_z,
 				itemDef.rotation_y, itemDef.translate_x, l3 + model.modelBaseY
 						/ 2 + itemDef.translate_yz, i4 + itemDef.translate_yz);
@@ -346,12 +346,12 @@ public final class ItemDefinition {
 		}
 		if (outlineColor == 0)
 			sprites.put(enabledSprite, itemId);
-		Raster.initDrawingArea(height, width, pixels, depthBuffer);
-		Raster.setDrawingArea(vp_bottom, vp_left, vp_right, vp_top);
-		Rasterizer.originViewX = centerX;
-		Rasterizer.originViewY = centerY;
-		Rasterizer.scanOffsets = lineOffsets;
-		Rasterizer.aBoolean1464 = true;
+		Rasterizer2D.initDrawingArea(height, width, pixels, depthBuffer);
+		Rasterizer2D.setDrawingArea(vp_bottom, vp_left, vp_right, vp_top);
+		Rasterizer3D.originViewX = centerX;
+		Rasterizer3D.originViewY = centerY;
+		Rasterizer3D.scanOffsets = lineOffsets;
+		Rasterizer3D.aBoolean1464 = true;
 		if (itemDef.stackable)
 			enabledSprite.maxWidth = 33;
 		else

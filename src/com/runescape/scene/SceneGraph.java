@@ -1,7 +1,7 @@
 package com.runescape.scene;
 import com.runescape.collection.Deque;
-import com.runescape.draw.Raster;
-import com.runescape.draw.Rasterizer;
+import com.runescape.draw.Rasterizer2D;
+import com.runescape.draw.Rasterizer3D;
 import com.runescape.entity.GroundItemTile;
 import com.runescape.entity.Renderable;
 import com.runescape.entity.GameObject;
@@ -305,8 +305,10 @@ public final class SceneGraph {
 
 		}
 
-		if (isDynamic)
+		if (isDynamic) {
 			gameObjectsCache[interactableObjectCacheCurrPos++] = gameObject;
+		}
+		
 		return true;
 	}
 
@@ -1417,53 +1419,53 @@ public final class SceneGraph {
 		k4 = l4;
 		if (j3 < 50)
 			return;
-		int i5 = Rasterizer.originViewX + (i2 << viewDistance) / k2;
-		int j5 = Rasterizer.originViewY + (l3 << viewDistance) / k2;
-		int k5 = Rasterizer.originViewX + (i3 << viewDistance) / j2;
-		int l5 = Rasterizer.originViewY + (i4 << viewDistance) / j2;
-		int i6 = Rasterizer.originViewX + (l2 << viewDistance) / k3;
-		int j6 = Rasterizer.originViewY + (j4 << viewDistance) / k3;
-		int k6 = Rasterizer.originViewX + (l1 << viewDistance) / j3;
-		int l6 = Rasterizer.originViewY + (k4 << viewDistance) / j3;
-		Rasterizer.alpha = 0;
+		int i5 = Rasterizer3D.originViewX + (i2 << viewDistance) / k2;
+		int j5 = Rasterizer3D.originViewY + (l3 << viewDistance) / k2;
+		int k5 = Rasterizer3D.originViewX + (i3 << viewDistance) / j2;
+		int l5 = Rasterizer3D.originViewY + (i4 << viewDistance) / j2;
+		int i6 = Rasterizer3D.originViewX + (l2 << viewDistance) / k3;
+		int j6 = Rasterizer3D.originViewY + (j4 << viewDistance) / k3;
+		int k6 = Rasterizer3D.originViewX + (l1 << viewDistance) / j3;
+		int l6 = Rasterizer3D.originViewY + (k4 << viewDistance) / j3;
+		Rasterizer3D.alpha = 0;
 		if ((i6 - k6) * (l5 - l6) - (j6 - l6) * (k5 - k6) > 0) {
-			Rasterizer.textureOutOfDrawingBounds = i6 < 0 || k6 < 0 || k5 < 0 || i6 > Raster.centerX || k6 > Raster.centerX || k5 > Raster.centerX;
+			Rasterizer3D.textureOutOfDrawingBounds = i6 < 0 || k6 < 0 || k5 < 0 || i6 > Rasterizer2D.centerX || k6 > Rasterizer2D.centerX || k5 > Rasterizer2D.centerX;
 			if (clicked && method318(clickScreenX, clickScreenY, j6, l6, l5, i6, k6, k5)) {
 				clickedTileX = j1;
 				clickedTileY = k1;
 			}
 			if (simpleTile.anInt720 == -1) {
 				if (simpleTile.anInt718 != 0xbc614e)
-					Rasterizer.drawShadedTriangle(j6, l6, l5, i6, k6, k5, simpleTile.anInt718, simpleTile.anInt719, simpleTile.anInt717, k3, j3, j2);
+					Rasterizer3D.drawShadedTriangle(j6, l6, l5, i6, k6, k5, simpleTile.anInt718, simpleTile.anInt719, simpleTile.anInt717, k3, j3, j2);
 			} else if (!lowMem) {
 				if (simpleTile.flat)
-					Rasterizer.drawTexturedTriangle(j6, l6, l5, i6, k6, k5, simpleTile.anInt718, simpleTile.anInt719, simpleTile.anInt717, i2, i3, l1, l3, i4, k4, k2, j2, j3, simpleTile.anInt720, k3, j3, j2);
+					Rasterizer3D.drawTexturedTriangle(j6, l6, l5, i6, k6, k5, simpleTile.anInt718, simpleTile.anInt719, simpleTile.anInt717, i2, i3, l1, l3, i4, k4, k2, j2, j3, simpleTile.anInt720, k3, j3, j2);
 				else
-					Rasterizer.drawTexturedTriangle(j6, l6, l5, i6, k6, k5, simpleTile.anInt718, simpleTile.anInt719, simpleTile.anInt717, l2, l1, i3, j4, k4, i4, k3, j3, j2, simpleTile.anInt720, k3, j3, j2);
+					Rasterizer3D.drawTexturedTriangle(j6, l6, l5, i6, k6, k5, simpleTile.anInt718, simpleTile.anInt719, simpleTile.anInt717, l2, l1, i3, j4, k4, i4, k3, j3, j2, simpleTile.anInt720, k3, j3, j2);
 			} else {
 				int i7 = anIntArray485[simpleTile.anInt720];
-				Rasterizer.drawShadedTriangle(j6, l6, l5, i6, k6, k5, method317(i7, simpleTile.anInt718), method317(i7, simpleTile.anInt719), method317(i7, simpleTile.anInt717), k3, j3, j2);
+				Rasterizer3D.drawShadedTriangle(j6, l6, l5, i6, k6, k5, method317(i7, simpleTile.anInt718), method317(i7, simpleTile.anInt719), method317(i7, simpleTile.anInt717), k3, j3, j2);
 			}
 		}
 		if ((i5 - k5) * (l6 - l5) - (j5 - l5) * (k6 - k5) > 0) {
-			Rasterizer.textureOutOfDrawingBounds = i5 < 0 || k5 < 0 || k6 < 0 || i5 > Raster.centerX || k5 > Raster.centerX || k6 > Raster.centerX;
+			Rasterizer3D.textureOutOfDrawingBounds = i5 < 0 || k5 < 0 || k6 < 0 || i5 > Rasterizer2D.centerX || k5 > Rasterizer2D.centerX || k6 > Rasterizer2D.centerX;
 			if (clicked && method318(clickScreenX, clickScreenY, j5, l5, l6, i5, k5, k6)) {
 				clickedTileX = j1;
 				clickedTileY = k1;
 			}
 			if (simpleTile.anInt720 == -1) {
 				if (simpleTile.anInt716 != 0xbc614e) {
-					Rasterizer.drawShadedTriangle(j5, l5, l6, i5, k5, k6, simpleTile.anInt716, simpleTile.anInt717,
+					Rasterizer3D.drawShadedTriangle(j5, l5, l6, i5, k5, k6, simpleTile.anInt716, simpleTile.anInt717,
 							simpleTile.anInt719, k2, j2, j3);
 				}
 			} else {
 				if (!lowMem) {
-					Rasterizer.drawTexturedTriangle(j5, l5, l6, i5, k5, k6, simpleTile.anInt716, simpleTile.anInt717,
+					Rasterizer3D.drawTexturedTriangle(j5, l5, l6, i5, k5, k6, simpleTile.anInt716, simpleTile.anInt717,
 							simpleTile.anInt719, i2, i3, l1, l3, i4, k4, k2, j2, j3, simpleTile.anInt720, k2, j2, j3);
 					return;
 				}
 				int j7 = anIntArray485[simpleTile.anInt720];
-				Rasterizer.drawShadedTriangle(j5, l5, l6, i5, k5, k6, method317(j7, simpleTile.anInt716), method317(j7, simpleTile.anInt717), method317(j7, simpleTile.anInt719), k2, j2, j3);
+				Rasterizer3D.drawShadedTriangle(j5, l5, l6, i5, k5, k6, method317(j7, simpleTile.anInt716), method317(j7, simpleTile.anInt717), method317(j7, simpleTile.anInt719), k2, j2, j3);
 			}
 		}
 	}
@@ -1487,12 +1489,12 @@ public final class SceneGraph {
 				ShapedTile.anIntArray691[l1] = k2;
 				ShapedTile.anIntArray692[l1] = i3;
 			}
-			ShapedTile.anIntArray688[l1] = Rasterizer.originViewX + (i2 << viewDistance) / i3;
-			ShapedTile.anIntArray689[l1] = Rasterizer.originViewY + (k2 << viewDistance) / i3;
+			ShapedTile.anIntArray688[l1] = Rasterizer3D.originViewX + (i2 << viewDistance) / i3;
+			ShapedTile.anIntArray689[l1] = Rasterizer3D.originViewY + (k2 << viewDistance) / i3;
 			ShapedTile.depthPoint[l1] = i3;
 		}
 
-		Rasterizer.alpha = 0;
+		Rasterizer3D.alpha = 0;
 		k1 = class40.anIntArray679.length;
 		for (int j2 = 0; j2 < k1; j2++) {
 			int l2 = class40.anIntArray679[j2];
@@ -1505,29 +1507,29 @@ public final class SceneGraph {
 			int i5 = ShapedTile.anIntArray689[j3];
 			int j5 = ShapedTile.anIntArray689[l3];
 			if ((i4 - j4) * (j5 - i5) - (l4 - i5) * (k4 - j4) > 0) {
-				Rasterizer.textureOutOfDrawingBounds = i4 < 0 || j4 < 0 || k4 < 0 || i4 > Raster.centerX
-						|| j4 > Raster.centerX || k4 > Raster.centerX;
+				Rasterizer3D.textureOutOfDrawingBounds = i4 < 0 || j4 < 0 || k4 < 0 || i4 > Rasterizer2D.centerX
+						|| j4 > Rasterizer2D.centerX || k4 > Rasterizer2D.centerX;
 				if (clicked && method318(clickScreenX, clickScreenY, l4, i5, j5, i4, j4, k4)) {
 					clickedTileX = i;
 					clickedTileY = i1;
 				}
-				Rasterizer.drawDepthTriangle(i4, j4, k4, l4, i5, j5, ShapedTile.depthPoint[l2], ShapedTile.depthPoint[j3],
+				Rasterizer3D.drawDepthTriangle(i4, j4, k4, l4, i5, j5, ShapedTile.depthPoint[l2], ShapedTile.depthPoint[j3],
 						ShapedTile.depthPoint[l3]);
 				if (class40.anIntArray682 == null || class40.anIntArray682[j2] == -1) {
 					if (class40.anIntArray676[j2] != 0xbc614e)
-						Rasterizer.drawShadedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2],
+						Rasterizer3D.drawShadedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2],
 								class40.anIntArray677[j2], class40.anIntArray678[j2], ShapedTile.depthPoint[l2],
 								ShapedTile.depthPoint[j3], ShapedTile.depthPoint[l3]);
 				} else if (!lowMem) {
 					if (class40.flat)
-						Rasterizer.drawTexturedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2],
+						Rasterizer3D.drawTexturedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2],
 								class40.anIntArray677[j2], class40.anIntArray678[j2], ShapedTile.anIntArray690[0],
 								ShapedTile.anIntArray690[1], ShapedTile.anIntArray690[3], ShapedTile.anIntArray691[0],
 								ShapedTile.anIntArray691[1], ShapedTile.anIntArray691[3], ShapedTile.anIntArray692[0],
 								ShapedTile.anIntArray692[1], ShapedTile.anIntArray692[3], class40.anIntArray682[j2],
 								ShapedTile.depthPoint[l2], ShapedTile.depthPoint[j3], ShapedTile.depthPoint[l3]);
 					else
-						Rasterizer.drawTexturedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2],
+						Rasterizer3D.drawTexturedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2],
 								class40.anIntArray677[j2], class40.anIntArray678[j2], ShapedTile.anIntArray690[l2],
 								ShapedTile.anIntArray690[j3], ShapedTile.anIntArray690[l3], ShapedTile.anIntArray691[l2],
 								ShapedTile.anIntArray691[j3], ShapedTile.anIntArray691[l3], ShapedTile.anIntArray692[l2],
@@ -1535,7 +1537,7 @@ public final class SceneGraph {
 								ShapedTile.depthPoint[l2], ShapedTile.depthPoint[j3], ShapedTile.depthPoint[l3]);
 				} else {
 					int k5 = anIntArray485[class40.anIntArray682[j2]];
-					Rasterizer.drawShadedTriangle(l4, i5, j5, i4, j4, k4, method317(k5, class40.anIntArray676[j2]),
+					Rasterizer3D.drawShadedTriangle(l4, i5, j5, i4, j4, k4, method317(k5, class40.anIntArray676[j2]),
 							method317(k5, class40.anIntArray677[j2]), method317(k5, class40.anIntArray678[j2]),
 							ShapedTile.depthPoint[l2], ShapedTile.depthPoint[j3], ShapedTile.depthPoint[l3]);
 				}
