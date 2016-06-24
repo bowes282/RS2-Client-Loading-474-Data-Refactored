@@ -8,22 +8,23 @@ import com.runescape.net.IsaacCipher;
 import com.runescape.sign.SignLink;
 
 public final class Buffer extends Cacheable {
+	
+	public byte payload[];
+	public int currentPosition;
+	public int bitPosition;
+	private static final int[] BIT_MASKS = { 0, 1, 3, 7, 15, 31, 63, 127, 255,
+			511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 0x1ffff, 0x3ffff,
+			0x7ffff, 0xfffff, 0x1fffff, 0x3fffff, 0x7fffff, 0xffffff,
+			0x1ffffff, 0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 0x3fffffff,
+			0x7fffffff, -1 };
+	
+	public IsaacCipher encryption;
 
 	public static Buffer create() {
-		Buffer stream_1 = new Buffer();
-		stream_1.currentPosition = 0;
-		stream_1.payload = new byte[5000];
-		return stream_1;
-	}
-
-	public int readShort2() {
-		currentPosition += 2;
-		int value = ((payload[currentPosition - 2] & 0xff) << 8)
-				+ (payload[currentPosition - 1] & 0xff);
-		if (value > 60000)
-			value = -65535 + value;
-		return value;
-
+		Buffer buffer = new Buffer();		
+		buffer.currentPosition = 0;
+		buffer.payload = new byte[5000];
+		return buffer;
 	}
 
 	public final int readUTriByte() {
@@ -141,8 +142,10 @@ public final class Buffer extends Cacheable {
 		currentPosition += 2;
 		int value = ((payload[currentPosition - 2] & 0xff) << 8)
 				+ (payload[currentPosition - 1] & 0xff);
-		if (value > 32767)
+		
+		if (value > 32767) {
 			value -= 0x10000;
+		}
 		return value;
 	}
 
@@ -313,8 +316,10 @@ public final class Buffer extends Cacheable {
 		currentPosition += 2;
 		int value = ((payload[currentPosition - 1] & 0xff) << 8)
 				+ (payload[currentPosition - 2] & 0xff);
-		if (value > 32767)
+		
+		if (value > 32767) {
 			value -= 0x10000;
+		}
 		return value;
 	}
 
@@ -344,24 +349,17 @@ public final class Buffer extends Cacheable {
 	}
 
 	public void writeReverseDataA(byte data[], int length, int offset) {
-		for (int index = (length + offset) - 1; index >= length; index--)
+		for (int index = (length + offset) - 1; index >= length; index--) {
 			payload[currentPosition++] = (byte) (data[index] + 128);
+		}
 
 	}
 
 	public void readReverseData(byte data[], int offset, int length) {
-		for (int index = (length + offset) - 1; index >= length; index--)
+		for (int index = (length + offset) - 1; index >= length; index--) {
 			data[index] = payload[currentPosition++];
+		}
 
 	}
-
-	public byte payload[];
-	public int currentPosition;
-	public int bitPosition;
-	private static final int[] BIT_MASKS = { 0, 1, 3, 7, 15, 31, 63, 127, 255,
-			511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 0x1ffff, 0x3ffff,
-			0x7ffff, 0xfffff, 0x1fffff, 0x3fffff, 0x7fffff, 0xffffff,
-			0x1ffffff, 0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 0x3fffffff,
-			0x7fffffff, -1 };
-	public IsaacCipher encryption;
+	
 }
