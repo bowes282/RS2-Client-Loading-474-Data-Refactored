@@ -13,7 +13,6 @@ import javax.imageio.ImageIO;
 
 import org.seven.cache.graphics.RSFont;
 import org.seven.net.CreateUID;
-import org.seven.net.NetworkConstants;
 import org.seven.net.protocol.ProtocolConstants;
 import org.seven.scene.graphic.Fog;
 import org.seven.util.CacheUtils;
@@ -99,7 +98,7 @@ public class Client extends GameApplet {
       public static boolean transparentTabArea = false;
       private final int[] soundVolume;
 
-      /*
+      /**
        * CRC32 is one of hash functions based on on the "polynomial" division idea. The CRC is
        * acronym for Cyclic Redundancy Code (other variants instead "Code" is "Check" and
        * "Checksum") algorithm. The number 32 is specifying the size of resulting hash value
@@ -7467,8 +7466,8 @@ public class Client extends GameApplet {
                          * must be kept private. RSA works because it generates number so large that
                          * it is virtually impossible to find the modulus of given number.
                          */
-                        outgoing.encodeRSA(NetworkConstants.RSA_EXPONENT,
-                                    NetworkConstants.RSA_MODULUS);
+                        outgoing.encodeRSA(Configuration.RSA_EXPONENT,
+                        		Configuration.RSA_MODULUS);
                         login.currentPosition = 0;
                         login.writeByte(reconnecting ? ProtocolConstants.RECONNECTION_OPCODE
                                     : ProtocolConstants.NEW_CONNECTION_OPCODE);
