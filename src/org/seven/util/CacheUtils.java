@@ -22,7 +22,7 @@ public final class CacheUtils {
                                     Client.getFileNameWithoutExtension(file[index].toString()));
                         byte[] data = FileUtils.fileToByteArray(cacheIndex.getIndex(), fileIndex);
                         if (data != null && data.length > 0) {
-                              client.indices[cacheIndex.getIndex()].method234(data.length, data, fileIndex);
+                              client.indices[cacheIndex.getIndex()].writeFile(data.length, data, fileIndex);
                               System.out.println("Repacked " + fileIndex + ".");
                         } else {
                               System.out.println("Unable to locate index " + fileIndex + ".");

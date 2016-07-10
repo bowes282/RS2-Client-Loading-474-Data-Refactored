@@ -4282,7 +4282,7 @@ public class Client extends GameApplet {
                         datainputstream.close();
                         try {
                               if (indices[0] != null)
-                                    indices[0].method234(archiveBuffer.length, archiveBuffer, file);
+                                    indices[0].writeFile(archiveBuffer.length, archiveBuffer, file);
                         } catch (Exception _ex) {
                               indices[0] = null;
                         }

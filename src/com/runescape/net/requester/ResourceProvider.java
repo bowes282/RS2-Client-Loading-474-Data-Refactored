@@ -120,7 +120,7 @@ public final class ResourceProvider extends Provider implements Runnable {
 				for (int skip = 0; skip < remainingData; skip += inputStream.read(data, skip + read, remainingData - skip));
 				if (remainingData + completedSize >= data.length && current != null) {
 					if (clientInstance.indices[0] != null)
-						clientInstance.indices[current.dataType + 1].method234(data.length, data, current.ID);
+						clientInstance.indices[current.dataType + 1].writeFile(data.length, data, current.ID);
 					if (!current.incomplete && current.dataType == 3) {
 						current.incomplete = true;
 						current.dataType = 93;
