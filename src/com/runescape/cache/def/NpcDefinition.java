@@ -103,7 +103,7 @@ public final class NpcDefinition {
 	public NpcDefinition morph() {
 		int child = -1;
 		if (varBitID != -1) {
-			VariableBits varBit = VariableBits.cache[varBitID];
+			VariableBits varBit = VariableBits.varbits[varBitID];
 			int variable = varBit.getSetting();
 			int low = varBit.getLow();
 			int high = varBit.getHigh();

@@ -54,6 +54,13 @@ public final class CacheUtils {
                                                 + ", exiting dump operation.");
                                     break;
                               }
+                              
+                              final File dir = new File(SignLink.findcachedir() + "dump" + cacheIndex.getIndex() + "/");
+                              
+                              if (!dir.exists()) {
+                            	  dir.mkdirs();
+                              }
+                              
                               BufferedOutputStream gzip = new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(SignLink.findcachedir() + "dump" + cacheIndex.getIndex() + "/" + i + ".gz")));
                               
                               if (indexByteArray.length == 0) {

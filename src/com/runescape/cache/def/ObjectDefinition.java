@@ -261,7 +261,7 @@ public final class ObjectDefinition {
 	public ObjectDefinition method580() {
 		int i = -1;
 		if (varbit != -1) {
-			VariableBits varBit = VariableBits.cache[varbit];
+			VariableBits varBit = VariableBits.varbits[varbit];
 			int j = varBit.getSetting();
 			int k = varBit.getLow();
 			int l = varBit.getHigh();

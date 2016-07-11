@@ -24,7 +24,7 @@ import com.runescape.cache.anim.Animation;
 import com.runescape.cache.anim.Frame;
 import com.runescape.cache.anim.Graphic;
 import com.runescape.cache.config.VariableBits;
-import com.runescape.cache.config.VariableParameter;
+import com.runescape.cache.config.VariablePlayer;
 import com.runescape.cache.def.ItemDefinition;
 import com.runescape.cache.def.NpcDefinition;
 import com.runescape.cache.def.ObjectDefinition;
@@ -2005,7 +2005,7 @@ public class Client extends GameApplet {
             
             System.out.println("updating varp: " + id);
             
-            int parameter = VariableParameter.parameters[id].anInt709;
+            int parameter = VariablePlayer.variables[id].getActionId();
 
             if (parameter == 0) {
                   return;
@@ -5778,7 +5778,7 @@ public class Client extends GameApplet {
             Animation.animations = null;
             Graphic.cache = null;
             Graphic.models = null;
-            VariableParameter.parameters = null;
+            VariablePlayer.variables = null;
             super.fullGameScreen = null;
             Player.models = null;
             Rasterizer3D.clear();
@@ -8395,8 +8395,8 @@ public class Client extends GameApplet {
                   NpcDefinition.unpackConfig(configArchive);
                   IdentityKit.unpackConfig(configArchive);
                   Graphic.unpackConfig(configArchive);
-                  VariableParameter.unpackConfig(configArchive);
-                  VariableBits.unpackConfig(configArchive);
+                  VariablePlayer.unpackConfig(configArchive);
+                  VariableBits.init(configArchive);
                   ItemDefinition.isMembers = isMembers;
                   drawLoadingText(95, "Unpacking interfaces");
                   GameFont gameFonts[] = {smallText, regularText, boldText, gameFont};
@@ -10582,7 +10582,7 @@ public class Client extends GameApplet {
                         
                         if (instruction == 14) {
                               int index = script[counter++];
-                              VariableBits bits = VariableBits.cache[index];
+                              VariableBits bits = VariableBits.varbits[index];
                               int setting = bits.getSetting();
                               int low = bits.getLow();
                               int high = bits.getHigh();

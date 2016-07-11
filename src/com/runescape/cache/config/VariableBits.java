@@ -4,43 +4,64 @@ import com.runescape.cache.FileArchive;
 import com.runescape.io.Buffer;
 
 public final class VariableBits {
+	
+	public static VariableBits varbits[];	
+	public int setting;
+	public int low;
+	public int high;
+	private boolean aBoolean651;
 
-	public static void unpackConfig(FileArchive streamLoader) {
+	public static void init(FileArchive streamLoader) {
 		Buffer stream = new Buffer(streamLoader.readFile("varbit.dat"));
 		int size = stream.readUShort();
-		if (cache == null)
-			cache = new VariableBits[size];
+		
+		if (varbits == null) {
+			varbits = new VariableBits[size];
+		}
+		
 		for (int index = 0; index < size; index++) {
-			if (cache[index] == null)
-				cache[index] = new VariableBits();
-			cache[index].readValues(stream);
-			if (cache[index].aBoolean651)
-				VariableParameter.parameters[cache[index].setting].aBoolean713 = true;
+			
+			if (varbits[index] == null) {
+				varbits[index] = new VariableBits();
+			}
+			
+			varbits[index].decode(stream);
+			
+			if (varbits[index].aBoolean651) {
+				VariablePlayer.variables[varbits[index].setting].aBoolean713 = true;
+			}
+			
 		}
 
-		if (stream.currentPosition != stream.payload.length)
+		if (stream.currentPosition != stream.payload.length) {
 			System.out.println("varbit load mismatch");
+		}
+		
 	}
 
-	private void readValues(Buffer stream) {
+	private void decode(Buffer stream) {
 		do {
-			int opCode = stream.readUnsignedByte();
-			if (opCode == 0)
+			int opcode = stream.readUnsignedByte();
+		
+			if (opcode == 0) {
 				return;
-			if (opCode == 1) {
+			}
+			
+			if (opcode == 1) {
 				setting = stream.readUShort();
 				low = stream.readUnsignedByte();
 				high = stream.readUnsignedByte();
-			} else if (opCode == 10)
+			} else if (opcode == 10) {
 				stream.readString();
-			else if (opCode == 2)
+			} else if (opcode == 2) {
 				aBoolean651 = true;
-			else if (opCode == 3)
+			} else if (opcode == 3) {
 				stream.readInt();
-			else if (opCode == 4)
+			} else if (opcode == 4) {
 				stream.readInt();
-			else
-				System.out.println("Error unrecognised config code: " + opCode);
+			} else {
+				System.out.println("Error unrecognised config code: " + opcode);
+			}
 		} while (true);
 	}
 
@@ -59,10 +80,5 @@ public final class VariableBits {
 	public int getHigh() {
 		return high;
 	}
-
-	public static VariableBits cache[];
-	public int setting;
-	public int low;
-	public int high;
-	private boolean aBoolean651;
+	
 }

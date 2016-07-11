@@ -27,7 +27,7 @@ public final class SceneObject extends Renderable {
 		int i = -1;
 		if (anInt1601 != -1) {
 			try {
-				VariableBits varBit = VariableBits.cache[anInt1601];
+				VariableBits varBit = VariableBits.varbits[anInt1601];
 				int k = varBit.getSetting();
 				int l = varBit.getLow();
 				int i1 = varBit.getHigh();
