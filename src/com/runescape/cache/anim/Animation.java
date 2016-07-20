@@ -68,7 +68,7 @@ public final class Animation {
         replayMode = 1; 
     }
 
-    public static void unpackConfig(FileArchive streamLoader)  {
+    public static void init(FileArchive streamLoader)  {
 		Buffer stream = new Buffer(streamLoader.readFile("seq.dat"));
         int length = stream.readUShort();
         if(animations == null) {

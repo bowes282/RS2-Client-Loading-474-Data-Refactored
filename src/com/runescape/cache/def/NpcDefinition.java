@@ -19,7 +19,7 @@ public final class NpcDefinition {
 	public int varBitID;
 	public int turn180AnimIndex;
 	public int settingId;
-	public static Buffer stream;
+	public static Buffer dataBuf;
 	public int combatLevel;
 	public final int anInt64;
 	public String name;
@@ -27,7 +27,7 @@ public final class NpcDefinition {
 	public int walkAnim;
 	public byte size;
 	public int[] recolourTarget;
-	public static int[] streamIndices;
+	public static int[] offsets;
 	public int[] aditionalModels;
 	public int headIcon;
 	public int[] recolourOriginal;
@@ -60,9 +60,9 @@ public final class NpcDefinition {
 
 		anInt56 = (anInt56 + 1) % 20;
 		NpcDefinition definition = cache[anInt56] = new NpcDefinition();
-		stream.currentPosition = streamIndices[id];
+		dataBuf.currentPosition = offsets[id];
 		definition.interfaceType = id;
-		definition.readValues(stream);
+		definition.readValues(dataBuf);
 		return definition;
 	}
 
@@ -118,30 +118,35 @@ public final class NpcDefinition {
 			return lookup(childrenIDs[child]);
 	}
 
-	public static void unpackConfig(FileArchive streamLoader) {
-		stream = new Buffer(streamLoader.readFile("npc.dat"));
-		Buffer stream2 = new Buffer(streamLoader.readFile("npc.idx"));
-		int totalNPCs = stream2.readUShort();
-		streamIndices = new int[totalNPCs];
+	public static void init(FileArchive archive) {		
+		dataBuf = new Buffer(archive.readFile("npc.dat"));		
+		Buffer idxBuf = new Buffer(archive.readFile("npc.idx"));		
+		
+		int size = idxBuf.readUShort();		
+		
+		offsets = new int[size];		
+		
 		int offset = 2;
-		for (int count = 0; count < totalNPCs; count++) {
-			streamIndices[count] = offset;
-			offset += stream2.readUShort();
+		
+		for (int count = 0; count < size; count++) {
+			offsets[count] = offset;
+			offset += idxBuf.readUShort();
 		}
 
 		cache = new NpcDefinition[20];
+		
 		for (int count = 0; count < 20; count++) {
 			cache[count] = new NpcDefinition();
 		}		
 		
-		System.out.println("Loaded: " + totalNPCs + " Npcs");
+		System.out.println("Loaded: " + size + " Npcs");
 	}
 
 	public static void clear() {
 		modelCache = null;
-		streamIndices = null;
+		offsets = null;
 		cache = null;
-		stream = null;
+		dataBuf = null;
 	}
 
 	public Model method164(int j, int somethingCurrentAnimsFrameNumber, int ai[], int nextFrame, int idk,

@@ -245,7 +245,7 @@ public final class Sprite extends Rasterizer2D {
 		setTransparency(255, 0, 255);
 	}
 
-	public void method343() {
+	public void init() {
 		Rasterizer2D.initDrawingArea(myHeight, myWidth, myPixels, null);
 	}
 

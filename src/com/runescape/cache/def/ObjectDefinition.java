@@ -191,7 +191,7 @@ public final class ObjectDefinition {
 		stream = null;
 	}
 
-	public static void unpackConfig(FileArchive streamLoader) throws IOException {
+	public static void init(FileArchive streamLoader) throws IOException {
 		stream = new Buffer(streamLoader.readFile("loc.dat"));
 		Buffer stream = new Buffer(streamLoader.readFile("loc.idx"));
 		int totalObjects = stream.readUShort();

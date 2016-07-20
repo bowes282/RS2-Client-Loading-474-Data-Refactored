@@ -20,7 +20,7 @@ public final class VariablePlayer {
 		aBoolean713 = false;
 	}
 
-	public static void unpackConfig(FileArchive archive) {
+	public static void init(FileArchive archive) {
 		Buffer buffer = new Buffer(archive.readFile("varp.dat"));
 		
 		currentIndex = 0;

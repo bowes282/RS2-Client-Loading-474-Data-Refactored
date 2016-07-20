@@ -6,7 +6,7 @@ import com.runescape.io.Buffer;
 
 public final class Graphic {
 
-	public static void unpackConfig(FileArchive streamLoader) {
+	public static void init(FileArchive streamLoader) {
 		Buffer stream = new Buffer(streamLoader.readFile("spotanim.dat"));
 		int length = stream.readUShort();
 		if (cache == null)

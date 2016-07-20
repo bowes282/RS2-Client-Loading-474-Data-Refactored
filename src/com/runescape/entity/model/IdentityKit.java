@@ -21,7 +21,7 @@ public final class IdentityKit {
 		validStyle = false;
 	}
 
-	public static void unpackConfig(FileArchive archive) {
+	public static void init(FileArchive archive) {
 		Buffer stream = new Buffer(archive.readFile("idk.dat"));
 		length = stream.readUShort();
 		if (kits == null)

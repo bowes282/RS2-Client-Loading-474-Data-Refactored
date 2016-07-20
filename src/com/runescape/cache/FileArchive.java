@@ -39,12 +39,18 @@ public final class FileArchive {
 
 	public FileArchive(byte data[]) {
 		Buffer buffer = new Buffer(data);
-		int length = buffer.readTriByte();
-		int decompressedLength = buffer.readTriByte();
-		if (decompressedLength != length) {
-			byte output[] = new byte[length];
-			BZip2Decompressor.decompress(output, length, data, decompressedLength, 6);
+		
+		int decompressedLength = buffer.readTriByte();		
+		int compressedLength = buffer.readTriByte();		
+		
+		if (compressedLength != decompressedLength) {
+			
+			byte output[] = new byte[decompressedLength];
+			
+			BZip2Decompressor.decompress(output, decompressedLength, data, compressedLength, 6);
+			
 			this.buffer = output;
+			
 			buffer = new Buffer(this.buffer);
 			extracted = true;
 		} else {
@@ -76,8 +82,9 @@ public final class FileArchive {
 
 		for (int file = 0; file < entries; file++) {
 			if (identifiers[file] == hash) {
-				if (output == null)
+				if (output == null) {
 					output = new byte[extractedSizes[file]];
+				}
 				if (!extracted) {
 					BZip2Decompressor.decompress(output, extractedSizes[file], this.buffer,
 							sizes[file], indices[file]);

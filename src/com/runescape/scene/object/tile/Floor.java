@@ -5,7 +5,7 @@ import com.runescape.io.Buffer;
 
 public final class Floor {
 
-	public static void unpackConfig(FileArchive streamLoader) {
+	public static void init(FileArchive streamLoader) {
 		Buffer stream = new Buffer(streamLoader.readFile("flo.dat"));
 		int cacheSize = stream.readUShort();
 		if (cache == null)

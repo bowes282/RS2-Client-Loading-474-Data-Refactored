@@ -10,6 +10,20 @@ public final class PacketConstants {
 	private PacketConstants() {
 		
 	}
+	
+	public static final int FOCUS_CHANGE = 3;
+	
+	public static final int FLAG_ACCOUNT = 45;
+	
+	public static final int ADD_FRIEND = 188;
+	
+	public static final int REPORT_PLAYER = 218;
+	
+	public static final int IDLE = 0;
+	
+	public static final int CAMERA_MOVEMENT = 86;
+	
+	public static final int ENTER_REGION = 210;
 
 	public static final int PLAYER_UPDATING = 81;
 
@@ -22,6 +36,8 @@ public final class PacketConstants {
 	public static final int TRANSFORM_PLAYER_TO_OBJECT = 147;
 
 	public static final int SEND_REMOVE_OBJECT = 101;
+	
+	public static final int DESIGN_SCREEN = 101;
 
 	public static final int SEND_PROJECTILE = 117;
 
@@ -36,6 +52,8 @@ public final class PacketConstants {
 	public static final int OPEN_WELCOME_SCREEN = 176;
 
 	public static final int SHOW_PLAYER_HEAD_ON_INTERFACE = 185;
+	
+	public static final int BUTTON_CLICK = 185;
 
 	public static final int CLAN_CHAT = 217; // 317 did not have this
 
@@ -44,6 +62,8 @@ public final class PacketConstants {
 	public static final int CLEAN_ITEMS_OF_INTERFACE = 72;
 
 	public static final int SHOW_IGNORE_NAMES = 214;
+	
+	public static final int MOVE_ITEM = 214;
 
 	public static final int SPIN_CAMERA = 166;
 
@@ -54,6 +74,8 @@ public final class PacketConstants {
 	public static final int PLAY_SONG = 74;
 
 	public static final int NEXT_OR_PREVIOUS_SONG = 121;
+	
+	public static final int LOADED_REGION = 121;
 
 	public static final int LOGOUT = 109;
 
@@ -145,9 +167,15 @@ public final class PacketConstants {
 
 	public static final int SEND_REGION_MAP_REGION = 241;
 	
+	public static final int MOUSE_CLICK = 241;
+	
 	public static final int SYSTEM_UPDATE = 114;
 	
 	public static final int PLAY_SOUND_EFFECT = 174;
+	
+	public static final int IDLE_LOGOUT = 202;
+	
+	public static final int ITEM_ON_NPC = 57;
 	
 	/**
 	 * This array is interesting, it's never used and it has interesting properites.

@@ -35,22 +35,25 @@ public final class ItemDefinition {
 		return cached;
 	}
 
-	public static void unpackConfig(FileArchive archive) {
+	public static void init(FileArchive archive) {
 		item_data = new Buffer(archive.readFile("obj.dat"));
 		Buffer stream = new Buffer(archive.readFile("obj.idx"));
 		item_count = stream.readUShort() + 21;
 		streamIndices = new int[item_count + 50000];
 		int offset = 2;
-		
+
 		System.out.println("Loaded: " + item_count + " Items");
-		
+
 		for (int _ctr = 0; _ctr < item_count - 21; _ctr++) {
 			streamIndices[_ctr] = offset;
 			offset += stream.readUShort();
 		}
 		cache = new ItemDefinition[10];
-		for (int _ctr = 0; _ctr < 10; _ctr++)
+		
+		for (int _ctr = 0; _ctr < 10; _ctr++) {
 			cache[_ctr] = new ItemDefinition();
+		}
+
 	}
 
 	public Model getChatEquipModel(int gender) {
@@ -70,8 +73,7 @@ public final class ItemDefinition {
 		}
 		if (modified_model_colors != null) {
 			for (int i1 = 0; i1 < modified_model_colors.length; i1++)
-				dialogueModel_.recolor(modified_model_colors[i1],
-						original_model_colors[i1]);
+				dialogueModel_.recolor(modified_model_colors[i1], original_model_colors[i1]);
 
 		}
 		return dialogueModel_;
@@ -127,8 +129,7 @@ public final class ItemDefinition {
 			primaryModel_.translate(0, equipped_model_female_translation_y, 0);
 		if (modified_model_colors != null) {
 			for (int i1 = 0; i1 < modified_model_colors.length; i1++)
-				primaryModel_.recolor(modified_model_colors[i1],
-						original_model_colors[i1]);
+				primaryModel_.recolor(modified_model_colors[i1], original_model_colors[i1]);
 
 		}
 		return primaryModel_;
@@ -220,16 +221,14 @@ public final class ItemDefinition {
 		char c = itemDef_1.name.charAt(0);
 		if (c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U')
 			s = "an";
-		description = ("Swap this note at any bank for " + s + " "
-				+ itemDef_1.name + ".").getBytes();
+		description = ("Swap this note at any bank for " + s + " " + itemDef_1.name + ".");
 		stackable = true;
 	}
 
 	public static Sprite getSprite(int itemId, int stackSize, int outlineColor) {
 		if (outlineColor == 0) {
 			Sprite sprite = (Sprite) sprites.get(itemId);
-			if (sprite != null && sprite.maxHeight != stackSize
-					&& sprite.maxHeight != -1) {
+			if (sprite != null && sprite.maxHeight != stackSize && sprite.maxHeight != -1) {
 
 				sprite.unlink();
 				sprite = null;
@@ -243,8 +242,7 @@ public final class ItemDefinition {
 		if (stackSize > 1) {
 			int stack_item_id = -1;
 			for (int j1 = 0; j1 < 10; j1++)
-				if (stackSize >= itemDef.stack_variant_size[j1]
-						&& itemDef.stack_variant_size[j1] != 0)
+				if (stackSize >= itemDef.stack_variant_size[j1] && itemDef.stack_variant_size[j1] != 0)
 					stack_item_id = itemDef.stack_variant_id[j1];
 
 			if (stack_item_id != -1)
@@ -272,8 +270,7 @@ public final class ItemDefinition {
 		int vp_top = Rasterizer2D.topY;
 		int vp_bottom = Rasterizer2D.bottomY;
 		Rasterizer3D.aBoolean1464 = false;
-		Rasterizer2D.initDrawingArea(32, 32, enabledSprite.myPixels,
-				new float[32 * 32]);
+		Rasterizer2D.initDrawingArea(32, 32, enabledSprite.myPixels, new float[32 * 32]);
 		Rasterizer2D.drawBox(0, 0, 32, 32, 0);
 		Rasterizer3D.useViewport();
 		int k3 = itemDef.model_zoom;
@@ -283,23 +280,18 @@ public final class ItemDefinition {
 			k3 = (int) ((double) k3 * 1.04D);
 		int l3 = Rasterizer3D.anIntArray1470[itemDef.rotation_y] * k3 >> 16;
 		int i4 = Rasterizer3D.COSINE[itemDef.rotation_y] * k3 >> 16;
-		model.method482(itemDef.rotation_x, itemDef.rotation_z,
-				itemDef.rotation_y, itemDef.translate_x, l3 + model.modelBaseY
-						/ 2 + itemDef.translate_yz, i4 + itemDef.translate_yz);
+		model.method482(itemDef.rotation_x, itemDef.rotation_z, itemDef.rotation_y, itemDef.translate_x,
+				l3 + model.modelBaseY / 2 + itemDef.translate_yz, i4 + itemDef.translate_yz);
 		for (int i5 = 31; i5 >= 0; i5--) {
 			for (int j4 = 31; j4 >= 0; j4--)
 				if (enabledSprite.myPixels[i5 + j4 * 32] == 0)
-					if (i5 > 0
-							&& enabledSprite.myPixels[(i5 - 1) + j4 * 32] > 1)
+					if (i5 > 0 && enabledSprite.myPixels[(i5 - 1) + j4 * 32] > 1)
 						enabledSprite.myPixels[i5 + j4 * 32] = 1;
-					else if (j4 > 0
-							&& enabledSprite.myPixels[i5 + (j4 - 1) * 32] > 1)
+					else if (j4 > 0 && enabledSprite.myPixels[i5 + (j4 - 1) * 32] > 1)
 						enabledSprite.myPixels[i5 + j4 * 32] = 1;
-					else if (i5 < 31
-							&& enabledSprite.myPixels[i5 + 1 + j4 * 32] > 1)
+					else if (i5 < 31 && enabledSprite.myPixels[i5 + 1 + j4 * 32] > 1)
 						enabledSprite.myPixels[i5 + j4 * 32] = 1;
-					else if (j4 < 31
-							&& enabledSprite.myPixels[i5 + (j4 + 1) * 32] > 1)
+					else if (j4 < 31 && enabledSprite.myPixels[i5 + (j4 + 1) * 32] > 1)
 						enabledSprite.myPixels[i5 + j4 * 32] = 1;
 
 		}
@@ -308,17 +300,13 @@ public final class ItemDefinition {
 			for (int j5 = 31; j5 >= 0; j5--) {
 				for (int k4 = 31; k4 >= 0; k4--)
 					if (enabledSprite.myPixels[j5 + k4 * 32] == 0)
-						if (j5 > 0
-								&& enabledSprite.myPixels[(j5 - 1) + k4 * 32] == 1)
+						if (j5 > 0 && enabledSprite.myPixels[(j5 - 1) + k4 * 32] == 1)
 							enabledSprite.myPixels[j5 + k4 * 32] = outlineColor;
-						else if (k4 > 0
-								&& enabledSprite.myPixels[j5 + (k4 - 1) * 32] == 1)
+						else if (k4 > 0 && enabledSprite.myPixels[j5 + (k4 - 1) * 32] == 1)
 							enabledSprite.myPixels[j5 + k4 * 32] = outlineColor;
-						else if (j5 < 31
-								&& enabledSprite.myPixels[j5 + 1 + k4 * 32] == 1)
+						else if (j5 < 31 && enabledSprite.myPixels[j5 + 1 + k4 * 32] == 1)
 							enabledSprite.myPixels[j5 + k4 * 32] = outlineColor;
-						else if (k4 < 31
-								&& enabledSprite.myPixels[j5 + (k4 + 1) * 32] == 1)
+						else if (k4 < 31 && enabledSprite.myPixels[j5 + (k4 + 1) * 32] == 1)
 							enabledSprite.myPixels[j5 + k4 * 32] = outlineColor;
 
 			}
@@ -326,9 +314,7 @@ public final class ItemDefinition {
 		} else if (outlineColor == 0) {
 			for (int k5 = 31; k5 >= 0; k5--) {
 				for (int l4 = 31; l4 >= 0; l4--)
-					if (enabledSprite.myPixels[k5 + l4 * 32] == 0
-							&& k5 > 0
-							&& l4 > 0
+					if (enabledSprite.myPixels[k5 + l4 * 32] == 0 && k5 > 0 && l4 > 0
 							&& enabledSprite.myPixels[(k5 - 1) + (l4 - 1) * 32] > 0)
 						enabledSprite.myPixels[k5 + l4 * 32] = 0x302020;
 
@@ -364,8 +350,7 @@ public final class ItemDefinition {
 		if (stack_variant_id != null && stack_size > 1) {
 			int stack_item_id = -1;
 			for (int k = 0; k < 10; k++)
-				if (stack_size >= stack_variant_size[k]
-						&& stack_variant_size[k] != 0)
+				if (stack_size >= stack_variant_size[k] && stack_variant_size[k] != 0)
 					stack_item_id = stack_variant_id[k];
 
 			if (stack_item_id != -1)
@@ -377,13 +362,11 @@ public final class ItemDefinition {
 		model = Model.getModel(inventory_model);
 		if (model == null)
 			return null;
-		if (model_scale_x != 128 || model_scale_y != 128
-				|| model_scale_z != 128)
+		if (model_scale_x != 128 || model_scale_y != 128 || model_scale_z != 128)
 			model.scale(model_scale_x, model_scale_z, model_scale_y);
 		if (modified_model_colors != null) {
 			for (int l = 0; l < modified_model_colors.length; l++)
-				model.recolor(modified_model_colors[l],
-						original_model_colors[l]);
+				model.recolor(modified_model_colors[l], original_model_colors[l]);
 
 		}
 		model.light(64 + light_intensity, 768 + light_mag, -50, -10, -50, true);
@@ -396,8 +379,7 @@ public final class ItemDefinition {
 		if (stack_variant_id != null && stack_size > 1) {
 			int stack_item_id = -1;
 			for (int count = 0; count < 10; count++)
-				if (stack_size >= stack_variant_size[count]
-						&& stack_variant_size[count] != 0)
+				if (stack_size >= stack_variant_size[count] && stack_variant_size[count] != 0)
 					stack_item_id = stack_variant_id[count];
 
 			if (stack_item_id != -1)
@@ -408,8 +390,7 @@ public final class ItemDefinition {
 			return null;
 		if (modified_model_colors != null) {
 			for (int colorPtr = 0; colorPtr < modified_model_colors.length; colorPtr++)
-				model.recolor(modified_model_colors[colorPtr],
-						original_model_colors[colorPtr]);
+				model.recolor(modified_model_colors[colorPtr], original_model_colors[colorPtr]);
 
 		}
 		return model;
@@ -425,7 +406,7 @@ public final class ItemDefinition {
 			else if (opCode == 2)
 				name = buffer.readString();
 			else if (opCode == 3)
-				description = buffer.readBytes();
+				description = buffer.readString();
 			else if (opCode == 4)
 				model_zoom = buffer.readUShort();
 			else if (opCode == 5)
@@ -542,7 +523,7 @@ public final class ItemDefinition {
 	public int inventory_model;
 	public int equipped_model_male_dialogue_1;
 	public boolean stackable;
-	public byte description[];
+	public String description;
 	public int unnoted_item_id;
 	private static int cacheIndex;
 	public int model_zoom;
