@@ -942,7 +942,7 @@ public final class SceneGraph {
 		clicked = false;
 	}
 
-	private void renderTileF(Tile tile, boolean flag) { //TODO what does F stand for? Face???
+	private void renderTileF(Tile tile, boolean flag) {
 		tileDeque.insertHead(tile);
 		do {
 			Tile currentTile;

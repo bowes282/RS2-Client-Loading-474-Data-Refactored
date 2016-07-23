@@ -1996,7 +1996,7 @@ public class Client extends GameApplet {
                                     break;
                               }
                         } else {
-                              pushMessage("Please close the interface you have open before using 'report abuse'",
+                              sendMessage("Please close the interface you have open before using 'report abuse'",
                                           0, "");
                         }
                   }
@@ -2861,24 +2861,24 @@ public class Client extends GameApplet {
                   if (nameHash == 0L)
                         return;
                   if (friendsCount >= 100 && member != 1) {
-                        pushMessage("Your friendlist is full. Max of 100 for free users, and 200 for members",
+                        sendMessage("Your friendlist is full. Max of 100 for free users, and 200 for members",
                                     0, "");
                         return;
                   }
                   if (friendsCount >= 200) {
-                        pushMessage("Your friendlist is full. Max of 100 for free users, and 200 for members",
+                        sendMessage("Your friendlist is full. Max of 100 for free users, and 200 for members",
                                     0, "");
                         return;
                   }
                   String s = StringUtils.formatUsername(StringUtils.decodeBase37(nameHash));
                   for (int i = 0; i < friendsCount; i++)
                         if (friendsListAsLongs[i] == nameHash) {
-                              pushMessage(s + " is already on your friend list", 0, "");
+                              sendMessage(s + " is already on your friend list", 0, "");
                               return;
                         }
                   for (int j = 0; j < ignoreCount; j++)
                         if (ignoreListAsLongs[j] == nameHash) {
-                              pushMessage("Please remove " + s + " from your ignore list first", 0,
+                              sendMessage("Please remove " + s + " from your ignore list first", 0,
                                           "");
                               return;
                         }
@@ -4618,7 +4618,7 @@ public class Client extends GameApplet {
                         crossIndex = 0;
                         anInt1188 += clicked;
                         if (anInt1188 >= 90) {
-                        	//TODO unknown
+                        	//TODO unknown (anti-cheat)
                               outgoing.writeOpcode(136);
                               anInt1188 = 0;
                         }
@@ -4665,13 +4665,13 @@ public class Client extends GameApplet {
             if (action == 1062) {
                   anInt924 += regionBaseX;
                   if (anInt924 >= 113) {
-                	  // TODO unknown
+                	  // TODO unknown (anti-bot)
                         outgoing.writeOpcode(183);
                         outgoing.writeTriByte(0xe63271);
                         anInt924 = 0;
                   }
                   clickObject(clicked, button, first);
-                  //TODO unknown
+                  //TODO unknown (non-anti bot)
                   outgoing.writeOpcode(228);
                   outgoing.writeShortA(clicked >> 14 & 0x7fff);
                   outgoing.writeShortA(button + regionBaseY);
@@ -4772,7 +4772,7 @@ public class Client extends GameApplet {
                               if (action == 6) {
                                     anInt1188 += clicked;
                                     if (anInt1188 >= 90) {
-                                    	//TODO unknown
+                                    	//TODO unknown (anti-cheat)
                                           outgoing.writeOpcode(136);
                                           anInt1188 = 0;
                                     }
@@ -4784,7 +4784,7 @@ public class Client extends GameApplet {
                         }
 
                         if (!flag9)
-                              pushMessage("Unable to find " + s7, 0, "");
+                              sendMessage("Unable to find " + s7, 0, "");
                   }
             }
             if (action == 870) {
@@ -4875,7 +4875,7 @@ public class Client extends GameApplet {
                         crossIndex = 0;
                         anInt986 += clicked;
                         if (anInt986 >= 54) {
-                        	//TODO unknown
+                        	//TODO unknown (anti-cheat)
                               outgoing.writeOpcode(189);
                               outgoing.writeByte(234);
                               anInt986 = 0;
@@ -5035,7 +5035,7 @@ public class Client extends GameApplet {
                   crossY = super.saveClickY;
                   crossType = 2;
                   crossIndex = 0;
-                  //TODO unknown
+                  //TODO unknown (non-anti bot)
                   outgoing.writeOpcode(156);
                   outgoing.writeShortA(first + regionBaseX);
                   outgoing.writeLEShort(button + regionBaseY);
@@ -5051,7 +5051,7 @@ public class Client extends GameApplet {
                   crossY = super.saveClickY;
                   crossType = 2;
                   crossIndex = 0;
-                  //TODO unknown
+                  //TODO unknown (non-anti-cheat)
                   outgoing.writeOpcode(181);
                   outgoing.writeLEShort(button + regionBaseY);
                   outgoing.writeShort(clicked);
@@ -5090,18 +5090,18 @@ public class Client extends GameApplet {
                   }
             }
             if (action == 225) {
-                  Npc class30_sub2_sub4_sub1_sub1_2 = npcs[clicked];
-                  if (class30_sub2_sub4_sub1_sub1_2 != null) {
+                  Npc npc = npcs[clicked];                  
+                  if (npc != null) {
                         doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
-                                    class30_sub2_sub4_sub1_sub1_2.pathY[0], localPlayer.pathX[0],
-                                    false, class30_sub2_sub4_sub1_sub1_2.pathX[0]);
+                                    npc.pathY[0], localPlayer.pathX[0],
+                                    false, npc.pathX[0]);
                         crossX = super.saveClickX;
                         crossY = super.saveClickY;
                         crossType = 2;
                         crossIndex = 0;
                         anInt1226 += clicked;
                         if (anInt1226 >= 85) {
-                        	// TODO unknown
+                        	// TODO unknown (anti-cheat)
                               outgoing.writeOpcode(230);
                               outgoing.writeByte(239);
                               anInt1226 = 0;
@@ -5123,7 +5123,7 @@ public class Client extends GameApplet {
                         crossIndex = 0;
                         anInt1134++;
                         if (anInt1134 >= 96) {
-                        	//TODO unknown
+                        	//TODO unknown (anti-cheat)
                               outgoing.writeOpcode(152);
                               outgoing.writeByte(88);
                               anInt1134 = 0;
@@ -5142,7 +5142,7 @@ public class Client extends GameApplet {
                         crossY = super.saveClickY;
                         crossType = 2;
                         crossIndex = 0;
-                        //TODO unknown
+                        //TODO unknown (non-anti-cheat)
                         outgoing.writeOpcode(131);
                         outgoing.writeLEShortA(clicked);
                         outgoing.writeShortA(anInt1137);
@@ -5162,7 +5162,7 @@ public class Client extends GameApplet {
                                     s9 = new String(entityDef.description);
                               else
                                     s9 = "It's a " + entityDef.name + ".";
-                              pushMessage(s9, 0, "");
+                              sendMessage(s9, 0, "");
                         }
                   }
             }
@@ -5251,17 +5251,20 @@ public class Client extends GameApplet {
                   crossY = super.saveClickY;
                   crossType = 2;
                   crossIndex = 0;
-                  //TODO unknown
+                  //TODO unknown (non-anti-cheat)
                   outgoing.writeOpcode(23);
                   outgoing.writeLEShort(button + regionBaseY);
                   outgoing.writeLEShort(clicked);
                   outgoing.writeLEShort(first + regionBaseX);
             }
             if (action == 867) {
-                  if ((clicked & 3) == 0)
+            	
+                  if ((clicked & 3) == 0) {
                         anInt1175++;
+                  }
+                  
                   if (anInt1175 >= 59) {
-                	  //TODO unknown
+                	  //TODO unknown (anti-cheat)
                         outgoing.writeOpcode(200);
                         outgoing.writeShort(25501);
                         anInt1175 = 0;
@@ -5314,7 +5317,7 @@ public class Client extends GameApplet {
                               }
 
                         } else {
-                              pushMessage("Please close the interface you have open before using 'report abuse'",
+                              sendMessage("Please close the interface you have open before using 'report abuse'",
                                           0, "");
                         }
             }
@@ -5386,14 +5389,18 @@ public class Client extends GameApplet {
                         crossY = super.saveClickY;
                         crossType = 2;
                         crossIndex = 0;
-                        if ((clicked & 3) == 0)
+                        
+                        if ((clicked & 3) == 0) {
                               anInt1155++;
+                        }
+                        
                         if (anInt1155 >= 53) {
-                        	//TODO unknown
+                        	//TODO unknown (anti-cheat)
                               outgoing.writeOpcode(85);
                               outgoing.writeByte(66);
                               anInt1155 = 0;
                         }
+                        
                         // npc option 4
                         outgoing.writeOpcode(18);
                         outgoing.writeLEShort(clicked);
@@ -5416,7 +5423,7 @@ public class Client extends GameApplet {
             }
             if (action == 502) {
                   clickObject(clicked, button, first);
-                  //TODO unknown
+                  //TODO unknown (non-anti cheat)
                   outgoing.writeOpcode(132);
                   outgoing.writeLEShortA(first + regionBaseX);
                   outgoing.writeShort(clicked >> 14 & 0x7fff);
@@ -5432,7 +5439,7 @@ public class Client extends GameApplet {
                         s5 = new String(itemDef.description);
                   else
                         s5 = "It's a " + itemDef.name + ".";
-                  pushMessage(s5, 0, "");
+                  sendMessage(s5, 0, "");
             }
 
 
@@ -5466,7 +5473,7 @@ public class Client extends GameApplet {
                         s10 = new String(class46.description);
                   else
                         s10 = "It's a " + class46.name + ".";
-                  pushMessage(s10, 0, "");
+                  sendMessage(s10, 0, "");
             }
             if (action == 244) {
                   boolean flag7 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, button,
@@ -5491,7 +5498,7 @@ public class Client extends GameApplet {
                         s6 = new String(itemDef_1.description);
                   else
                         s6 = "It's a " + itemDef_1.name + ".";
-                  pushMessage(s6, 0, "");
+                  sendMessage(s6, 0, "");
             }
             itemSelected = 0;
             spellSelected = 0;
@@ -5897,7 +5904,7 @@ public class Client extends GameApplet {
                                     outgoing.writeBytes(outgoing.currentPosition - k);
                                     promptInput = ChatMessageCodec.processText(promptInput);
                                     // promptInput = Censor.doCensor(promptInput);
-                                    pushMessage(promptInput, 6, StringUtils.formatUsername(
+                                    sendMessage(promptInput, 6, StringUtils.formatUsername(
                                                 StringUtils.decodeBase37(aLong953)));
                                     if (privateChatMode == 2) {
                                           privateChatMode = 1;
@@ -6020,9 +6027,9 @@ public class Client extends GameApplet {
                                                 int id2 = Integer.parseInt(args[2]);
                                                 fullscreenInterfaceID = id1;
                                                 openInterfaceId = id2;
-                                                pushMessage("Opened Interface", 0, "");
+                                                sendMessage("Opened Interface", 0, "");
                                           } catch (Exception e) {
-                                                pushMessage("Interface Failed to load", 0, "");
+                                                sendMessage("Interface Failed to load", 0, "");
                                           }
                                     }
 
@@ -6057,143 +6064,157 @@ public class Client extends GameApplet {
                                           Widget.load(interfaces, fonts, graphics);
                                           System.out.println("Reloaded interfaces.");
                                     }
+                                    
                                     if (inputString.equals("::fog"))
                                           Configuration.enableFog = !Configuration.enableFog;
 
                                     if (inputString.equals("::fixed")) {
                                           frameMode(ScreenMode.FIXED);
                                     }
+                                    
                                     if (inputString.equals("::resize")) {
                                           frameMode(ScreenMode.RESIZABLE);
                                     }
+                                    
                                     if (inputString.equals("::full")) {
                                           frameMode(ScreenMode.FULLSCREEN);
                                     }
+                                    
                                     if (inputString.equals("::width")) {
                                           System.out.println(frameWidth);
                                     }
+                                    
                                     if (inputString.equals("::chat")) {
                                           if (frameMode != ScreenMode.FIXED) {
                                                 changeChatArea = !changeChatArea;
                                           }
                                     }
+                                    
                                     if (inputString.equals("::tab")) {
                                           if (frameMode != ScreenMode.FIXED) {
                                                 changeTabArea = !changeTabArea;
                                           }
                                     }
+                                    
                                     if (inputString.equals("::optab")) {
                                           if (frameMode != ScreenMode.FIXED) {
                                                 transparentTabArea = !transparentTabArea;
                                           }
                                     }
+                                    
                                     if (inputString.equals("::height")) {
                                           System.out.println(frameHeight);
                                     }
+                                    
                                     if (inputString.equals("::data")) {
                                           Configuration.clientData = !Configuration.clientData;
                                     }
+                                    
                                     if (inputString.equals("::noclip")) {
-                                          for (int k1 = 0; k1 < 4; k1++) {
-                                                for (int i2 = 1; i2 < 103; i2++) {
-                                                      for (int k2 = 1; k2 < 103; k2++) {
-                                                            collisionMaps[k1].adjacencies[i2][k2] =
+                                          for (int plane = 0; plane < 4; plane++) {
+                                                for (int x = 1; x < 103; x++) {                                                  	
+                                                      for (int y = 1; y < 103; y++) {                                                    	  
+                                                            collisionMaps[plane].adjacencies[x][y] =
                                                                         0;
                                                       }
                                                 }
                                           }
                                     }
                               }
-                              if (inputString.startsWith("/"))
+                              
+                              if (inputString.startsWith("/")) {
                                     inputString = "::" + inputString;
+                              }
+                              
                               if (inputString.startsWith("::")) {
                             	  // command
                                     outgoing.writeOpcode(103);
                                     outgoing.writeByte(inputString.length() - 1);
                                     outgoing.writeString(inputString.substring(2));
                               } else {
-                                    String s = inputString.toLowerCase();
-                                    int j2 = 0;
-                                    if (s.startsWith("yellow:")) {
-                                          j2 = 0;
+                                    String text = inputString.toLowerCase();
+                                    int colorCode = 0;                                    
+                                    if (text.startsWith("yellow:")) {
+                                          colorCode = 0;
                                           inputString = inputString.substring(7);
-                                    } else if (s.startsWith("red:")) {
-                                          j2 = 1;
+                                    } else if (text.startsWith("red:")) {
+                                          colorCode = 1;                                          
                                           inputString = inputString.substring(4);
-                                    } else if (s.startsWith("green:")) {
-                                          j2 = 2;
+                                    } else if (text.startsWith("green:")) {
+                                          colorCode = 2;
                                           inputString = inputString.substring(6);
-                                    } else if (s.startsWith("cyan:")) {
-                                          j2 = 3;
+                                    } else if (text.startsWith("cyan:")) {
+                                          colorCode = 3;
                                           inputString = inputString.substring(5);
-                                    } else if (s.startsWith("purple:")) {
-                                          j2 = 4;
+                                    } else if (text.startsWith("purple:")) {
+                                          colorCode = 4;
                                           inputString = inputString.substring(7);
-                                    } else if (s.startsWith("white:")) {
-                                          j2 = 5;
+                                    } else if (text.startsWith("white:")) {
+                                          colorCode = 5;
                                           inputString = inputString.substring(6);
-                                    } else if (s.startsWith("flash1:")) {
-                                          j2 = 6;
+                                    } else if (text.startsWith("flash1:")) {
+                                          colorCode = 6;
                                           inputString = inputString.substring(7);
-                                    } else if (s.startsWith("flash2:")) {
-                                          j2 = 7;
+                                    } else if (text.startsWith("flash2:")) {
+                                          colorCode = 7;
                                           inputString = inputString.substring(7);
-                                    } else if (s.startsWith("flash3:")) {
-                                          j2 = 8;
+                                    } else if (text.startsWith("flash3:")) {
+                                          colorCode = 8;
                                           inputString = inputString.substring(7);
-                                    } else if (s.startsWith("glow1:")) {
-                                          j2 = 9;
+                                    } else if (text.startsWith("glow1:")) {
+                                          colorCode = 9;
                                           inputString = inputString.substring(6);
-                                    } else if (s.startsWith("glow2:")) {
-                                          j2 = 10;
+                                    } else if (text.startsWith("glow2:")) {
+                                          colorCode = 10;
                                           inputString = inputString.substring(6);
-                                    } else if (s.startsWith("glow3:")) {
-                                          j2 = 11;
+                                    } else if (text.startsWith("glow3:")) {                                    	
+                                          colorCode = 11;
                                           inputString = inputString.substring(6);
                                     }
-                                    s = inputString.toLowerCase();
-                                    int i3 = 0;
-                                    if (s.startsWith("wave:")) {
-                                          i3 = 1;
+                                    text = inputString.toLowerCase();                                    
+                                    int effectCode = 0;
+                                    if (text.startsWith("wave:")) {
+                                          effectCode = 1;
                                           inputString = inputString.substring(5);
-                                    } else if (s.startsWith("wave2:")) {
-                                          i3 = 2;
+                                    } else if (text.startsWith("wave2:")) {
+                                          effectCode = 2;
                                           inputString = inputString.substring(6);
-                                    } else if (s.startsWith("shake:")) {
-                                          i3 = 3;
+                                    } else if (text.startsWith("shake:")) {
+                                          effectCode = 3;
                                           inputString = inputString.substring(6);
-                                    } else if (s.startsWith("scroll:")) {
-                                          i3 = 4;
+                                    } else if (text.startsWith("scroll:")) {
+                                          effectCode = 4;
                                           inputString = inputString.substring(7);
-                                    } else if (s.startsWith("slide:")) {
-                                          i3 = 5;
+                                    } else if (text.startsWith("slide:")) {
+                                          effectCode = 5;
                                           inputString = inputString.substring(6);
                                     }
                                     // chat
                                     outgoing.writeOpcode(4);
                                     outgoing.writeByte(0);
-                                    int j3 = outgoing.currentPosition;
-                                    outgoing.writeByteS(i3);
-                                    outgoing.writeByteS(j2);
+                                    int bufPos = outgoing.currentPosition;                                    
+                                    outgoing.writeByteS(effectCode);
+                                    outgoing.writeByteS(colorCode);
                                     chatBuffer.currentPosition = 0;
                                     ChatMessageCodec.encode(inputString, chatBuffer);
                                     outgoing.writeReverseDataA(chatBuffer.payload, 0,
                                                 chatBuffer.currentPosition);
-                                    outgoing.writeBytes(outgoing.currentPosition - j3);
+                                    outgoing.writeBytes(outgoing.currentPosition - bufPos);
                                     inputString = ChatMessageCodec.processText(inputString);
                                     // inputString = Censor.doCensor(inputString);
                                     localPlayer.spokenText = inputString;
-                                    localPlayer.textColour = j2;
-                                    localPlayer.textEffect = i3;
+                                    localPlayer.textColour = colorCode;
+                                    localPlayer.textEffect = effectCode;
                                     localPlayer.textCycle = 150;
-                                    if (myPrivilege == 2)
-                                          pushMessage(localPlayer.spokenText, 2,
+                                    if (myPrivilege == 2) {
+                                          sendMessage(localPlayer.spokenText, 2,
                                                       "@cr2@" + localPlayer.name);
-                                    else if (myPrivilege == 1)
-                                          pushMessage(localPlayer.spokenText, 2,
+                                    } else if (myPrivilege == 1) {
+                                          sendMessage(localPlayer.spokenText, 2,
                                                       "@cr1@" + localPlayer.name);
-                                    else
-                                          pushMessage(localPlayer.spokenText, 2, localPlayer.name);
+                                    } else {
+                                          sendMessage(localPlayer.spokenText, 2, localPlayer.name);
+                                    }
                                     if (publicChatMode == 2) {
                                           publicChatMode = 3;
                                           // privacy option
@@ -6212,34 +6233,50 @@ public class Client extends GameApplet {
 
       private void buildPublicChat(int j) {
             int l = 0;
-            for (int i1 = 0; i1 < 500; i1++) {
-                  if (chatMessages[i1] == null)
+            for (int message = 0; message < 500; message++) {
+            	
+                  if (chatMessages[message] == null) {
                         continue;
-                  if (chatTypeView != 1)
+                  }
+                  
+                  if (chatTypeView != 1) {
                         continue;
-                  int j1 = chatTypes[i1];
-                  String s = chatNames[i1];
+                  }
+                  
+                  int privacyOptionType = chatTypes[message];
+                  
+                  String crownName = chatNames[message];                  
+                  
                   int k1 = (70 - l * 14 + 42) + anInt1089 + 4 + 5;
-                  if (k1 < -23)
+                  
+                  if (k1 < -23) {
                         break;
-                  if (s != null && s.startsWith("@cr1@"))
-                        s = s.substring(5);
-                  if (s != null && s.startsWith("@cr2@"))
-                        s = s.substring(5);
-                  if (s != null && s.startsWith("@cr3@"))
-                        s = s.substring(5);
-                  if ((j1 == 1 || j1 == 2) && (j1 == 1 || publicChatMode == 0
-                              || publicChatMode == 1 && isFriendOrSelf(s))) {
-                        if (j > k1 - 14 && j <= k1 && !s.equals(localPlayer.name)) {
+                  }
+                  
+                  if (crownName != null && crownName.startsWith("@cr1@")) {
+                        crownName = crownName.substring(5);
+                  }
+                  
+                  if (crownName != null && crownName.startsWith("@cr2@")) {
+                        crownName = crownName.substring(5);
+                  }
+                  
+                  if (crownName != null && crownName.startsWith("@cr3@")) {
+                        crownName = crownName.substring(5);
+                  }
+                  
+                  if ((privacyOptionType == 1 || privacyOptionType == 2) && (privacyOptionType == 1 || publicChatMode == 0
+                              || publicChatMode == 1 && isFriendOrSelf(crownName))) {
+                        if (j > k1 - 14 && j <= k1 && !crownName.equals(localPlayer.name)) {
                               if (myPrivilege >= 1) {
-                                    menuActionText[menuActionRow] = "Report abuse @whi@" + s;
+                                    menuActionText[menuActionRow] = "Report abuse @whi@" + crownName;
                                     menuActionTypes[menuActionRow] = 606;
                                     menuActionRow++;
                               }
-                              menuActionText[menuActionRow] = "Add ignore @whi@" + s;
+                              menuActionText[menuActionRow] = "Add ignore @whi@" + crownName;
                               menuActionTypes[menuActionRow] = 42;
                               menuActionRow++;
-                              menuActionText[menuActionRow] = "Add friend @whi@" + s;
+                              menuActionText[menuActionRow] = "Add friend @whi@" + crownName;
                               menuActionTypes[menuActionRow] = 337;
                               menuActionRow++;
                         }
@@ -6810,22 +6847,27 @@ public class Client extends GameApplet {
             }
       }
 
-      public void pushMessage(String s, int i, String s1) {
-            if (i == 0 && dialogueId != -1) {
-                  clickToContinueString = s;
+      public void sendMessage(String message, int type, String name) {
+    	  
+            if (type == 0 && dialogueId != -1) {
+                  clickToContinueString = message;
                   super.clickMode3 = 0;
             }
-            if (backDialogueId == -1)
+            
+            if (backDialogueId == -1) {
                   updateChatbox = true;
-            for (int j = 499; j > 0; j--) {
-                  chatTypes[j] = chatTypes[j - 1];
-                  chatNames[j] = chatNames[j - 1];
-                  chatMessages[j] = chatMessages[j - 1];
-                  chatRights[j] = chatRights[j - 1];
             }
-            chatTypes[0] = i;
-            chatNames[0] = s1;
-            chatMessages[0] = s;
+            
+            for (int index = 499; index > 0; index--) {            	
+                  chatTypes[index] = chatTypes[index - 1];
+                  chatNames[index] = chatNames[index - 1];
+                  chatMessages[index] = chatMessages[index - 1];
+                  chatRights[index] = chatRights[index - 1];
+            }
+            
+            chatTypes[0] = type;
+            chatNames[0] = name;
+            chatMessages[0] = message;
             chatRights[0] = rights;
       }
 
@@ -7974,7 +8016,7 @@ public class Client extends GameApplet {
                   int i7 = bigY[i4];
                   anInt1288 += k4;
                   if (anInt1288 >= 92) {
-                	  //TODO unknown
+                	  //TODO unknown (anti-cheat)
                         outgoing.writeOpcode(36);
                         outgoing.writeInt(0);
                         anInt1288 = 0;
@@ -8616,24 +8658,33 @@ public class Client extends GameApplet {
                   anInt1117++;
                   if (anInt1117 > 1151) {
                         anInt1117 = 0;
-                        //TODO unknown
+                        //TODO unknown (anti-cheat)
                         outgoing.writeOpcode(246);
                         outgoing.writeByte(0);
-                        int l = outgoing.currentPosition;
-                        if ((int) (Math.random() * 2D) == 0)
+                        int bufPos = outgoing.currentPosition;                        
+                        
+                        if ((int) (Math.random() * 2D) == 0) {
                               outgoing.writeByte(101);
+                        }
+                        
                         outgoing.writeByte(197);
                         outgoing.writeShort((int) (Math.random() * 65536D));
                         outgoing.writeByte((int) (Math.random() * 256D));
                         outgoing.writeByte(67);
                         outgoing.writeShort(14214);
-                        if ((int) (Math.random() * 2D) == 0)
+                        
+                        if ((int) (Math.random() * 2D) == 0) {
                               outgoing.writeShort(29487);
+                        }
+                        
                         outgoing.writeShort((int) (Math.random() * 65536D));
-                        if ((int) (Math.random() * 2D) == 0)
+                        
+                        if ((int) (Math.random() * 2D) == 0) {
                               outgoing.writeByte(220);
+                        }
+                        
                         outgoing.writeByte(180);
-                        outgoing.writeBytes(outgoing.currentPosition - l);
+                        outgoing.writeBytes(outgoing.currentPosition - bufPos);
                   }
             }
       }
@@ -9762,9 +9813,9 @@ public class Client extends GameApplet {
                   player.spokenText = buffer.readString();
                   if (player.spokenText.charAt(0) == '~') {
                         player.spokenText = player.spokenText.substring(1);
-                        pushMessage(player.spokenText, 2, player.name);
+                        sendMessage(player.spokenText, 2, player.name);
                   } else if (player == localPlayer)
-                        pushMessage(player.spokenText, 2, player.name);
+                        sendMessage(player.spokenText, 2, player.name);
                   player.textColour = 0;
                   player.textEffect = 0;
                   player.textCycle = 150;
@@ -9799,11 +9850,11 @@ public class Client extends GameApplet {
                                     player.textEffect = textInfo & 0xff;
                                     player.textCycle = 150;
                                     if (privilege == 2 || privilege == 3)
-                                          pushMessage(text, 1, "@cr2@" + player.name);
+                                          sendMessage(text, 1, "@cr2@" + player.name);
                                     else if (privilege == 1)
-                                          pushMessage(text, 1, "@cr1@" + player.name);
+                                          sendMessage(text, 1, "@cr1@" + player.name);
                                     else
-                                          pushMessage(text, 2, player.name);
+                                          sendMessage(text, 2, player.name);
                               } catch (Exception exception) {
                                     SignLink.reporterror("cde2");
                               }
@@ -9897,22 +9948,25 @@ public class Client extends GameApplet {
                   anInt1005++;
                   if (anInt1005 > 1512) {
                         anInt1005 = 0;
-                        //TODO unknown
+                        //TODO unknown (anti-cheat)
                         outgoing.writeOpcode(77);
-                        outgoing.writeByte(0);
-                        int i2 = outgoing.currentPosition;
+                        outgoing.writeByte(0);                        
+                        int bufPos = outgoing.currentPosition;
                         outgoing.writeByte((int) (Math.random() * 256D));
                         outgoing.writeByte(101);
                         outgoing.writeByte(233);
                         outgoing.writeShort(45092);
-                        if ((int) (Math.random() * 2D) == 0)
+                        
+                        if ((int) (Math.random() * 2D) == 0) {
                               outgoing.writeShort(35784);
+                        }
+                        
                         outgoing.writeByte((int) (Math.random() * 256D));
                         outgoing.writeByte(64);
                         outgoing.writeByte(38);
                         outgoing.writeShort((int) (Math.random() * 65536D));
                         outgoing.writeShort((int) (Math.random() * 65536D));
-                        outgoing.writeBytes(outgoing.currentPosition - i2);
+                        outgoing.writeBytes(outgoing.currentPosition - bufPos);
                   }
                   int j2 = k1 * 192;
                   if (j2 > 0x17f00)
@@ -9991,7 +10045,7 @@ public class Client extends GameApplet {
                   anInt1142++;
                   if (anInt1142 > 67) {
                         anInt1142 = 0;
-                        //TODO unknown
+                        //TODO unknown (drawing game screen)
                         outgoing.writeOpcode(78);
                   }
             }
@@ -10086,7 +10140,7 @@ public class Client extends GameApplet {
                   anInt849++;
                   if (anInt849 > 75) {
                         anInt849 = 0;
-                        //TODO unknown
+                        //TODO unknown (system updating)
                         outgoing.writeOpcode(148);
                   }
             }
@@ -10097,18 +10151,18 @@ public class Client extends GameApplet {
                   if (l == 0L)
                         return;
                   if (ignoreCount >= 100) {
-                        pushMessage("Your ignore list is full. Max of 100 hit", 0, "");
+                        sendMessage("Your ignore list is full. Max of 100 hit", 0, "");
                         return;
                   }
                   String s = StringUtils.formatUsername(StringUtils.decodeBase37(l));
                   for (int j = 0; j < ignoreCount; j++)
                         if (ignoreListAsLongs[j] == l) {
-                              pushMessage(s + " is already on your ignore list", 0, "");
+                              sendMessage(s + " is already on your ignore list", 0, "");
                               return;
                         }
                   for (int k = 0; k < friendsCount; k++)
                         if (friendsListAsLongs[k] == l) {
-                              pushMessage("Please remove " + s + " from your friend list first", 0,
+                              sendMessage("Please remove " + s + " from your friend list first", 0,
                                           "");
                               return;
                         }
@@ -12358,7 +12412,7 @@ public class Client extends GameApplet {
                               clanname = incoming.readString();
                               rights = incoming.readUShort();
                               System.out.println(clanname);
-                              pushMessage(defaultText, 16, name);
+                              sendMessage(defaultText, 16, name);
                         } catch (Exception e) {
                               e.printStackTrace();
                         }
@@ -12803,14 +12857,14 @@ public class Client extends GameApplet {
 
                               }
                               if (!ignored && onTutorialIsland == 0)
-                                    pushMessage("wishes to trade with you.", 4, name);
+                                    sendMessage("wishes to trade with you.", 4, name);
                         } else if (message.endsWith(":clan:")) {
                               String name = message.substring(0, message.indexOf(":"));
                               StringUtils.encodeBase37(name);
-                              pushMessage("Clan: ", 8, name);
+                              sendMessage("Clan: ", 8, name);
                         } else if (message.endsWith("#url#")) {
                               String link = message.substring(0, message.indexOf("#"));
-                              pushMessage("Join us at: ", 9, link);
+                              sendMessage("Join us at: ", 9, link);
                         } else if (message.endsWith(":duelreq:")) {
                               String name = message.substring(0, message.indexOf(":"));
                               long encodedName = StringUtils.encodeBase37(name);
@@ -12822,7 +12876,7 @@ public class Client extends GameApplet {
 
                               }
                               if (!ignored && onTutorialIsland == 0)
-                                    pushMessage("wishes to duel with you.", 8, name);
+                                    sendMessage("wishes to duel with you.", 8, name);
                         } else if (message.endsWith(":chalreq:")) {
                               String name = message.substring(0, message.indexOf(":"));
                               long encodedName = StringUtils.encodeBase37(name);
@@ -12836,14 +12890,14 @@ public class Client extends GameApplet {
                               if (!ignored && onTutorialIsland == 0) {
                                     String msg = message.substring(message.indexOf(":") + 1,
                                                 message.length() - 9);
-                                    pushMessage(msg, 8, name);
+                                    sendMessage(msg, 8, name);
                               }
                         } else if (message.endsWith(":resetautocast:")) {
                               autocast = false;
                               autoCastId = 0;
                               cacheSprite[43].drawSprite(-100, -100);
                         } else {
-                              pushMessage(message, 0, "");
+                              sendMessage(message, 0, "");
                         }
                         opcode = -1;
                         return true;
@@ -12873,10 +12927,10 @@ public class Client extends GameApplet {
                               if (friendsNodeIDs[playerIndex] != world) {
                                     friendsNodeIDs[playerIndex] = world;
                                     if (world >= 2) {
-                                          pushMessage(name + " has logged in.", 5, "");
+                                          sendMessage(name + " has logged in.", 5, "");
                                     }
                                     if (world <= 1) {
-                                          pushMessage(name + " has logged out.", 5, "");
+                                          sendMessage(name + " has logged out.", 5, "");
                                     }
                               }
                               name = null;
@@ -12915,8 +12969,10 @@ public class Client extends GameApplet {
                   }
 
                   if (opcode == PacketConstants.SEND_HINT_ICON) {
+                	  // the first byte, which indicates the type of mob
                         hintIconDrawType = incoming.readUnsignedByte();
                         if (hintIconDrawType == 1) //NPC Hint Arrow
+                        	  // the world index or slot of the npc in the server (which is also the same for the client (should))
                               hintIconNpcId = incoming.readUShort();
                         if (hintIconDrawType >= 2 && hintIconDrawType <= 6) { //Location Hint Arrow
                               if (hintIconDrawType == 2) { //Center
@@ -12940,8 +12996,13 @@ public class Client extends GameApplet {
                                     hintIconLocationArrowRelY = 128;
                               }
                               hintIconDrawType = 2;
+                              //x offset
                               hintIconX = incoming.readUShort();
+                              
+                              // y offset
                               hintIconY = incoming.readUShort();
+                              
+                              // z offset
                             hintIconLocationArrowHeight = incoming.readUnsignedByte();
                         }
                         if (hintIconDrawType == 10) //Player Hint Arrow
@@ -13022,15 +13083,15 @@ public class Client extends GameApplet {
                                     // if(l21 != 3)
                                     // s9 = Censor.doCensor(s9);
                                     if (rights == 2 || rights == 3)
-                                          pushMessage(message, 7, "@cr2@"
+                                          sendMessage(message, 7, "@cr2@"
                                                       + StringUtils.formatUsername(StringUtils
                                                                   .decodeBase37(encodedName)));
                                     else if (rights == 1)
-                                          pushMessage(message, 7, "@cr1@"
+                                          sendMessage(message, 7, "@cr1@"
                                                       + StringUtils.formatUsername(StringUtils
                                                                   .decodeBase37(encodedName)));
                                     else
-                                          pushMessage(message, 3, StringUtils.formatUsername(
+                                          sendMessage(message, 3, StringUtils.formatUsername(
                                                       StringUtils.decodeBase37(encodedName)));
                               } catch (Exception ex) {
                                     SignLink.reporterror("cde1");
