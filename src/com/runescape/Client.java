@@ -4408,23 +4408,31 @@ public class Client extends GameApplet {
 
       //TODO menu actions
       private void processMenuActions(int id) {
-            if (id < 0)
+            if (id < 0) {
                   return;
+            }
+            
             if (inputDialogState != 0) {
                   inputDialogState = 0;
                   updateChatbox = true;
             }
+            
             int first = firstMenuAction[id];
             int button = secondMenuAction[id];            
             int action = menuActionTypes[id];
             int clicked = selectedMenuActions[id];
-            if (action >= 2000)
+            
+            if (action >= 2000) {
                   action -= 2000;
+            }
+            
+            //TODO unknown
             if (action == 851) {
                   outgoing.writeOpcode(PacketConstants.BUTTON_CLICK);
                   outgoing.writeShort(155);
             }
 
+            // click logout tab
             if (action == 700) {
                   if (tabInterfaceIDs[10] != -1) {
                         if (tabId == 10) {
@@ -4436,17 +4444,25 @@ public class Client extends GameApplet {
                         tabAreaAltered = true;
                   }
             }
+            
+            // custom
             if (action == 475 && Configuration.enableOrbs) {
                   xpCounter = 0;
             }
+            
+            // reset compass to north
             if (action == 696) {
                   setNorth();
             }
+            
+            // custom
             if (action == 1506 && Configuration.enableOrbs) { // Select quick
                   // prayers
                   outgoing.writeOpcode(185);
                   outgoing.writeShort(5001);
             }
+            
+            // custom
             if (action == 1500 && Configuration.enableOrbs) { // Toggle quick
                   // prayers
                   prayClicked = !prayClicked;
@@ -4456,6 +4472,7 @@ public class Client extends GameApplet {
 
             //System.out.println(String.format("action: %d first: %d second: %d clicked: %d", action, first, button, clicked));
 
+            // button clicks
             switch (action) {
 
                   case 1315:
@@ -4476,10 +4493,13 @@ public class Client extends GameApplet {
 
             }
 
+            // custom
             if (action == 1508 && Configuration.enableOrbs) { // Toggle HP above
                   // heads
                   Configuration.hpAboveHeads = !Configuration.hpAboveHeads;
             }
+            
+            // click autocast
             if (action == 104) {
                   Widget widget = Widget.interfaceCache[button];
                   spellId = widget.id;
@@ -4500,6 +4520,8 @@ public class Client extends GameApplet {
                         outgoing.writeShort(widget.id);
                   }
             }
+            
+            // item on npc
             if (action == 582) {
                   Npc npc = npcs[clicked];
                   if (npc != null) {
@@ -4516,6 +4538,8 @@ public class Client extends GameApplet {
                         outgoing.writeShortA(anInt1284);
                   }
             }
+            
+            // picking up ground item
             if (action == 234) {
                   boolean flag1 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, button,
                               localPlayer.pathX[0], false, first);
@@ -4532,8 +4556,10 @@ public class Client extends GameApplet {
                   outgoing.writeShort(clicked);
                   outgoing.writeLEShort(first + regionBaseX);
             }
+            
+        	// using item on object
             if (action == 62 && clickObject(clicked, button, first)) {
-            	// item on object
+
                   outgoing.writeOpcode(192);
                   outgoing.writeShort(anInt1284);
                   outgoing.writeLEShort(clicked >> 14 & 0x7fff);
@@ -4542,6 +4568,8 @@ public class Client extends GameApplet {
                   outgoing.writeLEShortA(first + regionBaseX);
                   outgoing.writeShort(anInt1285);
             }
+            
+            // using item on ground item
             if (action == 511) {
                   boolean flag2 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, button,
                               localPlayer.pathX[0], false, first);
@@ -4561,8 +4589,9 @@ public class Client extends GameApplet {
                   outgoing.writeLEShortA(anInt1283);
                   outgoing.writeShort(first + regionBaseX);
             }
-            if (action == 74) {
-            	// item option 1
+            
+           	// item option 1
+            if (action == 74) {     
                   outgoing.writeOpcode(122);
                   outgoing.writeLEShortA(button);
                   outgoing.writeShortA(first);
@@ -4607,6 +4636,8 @@ public class Client extends GameApplet {
                         }
                   }
             }
+            
+            // player option
             if (action == 561) {
                   Player player = players[clicked];
                   if (player != null) {
@@ -4627,6 +4658,8 @@ public class Client extends GameApplet {
                         outgoing.writeShort(clicked);
                   }
             }
+            
+            // npc option 1
             if (action == 20) {
                   Npc npc = npcs[clicked];                  
                   if (npc != null) {
@@ -4642,6 +4675,8 @@ public class Client extends GameApplet {
                         outgoing.writeLEShort(clicked);
                   }
             }
+            
+            // player option 2
             if (action == 779) {
                   Player player = players[clicked];                  
                   if (player != null) {
@@ -4657,11 +4692,17 @@ public class Client extends GameApplet {
                         outgoing.writeLEShort(clicked);
                   }
             }
-            if (action == 519)
-                  if (!menuOpen)
+            
+            // clicking tiles
+            if (action == 519) {
+                  if (!menuOpen) {
                         scene.clickTile(super.saveClickY - 4, super.saveClickX - 4);
-                  else
+                  } else {
                         scene.clickTile(button - 4, first - 4);
+                  }
+            }
+            
+            // object click
             if (action == 1062) {
                   anInt924 += regionBaseX;
                   if (anInt924 >= 113) {
@@ -4677,13 +4718,16 @@ public class Client extends GameApplet {
                   outgoing.writeShortA(button + regionBaseY);
                   outgoing.writeShort(first + regionBaseX);
             }
+            
+            // continue dialogue
             if (action == 679 && !continuedDialogue) {
                   outgoing.writeOpcode(40);
                   outgoing.writeShort(button);
                   continuedDialogue = true;
             }
+            
+            // using bank all option of the bank interface
             if (action == 431) {
-            	// next dialogue
                   outgoing.writeOpcode(129);
                   outgoing.writeShortA(first);
                   outgoing.writeShort(button);
@@ -4699,21 +4743,28 @@ public class Client extends GameApplet {
                         atInventoryInterfaceType = 3;
                   }
             }
-            if (action == 337 || action == 42 || action == 792 || action == 322) {
-                  String s = menuActionText[id];
-                  int k1 = s.indexOf("@whi@");
-                  if (k1 != -1) {
-                        long l3 = StringUtils.encodeBase37(s.substring(k1 + 5).trim());
-                        if (action == 337)
-                              addFriend(l3);
-                        if (action == 42)
-                              addIgnore(l3);
-                        if (action == 792)
-                              removeFriend(l3);
-                        if (action == 322)
-                              removeIgnore(l3);
+            
+            
+            if (action == 337 || action == 42 || action == 792 || action == 322) {            	
+                  String string = menuActionText[id];
+                  int indexOf = string.indexOf("@whi@");                  
+                  if (indexOf != -1) {
+                        long usernameHash = StringUtils.encodeBase37(string.substring(indexOf + 5).trim());                        
+                        if (action == 337) {
+                              addFriend(usernameHash);
+                        }
+                        if (action == 42) {
+                              addIgnore(usernameHash);
+                        }
+                        if (action == 792) {
+                              removeFriend(usernameHash);
+                        }
+                        if (action == 322) {
+                              removeIgnore(usernameHash);
+                        }
                   }
             }
+            // using the bank x option on the bank interface
             if (action == 53) {
             	// bank x
                   outgoing.writeOpcode(135);
@@ -4729,6 +4780,8 @@ public class Client extends GameApplet {
                   if (Widget.interfaceCache[button].parent == backDialogueId)
                         atInventoryInterfaceType = 3;
             }
+            
+            // using the second option of an item
             if (action == 539) {
             	// item option 2
                   outgoing.writeOpcode(16);
@@ -4747,28 +4800,29 @@ public class Client extends GameApplet {
                   }
             }
             if (action == 484 || action == 6) {
-                  String s1 = menuActionText[id];
-                  int l1 = s1.indexOf("@whi@");
-                  if (l1 != -1) {
-                        s1 = s1.substring(l1 + 5).trim();
-                        String s7 = StringUtils.formatUsername(
-                                    StringUtils.decodeBase37(StringUtils.encodeBase37(s1)));
+                  String string = menuActionText[id];                  
+                  int indexOf = string.indexOf("@whi@");                  
+                  if (indexOf != -1) {
+                        string = string.substring(indexOf + 5).trim();
+                        String username = StringUtils.formatUsername(StringUtils.decodeBase37(StringUtils.encodeBase37(string)));
                         boolean flag9 = false;
-                        for (int j3 = 0; j3 < playerCount; j3++) {
-                              Player player = players[playerList[j3]];                              
-                              if (player == null
-                                          || player.name == null
-                                          || !player.name
-                                                      .equalsIgnoreCase(s7))
+                        for (int count = 0; count < playerCount; count++) {                        	
+                              Player player = players[playerList[count]];                              
+                              if (player == null || player.name == null || !player.name.equalsIgnoreCase(username)) {
                                     continue;
+                              }
                               doWalkTo(2, 0, 1, 0, localPlayer.pathY[0], 1, 0,
                                           player.pathY[0],
                                           localPlayer.pathX[0], false,
                                           player.pathX[0]);
+                              
+                              // accepting trade
                               if (action == 484) {
                                     outgoing.writeOpcode(139);
-                                    outgoing.writeLEShort(playerList[j3]);
+                                    outgoing.writeLEShort(playerList[count]);
                               }
+                              
+                              // accepting a challenge
                               if (action == 6) {
                                     anInt1188 += clicked;
                                     if (anInt1188 >= 90) {
@@ -4777,16 +4831,18 @@ public class Client extends GameApplet {
                                           anInt1188 = 0;
                                     }
                                     outgoing.writeOpcode(128);
-                                    outgoing.writeShort(playerList[j3]);
+                                    outgoing.writeShort(playerList[count]);
                               }
                               flag9 = true;
                               break;
                         }
 
                         if (!flag9)
-                              sendMessage("Unable to find " + s7, 0, "");
+                              sendMessage("Unable to find " + username, 0, "");
                   }
             }
+            
+            // Using an item on another item
             if (action == 870) {
             	// item on item
                   outgoing.writeOpcode(53);
@@ -4805,6 +4861,8 @@ public class Client extends GameApplet {
                   if (Widget.interfaceCache[button].parent == backDialogueId)
                         atInventoryInterfaceType = 3;
             }
+            
+            // Using the drop option of an item            
             if (action == 847) {
             	// drop item
                   outgoing.writeOpcode(87);
@@ -4848,6 +4906,8 @@ public class Client extends GameApplet {
                   }
                   return;
             }
+            
+            // Using the bank 5 option on a bank widget
             if (action == 78) {
             	// bank 5
                   outgoing.writeOpcode(117);
@@ -4863,6 +4923,8 @@ public class Client extends GameApplet {
                   if (Widget.interfaceCache[button].parent == backDialogueId)
                         atInventoryInterfaceType = 3;
             }
+            
+            // player option 2
             if (action == 27) {
                   Player player = players[clicked];                  
                   if (player != null) {
@@ -4885,6 +4947,8 @@ public class Client extends GameApplet {
                         outgoing.writeLEShort(clicked);
                   }
             }
+            
+            // Used for lighting logs
             if (action == 213) {
                   boolean flag3 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, button,
                               localPlayer.pathX[0], false, first);
@@ -4901,6 +4965,8 @@ public class Client extends GameApplet {
                   outgoing.writeShort(clicked);
                   outgoing.writeShortA(first + regionBaseX);
             }
+            
+            // Using the unequip option on the equipment tab interface
             if (action == 632) {
             	// unequip item
                   outgoing.writeOpcode(145);
@@ -4940,6 +5006,7 @@ public class Client extends GameApplet {
                   chatTypeView = 11;
                   updateChatbox = true;
             }
+            
             if (action == 999) {
                   cButtonCPos = 0;
                   chatTypeView = 0;
@@ -4950,66 +5017,95 @@ public class Client extends GameApplet {
                   chatTypeView = 5;
                   updateChatbox = true;
             }
+            
+            // public chat "hide" option
             if (action == 997) {
                   publicChatMode = 3;
                   updateChatbox = true;
             }
+            
+            // public chat "off" option
             if (action == 996) {
                   publicChatMode = 2;
                   updateChatbox = true;
             }
+            
+            // public chat "friends" option
             if (action == 995) {
                   publicChatMode = 1;
                   updateChatbox = true;
             }
+            
+            // public chat "on" option
             if (action == 994) {
                   publicChatMode = 0;
                   updateChatbox = true;
             }
+            
+            // public chat main click
             if (action == 993) {
                   cButtonCPos = 2;
                   chatTypeView = 1;
                   updateChatbox = true;
             }
+            
+            // private chat "off" option
             if (action == 992) {
                   privateChatMode = 2;
                   updateChatbox = true;
             }
+            
+            // private chat "friends" option
             if (action == 991) {
                   privateChatMode = 1;
                   updateChatbox = true;
             }
+            
+            // private chat "on" option
             if (action == 990) {
                   privateChatMode = 0;
                   updateChatbox = true;
             }
+            
+            // private chat main click
             if (action == 989) {
                   cButtonCPos = 3;
                   chatTypeView = 2;
                   updateChatbox = true;
             }
+            
+            // trade message privacy option "off" option
             if (action == 987) {
                   tradeMode = 2;
                   updateChatbox = true;
             }
+            
+            // trade message privacy option "friends" option
             if (action == 986) {
                   tradeMode = 1;
                   updateChatbox = true;
             }
+            
+            // trade message privacy option "on" option
             if (action == 985) {
                   tradeMode = 0;
                   updateChatbox = true;
             }
+            
+            // trade message privacy option main click
             if (action == 984) {
                   cButtonCPos = 5;
                   chatTypeView = 3;
                   updateChatbox = true;
             }
+            
             if (action == 980) {
                   cButtonCPos = 6;
                   chatTypeView = 4;
                   updateChatbox = true;
             }
+            
+            // Using 3rd option of an item
             if (action == 493) {
             	// item option 3
                   outgoing.writeOpcode(75);
@@ -5025,6 +5121,8 @@ public class Client extends GameApplet {
                   if (Widget.interfaceCache[button].parent == backDialogueId)
                         atInventoryInterfaceType = 3;
             }
+            
+            // clicking some sort of tile
             if (action == 652) {
                   boolean flag4 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, button,
                               localPlayer.pathX[0], false, first);
@@ -5041,6 +5139,8 @@ public class Client extends GameApplet {
                   outgoing.writeLEShort(button + regionBaseY);
                   outgoing.writeLEShortA(clicked);
             }
+            
+            // clicking some sort of tile making the player walk
             if (action == 94) {
                   boolean flag5 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, button,
                               localPlayer.pathX[0], false, first);
@@ -5080,15 +5180,17 @@ public class Client extends GameApplet {
             	// button click
                   outgoing.writeOpcode(185);
                   outgoing.writeShort(button);
-                  Widget class9_2 = Widget.interfaceCache[button];
-                  if (class9_2.scripts != null && class9_2.scripts[0][0] == 5) {
-                        int i2 = class9_2.scripts[0][1];
-                        if (settings[i2] != class9_2.scriptDefaults[0]) {
-                              settings[i2] = class9_2.scriptDefaults[0];
+                  Widget widget = Widget.interfaceCache[button];                  
+                  if (widget.scripts != null && widget.scripts[0][0] == 5) {
+                        int i2 = widget.scripts[0][1];
+                        if (settings[i2] != widget.scriptDefaults[0]) {
+                              settings[i2] = widget.scriptDefaults[0];
                               updateVarp(i2);
                         }
                   }
             }
+            
+            // Using the 2nd option of an npc
             if (action == 225) {
                   Npc npc = npcs[clicked];                  
                   if (npc != null) {
@@ -5111,6 +5213,8 @@ public class Client extends GameApplet {
                         outgoing.writeLEShortA(clicked);
                   }
             }
+            
+            // Using the 3rd option of an npc
             if (action == 965) {
                   Npc npc = npcs[clicked];                  
                   if (npc != null) {
@@ -5133,6 +5237,8 @@ public class Client extends GameApplet {
                         outgoing.writeShort(clicked);
                   }
             }
+            
+            // Clicking npc making player walk to it?
             if (action == 413) {
                   Npc npc = npcs[clicked];
                   if (npc != null) {
@@ -5148,8 +5254,13 @@ public class Client extends GameApplet {
                         outgoing.writeShortA(anInt1137);
                   }
             }
-            if (action == 200)
+            
+            // close open interfaces
+            if (action == 200) {
                   clearTopInterfaces();
+            }
+            
+            // Clicking "Examine" option on an npc
             if (action == 1025) {
                   Npc npc = npcs[clicked];                  
                   if (npc != null) {
@@ -5166,6 +5277,8 @@ public class Client extends GameApplet {
                         }
                   }
             }
+            
+            // Using the 2nd option of an object
             if (action == 900) {
                   clickObject(clicked, button, first);
                   // object option 2
@@ -5174,6 +5287,8 @@ public class Client extends GameApplet {
                   outgoing.writeLEShort(button + regionBaseY);
                   outgoing.writeShortA(first + regionBaseX);
             }
+            
+            // Using the "Attack" option on a npc
             if (action == 412) {
                   Npc npc = npcs[clicked];                  
                   if (npc != null) {
@@ -5188,6 +5303,8 @@ public class Client extends GameApplet {
                         outgoing.writeShortA(clicked);
                   }
             }
+            
+            // Using spells on a player
             if (action == 365) {
                   Player player = players[clicked];
                   if (player != null) {
@@ -5197,12 +5314,14 @@ public class Client extends GameApplet {
                         crossY = super.saveClickY;
                         crossType = 2;
                         crossIndex = 0;
-                        // attack npc
+                        // ?
                         outgoing.writeOpcode(249);
                         outgoing.writeShortA(clicked);
                         outgoing.writeLEShort(anInt1137);
                   }
             }
+            
+            // Using the 3rd option of a player
             if (action == 729) {
                   Player player = players[clicked];                  
                   if (player != null) {
@@ -5218,6 +5337,8 @@ public class Client extends GameApplet {
                         outgoing.writeLEShort(clicked);
                   }
             }
+            
+            // Using the 4th option of a player
             if (action == 577) {
                   Player player = players[clicked];                  
                   if (player != null) {
@@ -5233,6 +5354,8 @@ public class Client extends GameApplet {
                         outgoing.writeLEShort(clicked);
                   }
             }
+            
+            // Using a spell on an item
             if (action == 956 && clickObject(clicked, button, first)) {
             	// magic on item
                   outgoing.writeOpcode(35);
@@ -5241,6 +5364,8 @@ public class Client extends GameApplet {
                   outgoing.writeShortA(button + regionBaseY);
                   outgoing.writeLEShort(clicked >> 14 & 0x7fff);
             }
+            
+            // Some walking action (packet 23)
             if (action == 567) {
                   boolean flag6 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, button,
                               localPlayer.pathX[0], false, first);
@@ -5257,6 +5382,8 @@ public class Client extends GameApplet {
                   outgoing.writeLEShort(clicked);
                   outgoing.writeLEShort(first + regionBaseX);
             }
+            
+            // Using the bank 10 option on the bank interface
             if (action == 867) {
             	
                   if ((clicked & 3) == 0) {
@@ -5283,6 +5410,8 @@ public class Client extends GameApplet {
                   if (Widget.interfaceCache[button].parent == backDialogueId)
                         atInventoryInterfaceType = 3;
             }
+            
+            // Using a spell on an inventory item
             if (action == 543) {
             	// magic on item
                   outgoing.writeOpcode(237);
@@ -5299,6 +5428,8 @@ public class Client extends GameApplet {
                   if (Widget.interfaceCache[button].parent == backDialogueId)
                         atInventoryInterfaceType = 3;
             }
+            
+            // Clicking report abuse button
             if (action == 606) {
                   String s2 = menuActionText[id];
                   int j2 = s2.indexOf("@whi@");
@@ -5321,6 +5452,8 @@ public class Client extends GameApplet {
                                           0, "");
                         }
             }
+            
+            // Using an inventory item on a player
             if (action == 491) {
                   Player player = players[clicked];
                   
@@ -5340,30 +5473,37 @@ public class Client extends GameApplet {
                         outgoing.writeLEShort(anInt1283);
                   }
             }
+            
+            // reply to private message
             if (action == 639) {
-                  String s3 = menuActionText[id];
-                  int k2 = s3.indexOf("@whi@");
-                  if (k2 != -1) {
-                        long l4 = StringUtils.encodeBase37(s3.substring(k2 + 5).trim());
-                        int k3 = -1;
-                        for (int i4 = 0; i4 < friendsCount; i4++) {
-                              if (friendsListAsLongs[i4] != l4)
+                  String text = menuActionText[id]; 
+                  
+                  int indexOf = text.indexOf("@whi@");  
+                  
+                  if (indexOf != -1) {
+                        long usernameHash = StringUtils.encodeBase37(text.substring(indexOf + 5).trim());                        
+                        int resultIndex = -1;
+                        for (int friendIndex = 0; friendIndex < friendsCount; friendIndex++) {                        	
+                              if (friendsListAsLongs[friendIndex] != usernameHash) {
                                     continue;
-                              k3 = i4;
+                              }
+                              resultIndex = friendIndex;
                               break;
                         }
 
-                        if (k3 != -1 && friendsNodeIDs[k3] > 0) {
+                        if (resultIndex != -1 && friendsNodeIDs[resultIndex] > 0) {                        	
                               updateChatbox = true;
                               inputDialogState = 0;
                               messagePromptRaised = true;
                               promptInput = "";
                               friendsListAction = 3;
-                              aLong953 = friendsListAsLongs[k3];
-                              aString1121 = "Enter defaultText to send to " + friendsList[k3];
+                              aLong953 = friendsListAsLongs[resultIndex];
+                              aString1121 = "Enter defaultText to send to " + friendsList[resultIndex];
                         }
                   }
             }
+            
+            // Using the equip option of an item in the inventory
             if (action == 454) {
             	//equip item
                   outgoing.writeOpcode(41);
@@ -5379,6 +5519,8 @@ public class Client extends GameApplet {
                   if (Widget.interfaceCache[button].parent == backDialogueId)
                         atInventoryInterfaceType = 3;
             }
+            
+            // Npc option 4
             if (action == 478) {
                   Npc npc = npcs[clicked];                  
                   if (npc != null) {
@@ -5406,6 +5548,8 @@ public class Client extends GameApplet {
                         outgoing.writeLEShort(clicked);
                   }
             }
+            
+            // Object option 3
             if (action == 113) {
                   clickObject(clicked, button, first);
                   // object option 3
@@ -5465,16 +5609,19 @@ public class Client extends GameApplet {
                   spellSelected = 0;
                   return;
             }
+            
             if (action == 1226) {
-                  int j1 = clicked >> 14 & 0x7fff;
-                  ObjectDefinition class46 = ObjectDefinition.lookup(j1);
-                  String s10;
-                  if (class46.description != null)
-                        s10 = new String(class46.description);
+                  int objectId = clicked >> 14 & 0x7fff;            
+                  ObjectDefinition definition = ObjectDefinition.lookup(objectId);                  
+                  String message;                  
+                  if (definition.description != null)
+                        message = new String(definition.description);
                   else
-                        s10 = "It's a " + class46.name + ".";
-                  sendMessage(s10, 0, "");
+                        message = "It's a " + definition.name + ".";
+                  sendMessage(message, 0, "");
             }
+            
+            // Click First Option Ground Item
             if (action == 244) {
                   boolean flag7 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, button,
                               localPlayer.pathX[0], false, first);
@@ -5491,14 +5638,16 @@ public class Client extends GameApplet {
                   outgoing.writeLEShortA(button + regionBaseY);
                   outgoing.writeShortA(clicked);
             }
+            
+            
             if (action == 1448) {
-                  ItemDefinition itemDef_1 = ItemDefinition.lookup(clicked);
-                  String s6;
-                  if (itemDef_1.description != null)
-                        s6 = new String(itemDef_1.description);
+                  ItemDefinition definition = ItemDefinition.lookup(clicked);                  
+                  String string;                  
+                  if (definition.description != null)
+                        string = new String(definition.description);
                   else
-                        s6 = "It's a " + itemDef_1.name + ".";
-                  sendMessage(s6, 0, "");
+                        string = "It's a " + definition.name + ".";
+                  sendMessage(string, 0, "");
             }
             itemSelected = 0;
             spellSelected = 0;
