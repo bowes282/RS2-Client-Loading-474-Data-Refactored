@@ -2936,7 +2936,7 @@ public class Client extends GameApplet {
             socketStream = null;
             loggedIn = false;
             loginScreenState = 0;
-            myUsername = "mod seven";
+            myUsername = "vultr";
             myPassword = "test123";
             unlinkCaches();
             scene.initToNull();
@@ -4702,17 +4702,18 @@ public class Client extends GameApplet {
                   }
             }
             
-            // object click
+            // object option 5
             if (action == 1062) {
                   anInt924 += regionBaseX;
                   if (anInt924 >= 113) {
-                	  // TODO unknown (anti-bot)
+                	  	// validates clicking object option 4
                         outgoing.writeOpcode(183);
                         outgoing.writeTriByte(0xe63271);
                         anInt924 = 0;
                   }
                   clickObject(clicked, button, first);
-                  //TODO unknown (non-anti bot)
+
+                  // object option 5
                   outgoing.writeOpcode(228);
                   outgoing.writeShortA(clicked >> 14 & 0x7fff);
                   outgoing.writeShortA(button + regionBaseY);
@@ -5140,7 +5141,7 @@ public class Client extends GameApplet {
                   outgoing.writeLEShortA(clicked);
             }
             
-            // clicking some sort of tile making the player walk
+            // Using a spell on a ground item
             if (action == 94) {
                   boolean flag5 = doWalkTo(2, 0, 0, 0, localPlayer.pathY[0], 0, 0, button,
                               localPlayer.pathX[0], false, first);
@@ -5151,7 +5152,7 @@ public class Client extends GameApplet {
                   crossY = super.saveClickY;
                   crossType = 2;
                   crossIndex = 0;
-                  //TODO unknown (non-anti-cheat)
+                  // magic on ground item
                   outgoing.writeOpcode(181);
                   outgoing.writeLEShort(button + regionBaseY);
                   outgoing.writeShort(clicked);
@@ -5238,7 +5239,7 @@ public class Client extends GameApplet {
                   }
             }
             
-            // Clicking npc making player walk to it?
+            // Using a spell on an npc
             if (action == 413) {
                   Npc npc = npcs[clicked];
                   if (npc != null) {
@@ -5248,7 +5249,7 @@ public class Client extends GameApplet {
                         crossY = super.saveClickY;
                         crossType = 2;
                         crossIndex = 0;
-                        //TODO unknown (non-anti-cheat)
+                        // magic on npc
                         outgoing.writeOpcode(131);
                         outgoing.writeLEShortA(clicked);
                         outgoing.writeShortA(anInt1137);
@@ -5558,6 +5559,8 @@ public class Client extends GameApplet {
                   outgoing.writeShort(button + regionBaseY);
                   outgoing.writeLEShortA(clicked >> 14 & 0x7fff);
             }
+            
+            // Object option 4
             if (action == 872) {
                   clickObject(clicked, button, first);
                   outgoing.writeOpcode(234);
@@ -5565,9 +5568,10 @@ public class Client extends GameApplet {
                   outgoing.writeShortA(clicked >> 14 & 0x7fff);
                   outgoing.writeLEShortA(button + regionBaseY);
             }
+            
+            // Object option 1
             if (action == 502) {
                   clickObject(clicked, button, first);
-                  //TODO unknown (non-anti cheat)
                   outgoing.writeOpcode(132);
                   outgoing.writeLEShortA(first + regionBaseX);
                   outgoing.writeShort(clicked >> 14 & 0x7fff);
@@ -8414,39 +8418,46 @@ public class Client extends GameApplet {
                         menuActionRow++;
                   }
             } else {
-                  for (int l = 4; l >= 0; l--)
-                        if (playerOptions[l] != null) {
-                              menuActionText[menuActionRow] = playerOptions[l] + " @whi@" + s;
+                  for (int type = 4; type >= 0; type--)  {               	  
+                        if (playerOptions[type] != null) {
+                              menuActionText[menuActionRow] = playerOptions[type] + " @whi@" + s;
                               char c = '\0';
-                              if (playerOptions[l].equalsIgnoreCase("attack")) {
+                              if (playerOptions[type].equalsIgnoreCase("attack")) {
                                     if (player.combatLevel > localPlayer.combatLevel)
                                           c = '\u07D0';
                                     if (localPlayer.team != 0 && player.team != 0)
-                                          if (localPlayer.team == player.team)
+                                          if (localPlayer.team == player.team) {
                                                 c = '\u07D0';
-                                          else
+                                          } else {
                                                 c = '\0';
-                              } else if (playerOptionsHighPriority[l])
+                                          }
+                              } else if (playerOptionsHighPriority[type])
                                     c = '\u07D0';
-                              if (l == 0)
+                              if (type == 0) {
                                     menuActionTypes[menuActionRow] = 561 + c;
-                              if (l == 1)
+                              }
+                              if (type == 1) {
                                     menuActionTypes[menuActionRow] = 779 + c;
-                              if (l == 2)
+                              }
+                              if (type == 2) {
                                     menuActionTypes[menuActionRow] = 27 + c;
-                              if (l == 3)
+                              }
+                              if (type == 3) {
                                     menuActionTypes[menuActionRow] = 577 + c;
-                              if (l == 4)
+                              }
+                              if (type == 4) {
                                     menuActionTypes[menuActionRow] = 729 + c;
+                              }
                               selectedMenuActions[menuActionRow] = j;
                               firstMenuAction[menuActionRow] = i;
                               secondMenuAction[menuActionRow] = k;
                               menuActionRow++;
                         }
             }
-            for (int i1 = 0; i1 < menuActionRow; i1++) {
-                  if (menuActionTypes[i1] == 519) {
-                        menuActionText[i1] = "Walk here @whi@" + s;
+            }
+            for (int row = 0; row < menuActionRow; row++) {            	
+                  if (menuActionTypes[row] == 519) {
+                        menuActionText[row] = "Walk here @whi@" + s;
                         return;
                   }
             }
@@ -8710,12 +8721,6 @@ public class Client extends GameApplet {
             }
             loadingError = true;
       }
-      
-      public static BufferedImage byteArrayToImage(byte[] data) throws IOException {
-          ByteArrayInputStream in = new ByteArrayInputStream(data);
-          BufferedImage image = ImageIO.read(in);
-          return image;
-      }
 
       private void updatePlayerList(Buffer stream, int packetSize) {
             while (stream.bitPosition + 10 < packetSize * 8) {
@@ -8767,8 +8772,9 @@ public class Client extends GameApplet {
             if (openInterfaceId == 15244) {
                   return;
             }
-            if (minimapState != 0)
+            if (minimapState != 0) {
                   return;
+            }
             if (super.clickMode3 == 1) {
                   int i = super.saveClickX - 25 - 547;
                   int j = super.saveClickY - 5 - 3;
@@ -8807,7 +8813,7 @@ public class Client extends GameApplet {
                   anInt1117++;
                   if (anInt1117 > 1151) {
                         anInt1117 = 0;
-                        //TODO unknown (anti-cheat)
+                        // anti-cheat
                         outgoing.writeOpcode(246);
                         outgoing.writeByte(0);
                         int bufPos = outgoing.currentPosition;                        
@@ -14012,7 +14018,7 @@ public class Client extends GameApplet {
             constructedViewport = false;
             oriented = false;
             anInt1171 = 1;
-            myUsername = "mod seven";
+            myUsername = "vultr";
             myPassword = "test123";
             genericLoadingError = false;
             reportAbuseInterfaceID = -1;
