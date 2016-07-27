@@ -456,10 +456,12 @@ public final class ResourceProvider extends Provider implements Runnable {
 		while (uncompletedCount < 10) {
 			try {
 				Resource request = (Resource) unrequested.popHead();
-				if (request == null)
+				if (request == null) {
 					break;
-				if (fileStatus[request.dataType][request.ID] != 0)
+				}
+				if (fileStatus[request.dataType][request.ID] != 0) {
 					filesLoaded++;
+				}
 				fileStatus[request.dataType][request.ID] = 0;
 				requested.insertHead(request);
 				uncompletedCount++;

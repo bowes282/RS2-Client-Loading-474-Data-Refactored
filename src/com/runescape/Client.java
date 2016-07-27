@@ -8208,8 +8208,8 @@ public class Client extends GameApplet {
             for (int j = 0; j < mobsAwaitingUpdateCount; j++) {
                   int k = mobsAwaitingUpdate[j];
                   Npc npc = npcs[k];
-                  int l = stream.readUnsignedByte();
-                  if ((l & 0x10) != 0) {
+                  int mask = stream.readUnsignedByte();
+                  if ((mask & 0x10) != 0) {
                         int i1 = stream.readLEUShort();
                         if (i1 == 65535)
                               i1 = -1;
@@ -8234,15 +8234,15 @@ public class Client extends GameApplet {
                               npc.anInt1542 = npc.remainingPath;
                         }
                   }
-                  if ((l & 8) != 0) {
-                        int j1 = stream.readUByteA();
-                        int j2 = stream.readNegUByte();
-                        npc.updateHitData(j2, j1, tick);
+                  if ((mask & 8) != 0) {
+                        int damage = stream.readUByteA();                        
+                        int type = stream.readNegUByte();                        
+                        npc.updateHitData(type, damage, tick);
                         npc.loopCycleStatus = tick + 300;
                         npc.currentHealth = stream.readUByteA();
                         npc.maxHealth = stream.readUnsignedByte();
                   }
-                  if ((l & 0x80) != 0) {
+                  if ((mask & 0x80) != 0) {
                         npc.graphic = stream.readUShort();
                         int k1 = stream.readInt();
                         npc.graphicHeight = k1 >> 16;
@@ -8254,24 +8254,24 @@ public class Client extends GameApplet {
                         if (npc.graphic == 65535)
                               npc.graphic = -1;
                   }
-                  if ((l & 0x20) != 0) {
+                  if ((mask & 0x20) != 0) {
                         npc.interactingEntity = stream.readUShort();
                         if (npc.interactingEntity == 65535)
                               npc.interactingEntity = -1;
                   }
-                  if ((l & 1) != 0) {
+                  if ((mask & 1) != 0) {
                         npc.spokenText = stream.readString();
                         npc.textCycle = 100;
                   }
-                  if ((l & 0x40) != 0) {
-                        int l1 = stream.readNegUByte();
-                        int k2 = stream.readUByteS();
-                        npc.updateHitData(k2, l1, tick);
+                  if ((mask & 0x40) != 0) {                	  
+                        int damage = stream.readNegUByte();                        
+                        int type = stream.readUByteS();                        
+                        npc.updateHitData(type, damage, tick);
                         npc.loopCycleStatus = tick + 300;
                         npc.currentHealth = stream.readUByteS();
                         npc.maxHealth = stream.readNegUByte();
                   }
-                  if ((l & 2) != 0) {
+                  if ((mask & 2) != 0) {
                         npc.desc = NpcDefinition.lookup(stream.readLEUShortA());
                         npc.size = npc.desc.size;
                         npc.degreesToTurn = npc.desc.degreesToTurn;
@@ -8281,7 +8281,7 @@ public class Client extends GameApplet {
                         npc.turn90CCWAnimIndex = npc.desc.turn90CCWAnimIndex;
                         npc.idleAnimation = npc.desc.standAnim;
                   }
-                  if ((l & 4) != 0) {
+                  if ((mask & 4) != 0) {
                         npc.faceX = stream.readLEUShort();
                         npc.faceY = stream.readLEUShort();
                   }
