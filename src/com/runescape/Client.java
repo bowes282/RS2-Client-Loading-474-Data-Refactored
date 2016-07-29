@@ -11815,7 +11815,7 @@ public class Client extends GameApplet {
                   int objectTypeFace = stream.readUByteS();
                   int objectType = objectTypeFace >> 2;
                   int objectFace = objectTypeFace & 3;
-                  int objectGenre = objectGenreForTypes[objectType];
+                  int objectGenre = objectGroups[objectType];
                   int animId = stream.readUShortA();
                   if (xLoc >= 0 && yLoc >= 0 && xLoc < 103 && yLoc < 103) {
                         int heightA = tileHeights[plane][xLoc][yLoc];
@@ -11866,7 +11866,7 @@ public class Client extends GameApplet {
                   int objectTypeFace = stream.readUByteS();
                   int objectType = objectTypeFace >> 2;
                   int objectFace = objectTypeFace & 3;
-                  int objectGenre = objectGenreForTypes[objectType];
+                  int objectGenre = objectGroups[objectType];
                   byte byte2LesserXLoc = stream.readSignedByte();
                   int objectId = stream.readUShort();
                   byte byte3LesserYLoc = stream.readNegByte();
@@ -11915,15 +11915,16 @@ public class Client extends GameApplet {
             }
             if (packetType == PacketConstants.SEND_OBJECT) {
                   int offset = stream.readUByteA();
-                  int xLoc = localX + (offset >> 4 & 7);
-                  int yLoc = localY + (offset & 7);
-                  int objectId = stream.readLEUShort();
+                  int x = localX + (offset >> 4 & 7);
+                  int y = localY + (offset & 7);
+                  int id = stream.readLEUShort();                  
                   int objectTypeFace = stream.readUByteS();
-                  int objectType = objectTypeFace >> 2;
-                  int objectFace = objectTypeFace & 3;
-                  int objectGenre = objectGenreForTypes[objectType];
-                  if (xLoc >= 0 && yLoc >= 0 && xLoc < 104 && yLoc < 104)
-                        requestSpawnObject(-1, objectId, objectFace, objectGenre, yLoc, objectType, plane, xLoc, 0);
+                  int type = objectTypeFace >> 2;
+                  int orientation = objectTypeFace & 3;                  
+                  int group = objectGroups[type];                  
+                  if (x >= 0 && y >= 0 && x < 104 && y < 104) {              	  
+                        requestSpawnObject(-1, id, orientation, group, y, type, plane, x, 0);
+                  }
                   return;
             }
             if (packetType == PacketConstants.SEND_GFX) {
@@ -11961,14 +11962,15 @@ public class Client extends GameApplet {
             }
             if (packetType == PacketConstants.SEND_REMOVE_OBJECT) {
                   int objectTypeFace = stream.readNegUByte();
-                  int objectType = objectTypeFace >> 2;
-                  int objectFace = objectTypeFace & 3;
-                  int objectGenre = objectGenreForTypes[objectType];
+                  int type = objectTypeFace >> 2;
+                  int orientation = objectTypeFace & 3;
+                  int group = objectGroups[type];                  
                   int offset = stream.readUnsignedByte();
-                  int xLoc = localX + (offset >> 4 & 7);
-                  int yLoc = localY + (offset & 7);
-                  if (xLoc >= 0 && yLoc >= 0 && xLoc < 104 && yLoc < 104)
-                        requestSpawnObject(-1, -1, objectFace, objectGenre, yLoc, objectType, plane, xLoc, 0);
+                  int x = localX + (offset >> 4 & 7);
+                  int y = localY + (offset & 7);
+                  if (x >= 0 && y >= 0 && x < 104 && y < 104) {
+                        requestSpawnObject(-1, -1, orientation, group, y, type, plane, x, 0);
+                  }
                   return;
             }
             if (packetType == PacketConstants.SEND_PROJECTILE) {
@@ -14364,7 +14366,7 @@ public class Client extends GameApplet {
       private String myPassword;
       private static int anInt1175;
       private boolean genericLoadingError;
-      private final int[] objectGenreForTypes =
+      private final int[] objectGroups =
                   {0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3};
       private int reportAbuseInterfaceID;
       private Deque spawns;
